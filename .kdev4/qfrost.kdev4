@@ -9,7 +9,31 @@ Build Type=Debug
 CMake Binary=file:///usr/bin/cmake
 Environment Profile=
 Extra Arguments=
-Install Directory=
+Install Directory=file:///usr/local
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=QFrost
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=default
+Executable=file:///home/obey/Documents/projects/qfrost-build-debug/qfrost
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Project Target=QFrost,src,..,qfrost
+Use External Terminal=false
+Working Directory=
+isExecutable=true
+
+[MakeBuilder]
+Number Of Jobs=1
 
 [Project]
 VersionControlSupport=kdevgit
