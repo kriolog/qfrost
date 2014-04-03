@@ -1,4 +1,4 @@
-You need Qt, cmake, Boost (1.47 or newer) and muParser.
+You need Qt, cmake and Boost.
 
 Create some dir, cd there and do:
  cmake $PATH_TO_HERE
