@@ -314,12 +314,7 @@ bool MainWindow::exportImage()
     centralWidget()->setPalette(newPalette);
 
     mScene->anchor()->hide();
-    // FIXME use QWidget::grab
-    QPixmap image = QPixmap::grabWidget(centralWidget(), 0, 0,
-                                        centralWidget()->width()
-                                        - mView->verticalScrollBar()->width(),
-                                        centralWidget()->height()
-                                        - mView->horizontalScrollBar()->height());
+    const QPixmap image = mView->viewport()->grab();
 
     mView->setFrameStyle(oldFrameStyle);
     centralWidget()->setPalette(oldPalette);
