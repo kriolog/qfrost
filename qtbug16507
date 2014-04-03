@@ -1,0 +1,9 @@
+/********************** HACK: QTBUG-16507 workaround **************************/
+void MainWindow::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+    QString filePath = windowFilePath();
+    setWindowFilePath(filePath + "wtf we have some text here");
+    setWindowFilePath(filePath);
+}
+/******************************************************************************/

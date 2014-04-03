@@ -1,0 +1,47 @@
+#include <windows.h>
+
+#define VER_VERSION	@MAJOR_VERSION@,@MINOR_VERSION@,@PATCH_VERSION@,0
+
+#ifndef DEBUG
+#define VER_DEBUG	0
+#else
+#define VER_DEBUG	VS_FF_DEBUG
+#endif
+
+IDI_ICON1	ICON	DISCARDABLE	"qfrost.ico"
+
+#define LANG_BLOCK(lang, description, copyright)		\
+LANGUAGE lang,SUBLANG_DEFAULT					\
+VS_VERSION_INFO	VERSIONINFO					\
+FILEVERSION	VER_VERSION					\
+PRODUCTVERSION	VER_VERSION					\
+FILEOS		VOS_NT_WINDOWS32				\
+FILETYPE	VFT_APP						\
+BEGIN								\
+    BLOCK "StringFileInfo"					\
+    BEGIN							\
+	BLOCK "040904B0"					\
+	BEGIN							\
+	    VALUE "CompanyName",	"@ORGANIZATION_NAME@"	\
+	    VALUE "FileDescription",	description		\
+	    VALUE "FileVersion",	"@VERSION@"		\
+	    VALUE "InternalName",	"@EXE_NAME@"		\
+	    VALUE "LegalCopyright",	copyright		\
+	    VALUE "OriginalFilename",	"@EXE_NAME@.exe"	\
+	    VALUE "ProductName",	"@PROJECT_NAME@"	\
+	    VALUE "ProductVersion",	"@VERSION@"		\
+	END							\
+    END								\
+    BLOCK "VarFileInfo"						\
+    BEGIN							\
+        VALUE "Translation", 0x409, 1200, 0x419, 1200		\
+    END								\
+END
+
+LANG_BLOCK(LANG_ENGLISH,
+	   "Temperature fields modeling and visualization",
+	   "© @COPYRIGHT_YEARS@ Denis Pesotsky, Maxim Torgonsky")
+
+LANG_BLOCK(LANG_RUSSIAN,
+	   "Моделирование и визуализация температурных полей",
+	   "© @COPYRIGHT_YEARS@ Денис Песоцкий, Максим Торгонский")

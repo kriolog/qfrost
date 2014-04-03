@@ -1,0 +1,36 @@
+/*
+ * Copyright (C) 2012  Denis Pesotsky
+ *
+ * This file is part of QFrost.
+ *
+ * QFrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+#ifndef QFROST_MAIN_H
+#define QFROST_MAIN_H
+
+#cmakedefine EMBED_QT_L10N
+
+#define MAJOR_VERSION @MAJOR_VERSION@
+#define MINOR_VERSION @MINOR_VERSION@
+#define PATCH_VERSION @PATCH_VERSION@
+
+#define VERSION_STR "@VERSION@"
+
+#define APP_NAME            "@PROJECT_NAME@"
+#define ORGANIZATION_NAME   "@ORGANIZATION_NAME@"
+#define ORGANIZATION_DOMAIN "@ORGANIZATION_DOMAIN@"
+#define COPYRIGHT_YEARS     "@COPYRIGHT_YEARS@"
+
+#endif // QFROST_MAIN_H

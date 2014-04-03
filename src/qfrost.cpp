@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ *
+ * This file is part of QFrost.
+ *
+ * QFrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+#include <qfrost.h>
+
+#include <QtCore/Qt>
+#include <QtCore/QLocale>
+#include <QtCore/QTime>
+
+using namespace qfgui;
+
+// Если ставить 0.01, то блоки размером 0.01 м имеют некрасивый текст
+const double QFrost::metersInUnit = 0.001;
+
+const double QFrost::minBlockSize = 0.01 / metersInUnit * unitsInGridStep;
+
+const double QFrost::k = metersInUnit / unitsInGridStep;
+
+const double QFrost::sceneHalfSizeInMeters = 1000;
+
+const qreal QFrost::microSizeF = QFrost::microSize;
+
+const qreal QFrost::accuracy = 1e-8;
+
+const int QFrost::sceneHalfSize = sceneUnits(sceneHalfSizeInMeters);
+
+const int QFrost::PhysicalPropertyRole = Qt::UserRole + 2;
+const int QFrost::MinimumRole = Qt::UserRole + 3;
+const int QFrost::MaximumRole = Qt::UserRole + 4;
+const int QFrost::DirectEditRole = Qt::UserRole + 5;
+const int QFrost::UndoTextRole = Qt::UserRole + 6;
+
+const QPointF QFrost::noPoint = QPointF(sceneHalfSize * 10, sceneHalfSize * 10);
+
+const QRect QFrost::boundRect(-sceneHalfSize, -sceneHalfSize,
+                              2 * sceneHalfSize, 2 * sceneHalfSize);
+
+const QRectF QFrost::boundRectF(boundRect);
+
+const QRectF QFrost::boundRectInMeters(-sceneHalfSizeInMeters,
+                                       -sceneHalfSizeInMeters,
+                                       2 * sceneHalfSizeInMeters,
+                                       2 * sceneHalfSizeInMeters);
+
+const char *const QFrost::UndoBinderIsEnabled = "undoBinderIsEnabled";
+
+QString QFrost::dateFormat()
+{
+    QString result = QLocale().dateFormat(QLocale::ShortFormat);
+    if (!result.contains("yyyy")) {
+        Q_ASSERT(result.contains("yy"));
+        result.replace("yy", "yyyy");
+    }
+    return result;
+}
+
+QPair< QString, bool > QFrost::singleStepInfo(int numStepsInDay)
+{
+    Q_ASSERT(numStepsInDay > 0);
+    if (numStepsInDay == 1) {
+        return qMakePair(QString("24:00:00"), true);
+    } else {
+        QTime time = QTime(0, 0, 0).addMSecs(qRound(86400000.0 / numStepsInDay));
+        const bool isPrecise = (86400 % numStepsInDay == 0);
+        return qMakePair(time.toString("HH:mm:ss"), isPrecise);
+    }
+}

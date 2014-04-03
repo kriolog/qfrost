@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2010-2012  Denis Pesotsky
+ *
+ * This file is part of QFrost.
+ *
+ * QFrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+#include <soils/soilspanel.h>
+
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QPushButton>
+
+#include <soils/soilswidget.h>
+#include <soils/soil.h>
+#include <control_panel/controlpanel.h>
+
+using namespace qfgui;
+
+SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
+    mSoilsWidget(NULL),
+    mAnyBlockIsSelected(false),
+    //: sic: no key sequence by default (it will be InsertParagraphSeparator))
+    mApplySoil(new QPushButton(tr("Apply to selection")))
+{
+    mSoilsWidget = new SoilsWidget(this);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(QMargins());
+    mainLayout->addWidget(mSoilsWidget);
+    mainLayout->addWidget(mApplySoil);
+
+    QPushButton *openTableEditor = new QPushButton(tr("&Table Editor"), this);
+    mainLayout->addWidget(openTableEditor);
+    connect(openTableEditor, SIGNAL(clicked()),
+            mSoilsWidget, SLOT(openTableEditor()));
+
+    connect(mApplySoil, SIGNAL(clicked()), SLOT(slotApplySoil()));
+
+    connect(mSoilsWidget, SIGNAL(selectionChanged()),
+            SLOT(updateApplyButton()));
+    updateApplyButton();
+
+    mApplySoil->setShortcut(QKeySequence::InsertParagraphSeparator);
+    mApplySoil->setToolTip(tr("Apply choosen soil to selected blocks.<br/>"
+                              "Use <b>Enter</b> as shortcut."));
+}
+
+void SoilsPanel::updateApplyButton(bool sceneSelectionIsEmpty)
+{
+    mAnyBlockIsSelected = !sceneSelectionIsEmpty;
+    updateApplyButton();
+}
+
+void SoilsPanel::updateApplyButton()
+{
+    const bool oneSoilIsSelected = (mSoilsWidget->selectedItem() != NULL);
+    mApplySoil->setEnabled(mAnyBlockIsSelected && oneSoilIsSelected);
+}
+
+void SoilsPanel::slotApplySoil()
+{
+    Q_ASSERT(mSoilsWidget->selectedItem() != NULL);
+    Q_ASSERT(qobject_cast<Soil *>(mSoilsWidget->selectedItem()) != NULL);
+    emit signalApplySoil(qobject_cast<Soil *>(mSoilsWidget->selectedItem()));
+}
+
+SoilsModel *SoilsPanel::model()
+{
+    Q_ASSERT(qobject_cast< SoilsModel * >(mSoilsWidget->model()) != NULL);
+    return qobject_cast< SoilsModel * >(mSoilsWidget->model());
+}

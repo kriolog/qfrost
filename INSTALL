@@ -1,0 +1,7 @@
+You need Qt, cmake, Boost (1.47 or newer) and muParser.
+
+Create some dir, cd there and do:
+ cmake $PATH_TO_HERE
+ make
+
+That's all.
