@@ -834,6 +834,14 @@ static void printPoint(const QPointF &p, QTextStream &out,
     }
 }
 
+static void printPoint(double x, double y,
+                       QTextStream &out,
+                       const QString &delim = "\t",
+                       bool newLine = true)
+{
+    printPoint(QPointF(x, y), out, delim, newLine);
+}
+
 static bool blockIntersectsPolygonSide(const Block *block,
                                        const BoundaryPolygon *polygon)
 {
@@ -884,46 +892,67 @@ void Scene::exportDataForPlot(QTextStream &out) const
     
     out << "Bounds\n";
     foreach(const Block * block, blocks()) {
-        // По контактам определим, какие из углов блока находятся на границе
-        enum Corner {
-            TopLeftCorner = 0x1,
-            TopRightCorner = 0x2,
-            BottomLeftCorner = 0x4,
-            BottomRightCorner = 0x8
+        // По контактам определим, какие из сторон блока находятся на границе
+        enum Side {
+            Top = 0x1,
+            Bottom = 0x2,
+            Left = 0x4,
+            Right = 0x8
         };
-        Q_DECLARE_FLAGS(Corners, Corner)
+        Q_DECLARE_FLAGS(Sides, Side)
         
-        Corners boundCorners;
+        Sides edgeSides;
         if (block->contactsLeft().isEmpty()) {
-            boundCorners |= Corners(TopLeftCorner | BottomLeftCorner);
+            edgeSides |= Left;
         }
         if (block->contactsRight().isEmpty()) {
-            boundCorners |= Corners(TopRightCorner | BottomRightCorner);
+            edgeSides |= Right;
         }
         if (block->contactsTop().isEmpty()) {
-            boundCorners |= Corners(TopLeftCorner | TopRightCorner);
+            edgeSides |= Top;
         }
         if (block->contactsBottom().isEmpty()) {
-            boundCorners |= Corners(BottomLeftCorner | BottomRightCorner);
+            edgeSides |= Bottom;
         }
 
-        if (boundCorners == 0) {
+        if (edgeSides == 0) {
             // Блок со всех сторон имеет соседей - он нас не интересует
             continue;
         } else {
             // Блок на границе (пока не знаем, на внешней или на внутренней)
             if (blockIntersectsPolygonSide(block, outerPolygons)) {
-                // Блок находится на внешней границе, выведем его внешние углы
-                if (boundCorners.testFlag(TopLeftCorner)) {
+                // Блок находится на границе, выведем ключевые внешние точки
+                if (edgeSides.testFlag(Top)) {
+                    printPoint(block->metersCenter().x(), 
+                               block->metersRect().top(),
+                               out);
+                }
+                if (edgeSides.testFlag(Bottom)) {
+                    printPoint(block->metersCenter().x(), 
+                               block->metersRect().bottom(),
+                               out);
+                }
+                if (edgeSides.testFlag(Left)) {
+                    printPoint(block->metersRect().left(),
+                               block->metersCenter().y(),
+                               out);
+                }
+                if (edgeSides.testFlag(Right)) {
+                    printPoint(block->metersRect().right(),
+                               block->metersCenter().y(),
+                               out);
+                }
+
+                if (edgeSides.testFlag(Top) && edgeSides.testFlag(Left)) {
                     printPoint(block->metersRect().topLeft(), out);
                 }
-                if (boundCorners.testFlag(TopRightCorner)) {
-                    printPoint(block->metersRect().topRight(), out);
-                }
-                if (boundCorners.testFlag(BottomLeftCorner)) {
+                if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Left)) {
                     printPoint(block->metersRect().bottomLeft(), out);
                 }
-                if (boundCorners.testFlag(BottomRightCorner)) {
+                if (edgeSides.testFlag(Top) && edgeSides.testFlag(Right)) {
+                    printPoint(block->metersRect().topRight(), out);
+                }
+                if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Right)) {
                     printPoint(block->metersRect().bottomRight(), out);
                 }
             }
