@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -538,8 +538,10 @@ void MainWindow::createActions()
     connect(mExportAct, SIGNAL(triggered()), this, SLOT(exportData()));
     
     mExportDataForPlotAct = new QAction(QIcon::fromTheme("document-export"),
-                                        tr("Export with &polygons..."), this);
-    mExportDataForPlotAct->setStatusTip(tr("Export blocks and polygons data as text"));
+                                        tr("Export for &plot..."), this);
+    mExportDataForPlotAct->setStatusTip(tr("Export blocks data, polygons and "
+                                           "additional bound points as text "
+                                           "for contour plot"));
     connect(mExportDataForPlotAct, SIGNAL(triggered()), this, SLOT(exportDataForPlot()));
 
     mExportImageAct = new QAction(QIcon::fromTheme("image-x-generic"),

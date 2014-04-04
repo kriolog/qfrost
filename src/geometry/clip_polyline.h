@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -111,6 +111,22 @@ public:
 
         return qMakePair(QFrost::meters(totalSquare),
                          QFrost::meters(totalLength / weightedRNumerator));
+    }
+    
+    static bool clips(const Block *block,
+                      const QPolygonF &polyline) {
+        const QRectF rect = block->rect();
+        QList<QLineF> segments;
+        {
+            QPolygonF::ConstIterator it;
+            for (it = polyline.constBegin(); it != polyline.constEnd() - 1; ++it) {
+                QLineF s = clippedSegment(rect, QLineF(*it, *(it + 1)));
+                if (!s.isNull()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 };

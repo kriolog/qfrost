@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -824,27 +824,108 @@ void Scene::exportData(QTextStream &out,
     }
 }
 
+static void printPoint(const QPointF &p, QTextStream &out, 
+                       const QString &delim = "\t",
+                       bool newLine = true)
+{
+    out << p.x() << delim << p.y();
+    if (newLine) {
+        out << "\n";
+    }
+}
+
+static bool blockIntersectsPolygonSide(const Block *block,
+                                       const BoundaryPolygon *polygon)
+{
+    // FIXME использовать BoundaryPolygon::simplified (когда будет реализована)
+    QPolygonF p;
+    foreach(const Vertex &corner, polygon->corners()) {
+            p << corner.point;
+    }
+
+    return ClipPolyline::clips(block, p);
+}
+
+static bool blockIntersectsPolygonSide(const Block *block,
+                                       const QList<BoundaryPolygon *> &polygons)
+{
+    foreach(const BoundaryPolygon * polygon, polygons) {
+        if (blockIntersectsPolygonSide(block, polygon)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Scene::exportDataForPlot(QTextStream &out) const
 {
     out << (isGridded() ? "Regular Grid" : "Irregular Grid") << "\n";
     exportData(out);
     
-    const QList<BoundaryPolygon *> outerPolygons = outerBoundaryPolygons();
+    const QList<BoundaryPolygon *> &outerPolygons = outerBoundaryPolygons();
 
     out << "Outer Polygons\n";
     foreach(const BoundaryPolygon * outerPolygon, outerPolygons) {
         foreach(const Vertex &corner, outerPolygon->corners()) {
-            out << QFrost::meters(corner.point.x()) << "\t"
-                << QFrost::meters(corner.point.y()) << "\n";
+            printPoint(QFrost::meters(corner.point), out);
         }
     }
     
+    bool hasInnerPolygons = false;
     out << "Inner Polygons\n";
     foreach(const BoundaryPolygon * outerPolygon, outerPolygons) {
         foreach (const BoundaryPolygon * innerPolygon, outerPolygon->childBoundaryPolygonItems()) {
+            hasInnerPolygons = true;
             foreach(const Vertex &corner, innerPolygon->corners()) {
-                out << QFrost::meters(corner.point.x()) << "\t"
-                    << QFrost::meters(corner.point.y()) << "\n";
+                printPoint(QFrost::meters(corner.point), out);
+            }
+        }
+    }
+    
+    out << "Bounds\n";
+    foreach(const Block * block, blocks()) {
+        // По контактам определим, какие из углов блока находятся на границе
+        enum Corner {
+            TopLeftCorner = 0x1,
+            TopRightCorner = 0x2,
+            BottomLeftCorner = 0x4,
+            BottomRightCorner = 0x8
+        };
+        Q_DECLARE_FLAGS(Corners, Corner)
+        
+        Corners boundCorners;
+        if (block->contactsLeft().isEmpty()) {
+            boundCorners |= Corners(TopLeftCorner | BottomLeftCorner);
+        }
+        if (block->contactsRight().isEmpty()) {
+            boundCorners |= Corners(TopRightCorner | BottomRightCorner);
+        }
+        if (block->contactsTop().isEmpty()) {
+            boundCorners |= Corners(TopLeftCorner | TopRightCorner);
+        }
+        if (block->contactsBottom().isEmpty()) {
+            boundCorners |= Corners(BottomLeftCorner | BottomRightCorner);
+        }
+
+        if (boundCorners == 0) {
+            // Блок со всех сторон имеет соседей - он нас не интересует
+            continue;
+        } else {
+            // Блок на границе (пока не знаем, на внешней или на внутренней)
+            if (blockIntersectsPolygonSide(block, outerPolygons)) {
+                // Блок находится на внешней границе, выведем его внешние углы
+                if (boundCorners.testFlag(TopLeftCorner)) {
+                    printPoint(block->metersRect().topLeft(), out);
+                }
+                if (boundCorners.testFlag(TopRightCorner)) {
+                    printPoint(block->metersRect().topRight(), out);
+                }
+                if (boundCorners.testFlag(BottomLeftCorner)) {
+                    printPoint(block->metersRect().bottomLeft(), out);
+                }
+                if (boundCorners.testFlag(BottomRightCorner)) {
+                    printPoint(block->metersRect().bottomRight(), out);
+                }
             }
         }
     }

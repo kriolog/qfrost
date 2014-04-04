@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -201,27 +201,31 @@ public:
                     int tDecimals = 1,
                     int vDecimals = 0) const;
     
-    /** 
+    /**
      * Записывает в @p out данные для построения изолиний.
-     * 
+     *
      * Формат:
-     *  Regular Grid (или Irregular grid, если мультиблоковая разбивка)
-     *  x y t v
+     *  Regular Grid / Irregular grid                             [вид разбивки]
+     *  x y t v                         [координаты центров блоков, T и V в них]
      *  x1 z1 t1 v1
      *  x2 z2 t2 v2
      *  ...
-     *  Outer Polygons
+     *  Outer Polygons                                        [внешние полигоны]
      *  X1 Y1
      *  X2 Y2
      *  ...
-     *  Inner Polygons
+     *  Inner Polygons                                                   [дырки]
+     *  X1 Y1
+     *  X2 Y2
+     *  ...
+     *  Bounds                  [координаты углов всех внешних граничных блоков]
      *  X1 Y1
      *  X2 Y2
      *  ...
      * 
      * Информация по t и v идёт с сортировкой по x и z. Все полигоны замкнутые.
      * 
-     * FIXME одномерные задачи сохранять в другом формате.
+     * FIXME одномерные задачи сохранять в другом формате. М.б. и сеточные тоже.
      */
     void exportDataForPlot(QTextStream &out) const;
 
