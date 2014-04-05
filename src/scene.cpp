@@ -824,6 +824,24 @@ void Scene::exportData(QTextStream &out,
     }
 }
 
+static void printPoint(const QPointF &p, double t, double v, QTextStream &out,
+                       const QString &delim = "\t",
+                       bool newLine = true)
+{
+    out << p.x() << delim << p.y() << delim << t << delim << v;
+    if (newLine) {
+        out << "\n";
+    }
+}
+
+static void printPoint(double x, double y, double t, double v,
+                       QTextStream &out,
+                       const QString &delim = "\t",
+                       bool newLine = true)
+{
+    printPoint(QPointF(x, y), t, v, out, delim, newLine);
+}
+
 static void printPoint(const QPointF &p, QTextStream &out, 
                        const QString &delim = "\t",
                        bool newLine = true)
@@ -890,7 +908,7 @@ void Scene::exportDataForPlot(QTextStream &out) const
         }
     }
     
-    out << "Bounds\n";
+    out << "Hull\n";
     foreach(const Block * block, blocks()) {
         // По контактам определим, какие из сторон блока находятся на границе
         enum Side {
@@ -922,38 +940,41 @@ void Scene::exportDataForPlot(QTextStream &out) const
             // Блок на границе (пока не знаем, на внешней или на внутренней)
             if (blockIntersectsPolygonSide(block, outerPolygons)) {
                 // Блок находится на границе, выведем ключевые внешние точки
+                const double t = block->soilBlock()->temperature();
+                const double v = block->soilBlock()->thawedPart();
+                
                 if (edgeSides.testFlag(Top)) {
                     printPoint(block->metersCenter().x(), 
                                block->metersRect().top(),
-                               out);
+                               t, v, out);
                 }
                 if (edgeSides.testFlag(Bottom)) {
                     printPoint(block->metersCenter().x(), 
                                block->metersRect().bottom(),
-                               out);
+                               t, v, out);
                 }
                 if (edgeSides.testFlag(Left)) {
                     printPoint(block->metersRect().left(),
                                block->metersCenter().y(),
-                               out);
+                               t, v, out);
                 }
                 if (edgeSides.testFlag(Right)) {
                     printPoint(block->metersRect().right(),
                                block->metersCenter().y(),
-                               out);
+                               t, v, out);
                 }
 
                 if (edgeSides.testFlag(Top) && edgeSides.testFlag(Left)) {
-                    printPoint(block->metersRect().topLeft(), out);
+                    printPoint(block->metersRect().topLeft(), t, v, out);
                 }
                 if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Left)) {
-                    printPoint(block->metersRect().bottomLeft(), out);
+                    printPoint(block->metersRect().bottomLeft(), t, v, out);
                 }
                 if (edgeSides.testFlag(Top) && edgeSides.testFlag(Right)) {
-                    printPoint(block->metersRect().topRight(), out);
+                    printPoint(block->metersRect().topRight(), t, v, out);
                 }
                 if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Right)) {
-                    printPoint(block->metersRect().bottomRight(), out);
+                    printPoint(block->metersRect().bottomRight(), t, v, out);
                 }
             }
         }
