@@ -88,7 +88,7 @@ void BlocksLogger::exportData(QTextStream &out, BlocksLogger::ExportFormat forma
         }
         out << "\n";
         for (QList<QPair<QPointF, std::size_t> >::ConstIterator j = mCentersAndNums.constBegin(); j != mCentersAndNums.constEnd(); ++j) {
-            out << j->first.y() << "," << j->first.y();
+            out << j->first.x() << "," << j->first.y();
             for (QList<ComputationData>::ConstIterator it = mData.constBegin(); it != mData.constEnd(); ++it) {
                 const BlockData &bdata = it->soilBlockDataAt(j->second);
                 out << "," << bdata.temperature();
