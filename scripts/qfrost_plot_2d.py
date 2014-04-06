@@ -25,6 +25,7 @@ from progressbar import ProgressBar
 from matplotlib.animation import FuncAnimation
 import argparse
 from matplotlib.patches import PathPatch
+from matplotlib.tri import UniformTriRefiner, TriAnalyzer
 
 parser = argparse.ArgumentParser(prog='qfrost_plot',
                                  description='Does plots of QFrost 2D export files.')
@@ -95,6 +96,33 @@ def maskByDomain(triang, outerPolygons, innerPolygons):
         mask.append(not domainContainsPoint(outerPolygons, innerPolygons, point))
     triang.set_mask(mask)
 
+def addThawingMask(triang, v):
+    ntri = triang.triangles.shape[0]
+    for i in range(0, ntri):
+        if triang.mask[i]:
+            continue
+        num0 = 0
+        num1 = 0
+        for thawedPart in v[triang.triangles[i]]:
+            if thawedPart == 0.0:
+                num0 += 1
+                print num0
+            else:
+                if thawedPart == 1.0:
+                    num1 += 1
+            #    else:
+            #        break
+        #print num0+num1
+        if num0 == 3 or num1 == 3:
+            print 'hahahah'
+            triang.mask[i] = True
+
+
+def formatPercent(x, i):
+    return str(int(round(x*100.0, 0))) + "\,\%"
+
+percentformatter = FuncFormatter(formatPercent)
+
 print("*** Parsing '%s' ***" % args.FILE.name)
 args.FILE.readline()
 args.FILE.readline()
@@ -108,37 +136,30 @@ if innerPolygonsPoints != []:
 boundsX, boundsY, boundsT, boundsV = readpart(args.FILE).T
 args.FILE.close()
 
-x = numpy.concatenate((x, boundsX))
-y = numpy.concatenate((y, boundsY))
-t = numpy.concatenate((t, boundsT))
-v = numpy.concatenate((v, boundsV))
+fullX = numpy.concatenate((x, boundsX))
+fullY = numpy.concatenate((y, boundsY))
+fullT = numpy.concatenate((t, boundsT))
+fullV = numpy.concatenate((v, boundsV))
 
 outerPolygons = pathes(outerPolygonsPoints)
 assert(len(outerPolygons) == 1)
 innerPolygons = pathes(innerPolygonsPoints)
 
-#additionalX = numpy.concatenate((innerPolygonsX, outerPolygonsX))
-#additionalY = numpy.concatenate((innerPolygonsY, outerPolygonsY))
-#fullX = numpy.concatenate((x, additionalX))
-#fullY = numpy.concatenate((y, additionalY))
-
-#triang = tri.Triangulation(fullX, fullY)
-#maskByDomain(triang, outerPolygons, innerPolygons)
-
 knownTriang = tri.Triangulation(x, y)
-#maskByDomain(knownTriang, outerPolygons, innerPolygons)
+maskByDomain(knownTriang, outerPolygons, innerPolygons)
+mask = TriAnalyzer(knownTriang).get_flat_tri_mask()
+for i in range(0, len(knownTriang.mask)):
+    mask[i] |= knownTriang.mask[i]
+knownTriang.set_mask(mask)
+
+fullTriang = tri.Triangulation(fullX, fullY)
+mask = TriAnalyzer(fullTriang).get_flat_tri_mask()
+fullTriang.set_mask(mask)
 
 minX = outerPolygonsX.min()
 maxX = outerPolygonsX.max()
 minY = outerPolygonsY.min()
 maxY = outerPolygonsY.max()
-
-#print "Refining"
-#refiner = tri.UniformTriRefiner(knownTriang)
-#tri_refi, t_refi = refiner.refine_field(t, subdiv=2)
-
-#print "Masking"
-#maskByDomain(tri_refi, outerPolygons, innerPolygons)
 
 print "Plotting"
 
@@ -146,48 +167,71 @@ plt.figure()
 plt.xlim(xmin=minX, xmax=maxX)
 plt.ylim(ymin=maxY, ymax=minY)
 plt.gca().set_aspect('equal')
-V = [i/2.0 for i in range(-20, 21)]
-#plt.triplot(knownTriang, lw=0.3, color='white')
+#plt.triplot(knownTriang, lw=0.5, color='white')
 
 mainPath = outerPolygons[0]
-mainPatch = PathPatch(mainPath, facecolor='none', lw=2)
-mainPatch.set_zorder(10)
+mainPatch = PathPatch(mainPath, facecolor='none', lw=1)
+mainPatch.set_zorder(2)
+plt.grid(True, ls='-', c='#e0e0e0')
+#[line.set_zorder(15) for line in plt.axes().lines]
 plt.gca().add_patch(mainPatch)
 
-cs = plt.tricontourf(knownTriang, t, V, cmap=plt.cm.jet, extend='both')
+#addThawingMask(fullTriang, fullV)
+
+is_thawed_parts_plot = False
+
+cmap = plt.cm.jet if not is_thawed_parts_plot else plt.cm.gist_ncar
+
+if is_thawed_parts_plot:
+    V = [i/20.0 for i in range(0, 21)]
+    V[0] = 1e-15
+    V[-1] = 1.0 - V[0]
+else:
+    V = [i/2.0 for i in range(-20, 21)]
+
+cs = plt.tricontourf(fullTriang, 
+                     fullT if not is_thawed_parts_plot else fullV,
+                     V, cmap=cmap, extend='both', antialiased=False) # с антиалиасингом хуже
 for collection in cs.collections:
     collection.set_clip_path(mainPatch)
 
-colorbar = plt.colorbar(ticks=MultipleLocator(base=1.0))
-colorbar.set_label(u"Температура $T$, $^\circ$C")
+if not is_thawed_parts_plot:
+    colorbar = plt.colorbar(ticks=MultipleLocator(base=1.0))
+    colorbar.set_label(u"Температура $T$, $^\circ$C")
+else:
+    colorbar = plt.colorbar(ticks=V, format=percentformatter)
+    colorbar.set_label(u"Относительный объём талой фазы $V_{th}$")
 
-
-#cs = plt.tricontour(knownTriang, t, V,
-#               colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
-#               linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
-
-#for collection in cs.collections:
-#    collection.set_clip_path(mainPatch)
-
-#plt.clabel(cs,
-#           fontsize=6, inline=True, fmt=r'$%1.1f$',
-#           use_clabeltext=True)
-#cs = plt.contourf(data)
-
+#addThawingMask(knownTriang, v)
 
 #plt.tricontour(tri_refi, z_test_refi)
 #plt.title('tricontourf, tricontour (refine->mask)')
 filename='plot.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
-plt.close()
 
-'''
-t = t.swapaxes(0, 1)
-v = v.swapaxes(0, 1)
-stuff_extension = '.pdf' if args.scalable else '.png'
-scale_factor = 1.0 if args.scalable else args.factor
-print('*** Plotting T ***')
-plotstuff(dates, depths, t, False,
-          'temperatures' + stuff_extension, scale_factor, args.depth, t)
-'''
+vals = t if not is_thawed_parts_plot else v
+
+refine_for_contrours = False
+
+if refine_for_contrours:
+    refiner = UniformTriRefiner(knownTriang)
+    knownTriang, vals = refiner.refine_field(vals, subdiv=2)
+
+cs = plt.tricontour(knownTriang, 
+                    vals,
+                    V,
+                    colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
+                    linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
+
+#plt.clabel(cs,
+#           fontsize=4, inline=True, fmt=r'$%1.1f$',
+#           use_clabeltext=True)
+
+for collection in cs.collections:
+    collection.set_clip_path(mainPatch)
+filename='plot_with_contours.png'
+plt.savefig(filename, dpi=200, bbox_inches='tight')
+print('Saved ' + filename + "!")
+
+plt.close()
