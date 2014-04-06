@@ -106,15 +106,12 @@ def addThawingMask(triang, v):
         for thawedPart in v[triang.triangles[i]]:
             if thawedPart == 0.0:
                 num0 += 1
-                print num0
             else:
                 if thawedPart == 1.0:
                     num1 += 1
-            #    else:
-            #        break
-        #print num0+num1
+                else:
+                    break
         if num0 == 3 or num1 == 3:
-            print 'hahahah'
             triang.mask[i] = True
 
 
@@ -171,7 +168,7 @@ plt.gca().set_aspect('equal')
 
 mainPath = outerPolygons[0]
 mainPatch = PathPatch(mainPath, facecolor='none', lw=1)
-mainPatch.set_zorder(2)
+mainPatch.set_zorder(6)
 plt.grid(True, ls='-', c='#e0e0e0')
 #[line.set_zorder(15) for line in plt.axes().lines]
 plt.gca().add_patch(mainPatch)
@@ -230,6 +227,7 @@ cs = plt.tricontour(knownTriang,
 
 for collection in cs.collections:
     collection.set_clip_path(mainPatch)
+    collection.set_zorder(5)
 filename='plot_with_contours.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
