@@ -886,7 +886,16 @@ static bool blockIntersectsPolygonSide(const Block *block,
 void Scene::exportDataForPlot(QTextStream &out) const
 {
     out << (isGridded() ? "Regular Grid" : "Irregular Grid") << "\n";
-    exportData(out);
+
+    QList<const Block *> blocks = blocksConst();
+    qSort(blocks.begin(), blocks.end(), xzLessThan);
+    out << "x" << "\t" << "y" << "\t" << "t" << "\t" << "v" << "\n";
+    foreach(const Block * block, blocks) {
+        printPoint(block->metersCenter(),
+                   block->soilBlock()->temperature(),
+                   block->soilBlock()->thawedPart(),
+                   out);
+    }
     
     const QList<BoundaryPolygon *> &outerPolygons = outerBoundaryPolygons();
 
@@ -909,7 +918,7 @@ void Scene::exportDataForPlot(QTextStream &out) const
     }
     
     out << "Hull\n";
-    foreach(const Block * block, blocks()) {
+    foreach(const Block * block, blocks) {
         // По контактам определим, какие из сторон блока находятся на границе
         enum Side {
             Top = 0x1,
