@@ -1,1 +1,1 @@
-lupdate -recursive -no-obsolete -codecfortr UTF-8 ../src -ts qfrost_ru.ts
+lupdate -recursive -no-obsolete ../src -ts qfrost_ru.ts
