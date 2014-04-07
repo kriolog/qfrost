@@ -407,6 +407,9 @@ void MainWindow::about()
     aboutDialog.addCredit(tr("S. N. Buldovich"),
                           tr("Help with designing user interface and more"));
 
+    aboutDialog.addCredit(tr("L. V. Emelyanova"),
+                          tr("Motivation and overall help"));
+
     aboutDialog.addCredit(tr("L.O.R community"),
                           tr("Help with C++ and Qt"),
                           "", "linux.org.ru");
