@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -57,8 +57,7 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     setWindowTitle((isNewItem
                     ? tr("New Soil")
                     : tr("Edit Soil %1")
-                    .arg(locale().quoteString(model->itemAt(0)->name())))
-                   + MainWindow::windowsPostfix());
+                    .arg(locale().quoteString(model->itemAt(0)->name()))));
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->setContentsMargins(QMargins());

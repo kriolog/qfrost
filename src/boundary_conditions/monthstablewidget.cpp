@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -59,7 +59,7 @@ MonthsTableWidget::MonthsTableWidget(const QString &valueName,
                              mDataSetterSpinbox);
 
     //: Batch set dialog title
-    dataSetterDialog->setWindowTitle(tr("Batch Set") + MainWindow::windowsPostfix());
+    dataSetterDialog->setWindowTitle(tr("Batch Set"));
 
     connect(dialogButtons, SIGNAL(accepted()),
             dataSetterDialog, SLOT(accept()));

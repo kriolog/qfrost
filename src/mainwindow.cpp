@@ -143,9 +143,9 @@ void MainWindow::newFile()
 void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                       tr("Open File", "Dialog Title") + windowsPostfix(),
-                       QString(),
-                       formats());
+                        tr("Open File", "Dialog Title"),
+                        QString(),
+                        formats());
     open(fileName);
 
 }
@@ -211,7 +211,7 @@ bool MainWindow::saveAs()
     }
     forceStopComputation();
     QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save", "Dialog Title") + windowsPostfix(),
+                       tr("Save", "Dialog Title"),
                        filePath,
                        formats());
     if (fileName.isEmpty()) {
@@ -226,7 +226,7 @@ bool MainWindow::exportData()
     static const QString exportFailedTitle = tr("Export Failed");
     static const QString txtExtension = ".txt";
     QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Export Data", "Dialog Title") + windowsPostfix(),
+                       tr("Export Data", "Dialog Title"),
                        currentFileBasePath() + txtExtension,
                        tr("Text files") + QString(" (*%1)").arg(txtExtension));
 
@@ -260,7 +260,7 @@ bool MainWindow::exportDataForPlot()
     static const QString exportFailedTitle = tr("Export Failed");
     static const QString txtExtension = ".txt";
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Export Data for Plot", "Dialog Title") + windowsPostfix(),
+                                                    tr("Export Data for Plot", "Dialog Title"),
                                                     currentFileBasePath() + txtExtension,
                                                     tr("Text files") + QString(" (*%1)").arg(txtExtension));
     
@@ -294,7 +294,7 @@ bool MainWindow::exportImage()
     static const QString exportFailedTitle = tr("Saving Image Failed");
     static const QString format = "png";
     QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save Image", "Dialog Title") + windowsPostfix(),
+                       tr("Save Image", "Dialog Title"),
                        currentFileBasePath() + "." + format,
                        tr("PNG files") + QString(" (*.%1)").arg(format));
 
@@ -324,7 +324,7 @@ bool MainWindow::exportImage()
     bool success = image.save(fileName, qPrintable(format));
     if (!success) {
         QMessageBox::warning(this,
-                             tr("Export Failed") + windowsPostfix(),
+                             tr("Export Failed"),
                              tr("Cannot write file %1.")
                              .arg(locale().quoteString(fileName)));
     } else {
@@ -343,7 +343,7 @@ bool MainWindow::saveLoggerData(const BlocksLogger &logger)
 
     QString selectedFilter;
     QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save Logger Data", "Dialog Title") + windowsPostfix(),
+                       tr("Save Logger Data", "Dialog Title"),
                        currentFileBasePath() + ".csv",
                        filterForCSV + ";;" + filterForLastBlockTXT + ";;" + filterForScript,
                        &selectedFilter);
@@ -849,7 +849,7 @@ bool MainWindow::maybeSave()
     if (isWindowModified()) {
         QMessageBox::StandardButton ret;
         // FIXME: иконка у кнопки Discard должна быть как в kwrite
-        ret = QMessageBox::warning(this, tr("Close Document") + windowsPostfix(),
+        ret = QMessageBox::warning(this, tr("Close Document"),
                                    tr("The document %1 has been modified.\n"
                                       "Do you want to save your changes or discard them?")
                                    .arg(locale().quoteString(mCurrentFileName)),
@@ -883,7 +883,7 @@ void MainWindow::loadFile(const QString &fileName)
 
     if (!loadErrorText.isNull()) {
         QMessageBox::warning(isHidden() ? NULL : this,
-                             loadFailedTitle +  windowsPostfix(),
+                             loadFailedTitle,
                              tr("Cannot load file %1.\n")
                              .arg(locale().quoteString(strippedName(fileName)))
                              + loadErrorText);
@@ -1057,7 +1057,7 @@ bool MainWindow::checkFile(QFile &file, const QString &errorTitle)
             }
         }
         QMessageBox::warning(isHidden() ? NULL : this,
-                             errorTitle + windowsPostfix(), errorString);
+                             errorTitle, errorString);
         return false;
     }
     return true;
@@ -1266,11 +1266,6 @@ void MainWindow::updateFullScreenAction()
         mFullScreenAct->setText(tr("&Full Screen Mode"));
         mFullScreenAct->setChecked(false);
     }
-}
-
-QString MainWindow::windowsPostfix()
-{
-    return QString(" — %1").arg(QCoreApplication::applicationName());
 }
 
 QString MainWindow::settingsMenuText() const

@@ -102,10 +102,6 @@ public:
         return mUnits;
     }
 
-    /// Этот текст надо добавлять в конец всех открываемых окон, кроме тех,
-    /// что открываются из меню Справка
-    static QString windowsPostfix();
-
     QString settingsMenuText() const;
 
 protected:

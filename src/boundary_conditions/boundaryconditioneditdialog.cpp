@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -46,8 +46,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     setWindowTitle((isNewItem
                     ? tr("New Boundary Condition")
                     : tr("Edit Boundary Condition %1")
-                    .arg(locale().quoteString(model->itemAt(0)->name())))
-                   + MainWindow::windowsPostfix());
+                    .arg(locale().quoteString(model->itemAt(0)->name()))));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     addLayout(mainLayout);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013  Denis Pesotsky
+ * Copyright (C) 2012-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -39,7 +39,7 @@ using namespace qfgui;
 WelcomeDialog::WelcomeDialog(MainWindow *parent)
     : QDialog(parent)
 {
-    setWindowTitle(tr("New Document Settings") + MainWindow::windowsPostfix());
+    setWindowTitle(tr("New Document Settings"));
 
     setWindowFlags(windowFlags() ^ Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose, true);

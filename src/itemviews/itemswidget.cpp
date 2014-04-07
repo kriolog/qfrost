@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -276,7 +276,7 @@ void ItemsWidget::openTableEditor()
 {
     ItemsTableDialog dialog(this);
     Q_ASSERT(!mTableEditorWindowTitle.isEmpty());
-    dialog.setWindowTitle(mTableEditorWindowTitle + MainWindow::windowsPostfix());
+    dialog.setWindowTitle(mTableEditorWindowTitle);
     dialog.exec();
 }
 
