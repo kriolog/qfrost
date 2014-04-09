@@ -168,10 +168,8 @@ def fullPath(outerPolygonsPoints, innerPolygonsPoints,
         allPoints = numpy.concatenate((allPoints, list(itertools.chain.from_iterable(innerPolygons))))
 
     codes = numpy.ones(len(allPoints), dtype=Path.code_type) * Path.LINETO
-    for i in outerPolygonsStartPoints:
-        codes[i] = Path.MOVETO
-    for i in innerPolygonsStartPoints:
-        codes[i + len(outerPolygonsPoints)] = Path.MOVETO
+    codes[outerPolygonsStartPoints] = Path.MOVETO
+    codes[innerPolygonsStartPoints + len(outerPolygonsPoints)] = Path.MOVETO
     return Path(allPoints, codes)
 
 
@@ -296,13 +294,13 @@ filename = 'plot.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
-#refine_for_contrours = False
+refine_for_contrours = False
 
 if refine_for_contrours:
     refiner = UniformTriRefiner(knownTriang)
     knownTriang, vals = refiner.refine_field(vals, subdiv=2)
 
-cs = plt.tricontour(knownTriang, 
+cs = plt.tricontour(knownTriang,
                     t,
                     Vt,
                     colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
