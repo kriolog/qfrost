@@ -896,27 +896,44 @@ void Scene::exportDataForPlot(QTextStream &out) const
                    block->soilBlock()->thawedPart(),
                    out);
     }
-    
+
     const QList<BoundaryPolygon *> &outerPolygons = outerBoundaryPolygons();
 
+    QList<int> startPoints;
+
     out << "Outer Polygons\n";
+    int n = 0;
     foreach(const BoundaryPolygon * outerPolygon, outerPolygons) {
+        startPoints << n;
         foreach(const Vertex &corner, outerPolygon->corners()) {
             printPoint(QFrost::meters(corner.point), out);
+            ++n;
         }
     }
-    
-    bool hasInnerPolygons = false;
+
+    out << "Outer Polygons Start Points\n";
+    foreach(int n, startPoints) {
+        out << n << "\n";
+    }
+
     out << "Inner Polygons\n";
+    n = 0;
+    startPoints.clear();
     foreach(const BoundaryPolygon * outerPolygon, outerPolygons) {
         foreach (const BoundaryPolygon * innerPolygon, outerPolygon->childBoundaryPolygonItems()) {
-            hasInnerPolygons = true;
+            startPoints << n;
             foreach(const Vertex &corner, innerPolygon->corners()) {
                 printPoint(QFrost::meters(corner.point), out);
+                ++n;
             }
         }
     }
-    
+
+    out << "Inner Polygons Start Points\n";
+    foreach(int n, startPoints) {
+        out << n << "\n";
+    }
+
     out << "Hull\n";
     foreach(const Block * block, blocks) {
         // По контактам определим, какие из сторон блока находятся на границе
