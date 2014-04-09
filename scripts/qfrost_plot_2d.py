@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from matplotlib import rc
+
 rc('font', **{'family': 'serif'})
 rc('text', usetex=True)
 rc('text.latex', unicode=True)
@@ -203,17 +204,25 @@ fullY = numpy.concatenate((y, boundsY))
 fullT = numpy.concatenate((t, boundsT))
 fullV = numpy.concatenate((v, boundsV))
 
+print("Creating main path")
 mainPath = fullPath(outerPolygonsPoints, innerPolygonsPoints,
                     outerPolygonsStartPoints, innerPolygonsStartPoints)
 
+print("Triangulating known points")
 knownTriang = tri.Triangulation(x, y)
+
+print("Triangulating all points")
+fullTriang = tri.Triangulation(fullX, fullY)
+
+print("Masking known triangles by domain")
 maskByDomain(knownTriang, outerPolygons, innerPolygons)
+
+print("Masking by TriAnalyzer")
 mask = TriAnalyzer(knownTriang).get_flat_tri_mask()
 for i in range(0, len(knownTriang.mask)):
     mask[i] |= knownTriang.mask[i]
 knownTriang.set_mask(mask)
 
-fullTriang = tri.Triangulation(fullX, fullY)
 mask = TriAnalyzer(fullTriang).get_flat_tri_mask()
 fullTriang.set_mask(mask)
 
@@ -270,6 +279,7 @@ Vv[-1] = 1.0 - Vv[0]
 
 Vt = [i/2.0 for i in range(-20, 21)]
 
+print("tricontourf T")
 cs = plt.tricontourf(fullTriang, fullT,
                      Vt, cmap=cmapT, extend='both',
                      antialiased=False) # антиалиасинг красив, если цвета сильно
@@ -280,6 +290,7 @@ for collection in cs.collections:
 colorbar = plt.colorbar(ticks=MultipleLocator(base=1.0))
 colorbar.set_label(u"Температура $T$, $^\circ$C")
 
+print("tricontourf Vth")
 cs = plt.tricontourf(knownTriang, v,
                      Vv, cmap=cmapV, extend='both', antialiased=True)
 for collection in cs.collections:
@@ -290,6 +301,7 @@ for collection in cs.collections:
 
 #plt.tricontour(tri_refi, z_test_refi)
 #plt.title('tricontourf, tricontour (refine->mask)')
+print('Saving')
 filename = 'plot.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
@@ -300,6 +312,7 @@ if refine_for_contrours:
     refiner = UniformTriRefiner(knownTriang)
     knownTriang, vals = refiner.refine_field(vals, subdiv=2)
 
+print("tricontour T")
 cs = plt.tricontour(knownTriang,
                     t,
                     Vt,
@@ -314,8 +327,9 @@ for collection in cs.collections:
     collection.set_clip_path(mainPatch)
     collection.set_zorder(5)
 
+print('Saving')
 filename = 'plot_with_contours.png'
-plt.savefig(filename, dpi=400, bbox_inches='tight')
+plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
 plt.close()
