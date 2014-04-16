@@ -28,26 +28,6 @@
 
 using namespace qfcore;
 
-static double interpolate(const std::map<double, double> &data, double x)
-{
-    typedef std::map<double, double>::const_iterator IT;
-
-    IT i = data.upper_bound(x);
-
-    if (i == data.end()) {
-        return (--i)->second;
-    }
-    if (i == data.begin()) {
-        return i->second;
-    }
-
-    IT l = i;
-    --l;
-
-    const double delta = (x - l->first) / (i->first - l->first);
-    return delta * i->second + (1 - delta) * l->second;
-}
-
 SoilBlock::SoilBlock(const double &width, const double &height):
     mDimensions(0),
     mTimeStepPerVolume(0),
@@ -246,7 +226,7 @@ void SoilBlock::normalizeThawedPart()
         mThawedPart = 1.0;
     } else if (mTemperature < mTransitionTemperature) {
         mThawedPart = mUsesUnfrozenWaterCurve
-                      ? interpolate(mUnfrozenWaterCurve, mTemperature) / mMoistureTotal
+                      ? curThawedPart()
                       : 0.0;
     }
     assert(thawedPartIsOk());
@@ -260,7 +240,7 @@ bool SoilBlock::thawedPartIsOk() const
     }
     if (mUsesUnfrozenWaterCurve) {
         if (mTemperature < mTransitionTemperature) {
-            return std::abs(mThawedPart - interpolate(mUnfrozenWaterCurve, mTemperature) / mMoistureTotal) < 0.0001;
+            return std::abs(mThawedPart - curThawedPart()) < 0.0001;
         } else {
             return mThawedPart >= minBFThawedPart() && mThawedPart <= 1;
         }

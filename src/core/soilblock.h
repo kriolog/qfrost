@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -39,6 +39,8 @@ class Soil;
 
 namespace qfcore
 {
+
+static double interpolate(const std::map<double, double> &data, double x);
 
 class HeatSurface;
 
@@ -146,6 +148,13 @@ private:
         assert(T <= mTransitionTemperature);
         return mCapacity.frozen * (T - mTransitionTemperature) +
                WaterTransitionHeat * mDryDensity * (w - mMinBfMoisture);
+    }
+
+    /// Расчётный (из кривой н.в.) относительный объём талой воды.
+    /// @warning вызывать только при использовании кривой незамёзршей воды!
+    inline double curThawedPart() const {
+        assert(mUsesUnfrozenWaterCurve);
+        return interpolate(mUnfrozenWaterCurve, mTemperature) / mMoistureTotal;
     }
 
     friend class qfgui::SetBlocksTemperatureCommand;
@@ -300,9 +309,11 @@ public:
     bool usesUnfrozenWaterCurve() const {
         return mUsesUnfrozenWaterCurve;
     }
+
     const std::map<double, double> &unfrozenWaterCurve() const {
         return mUnfrozenWaterCurve;
     }
+
     double moistureTotal() const {
         return mMoistureTotal;
     }
@@ -319,6 +330,26 @@ public:
     /********************** Конец функций для GUI ****************************/
 };
 
+}
+
+double qfcore::interpolate(const std::map< double, double > &data, double x)
+{
+    typedef std::map<double, double>::const_iterator IT;
+
+    IT i = data.upper_bound(x);
+
+    if (i == data.end()) {
+        return (--i)->second;
+    }
+    if (i == data.begin()) {
+        return i->second;
+    }
+
+    IT l = i;
+    --l;
+
+    const double delta = (x - l->first) / (i->first - l->first);
+    return delta * i->second + (1 - delta) * l->second;
 }
 
 #endif // QFCORE_SOILBLOCK_H
