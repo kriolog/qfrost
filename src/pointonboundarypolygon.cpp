@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -66,4 +66,57 @@ QLineF PointOnBoundaryPolygon::segment() const
     Q_ASSERT(mPolygon != NULL);
     Q_ASSERT(mCornerNumber < mPolygon->polygon().size());
     return mPolygon->segment(mCornerNumber);
+}
+
+bool PointOnBoundaryPolygon::isInEllipse() const
+{
+    if (mPolygon == NULL) {
+        return false;
+    }
+
+    const int numCorners = mPolygon->corners().size();
+    if (numCorners < 20) {
+        return false;
+    }
+
+    // Если в направлении стольки точек размер сегментов особо не меняется,
+    // считаем точку в элипсе.
+    static const int wantedSimiliarSegments = 6;
+    // Столько сегментов в обоих направлениях смотрим
+    static const int lookupSegments = wantedSimiliarSegments + 1;
+
+    int numSimiliarSegments = 0;
+    QLineF prevSegment;
+    for (int i = mCornerNumber - lookupSegments; i <= mCornerNumber + lookupSegments; ++i) {
+        int cornerNum = i;
+        if (cornerNum < 0) {
+            cornerNum += numCorners;
+        } else if (cornerNum > numCorners) {
+            cornerNum -= numCorners;
+        }
+        if (cornerNum == numCorners - 1) {
+            cornerNum = 0;
+        }
+        const QLineF segment = mPolygon->segment(cornerNum);
+        if (!prevSegment.isNull()) {
+            const bool isInSecondPart = i > mCornerNumber;
+            const double diff = prevSegment.length()/segment.length();
+            static const double maxDiff = 1.1;
+            static const double minDiff = 1.0/maxDiff;
+            if (diff <= maxDiff && diff >= minDiff) {
+                ++numSimiliarSegments;
+                if (isInSecondPart && numSimiliarSegments >= wantedSimiliarSegments) {
+                    return true;
+                }
+            } else {
+                if (isInSecondPart) {
+                    // Уже во второй половине, а одинаковых сегментов мало
+                    return false;
+                }
+                numSimiliarSegments = 0;
+            }
+        }
+        prevSegment = segment;
+    }
+    return false;
 }

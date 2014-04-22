@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -51,6 +51,7 @@ public:
     int index() const {
         return mCornerNumber;
     }
+
     qreal distance() const {
         return mDistance;
     }
@@ -58,6 +59,9 @@ public:
     bool isNull() const {
         return mPolygon == NULL;
     }
+
+    /// Находится ли этот сегмент на эллипсе (или куске эллипса)
+    bool isInEllipse() const;
 
 private:
     const BoundaryPolygon *mPolygon;

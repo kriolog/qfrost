@@ -369,6 +369,9 @@ void Anchor::updateFoundAnchor(const APointOnBoundaryPolygon &pointToAnchor)
     emit signalPositionChanged(pointToAnchor.first);
 
     mFoundAnchorType = pointToAnchor.second;
+    if (mFoundAnchorType == OnPolygonCorner && mPosOnPolygon.isInEllipse()) {
+        mFoundAnchorType = OnPolygonSide;
+    }
     setPos(pointToAnchor.first.toPoint());
     emit signalPositionChanged(pointToAnchor.first.toPoint());
 }
