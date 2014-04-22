@@ -159,8 +159,9 @@ public:
 
     /**
      * Отрезок, соединяющий i-ю и i+1-ю точки полигона.
+     * @param safe допускает i вне [0; mCornersNum-1): учёт цикличности полигона
      */
-    QLineF segment(int i) const;
+    QLineF segment(int i, bool safe = false) const;
 
     bool isInner() const {
         return parent() != NULL;

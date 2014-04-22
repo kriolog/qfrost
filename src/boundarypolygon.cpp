@@ -327,8 +327,19 @@ bool BoundaryPolygon::contains(const QPolygonF &polygon) const
     return BoundaryPolygonCalc::isContained(this->polygon(), polygon);
 }
 
-QLineF BoundaryPolygon::segment(int i) const
+QLineF BoundaryPolygon::segment(int i, bool safe) const
 {
+    if (safe) {
+        while (i > mCorners.size()) {
+            i -= mCorners.size();
+        }
+        while (i < 0) {
+            i += mCorners.size();
+        }
+        if (i == mCorners.size() - 1) {
+            i = 0;
+        }
+    }
     Q_ASSERT(i >= 0);
     Q_ASSERT(i < mCorners.size() - 1);
     return QLineF(mCorners.at(i).point, mCorners.at(i + 1).point);
