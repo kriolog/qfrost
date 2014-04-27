@@ -949,13 +949,19 @@ QString MainWindow::tryLoad(QFile &file)
         qWarning("Load failed: cannot read version!");
         return badFormatError;
     }
-    if (version < kFilesVersion) {
-        qWarning("Load failed: version of file is too low: %d!", version);
-        return tr("File is for older version of %1.").arg(QCoreApplication::applicationName());
-    }
-    if (version > kFilesVersion) {
-        qWarning("Load failed: version of file is too high: %d!", version);
-        return  tr("File is for newer version of %1.").arg(QCoreApplication::applicationName());
+    if (version != kFilesVersion) {
+        QString error;
+        if (version < kFilesVersion) {
+            qWarning("Load failed: version of file is too low: %d!", version);
+            error = tr("File is for older version of %1.").arg(QCoreApplication::applicationName());
+        } else {
+            qWarning("Load failed: version of file is too high: %d!", version);
+            error = tr("File is for newer version of %1.").arg(QCoreApplication::applicationName());
+        }
+        error += "\n";
+        error += tr("Version ID in file: %1. Wanted version ID: %2.")
+                 .arg(version).arg(kFilesVersion);
+        return error;
     }
 
     /*********************** СЧИТЫВАЕМ ВСЮ ФИГНЮ ******************************/
