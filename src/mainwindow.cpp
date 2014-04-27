@@ -148,7 +148,6 @@ void MainWindow::open()
                                                      QString(),
                                                      formats());
     open(fileName);
-
 }
 
 void MainWindow::open(const QString &fileName)
@@ -316,16 +315,24 @@ bool MainWindow::exportImage()
     mScene->anchor()->show();
     Ruler::updateChildrenOffsets(centralWidget(), false);
 
-    bool success = image.save(fileName, qPrintable(format));
+    QFile file(fileName);
+    if (!tryOpen(&file, QIODevice::WriteOnly | QIODevice::Truncate)) {
+        return false;
+    }
+    bool success = image.save(&file, qPrintable(format));
+    if (!checkFile(file, exportFailedTitle)) {
+        return false;
+    }
     if (!success) {
+        // Сюда мы вряд ли должны попасть - QPixmap::save не вернуло бы true
         QMessageBox::warning(this,
                              tr("Export Failed"),
                              tr("Cannot write file %1.")
                              .arg(locale().quoteString(fileName)));
-    } else {
-        statusBar()->showMessage(tr("Current data exported"), 2000);
+        return false;
     }
-    return success;
+    statusBar()->showMessage(tr("Current data exported"), 2000);
+    return true;
 }
 
 bool MainWindow::saveLoggerData(const BlocksLogger &logger)
@@ -879,9 +886,9 @@ void MainWindow::loadFile(const QString &fileName)
     if (!loadErrorText.isNull()) {
         QMessageBox::warning(isHidden() ? NULL : this,
                              loadFailedTitle,
-                             tr("Cannot load file %1.\n")
+                             tr("Cannot load file %1.")
                              .arg(locale().quoteString(strippedName(fileName)))
-                             + loadErrorText);
+                             + "\n\n" + loadErrorText);
         return;
     } else {
         setCurrentFile(fileName);
@@ -1043,9 +1050,9 @@ bool MainWindow::checkFile(QFile &file, const QString &errorTitle)
     // если во время записи возникла ошибка.
     // например, место кончилось или флешку, куда писалось, вдруг выдернули...
     if (file.error()) {
-        QString errorString = tr("Cannot write file %1.\n%2.")
+        QString errorString = tr("Cannot write file %1.")
                               .arg(locale().quoteString(file.fileName()))
-                              .arg(file.errorString());
+                              + "\n\n" + file.errorString();
         if (file.error() == QFile::ResourceError) {
             // на устройстве кончилось место, пытаемя удалить недописанный файл
             if (file.remove()) {
@@ -1069,15 +1076,15 @@ bool MainWindow::tryOpen(QFile &file,
     if (!file.open(flags)) {
         QString errorText;
         if (flags.testFlag(QIODevice::ReadOnly)) {
-            errorText = tr("Cannot read file %1.\n%2.");
+            errorText = tr("Cannot read file %1.");
         } else if (flags.testFlag(QIODevice::WriteOnly)) {
-            errorText = tr("Cannot write file %1.\n%2.");
+            errorText = tr("Cannot write file %1.");
         } else {
-            errorText = tr("Cannot open file %1.\n%2.");
+            errorText = tr("Cannot open file %1.");
         }
         QMessageBox::warning(isHidden() ? NULL : this, errorTitle, errorText
                              .arg(locale().quoteString(strippedName(file.fileName())))
-                             .arg(file.errorString()));
+                             + "\n\n" + file.errorString());
         return false;
     }
     return true;
