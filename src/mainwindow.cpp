@@ -892,14 +892,12 @@ void MainWindow::loadFile(const QString &fileName)
 template <class T>
 static QList<const T *> castedList(QList<const Item *> items)
 {
-    qDebug("111");
     QList<const T *> result;
     foreach(const Item * item, items) {
         Q_ASSERT(item != NULL);
         result << qobject_cast<const T * >(item);
         Q_ASSERT(result.last() != NULL);
     }
-    qDebug("222");
     return result;
 }
 
@@ -959,7 +957,7 @@ QString MainWindow::tryLoad(QFile &file)
             error = tr("File is for newer version of %1.").arg(QCoreApplication::applicationName());
         }
         error += "\n";
-        error += tr("Version ID in file: %1. Wanted version ID: %2.")
+        error += tr("Provided version ID: %1. Wanted version ID: %2.")
                  .arg(version).arg(kFilesVersion);
         return error;
     }
@@ -1163,7 +1161,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 MainWindow::~MainWindow()
 {
-    qDebug("Bye!");
     // Некоторые команды undo в деструкторе используют сцену, модель грунтов
     // и т.п., так что эти команды надо удалить до прочих объектов.
     delete mUndoView;
