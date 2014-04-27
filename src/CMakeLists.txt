@@ -33,6 +33,7 @@ add_subdirectory(computations)
 #add_subdirectory( plot )
 
 set(qfrost_SRCS
+    dialog.cpp
     welcomedialog.cpp
     blockscountlabel.cpp
     toolbar.cpp

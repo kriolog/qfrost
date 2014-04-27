@@ -26,7 +26,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtGui/QCloseEvent>
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMenuBar>
@@ -64,6 +63,7 @@
 #include <toolbar.h>
 #include "blockscountlabel.h"
 #include "welcomedialog.h"
+#include <dialog.h>
 
 #ifdef WIN32
 #include <correctedstyle.h>
@@ -90,6 +90,7 @@ static const int kSettingsVersion = 2;
 static const QDataStream::Version kDataStreamVersion = QDataStream::Qt_5_0;
 
 const QString MainWindow::settingsGroup = "mainwindow";
+const QString MainWindow::kMainExt = ".qfrost";
 
 inline QString strippedName(const QString &fullFileName)
 {
@@ -142,10 +143,10 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                        tr("Open File", "Dialog Title"),
-                        QString(),
-                        formats());
+    const QString fileName = Dialog::getOpenFileName(this,
+                                                     tr("Open File", "Dialog Title"),
+                                                     QString(),
+                                                     formats());
     open(fileName);
 
 }
@@ -198,22 +199,16 @@ bool MainWindow::save()
 
 QString MainWindow::formats()
 {
-    return tr("QFrost files") + " (*.qfrost)";
+    return tr("QFrost files") + QString(" (*%1)").arg(kMainExt);
 }
 
 bool MainWindow::saveAs()
 {
-    QString filePath = mCurrentFilePath;
-    if (mIsUntitled) {
-        Q_ASSERT(!mCurrentFilePath.contains(".qfrost", Qt::CaseInsensitive));
-        // если мы не названы, то оно названо просто "unnamed", без расширения
-        filePath += ".qfrost";
-    }
     forceStopComputation();
-    QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save", "Dialog Title"),
-                       filePath,
-                       formats());
+    const QString fileName = Dialog::getSaveFileName(this,
+                                                     tr("Save", "Dialog Title"),
+                                                     mCurrentFilePath,
+                                                     formats());
     if (fileName.isEmpty()) {
         return false;
     }
@@ -225,10 +220,10 @@ bool MainWindow::exportData()
 {
     static const QString exportFailedTitle = tr("Export Failed");
     static const QString txtExtension = ".txt";
-    QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Export Data", "Dialog Title"),
-                       currentFileBasePath() + txtExtension,
-                       tr("Text files") + QString(" (*%1)").arg(txtExtension));
+    QString fileName = Dialog::getSaveFileName(this,
+                                               tr("Export Data", "Dialog Title"),
+                                               currentFileBasePath() + txtExtension,
+                                               tr("Text files") + QString(" (*%1)").arg(txtExtension));
 
     if (fileName.isEmpty()) {
         return false;
@@ -259,10 +254,10 @@ bool MainWindow::exportDataForPlot()
 {
     static const QString exportFailedTitle = tr("Export Failed");
     static const QString txtExtension = ".txt";
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Export Data for Plot", "Dialog Title"),
-                                                    currentFileBasePath() + txtExtension,
-                                                    tr("Text files") + QString(" (*%1)").arg(txtExtension));
+    const QString fileName = Dialog::getSaveFileName(this,
+                                                     tr("Export Data for Plot", "Dialog Title"),
+                                                     currentFileBasePath() + txtExtension,
+                                                     tr("Text files") + QString(" (*%1)").arg(txtExtension));
     
     if (fileName.isEmpty()) {
         return false;
@@ -293,10 +288,10 @@ bool MainWindow::exportImage()
 {
     static const QString exportFailedTitle = tr("Saving Image Failed");
     static const QString format = "png";
-    QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save Image", "Dialog Title"),
-                       currentFileBasePath() + "." + format,
-                       tr("PNG files") + QString(" (*.%1)").arg(format));
+    const QString fileName = Dialog::getSaveFileName(this,
+                                                     tr("Save Image", "Dialog Title"),
+                                                     currentFileBasePath() + "." + format,
+                                                     tr("PNG files") + QString(" (*.%1)").arg(format));
 
     if (fileName.isEmpty()) {
         return false;
@@ -342,11 +337,11 @@ bool MainWindow::saveLoggerData(const BlocksLogger &logger)
     static const QString filterForScript = tr("Text files for isopleth plotter script") + " (*.txt)";
 
     QString selectedFilter;
-    QString fileName = QFileDialog::getSaveFileName(this,
-                       tr("Save Logger Data", "Dialog Title"),
-                       currentFileBasePath() + ".csv",
-                       filterForCSV + ";;" + filterForLastBlockTXT + ";;" + filterForScript,
-                       &selectedFilter);
+    const QString fileName = Dialog::getSaveFileName(this,
+                                                     tr("Save Logger Data", "Dialog Title"),
+                                                     currentFileBasePath() + ".csv",
+                                                     filterForCSV + ";;" + filterForLastBlockTXT + ";;" + filterForScript,
+                                                     &selectedFilter);
 
     if (fileName.isEmpty() || selectedFilter.isEmpty()) {
         // юзер отменил диалог, значит ему эти данные не нужны
@@ -1088,23 +1083,23 @@ void MainWindow::setCurrentFile(const QString &fileName)
 {
     mIsUntitled = fileName.isEmpty();
 
+    const QString unnamedString = tr("unnamed");
     if (mIsUntitled) {
-        mCurrentFileBaseName = tr("unnamed");
-        mCurrentPath = QApplication::applicationDirPath();
-        mCurrentFilePath = mCurrentPath + "/"
-                           + mCurrentFileBaseName;
-        mCurrentFileName = mCurrentFileBaseName;
+        mCurrentFileBaseName = unnamedString;
+        mCurrentPath = QString();
+        mCurrentFileName = mCurrentFileBaseName + kMainExt;
+        mCurrentFilePath = mCurrentFileName;
     } else {
         QFileInfo info(fileName);
         mCurrentFileBaseName = info.completeBaseName();
         mCurrentPath = info.canonicalPath();
-        mCurrentFilePath = info.canonicalFilePath();
         mCurrentFileName = info.fileName();
+        mCurrentFilePath = info.canonicalFilePath();
 
         RecentFilesMenu::prependFile(fileName);
     }
 
-    setWindowFilePath(mCurrentFilePath);
+    setWindowFilePath(mIsUntitled ? mCurrentFileBaseName : mCurrentFileName);
     mUndoStack->setClean();
 }
 

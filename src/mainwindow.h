@@ -68,17 +68,15 @@ public:
         return mControlPanel;
     }
 
+    /// Главное используемое расширения файлов (начинается с точки)
+    static const QString kMainExt;
+
     /// Сортированный список всех граничных условий (включая "пустое")
     QList<BoundaryCondition *> boundaryConditions() const;
 
     /// Путь к открытому файлу включая имя файла -- QFileInfo::canonicalFilePath
     const QString &currentFilePath() const {
         return mCurrentFilePath;
-    }
-
-    /// Путь к открытому файлу без имени файла -- QFileInfo::canonicalPath
-    const QString &currentPath() const {
-        return mCurrentPath;
     }
 
     /// Имя открытого файла без расширения -- QFileInfo::completeBaseName
