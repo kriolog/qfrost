@@ -52,8 +52,6 @@
 #include <control_panel/computationcontrol.h>
 #include <control_panel/startingconditions.h>
 #include <application.h>
-//#include <plot/curveplotdialog.h>
-//#include <plot/areaplotdialog.h>
 #include <computations/blockslogger.h>
 #include <colorgenerator.h>
 #include <colorbar.h>
@@ -61,8 +59,8 @@
 #include <units.h>
 #include <positionlabel.h>
 #include <toolbar.h>
-#include "blockscountlabel.h"
-#include "welcomedialog.h"
+#include <blockscountlabel.h>
+#include <welcomedialog.h>
 #include <dialog.h>
 
 #ifdef WIN32
@@ -316,7 +314,9 @@ bool MainWindow::exportImage()
     Ruler::updateChildrenOffsets(centralWidget(), false);
 
     QFile file(fileName);
-    if (!tryOpen(&file, QIODevice::WriteOnly | QIODevice::Truncate)) {
+    if (!tryOpen(file,
+        QIODevice::WriteOnly | QIODevice::Truncate,
+        exportFailedTitle)) {
         return false;
     }
     bool success = image.save(&file, qPrintable(format));
@@ -399,9 +399,6 @@ void MainWindow::about()
 
     aboutDialog.addCredit(tr("L. N. Chrustalev"),
                           tr("Initial computation algorythm"));
-
-    /*aboutDialog.addCredit(tr("N. A. Buchko"),
-                           tr("Enthalpy representation of temperature fields"));*/
 
     aboutDialog.addCredit(tr("G. P. Pustovoyt"),
                           tr("Explanation of theory and inspiration"));
@@ -597,12 +594,6 @@ void MainWindow::createActions()
     mUndoAct->setShortcut(QKeySequence::Undo);
     connect(mUndoAct, SIGNAL(changed()), SLOT(updateUndoActs()));
 
-    mSettingsAct = new QAction(QIcon::fromTheme("configure"),
-                               tr("Settings"), this);
-    mSettingsAct->setStatusTip(tr("Edit application's settings"));
-    connect(mSettingsAct, SIGNAL(triggered()),
-            SLOT(openSettingsDialog()));
-
     mFullScreenAct = new QAction(this);
     mFullScreenAct->setCheckable(true);
     mFullScreenAct->setShortcut(QKeySequence("F11"));
@@ -630,11 +621,6 @@ void MainWindow::createActions()
     mDiscretizeColors->setStatusTip(tr("Discretize (sharpen) color of blocks"));
     connect(mDiscretizeColors, SIGNAL(toggled(bool)),
             mColorGenerator, SLOT(setDiscretizeColors(bool)));
-
-    //  mPlotAct = new QAction(tr("Plot"), this);
-    //  mPlotAct->setStatusTip(tr("Plot current data"));
-    //  connect(mPlotAct, SIGNAL(triggered()),
-    //          SLOT(openPlotDialog()));
 }
 
 void MainWindow::createMenus()
@@ -1229,25 +1215,6 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 void MainWindow::dragMoveEvent(QDragMoveEvent *event)
 {
     event->acceptProposedAction();
-}
-
-void MainWindow::openPlotDialog()
-{
-    /*
-       QDialog *dialog;
-       if (mScene->is1D()) {
-           dialog = new CurvePlotDialog(mScene, this);
-       } else {
-           dialog = new AreaPlotDialog(mScene, this);
-       }
-       if (dialog != NULL) {
-           dialog->exec();
-       }*/
-}
-
-void MainWindow::openSettingsDialog()
-{
-
 }
 
 void MainWindow::switchFullScreen()

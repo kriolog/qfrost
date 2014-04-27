@@ -238,10 +238,6 @@ private slots:
     void updateUndoActs();
     /// Изменяет статус изменённости документа.
     void setWindowNotModified(bool b);
-    /// Открывает диалог, строящий текущие данные сцены (и сохраняющий картинки)
-    void openPlotDialog();
-    /// Открывает диалог изменения настроек приложения
-    void openSettingsDialog();
     /// Пытается сохранить данные из @p logger в файл, пока это не получится
     void onLoggerDataAvailable(const qfgui::BlocksLogger &logger);
     /// Переключает полноэкранный режим
