@@ -1,14 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>icons/128x128/actions/application-exit.png</file>
-    <file>icons/128x128/actions/configure.png</file>
     <file>icons/128x128/actions/document-edit.png</file>
     <file>icons/128x128/actions/list-remove.png</file>
     <file>icons/128x128/apps/accessories-calculator.png</file>
     <file>icons/128x128/mimetypes/image-x-generic.png</file>
     <file>icons/16x16/actions/application-exit.png</file>
     <file>icons/16x16/actions/configure-toolbars.png</file>
-    <file>icons/16x16/actions/configure.png</file>
     <file>icons/16x16/actions/document-edit.png</file>
     <file>icons/16x16/actions/document-export.png</file>
     <file>icons/16x16/actions/document-new.png</file>
@@ -32,7 +30,6 @@
     <file>icons/16x16/mimetypes/image-x-generic.png</file>
     <file>icons/22x22/actions/application-exit.png</file>
     <file>icons/22x22/actions/configure-toolbars.png</file>
-    <file>icons/22x22/actions/configure.png</file>
     <file>icons/22x22/actions/document-edit.png</file>
     <file>icons/22x22/actions/document-export.png</file>
     <file>icons/22x22/actions/document-new.png</file>
@@ -58,7 +55,6 @@
     <file>icons/256x256/mimetypes/image-x-generic.png</file>
     <file>icons/32x32/actions/application-exit.png</file>
     <file>icons/32x32/actions/configure-toolbars.png</file>
-    <file>icons/32x32/actions/configure.png</file>
     <file>icons/32x32/actions/document-edit.png</file>
     <file>icons/32x32/actions/document-export.png</file>
     <file>icons/32x32/actions/document-new.png</file>
@@ -82,7 +78,6 @@
     <file>icons/32x32/mimetypes/image-x-generic.png</file>
     <file>icons/48x48/actions/application-exit.png</file>
     <file>icons/48x48/actions/configure-toolbars.png</file>
-    <file>icons/48x48/actions/configure.png</file>
     <file>icons/48x48/actions/document-edit.png</file>
     <file>icons/48x48/actions/document-export.png</file>
     <file>icons/48x48/actions/document-new.png</file>
@@ -105,7 +100,6 @@
     <file>icons/48x48/apps/accessories-calculator.png</file>
     <file>icons/48x48/mimetypes/image-x-generic.png</file>
     <file>icons/64x64/actions/application-exit.png</file>
-    <file>icons/64x64/actions/configure.png</file>
     <file>icons/64x64/actions/document-edit.png</file>
     <file>icons/64x64/actions/list-remove.png</file>
     <file>icons/64x64/apps/accessories-calculator.png</file>
