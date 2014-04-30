@@ -177,8 +177,6 @@ private:
     QAction *mRemoveUnneededBlocksAct;
     QAction *mUndoAct;
     QAction *mRedoAct;
-    QAction *mPlotAct;
-    QAction *mSettingsAct;
     QAction *mFullScreenAct;
     QAction *mViewColorAct;
     QAction *mDiscretizeColors;

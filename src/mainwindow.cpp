@@ -1242,5 +1242,5 @@ void MainWindow::updateFullScreenAction()
 
 QString MainWindow::settingsMenuText() const
 {
-    return mSettingsAct->text();
+    return tr("&Settings").replace('&', "");
 }
