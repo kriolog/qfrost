@@ -1156,6 +1156,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="655"/>
+        <location filename="../src/mainwindow.cpp" line="1245"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
