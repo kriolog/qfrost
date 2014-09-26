@@ -936,27 +936,19 @@ void Scene::exportDataForPlot(QTextStream &out) const
 
     out << "Hull\n";
     foreach(const Block * block, blocks) {
-        // По контактам определим, какие из сторон блока находятся на границе
-        enum Side {
-            Top = 0x1,
-            Bottom = 0x2,
-            Left = 0x4,
-            Right = 0x8
-        };
-        Q_DECLARE_FLAGS(Sides, Side)
-        
-        Sides edgeSides;
+        // По контактам определим, какие из сторон блока находятся на границе        
+        Qt::Edges edgeSides;
         if (block->contactsLeft().isEmpty()) {
-            edgeSides |= Left;
+            edgeSides |= Qt::LeftEdge;
         }
         if (block->contactsRight().isEmpty()) {
-            edgeSides |= Right;
+            edgeSides |= Qt::RightEdge;
         }
         if (block->contactsTop().isEmpty()) {
-            edgeSides |= Top;
+            edgeSides |= Qt::TopEdge;
         }
         if (block->contactsBottom().isEmpty()) {
-            edgeSides |= Bottom;
+            edgeSides |= Qt::BottomEdge;
         }
 
         if (edgeSides == 0) {
@@ -969,37 +961,37 @@ void Scene::exportDataForPlot(QTextStream &out) const
                 const double t = block->soilBlock()->temperature();
                 const double v = block->soilBlock()->thawedPart();
                 
-                if (edgeSides.testFlag(Top)) {
+                if (edgeSides.testFlag(Qt::TopEdge)) {
                     printPoint(block->metersCenter().x(), 
                                block->metersRect().top(),
                                t, v, out);
                 }
-                if (edgeSides.testFlag(Bottom)) {
+                if (edgeSides.testFlag(Qt::BottomEdge)) {
                     printPoint(block->metersCenter().x(), 
                                block->metersRect().bottom(),
                                t, v, out);
                 }
-                if (edgeSides.testFlag(Left)) {
+                if (edgeSides.testFlag(Qt::LeftEdge)) {
                     printPoint(block->metersRect().left(),
                                block->metersCenter().y(),
                                t, v, out);
                 }
-                if (edgeSides.testFlag(Right)) {
+                if (edgeSides.testFlag(Qt::RightEdge)) {
                     printPoint(block->metersRect().right(),
                                block->metersCenter().y(),
                                t, v, out);
                 }
 
-                if (edgeSides.testFlag(Top) && edgeSides.testFlag(Left)) {
+                if (edgeSides.testFlag(Qt::TopEdge) && edgeSides.testFlag(Qt::LeftEdge)) {
                     printPoint(block->metersRect().topLeft(), t, v, out);
                 }
-                if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Left)) {
+                if (edgeSides.testFlag(Qt::BottomEdge) && edgeSides.testFlag(Qt::LeftEdge)) {
                     printPoint(block->metersRect().bottomLeft(), t, v, out);
                 }
-                if (edgeSides.testFlag(Top) && edgeSides.testFlag(Right)) {
+                if (edgeSides.testFlag(Qt::TopEdge) && edgeSides.testFlag(Qt::RightEdge)) {
                     printPoint(block->metersRect().topRight(), t, v, out);
                 }
-                if (edgeSides.testFlag(Bottom) && edgeSides.testFlag(Right)) {
+                if (edgeSides.testFlag(Qt::BottomEdge) && edgeSides.testFlag(Qt::RightEdge)) {
                     printPoint(block->metersRect().bottomRight(), t, v, out);
                 }
             }
