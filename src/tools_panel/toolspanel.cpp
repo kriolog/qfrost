@@ -77,7 +77,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
                                    tr("&Boundary Conditions Applicator"), this)),
     mPickPolygonalSelection(new QAction(QIcon(":/tools/polygonal_selection.png"),
                                         tr("&Polygonal Selection"), this)),
-    mToolBeforeComputation(mPickNoTool),
+    mToolBeforeBlocking(mPickNoTool),
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),
     mHelpAction(new QAction("?", this)),
@@ -205,10 +205,10 @@ QAction *ToolsPanel::checkedAction() const
 void ToolsPanel::slotBlockTools(bool doBlock)
 {
     if (doBlock) {
-        mToolBeforeComputation = mTools->checkedAction();
+        mToolBeforeBlocking = mTools->checkedAction();
         mPickNoTool->trigger();
     } else {
-        mToolBeforeComputation->trigger();
+        mToolBeforeBlocking->trigger();
     }
     setDisabled(doBlock);
 }

@@ -79,7 +79,8 @@ private:
     QAction *mPickBoundaryConditionsCreator;
     QAction *mPickPolygonalSelection;
 
-    QAction *mToolBeforeComputation;
+    /// Инструмент, выбранный при последнем вызове slotBlockTools(true)
+    QAction *mToolBeforeBlocking;
 
     QStackedWidget *mToolsPanels;
 
@@ -105,7 +106,14 @@ public slots:
      * виджет в @a mToolsPanels на нужный
      */
     void slotToolChosen(QAction *action);
+    
+    /**
+     * Слот, блокирующий и разблокирующий возможность выбрать инструмент.
+     * При блокировке выбирается инструмент "курсор".
+     * При разблокировке возврается инструмент, выбранный до неё.
+     */
     void slotBlockTools(bool doBlock);
+    
     void showToolTip();
 
 signals:
