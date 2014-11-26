@@ -246,9 +246,32 @@ void Scene::slotApplyTemperatureGradientToSelection(double t1, double t2)
 }
 
 
-void Scene::slotApplySoilToSelection(const Soil *soil)
+void Scene::slotApplySoilToSelection(const Soil *soil, bool onlyClearBlocks)
 {
-    addUndoCommand(new SetBlocksSoilCommand(selectedBlocks(), soil));
+    QList<Block *> blocks = selectedBlocks();
+    if (blocks.isEmpty()) {
+        qWarning("%s called with no blocks selected!", Q_FUNC_INFO);
+        return;
+    }
+    if (onlyClearBlocks) {
+        // FIXME: можно использовать QtConcurrent::blockingFilter
+        QList<Block *>::Iterator it = blocks.begin();
+        while (it != blocks.end()) {
+            if ((*it)->hasSoil()) {
+                it = blocks.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        if (blocks.isEmpty()) {
+            qWarning("%s for clear blocks called with no clear blocks selected!",
+                     Q_FUNC_INFO);
+            return;
+        }
+    }
+    addUndoCommand(new SetBlocksSoilCommand(blocks, soil));
+    // теперь все выделенные блоки имеют грунт, оповестим об этом
+    emit signalBlocksSelectionChanged(false, true);
 }
 
 void Scene::slotApplyThawedPartToSelection(double v)
@@ -380,7 +403,12 @@ QRectF Scene::blocksBoundingRect() const
 
 void Scene::slotSelectionChanged()
 {
-    emit signalBlocksSelectionChanged(selectedItems().isEmpty());
+    const bool hasSelection = !selectedItems().isEmpty();
+
+    emit signalBlocksSelectionChanged(!hasSelection);
+    emit signalBlocksSelectionChanged(!hasSelection, hasSelection
+                                                     ? !hasClearBlocksSelected()
+                                                     : true);
 }
 
 void Scene::slotSetBlocksStyle(QFrost::BlockStyle style)
@@ -765,6 +793,17 @@ void Scene::load(QDataStream &in,
     }
     /**************************************************************************/
     Q_ASSERT(in.status() == QDataStream::Ok);
+}
+
+bool Scene::hasClearBlocksSelected() const
+{
+    foreach (QGraphicsItem *item, selectedItems()) {
+        Q_ASSERT(qgraphicsitem_cast<Block *>(item) != NULL);
+        if (!static_cast<Block *>(item)->hasSoil()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Scene::save(QDataStream &out) const

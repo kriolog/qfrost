@@ -717,8 +717,10 @@ void MainWindow::createToolBars()
             SIGNAL(signalApplyThawedPart(double)),
             mScene, SLOT(slotApplyThawedPartToSelection(double)));
 
-    connect(mControlPanel->soilsPanel(), SIGNAL(signalApplySoil(const Soil *)),
-            mScene, SLOT(slotApplySoilToSelection(const Soil *)));
+    connect(mControlPanel->soilsPanel(),
+            SIGNAL(signalApplySoil(const Soil *, bool)),
+            mScene,
+            SLOT(slotApplySoilToSelection(const Soil *, bool)));
 
     connect(mControlPanel->computationControl(),
             SIGNAL(signalStartComputation(ComputationSettings)),
@@ -735,8 +737,8 @@ void MainWindow::createToolBars()
             SIGNAL(signalNeedBlocksRedrawing(bool)),
             mScene, SLOT(slotSetNeedBlocksRedrawing(bool)));
 
-    connect(mScene, SIGNAL(signalBlocksSelectionChanged(bool)),
-            mControlPanel->soilsPanel(), SLOT(updateApplyButton(bool)));
+    connect(mScene, SIGNAL(signalBlocksSelectionChanged(bool, bool)),
+            mControlPanel->soilsPanel(), SLOT(updateApplyButton(bool, bool)));
 
     connect(mScene, SIGNAL(signalBlocksSelectionChanged(bool)),
             mControlPanel->startingConditions(), SLOT(updateButtons(bool)));

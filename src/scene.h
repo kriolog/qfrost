@@ -173,6 +173,8 @@ public:
     bool blocksNeedPen() const {
         return mBlocksNeedPen;
     }
+    
+    bool hasClearBlocksSelected() const;
 
     const QList<Block *> &blocksInDomain() const {
         return mBlocksInDomain;
@@ -285,7 +287,7 @@ public slots:
     void slotApplyTemperatureToSelection(double t);
     void slotApplyTemperatureGradientToSelection(double t1, double t2);
     void slotApplyThawedPartToSelection(double v);
-    void slotApplySoilToSelection(const Soil *soil);
+    void slotApplySoilToSelection(const Soil *soil, bool onlyClearBlocks);
     void slotStartComputation(const ComputationSettings &settings);
     void slotSetNeedBlocksRedrawing(bool needRedrawing);
     void slotStopComputation();
@@ -349,6 +351,8 @@ private slots:
 
 signals:
     void signalBlocksSelectionChanged(bool selectionIsEmpty);
+    void signalBlocksSelectionChanged(bool selectionIsEmpty,
+                                      bool selectionHasNoClearBlocks);
 
     void signalComputationStateChanged(bool computationIsNowOn);
 

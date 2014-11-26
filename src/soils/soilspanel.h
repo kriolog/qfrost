@@ -43,15 +43,18 @@ public:
 private:
     SoilsWidget *mSoilsWidget;
     bool mAnyBlockIsSelected;
+    bool mAnyClearBlockIsSelected;
     QPushButton *mApplySoil;
+    QPushButton *mApplySoilToClear;
 
 public slots:
-    void updateApplyButton(bool sceneSelectionIsEmpty);
-    void updateApplyButton();
+    void updateApplyButton(bool sceneSelectionIsEmpty,
+                           bool selectionHasNoClearBlocks);
+    void updateApplyButtons();
     void slotApplySoil();
 
 signals:
-    void signalApplySoil(const Soil *soil);
+    void signalApplySoil(const Soil *soil, bool onlyClearBlocks);
 
 };
 

@@ -31,8 +31,9 @@ using namespace qfgui;
 SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mSoilsWidget(NULL),
     mAnyBlockIsSelected(false),
-    //: sic: no key sequence by default (it will be InsertParagraphSeparator))
-    mApplySoil(new QPushButton(tr("Apply to selection")))
+    mAnyClearBlockIsSelected(false),
+    mApplySoil(new QPushButton(tr("Apply to selected blocks"))),
+    mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks")))
 {
     mSoilsWidget = new SoilsWidget(this);
 
@@ -40,6 +41,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mainLayout->setContentsMargins(QMargins());
     mainLayout->addWidget(mSoilsWidget);
     mainLayout->addWidget(mApplySoil);
+    mainLayout->addWidget(mApplySoilToClear);
 
     QPushButton *openTableEditor = new QPushButton(tr("&Table Editor"), this);
     mainLayout->addWidget(openTableEditor);
@@ -47,33 +49,48 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
             mSoilsWidget, SLOT(openTableEditor()));
 
     connect(mApplySoil, SIGNAL(clicked()), SLOT(slotApplySoil()));
+    connect(mApplySoilToClear, SIGNAL(clicked()), SLOT(slotApplySoil()));
 
     connect(mSoilsWidget, SIGNAL(selectionChanged()),
             SLOT(updateApplyButton()));
-    updateApplyButton();
+    updateApplyButtons();
+    
+    const QString shortcutText = tr("Use <b>%1</b> as shortcut.");
 
     mApplySoil->setShortcut(QKeySequence::InsertParagraphSeparator);
-    mApplySoil->setToolTip(tr("Apply choosen soil to selected blocks.<br/>"
-                              "Use <b>Enter</b> as shortcut."));
+    mApplySoil->setToolTip(tr("Apply choosen soil to all selected blocks.<br/>")
+                           + shortcutText.arg(mApplySoil->shortcut().toString()
+                                              .replace("Return", "Enter")));
+    
+    mApplySoilToClear->setShortcut(QKeySequence::InsertLineSeparator);
+    mApplySoilToClear->setToolTip(tr("Apply choosen soil to selected blocks without soil.<br/>")
+                                  + shortcutText.arg(mApplySoilToClear->shortcut().toString()
+                                                     .replace("Return", "Enter")));
 }
 
-void SoilsPanel::updateApplyButton(bool sceneSelectionIsEmpty)
+void SoilsPanel::updateApplyButton(bool sceneSelectionIsEmpty,
+                                   bool selectionHasNoClearBlocks
+)
 {
     mAnyBlockIsSelected = !sceneSelectionIsEmpty;
-    updateApplyButton();
+    mAnyClearBlockIsSelected = !selectionHasNoClearBlocks;
+    updateApplyButtons();
 }
 
-void SoilsPanel::updateApplyButton()
+void SoilsPanel::updateApplyButtons()
 {
     const bool oneSoilIsSelected = (mSoilsWidget->selectedItem() != NULL);
     mApplySoil->setEnabled(mAnyBlockIsSelected && oneSoilIsSelected);
+    mApplySoilToClear->setEnabled(mAnyClearBlockIsSelected && oneSoilIsSelected);
 }
 
 void SoilsPanel::slotApplySoil()
 {
     Q_ASSERT(mSoilsWidget->selectedItem() != NULL);
     Q_ASSERT(qobject_cast<Soil *>(mSoilsWidget->selectedItem()) != NULL);
-    emit signalApplySoil(qobject_cast<Soil *>(mSoilsWidget->selectedItem()));
+    const bool onlyClearBlocks = (sender() == mApplySoilToClear);
+    emit signalApplySoil(qobject_cast<Soil *>(mSoilsWidget->selectedItem()),
+                         onlyClearBlocks);
 }
 
 SoilsModel *SoilsPanel::model()

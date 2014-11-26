@@ -127,7 +127,7 @@ public:
     DEFINETYPE(BLOCKTYPE)
 
     bool isReady() const {
-        return mSoil != NULL;
+        return hasSoil();
     }
 
     /**
@@ -167,6 +167,11 @@ public:
     /// Константный указатель на грунтовый блок, ассоциированный с нами.
     const qfcore::SoilBlock *soilBlock() const {
         return &mSoilBlock;
+    }
+    
+    /// Указан ли наш грунтовый блок (закрашены ли мы).
+    bool hasSoil() const {
+        return mSoil != NULL;
     }
 
     /// Создаёт стрелочки, указывающие на соседей блока.
