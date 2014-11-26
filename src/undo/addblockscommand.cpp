@@ -28,7 +28,6 @@
 
 using namespace qfgui;
 
-#include <QDebug>
 AddBlocksCommand::AddBlocksCommand(Scene *scene,
                                    const QList<QList<QRectF> > &blocksRects,
                                    bool mustChangeOuterPolygons,

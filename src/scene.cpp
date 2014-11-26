@@ -445,7 +445,6 @@ Qt::Orientations Scene::toolChangesOrientations()
     }
 }
 
-#include <QDebug>
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
