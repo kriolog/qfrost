@@ -33,7 +33,9 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mAnyBlockIsSelected(false),
     mAnyClearBlockIsSelected(false),
     mApplySoil(new QPushButton(tr("Apply to selected blocks"))),
-    mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks")))
+    mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks"))),
+    mApplySoilFill(new QPushButton(QIcon::fromTheme("fill-color"),
+                                   tr("Apply to blocks with fill")))
 {
     mSoilsWidget = new SoilsWidget(this);
 
@@ -42,6 +44,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mainLayout->addWidget(mSoilsWidget);
     mainLayout->addWidget(mApplySoil);
     mainLayout->addWidget(mApplySoilToClear);
+    mainLayout->addWidget(mApplySoilFill);
 
     QPushButton *openTableEditor = new QPushButton(tr("&Table Editor"), this);
     mainLayout->addWidget(openTableEditor);
@@ -50,6 +53,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
 
     connect(mApplySoil, SIGNAL(clicked()), SLOT(slotApplySoil()));
     connect(mApplySoilToClear, SIGNAL(clicked()), SLOT(slotApplySoil()));
+    connect(mApplySoilFill, SIGNAL(clicked(bool)), SLOT(slotApplySoil()));
 
     connect(mSoilsWidget, SIGNAL(selectionChanged()),
             SLOT(updateApplyButton()));
@@ -82,15 +86,20 @@ void SoilsPanel::updateApplyButtons()
     const bool oneSoilIsSelected = (mSoilsWidget->selectedItem() != NULL);
     mApplySoil->setEnabled(mAnyBlockIsSelected && oneSoilIsSelected);
     mApplySoilToClear->setEnabled(mAnyClearBlockIsSelected && oneSoilIsSelected);
+    mApplySoilFill->setEnabled(oneSoilIsSelected);
 }
 
 void SoilsPanel::slotApplySoil()
 {
     Q_ASSERT(mSoilsWidget->selectedItem() != NULL);
     Q_ASSERT(qobject_cast<Soil *>(mSoilsWidget->selectedItem()) != NULL);
-    const bool onlyClearBlocks = (sender() == mApplySoilToClear);
-    emit signalApplySoil(qobject_cast<Soil *>(mSoilsWidget->selectedItem()),
-                         onlyClearBlocks);
+    const Soil *const soil = qobject_cast<Soil *>(mSoilsWidget->selectedItem());
+    if (sender() == mApplySoilFill) {
+        emit signalBucketFillApply(soil);
+    } else {
+        const bool onlyClearBlocks = (sender() == mApplySoilToClear);
+        emit signalApplySoil(soil, onlyClearBlocks);
+    }
 }
 
 SoilsModel *SoilsPanel::model()

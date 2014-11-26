@@ -46,6 +46,7 @@ private:
     bool mAnyClearBlockIsSelected;
     QPushButton *mApplySoil;
     QPushButton *mApplySoilToClear;
+    QPushButton *mApplySoilFill;
 
 public slots:
     void updateApplyButton(bool sceneSelectionIsEmpty,
@@ -55,7 +56,7 @@ public slots:
 
 signals:
     void signalApplySoil(const Soil *soil, bool onlyClearBlocks);
-
+    void signalBucketFillApply(const Soil *soil);
 };
 
 }
