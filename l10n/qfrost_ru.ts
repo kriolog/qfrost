@@ -140,7 +140,7 @@
         <translation>вычитание полигона</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/undo/addblockscommand.cpp" line="151"/>
+        <location filename="../src/undo/addblockscommand.cpp" line="150"/>
         <source>add %n block(s)</source>
         <translation>
             <numerusform>добавление %n блока</numerusform>
@@ -149,7 +149,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/undo/addblockscommand.cpp" line="154"/>
+        <location filename="../src/undo/addblockscommand.cpp" line="153"/>
         <source>(removing %n block(s))</source>
         <translation>
             <numerusform>(с удалением %n блока)</numerusform>
@@ -158,13 +158,13 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/undo/addblockscommand.cpp" line="160"/>
+        <location filename="../src/undo/addblockscommand.cpp" line="159"/>
         <source>add block</source>
         <extracomment>Short action name. Accusative case.</extracomment>
         <translation>добавление блока</translation>
     </message>
     <message>
-        <location filename="../src/undo/addblockscommand.cpp" line="163"/>
+        <location filename="../src/undo/addblockscommand.cpp" line="162"/>
         <source>add blocks</source>
         <extracomment>Short action name. Accusative case.</extracomment>
         <translation>добавление блоков</translation>
@@ -1156,7 +1156,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="655"/>
-        <location filename="../src/mainwindow.cpp" line="1245"/>
+        <location filename="../src/mainwindow.cpp" line="1257"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
@@ -1171,7 +1171,7 @@ At least %n steps per day is needed.</source>
         <translation>Основная панель инструментов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="782"/>
+        <location filename="../src/mainwindow.cpp" line="794"/>
         <source>Are blocks gridded?
 Blocks are gridded if each
 has not more than one neighbor
@@ -1185,66 +1185,71 @@ each contact fits it&apos;s dimension.</source>
 соответсвует его размерам.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="799"/>
+        <location filename="../src/mainwindow.cpp" line="811"/>
         <source>Cursor</source>
         <translation>Курсор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="804"/>
+        <location filename="../src/mainwindow.cpp" line="816"/>
         <source>Anchor</source>
         <translation>Привязка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="841"/>
+        <location filename="../src/mainwindow.cpp" line="853"/>
         <source>The document %1 has been modified.
 Do you want to save your changes or discard them?</source>
         <translation>Документ %1 был изменён.
 Сохранить изменения или отклонить их?</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="1267"/>
+        <source>Filling with soil %1...</source>
+        <translation>Идёт заливка грунтом %1...</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="330"/>
-        <location filename="../src/mainwindow.cpp" line="1039"/>
-        <location filename="../src/mainwindow.cpp" line="1067"/>
+        <location filename="../src/mainwindow.cpp" line="1051"/>
+        <location filename="../src/mainwindow.cpp" line="1079"/>
         <source>Cannot write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="875"/>
+        <location filename="../src/mainwindow.cpp" line="887"/>
         <source>Cannot load file %1.</source>
         <translation>Не удалось загрузить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1065"/>
+        <location filename="../src/mainwindow.cpp" line="1077"/>
         <source>Cannot read file %1.</source>
         <translation>Не удалось прочитать файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1069"/>
+        <location filename="../src/mainwindow.cpp" line="1081"/>
         <source>Cannot open file %1.</source>
         <translation>Не удалось открыть файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="953"/>
+        <location filename="../src/mainwindow.cpp" line="965"/>
         <source>Provided version ID: %1. Wanted version ID: %2.</source>
         <translation>ID версии в файле: %1. Требуемый ID версии: %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1045"/>
+        <location filename="../src/mainwindow.cpp" line="1057"/>
         <source>Unfinished file has been removed.</source>
         <translation>Незавершённый файл был удалён.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1047"/>
+        <location filename="../src/mainwindow.cpp" line="1059"/>
         <source>Unfinished file removal failed, please remove it manually.</source>
         <translation>Незавершённый файл не был удалён, удалите его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1234"/>
+        <location filename="../src/mainwindow.cpp" line="1246"/>
         <source>Exit &amp;Full Screen Mode</source>
         <translation>Выйти из &amp;полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1238"/>
+        <location filename="../src/mainwindow.cpp" line="1250"/>
         <source>&amp;Full Screen Mode</source>
         <translation>&amp;Полноэкранный режим</translation>
     </message>
@@ -1289,68 +1294,68 @@ Do you want to save your changes or discard them?</source>
         <translation>Список команд</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="772"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Welcome to %1!</source>
         <translation>Добро пожаловать в %1!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="775"/>
+        <location filename="../src/mainwindow.cpp" line="787"/>
         <source>[1D]</source>
         <translation>[1D]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="776"/>
+        <location filename="../src/mainwindow.cpp" line="788"/>
         <source>Are blocks placed one-dimensional (and vertically)?</source>
         <translation>Является ли задача одномерной (и вертикальной)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="780"/>
-        <location filename="../src/mainwindow.cpp" line="781"/>
+        <location filename="../src/mainwindow.cpp" line="792"/>
+        <location filename="../src/mainwindow.cpp" line="793"/>
         <source>[Grid]</source>
         <translation>[Сетка]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="840"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Close Document</source>
         <translation>Закрыть документ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="857"/>
+        <location filename="../src/mainwindow.cpp" line="869"/>
         <source>Load Failed</source>
         <translation>Загрузка не удалась</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="881"/>
+        <location filename="../src/mainwindow.cpp" line="893"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="899"/>
+        <location filename="../src/mainwindow.cpp" line="911"/>
         <source>File is corrupted or is in bad format.</source>
         <translation>Файл повреждён или имеет неправильный формат.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="947"/>
+        <location filename="../src/mainwindow.cpp" line="959"/>
         <source>File is for older version of %1.</source>
         <translation>Файл предназначен для устаревшей версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="950"/>
+        <location filename="../src/mainwindow.cpp" line="962"/>
         <source>File is for newer version of %1.</source>
         <translation>Файл предназначен для более новой версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="990"/>
+        <location filename="../src/mainwindow.cpp" line="1002"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1029"/>
+        <location filename="../src/mainwindow.cpp" line="1041"/>
         <source>File saved</source>
         <translation>Файл сохранён</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1083"/>
+        <location filename="../src/mainwindow.cpp" line="1095"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
     </message>
@@ -1547,7 +1552,7 @@ Do you want to save your changes or discard them?</source>
 <context>
     <name>qfgui::Scene</name>
     <message>
-        <location filename="../src/scene.cpp" line="335"/>
+        <location filename="../src/scene.cpp" line="364"/>
         <source>Computations Start Unsuccessful</source>
         <translation>Старт расчётов не удался</translation>
     </message>
@@ -1772,20 +1777,43 @@ Water Curve</source>
     <name>qfgui::SoilsPanel</name>
     <message>
         <location filename="../src/soils/soilspanel.cpp" line="35"/>
-        <source>Apply to selection</source>
-        <extracomment>sic: no key sequence by default (it will be InsertParagraphSeparator))</extracomment>
-        <translation>Применить
-к выделению</translation>
+        <source>Apply to selected blocks</source>
+        <translation>Закрасить выделение</translation>
     </message>
     <message>
-        <location filename="../src/soils/soilspanel.cpp" line="44"/>
+        <location filename="../src/soils/soilspanel.cpp" line="36"/>
+        <source>Apply to selected clear blocks</source>
+        <translation>Докрасить выделение</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soilspanel.cpp" line="38"/>
+        <source>&amp;Apply using fill</source>
+        <translation>&amp;Залить</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soilspanel.cpp" line="49"/>
         <source>&amp;Table Editor</source>
         <translation>&amp;Табличный редактор</translation>
     </message>
     <message>
-        <location filename="../src/soils/soilspanel.cpp" line="56"/>
-        <source>Apply choosen soil to selected blocks.&lt;br/&gt;Use &lt;b&gt;Enter&lt;/b&gt; as shortcut.</source>
-        <translation>Применить выбранный грунт к выделенным блокам.&lt;br/&gt;Используйте &lt;b&gt;Enter&lt;/b&gt; для быстрого доступа.</translation>
+        <location filename="../src/soils/soilspanel.cpp" line="62"/>
+        <source>Use &lt;b&gt;%1&lt;/b&gt; as shortcut.</source>
+        <translation>Используйте &lt;b&gt;%1&lt;/b&gt; для быстрого доступа.</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soilspanel.cpp" line="65"/>
+        <source>Apply choosen soil to all selected blocks.</source>
+        <translation>Применить выбранный грунт ко всем выделенным блокам.</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soilspanel.cpp" line="70"/>
+        <source>Apply choosen soil to selected blocks without soil.</source>
+        <translation>Применить выбранный грунт к выделенным блокам без грунта.</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soilspanel.cpp" line="74"/>
+        <source>Apply choosen soil to blocks with bucket filling.</source>
+        <translation>Применить выбранный грунт к блокам при помощи заливки.</translation>
     </message>
 </context>
 <context>
