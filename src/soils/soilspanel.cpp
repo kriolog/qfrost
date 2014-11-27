@@ -44,6 +44,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mainLayout->addWidget(mApplySoil);
     mainLayout->addWidget(mApplySoilToClear);
     mainLayout->addWidget(mApplySoilFill);
+    mainLayout->addSpacing(qMax(6, mainLayout->spacing() / 2));
 
     QPushButton *openTableEditor = new QPushButton(tr("&Table Editor"), this);
     mainLayout->addWidget(openTableEditor);
