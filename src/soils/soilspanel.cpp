@@ -35,7 +35,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mApplySoil(new QPushButton(tr("Apply to selected blocks"))),
     mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks"))),
     mApplySoilFill(new QPushButton(QIcon::fromTheme("fill-color"),
-                                   tr("Apply to blocks with fill")))
+                                   tr("&Apply using fill")))
 {
     mSoilsWidget = new SoilsWidget(this);
 
@@ -62,14 +62,16 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     const QString shortcutText = tr("Use <b>%1</b> as shortcut.");
 
     mApplySoil->setShortcut(QKeySequence::InsertParagraphSeparator);
-    mApplySoil->setToolTip(tr("Apply choosen soil to all selected blocks.<br/>")
+    mApplySoil->setToolTip(tr("Apply choosen soil to all selected blocks.") + "<br/>"
                            + shortcutText.arg(mApplySoil->shortcut().toString()
                                               .replace("Return", "Enter")));
     
     mApplySoilToClear->setShortcut(QKeySequence::InsertLineSeparator);
-    mApplySoilToClear->setToolTip(tr("Apply choosen soil to selected blocks without soil.<br/>")
+    mApplySoilToClear->setToolTip(tr("Apply choosen soil to selected blocks without soil.") + "<br/>"
                                   + shortcutText.arg(mApplySoilToClear->shortcut().toString()
                                                      .replace("Return", "Enter")));
+    
+    mApplySoilFill->setToolTip(tr("Apply choosen soil to blocks with bucket filling."));
 }
 
 void SoilsPanel::updateApplyButton(bool sceneSelectionIsEmpty,
