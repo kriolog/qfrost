@@ -1786,7 +1786,7 @@ Water Curve</source>
         <translation>Докрасить выделение</translation>
     </message>
     <message>
-        <location filename="../src/soils/soilspanel.cpp" line="38"/>
+        <location filename="../src/soils/soilspanel.cpp" line="37"/>
         <source>&amp;Apply using fill</source>
         <translation>&amp;Залить</translation>
     </message>
@@ -1808,7 +1808,7 @@ Water Curve</source>
     <message>
         <location filename="../src/soils/soilspanel.cpp" line="70"/>
         <source>Apply choosen soil to selected blocks without soil.</source>
-        <translation>Применить выбранный грунт к выделенным блокам без грунта.</translation>
+        <translation>Применить выбранный грунт к незакрашенным выделенным блокам.</translation>
     </message>
     <message>
         <location filename="../src/soils/soilspanel.cpp" line="74"/>
