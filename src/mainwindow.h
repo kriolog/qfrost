@@ -153,6 +153,8 @@ private:
     /// Испускает сигнал для остановки рассчётов и ждёт, пока они остановятся
     void forceStopComputation();
 
+    void setPermanentStatusText(const QString &text);
+ 
     View *mView;
     Scene *mScene;
 
@@ -203,6 +205,9 @@ private:
 
     /// Диалог, который мы должны показать сразу после нашего show() (или NULL)
     QDialog *mDialogToExecOnShow;
+
+    /// Виджет с постоянным сообщением в статус-панели
+    QLabel *mPermanentStatusText;
 
     /// Форматы файлов для нашей программы (так, как надо для QFileDialog)
     static QString formats();

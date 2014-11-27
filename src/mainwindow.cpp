@@ -780,6 +780,10 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage(tr("Welcome to %1!")
                              .arg(QCoreApplication::applicationName()), 5000);
 
+    mPermanentStatusText = new QLabel(this);
+    statusBar()->addWidget(mPermanentStatusText);
+    mPermanentStatusText->hide();
+
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
     connect(mScene, SIGNAL(oneDimensionalityChanged(bool)),
@@ -1255,10 +1259,13 @@ QString MainWindow::settingsMenuText() const
 
 void MainWindow::startSoilFillApply(const Soil *soil)
 {
+    Q_ASSERT(soil);
     if (!mScene->isFillingSoil()) {
         mToolsPanel->slotBlockTools(true);
         QApplication::setOverrideCursor(Qt::CrossCursor);
     }
+    setPermanentStatusText(tr("Filling with soil %1...")
+                           .arg(locale().quoteString(soil->name())));
     mScene->startSoilFillApply(soil);
 }
 
@@ -1266,4 +1273,16 @@ void MainWindow::stopSoilFillApply()
 {
     mToolsPanel->slotBlockTools(false);
     QApplication::restoreOverrideCursor();
+    setPermanentStatusText("");
+}
+
+void MainWindow::setPermanentStatusText(const QString &text)
+{
+    if (text.isEmpty()) {
+        mPermanentStatusText->clear();
+        mPermanentStatusText->hide();
+    } else {
+        mPermanentStatusText->setText(text);
+        mPermanentStatusText->show();
+    }
 }
