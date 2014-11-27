@@ -722,6 +722,12 @@ void MainWindow::createToolBars()
             mScene,
             SLOT(slotApplySoilToSelection(const Soil *, bool)));
 
+    connect(mControlPanel->soilsPanel(), 
+            SIGNAL(signalBucketFillApply(const Soil*)),
+            SLOT(startSoilFillApply(const Soil*)));
+
+    connect (mScene, SIGNAL(soilFillApplyDone()), SLOT(stopSoilFillApply()));
+
     connect(mControlPanel->computationControl(),
             SIGNAL(signalStartComputation(ComputationSettings)),
             mScene, SLOT(slotStartComputation(ComputationSettings)));
@@ -1245,4 +1251,19 @@ void MainWindow::updateFullScreenAction()
 QString MainWindow::settingsMenuText() const
 {
     return tr("&Settings").replace('&', "");
+}
+
+void MainWindow::startSoilFillApply(const Soil *soil)
+{
+    if (!mScene->isFillingSoil()) {
+        mToolsPanel->slotBlockTools(true);
+        QApplication::setOverrideCursor(Qt::CrossCursor);
+    }
+    mScene->startSoilFillApply(soil);
+}
+
+void MainWindow::stopSoilFillApply()
+{
+    mToolsPanel->slotBlockTools(false);
+    QApplication::restoreOverrideCursor();
 }

@@ -56,7 +56,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     connect(mApplySoilFill, SIGNAL(clicked(bool)), SLOT(slotApplySoil()));
 
     connect(mSoilsWidget, SIGNAL(selectionChanged()),
-            SLOT(updateApplyButton()));
+            SLOT(updateApplyButtons()));
     updateApplyButtons();
     
     const QString shortcutText = tr("Use <b>%1</b> as shortcut.");

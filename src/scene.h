@@ -281,6 +281,11 @@ public:
     void replaceBlocks(const QList<Block *> &removed,
                        const QList<Block *> &added);
 
+    void startSoilFillApply(const Soil *soil);
+    void stopSoilFillApply(QPointF scenePoint = QFrost::noPoint);
+    
+    bool isFillingSoil() const { return mIsFillingSoil; }
+
 public slots:
     void slotSetBlocksStyle(QFrost::BlockStyle);
 
@@ -392,6 +397,9 @@ signals:
     /// Изменено количество блоков здесь
     void blocksCountChanged(int blocksNum);
 
+    /// Сигнал об осуществлении (или отмене) заливки грунтом
+    void soilFillApplyDone();
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -458,6 +466,12 @@ private:
     /// Надо ли нам обновить mBlocks и mBlocksConst при следующем запросе
     /// одного из этих массивов
     QTimer *mUpdateBlocksTimer;
+    
+    /// Активна ли сейчас заливка грунтом.
+    bool mIsFillingSoil;
+    
+    /// Этим грунтом зальются блоки после выбора начального блока заливки
+    const Soil *mSoilToFill;
 
     friend class ChangeBoundaryPolygonsCommand;
     friend class ReadFromComputationDataCommand;

@@ -39,6 +39,7 @@ QT_FORWARD_DECLARE_CLASS(ToolsPanel)
 QT_FORWARD_DECLARE_CLASS(BoundaryCondition)
 QT_FORWARD_DECLARE_CLASS(View)
 QT_FORWARD_DECLARE_CLASS(ColorGenerator)
+QT_FORWARD_DECLARE_CLASS(Soil)
 
 class MainWindow : public QMainWindow
 {
@@ -115,6 +116,9 @@ protected:
 
 public slots:
     void open(const QString &fileName);
+    
+    void startSoilFillApply(const Soil *soil);
+    void stopSoilFillApply();
 
 private slots:
     void newFile();

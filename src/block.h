@@ -173,6 +173,10 @@ public:
     bool hasSoil() const {
         return mSoil != NULL;
     }
+    
+    const Soil *soil() const {
+        return mSoil;
+    }
 
     /// Создаёт стрелочки, указывающие на соседей блока.
     void showArrows();

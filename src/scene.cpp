@@ -81,6 +81,8 @@ Scene::Scene(MainWindow *parent)
     , mBlocks()
     , mBlocksConst()
     , mUpdateBlocksTimer(new QTimer(this))
+    , mIsFillingSoil(false)
+    , mSoilToFill(NULL)
 {
     //setItemIndexMethod(NoIndex);
     int sceneHalfsize = QFrost::sceneHalfSize * 1.01;
@@ -283,6 +285,10 @@ void Scene::slotStartComputation(const ComputationSettings &settings)
 {
     Q_ASSERT(mComputationThread == NULL);
     Q_ASSERT(mBlocksInDomain.isEmpty());
+    
+    if (mIsFillingSoil) {
+        stopSoilFillApply();
+    }
 
     emit signalComputationStateChanged(true);
     views().first()->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -411,6 +417,69 @@ void Scene::slotSelectionChanged()
                                                      : true);
 }
 
+void Scene::startSoilFillApply(const Soil *soil)
+{
+    mSoilToFill = soil;
+    mIsFillingSoil = true;
+}
+
+void Scene::stopSoilFillApply(QPointF scenePoint)
+{
+    Q_ASSERT(mIsFillingSoil);
+    if (scenePoint != QFrost::noPoint) {
+        Q_ASSERT(mSoilToFill != NULL);
+        Block *firstBlock = block(scenePoint);
+        if (firstBlock && firstBlock->soil() != mSoilToFill) {
+            const Soil *soil = firstBlock->soil();
+            clearSelection();
+            QSet<Block *> blocksToProcess;
+            blocksToProcess << firstBlock;
+            // FIXME: алгоритм медленный. Оптимизировать (хотя бы для сеток).
+            while (!blocksToProcess.isEmpty()) {
+                QSet<Block *> newBlocksToProcess;
+                foreach(Block *block, blocksToProcess) {
+                    if (block->isSelected()) {
+                        continue;
+                    }
+                    foreach (const BlockContact &contact, block->contactsLeft()) {
+                        Block *newBlock = contact.block();
+                        if (!newBlock->isSelected() && newBlock->soil() == soil) {
+                            newBlocksToProcess << newBlock;
+                        }
+                    }
+                    foreach (const BlockContact &contact, block->contactsRight()) {
+                        Block *newBlock = contact.block();
+                        if (!newBlock->isSelected() && newBlock->soil() == soil) {
+                            newBlocksToProcess << newBlock;
+                        }
+                    }
+                    foreach (const BlockContact &contact, block->contactsTop()) {
+                        Block *newBlock = contact.block();
+                        if (!newBlock->isSelected() && newBlock->soil() == soil) {
+                            newBlocksToProcess << newBlock;
+                        }
+                    }
+                    foreach (const BlockContact &contact, block->contactsBottom()) {
+                        Block *newBlock = contact.block();
+                        if (!newBlock->isSelected() && newBlock->soil() == soil) {
+                            newBlocksToProcess << newBlock;
+                        }
+                    }
+                    block->setSelected(true);
+                }
+                blocksToProcess = newBlocksToProcess;
+            }
+            QList<Block *> blocksToFill = selectedBlocks();
+            if (!blocksToFill.isEmpty()) {
+                clearSelection();
+                addUndoCommand(new SetBlocksSoilCommand(blocksToFill, mSoilToFill));
+            }
+        }
+    }
+    mIsFillingSoil = false;
+    emit soilFillApplyDone();
+}
+
 void Scene::slotSetBlocksStyle(QFrost::BlockStyle style)
 {
     if (mBlocksStyle != style) {
@@ -448,6 +517,10 @@ Qt::Orientations Scene::toolChangesOrientations()
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
+        if (mIsFillingSoil) {
+            stopSoilFillApply(event->scenePos());
+            return;
+        }
         if (!mAnchor->posOnPolygon().isNull()) {
             emit mousePressed(mAnchor->posOnPolygon());
         } else if (mAnchor->pos() != QFrost::noPoint) {
@@ -505,6 +578,8 @@ void Scene::keyPressEvent(QKeyEvent *event)
             return;
         } else if (key == Qt::Key_Backspace) {
             mTool.data()->cancelLastChange();
+        } else if (mIsFillingSoil && key == Qt::Key_Escape) {
+            stopSoilFillApply();
         }
     }
     QGraphicsScene::keyPressEvent(event);
