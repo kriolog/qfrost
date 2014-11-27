@@ -34,8 +34,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mAnyClearBlockIsSelected(false),
     mApplySoil(new QPushButton(tr("Apply to selected blocks"))),
     mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks"))),
-    mApplySoilFill(new QPushButton(QIcon::fromTheme("fill-color"),
-                                   tr("&Apply using fill")))
+    mApplySoilFill(new QPushButton(tr("&Apply using fill")))
 {
     mSoilsWidget = new SoilsWidget(this);
 
