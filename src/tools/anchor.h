@@ -62,6 +62,18 @@ public:
     /// Изменяет способ привязки в зависимости от @p toolType.
     void setTool(QFrost::ToolType toolType);
 
+    enum AnchorLogicFlag {
+        NotNeeded = 0x0,
+        /// Нужна привязка к блокам (к их углам и сторонам)
+        NeedBlocks = 0x1,
+        /// Нужна привязка к видимой сетке
+        NeedVisibleGrid = 0x2,
+        /// Нужна привязка к полигонам (к их углам, сторонам и точкам смены условия)
+        NeedPolygons = 0x4
+    };
+    Q_DECLARE_FLAGS(AnchorLogicFlags, AnchorLogicFlag)
+
+public slots:
     /**
      * Перестаёт реагировать на сигналы об изменении позиции курсора
      */
@@ -75,17 +87,6 @@ public:
     void unfreeze() {
         mIsNeeded = true;
     }
-
-    enum AnchorLogicFlag {
-        NotNeeded = 0x0,
-        /// Нужна привязка к блокам (к их углам и сторонам)
-        NeedBlocks = 0x1,
-        /// Нужна привязка к видимой сетке
-        NeedVisibleGrid = 0x2,
-        /// Нужна привязка к полигонам (к их углам, сторонам и точкам смены условия)
-        NeedPolygons = 0x4
-    };
-    Q_DECLARE_FLAGS(AnchorLogicFlags, AnchorLogicFlag)
 
     /// Поиск привязки, которым можно пользоваться, если сделан freeze()
     void findAnchorFreezed(const QPointF &point);

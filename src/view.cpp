@@ -21,12 +21,8 @@
 
 #include <cmath>
 
-#include <QtCore/QTimer>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QScrollBar>
-#include <QtGui/QLinearGradient>
+#include <QMouseEvent>
+#include <QScrollBar>
 
 #include <qfrost.h>
 #include <scene.h>
@@ -37,64 +33,28 @@
 
 using namespace qfgui;
 
-View::View(Scene *scene, MainWindow *parent): QGraphicsView(scene, parent),
-    mIsHandScrolling(false),
-    mHandScrollingPrevCurpos(),
-    mAutoScrollTimer(),
-    mAutoScrollCount(),
+View::View(Scene *scene, MainWindow *parent): ViewBase(scene, parent),
     mGridSpan(QFrost::unitsInGridStep),
     mIsLight(false),
     mMainGridPen(),
     mAdditionalGridPen(),
-    mMousePos(QFrost::noPoint),
-    mMousePosChanged(false),
     mPointToCenterOn(QFrost::noPoint)
 {
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-    /* это делается в setTransformationAnchor(QGraphicsView::AnchorUnderMouse),
-     * но мало ли что там поменяют разработчики Qt. */
-    setMouseTracking(true);
-
-    setDragMode(QGraphicsView::NoDrag);
-
-    // у нас обновления, как правило, происходят прямоугольниками
-    setViewportUpdateMode(BoundingRectViewportUpdate);
-
-    mAutoScrollTimer = new QTimer(this);
-    connect(mAutoScrollTimer, SIGNAL(timeout()), SLOT(doAutoScroll()));
-
     updateColorScheme();
 
-    /* HACK: контектное меню нам не нужно и передавать его дальше не нужно:
-     * без этого свойства по непонятным причинам (возможно, баг Qt)
-     * может косячить функция setSceneCursorPos -- если обозримую область
-     * передвинуло очень далеко, может открыться контекстное меню главного окна.
-     */
-    setContextMenuPolicy(Qt::PreventContextMenu);
+    setMinimumScale(0.075 * QFrost::metersInUnit);
+    setMaximumScale(800.0 * QFrost::metersInUnit);
 
-    //TODO потестить setViewportUpdateMode(BoundingRectViewportUpdate);
+    connect(this, SIGNAL(scaleChanged(qreal)), SLOT(updateGridSpan()));
 
-    setOptimizationFlags(DontSavePainterState);
+    connect(this, SIGNAL(startedHandScroll()),
+            qfScene()->anchor(), SLOT(freeze()));
 
-    //translate(256, 213);
-    //rotate(15);
+    connect(this, SIGNAL(stoppedHandScroll()),
+            qfScene()->anchor(), SLOT(unfreeze()));
 
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(sendMousePos()));
-    // Период 40 мс, т.е. 25 кадров в секунду, как раз для человеского глаза
-    timer->start(40);
-}
-
-void View::sendMousePos()
-{
-    if (mMousePosChanged) {
-        mMousePosChanged = false;
-        emit mouseMoved(mMousePos);
-    }
+    connect(this, SIGNAL(mouseJumped(QPointF)),
+            qfScene()->anchor(), SLOT(findAnchorFreezed(QPointF)));
 }
 
 void View::setLightColorScheme(bool b)
@@ -138,126 +98,6 @@ void View::showEvent(QShowEvent *event)
     }
 }
 
-void View::mousePressEvent(QMouseEvent *event)
-{
-    // передаём клик в стандартный обработчик, чтобы тот передал его в сцену
-    QGraphicsView::mousePressEvent(event);
-
-    if (event->isAccepted()) {
-        // если сцена приняла событие, оно нам ни к чему уже
-        return;
-    }
-
-    if (event->button() == Qt::RightButton) {
-        startHandScroll(event->globalPos());
-        return;
-    }
-}
-
-void View::startHandScroll(const QPoint &pos)
-{
-    qfScene()->anchor()->freeze();
-    mIsHandScrolling = true;
-    mHandScrollingPrevCurpos = pos;
-    QApplication::setOverrideCursor(Qt::ClosedHandCursor);
-}
-
-void View::mouseMoveEvent(QMouseEvent *event)
-{
-    if (!mAutoScrollTimer->isActive()) {
-        mMousePosChanged = true;
-        mMousePos = mapToScene(event->pos());
-        if (mIsHandScrolling) {
-            doHandScroll(event->globalPos());
-        } else {
-            tryToStartAutoScroll(event->pos());
-        }
-    }
-
-    /* это нужно как минимум для корректной работы прианкоривания к
-     * позиции курсора при трансформациях, то есть после
-     * setTransformationAnchor(QGraphicsView::AnchorUnderMouse) */
-    QGraphicsView::mouseMoveEvent(event);
-}
-
-void View::doHandScroll(const QPoint &pos)
-{
-    QPoint mousePos = pos;
-    QPoint delta = mHandScrollingPrevCurpos - mousePos;
-    const QRect screenContainer(QApplication::desktop()->screenGeometry(this));
-
-    QScrollBar *v = verticalScrollBar();
-    QScrollBar *h = horizontalScrollBar();
-
-    /** При приближении курсора к краю экрана ближе, чем на это значение, он
-     *  будет перемещён на противоположный край */
-    static const int margin = 5;
-
-    // If the delta is huge it probably means we just wrapped in that direction
-    // and Qt sent bad event
-    const QPoint absDelta(abs(delta.x()), abs(delta.y()));
-    if (absDelta.y() > screenContainer.height() / 2) {
-        delta.setY(mHandScrollingPrevCurpos.y() - QCursor::pos().y());
-    }
-    if (absDelta.x() > screenContainer.width() / 2) {
-        delta.setX(mHandScrollingPrevCurpos.x() - QCursor::pos().x());
-    }
-
-    if (mousePos.y() < screenContainer.top() + margin
-            && v->value() < v->maximum() - 2 * margin) {
-        // перемещаем курсор сверху вниз
-        mousePos.setY(screenContainer.bottom() - margin);
-    }  else if (mousePos.y() > screenContainer.bottom() - margin
-                && v->value() > v->minimum() + 2 * margin) {
-        // перемещаем курсор снизу вверх
-        mousePos.setY(screenContainer.top() + margin);
-    }
-
-    if (mousePos.x() < screenContainer.left() + margin
-            && h->value() < h->maximum() - 2 * margin) {
-        // перемещаем курсор слева направо
-        mousePos.setX(screenContainer.right() - margin);
-    }  else if (mousePos.x() > screenContainer.right() - margin
-                && h->value() > h->minimum() + 2 * margin) {
-        // перемещаем курсор справа налево
-        mousePos.setX(screenContainer.left() + margin);
-    }
-
-    h->setValue(h->value() + delta.x());
-    v->setValue(v->value() + delta.y());
-
-    if (mousePos != pos) {
-        QCursor::setPos(mousePos);
-        qfScene()->anchor()->findAnchorFreezed(mapToScene(viewport()->mapFromGlobal(mousePos)));
-    }
-    //запоминаем новую точку отсчёта
-    mHandScrollingPrevCurpos = mousePos;
-}
-
-void View::leaveEvent(QEvent *event)
-{
-    sendMousePos();
-    emit mouseMoved();
-    QGraphicsView::leaveEvent(event);
-}
-
-void View::mouseReleaseEvent(QMouseEvent *event)
-{
-    if (mIsHandScrolling) {
-        stopHandScroll();
-        mMousePosChanged = true;
-        mMousePos = mapToScene(event->pos());
-    }
-    QGraphicsView::mouseReleaseEvent(event);
-}
-
-void View::stopHandScroll()
-{
-    qfScene()->anchor()->unfreeze();
-    mIsHandScrolling = false;
-    QApplication::restoreOverrideCursor();
-}
-
 QPointF View::visibleTopLeft() const
 {
     return mapToScene(QPoint(0, 0));
@@ -270,65 +110,6 @@ void View::mouseDoubleClickEvent(QMouseEvent *event)
         event->accept();
         return;
     }
-}
-
-void View::wheelEvent(QWheelEvent *event)
-{
-    static const double scaleStep = 1.25;
-    //static const double minScale = 0.0009;
-    //static const double maxScale = 5;
-    static const double minScale = 0.075 * QFrost::metersInUnit;
-    static const double maxScale = 800.0 * QFrost::metersInUnit;
-    qreal tempScaleStep;
-    bool signumOfDelta = std::signbit(event->delta());
-    if (!signumOfDelta) {
-        tempScaleStep = scaleStep;
-    } else {
-        tempScaleStep = 1.0 / scaleStep;
-    }
-    /********************************** ZOOM **********************************/
-    //TODO: зуммировать пошагово (типа как SmartDoubleSpinBox)
-    //transfrom().m11() соответствует масштабу
-    if ((!signumOfDelta && (transform().m11() <= maxScale)) ||
-            (signumOfDelta && (transform().m11() >= minScale))) {
-        scale(tempScaleStep);
-        mMousePosChanged = true;
-        mMousePos = mapToScene(event->pos());
-    }
-    // QGraphicsView::wheelEvent(event);
-    // -- не должен включаться стандартный скролл, нужен только зум
-}
-
-void View::scale(qreal s)
-{
-    if (s != 1.0) {
-        QGraphicsView::scale(s, s);
-        updateGridSpan();
-        emit scaleChanged(transform().m11());
-    }
-}
-
-void View::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Space) {
-        if (!event->isAutoRepeat()) {
-            viewport()->grabMouse();
-            startHandScroll(QCursor::pos());
-        }
-        return;
-    }
-
-    QGraphicsView::keyPressEvent(event);
-}
-
-void View::keyReleaseEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Space && !(event->isAutoRepeat())) {
-        viewport()->releaseMouse();
-        stopHandScroll();
-        return;
-    }
-    QGraphicsView::keyReleaseEvent(event);
 }
 
 void View::drawBackground(QPainter *painter, const QRectF &rect)
@@ -518,95 +299,10 @@ void View::updateGridSpan()
     emit gridSpanChanged(mGridSpan);
 }
 
-void View::tryToStartAutoScroll(const QPoint &pos)
-{
-    QRect area = viewport()->rect();
-    Qt::Orientations sceneChangesOrientations;
-    sceneChangesOrientations = qfScene()->toolChangesOrientations();
-
-    bool go;
-    // нужен скролл по горизонтали
-    go = (sceneChangesOrientations & Qt::Horizontal &&
-          (pos.x() - area.left() < mAutoScrollViewMargin ||
-           area.right() - pos.x() < mAutoScrollViewMargin));
-
-    // нужен скролл по вертикали
-    go |= (sceneChangesOrientations & Qt::Vertical &&
-           (pos.y() - area.top() < mAutoScrollViewMargin ||
-            area.bottom() - pos.y() < mAutoScrollViewMargin));
-
-    if (go) {
-        startAutoScroll();
-    }
-}
-
-void View::startAutoScroll()
-{
-    mAutoScrollTimer->start(50);
-    mAutoScrollCount = 0;
-}
-
-void View::stopAutoScroll()
-{
-    mAutoScrollTimer->stop();
-    mAutoScrollCount = 0;
-}
-
-void View::doAutoScroll()
-{
-    int verticalStep = verticalScrollBar()->pageStep();
-    int horizontalStep = horizontalScrollBar()->pageStep();
-    if (mAutoScrollCount < qMax(verticalStep, horizontalStep)) {
-        // за 1 шаг прокрутки нельзя скакать более, чем на экран
-        ++mAutoScrollCount;
-    }
-
-    int verticalValue = verticalScrollBar()->value();
-    int horizontalValue = horizontalScrollBar()->value();
-
-    QPoint pos = viewport()->mapFromGlobal(QCursor::pos());
-    QRect area = viewport()->rect();
-
-    // Мнимая позиция курсора (чтобы он был внутри видимого прямоугольника)
-    QPoint imaginaryPos = pos;
-
-    Qt::Orientations sceneChangesOrientations;
-    sceneChangesOrientations = qfScene()->toolChangesOrientations();
-
-    if (sceneChangesOrientations & Qt::Horizontal) {
-        if (pos.x() - area.left() < mAutoScrollViewMargin) {
-            horizontalScrollBar()->setValue(horizontalValue - mAutoScrollCount);
-            imaginaryPos.setX(area.left());
-        } else if (area.right() - pos.x() < mAutoScrollViewMargin) {
-            horizontalScrollBar()->setValue(horizontalValue + mAutoScrollCount);
-            imaginaryPos.setX(area.right());
-        }
-    }
-
-    if (sceneChangesOrientations & Qt::Vertical) {
-        if (pos.y() - area.top() < mAutoScrollViewMargin) {
-            verticalScrollBar()->setValue(verticalValue - mAutoScrollCount);
-            imaginaryPos.setY(area.top());
-        } else if (area.bottom() - pos.y() < mAutoScrollViewMargin) {
-            verticalScrollBar()->setValue(verticalValue + mAutoScrollCount);
-            imaginaryPos.setY(area.bottom());
-        }
-    }
-
-    bool verticalUnchanged = (verticalValue == verticalScrollBar()->value());
-    bool horizontalUnchanged = (horizontalValue == horizontalScrollBar()->value());
-    if (verticalUnchanged && horizontalUnchanged) {
-        stopAutoScroll();
-    }
-
-    mMousePosChanged = true;
-    mMousePos = mapToScene(imaginaryPos);
-}
-
 void View::setSceneCursorPos(const QPointF &scenePoint)
 {
     ensureVisible(scenePoint.x(), scenePoint.y(), 0, 0,
-                  2 * mAutoScrollViewMargin, 2 * mAutoScrollViewMargin);
+                  2 * kAutoScrollViewMargin, 2 * kAutoScrollViewMargin);
     QCursor::setPos(mapToGlobal(mapFromScene(scenePoint)));
 }
 
@@ -648,3 +344,9 @@ void View::load(QDataStream &in)
         mPointToCenterOn = QFrost::noPoint;
     }
 }
+
+Qt::Orientations View::sceneChangesOrientations() const
+{
+    return qfScene()->toolChangesOrientations();
+}
+

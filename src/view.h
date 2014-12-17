@@ -20,9 +20,7 @@
 #ifndef QFGUI_VIEW_H
 #define QFGUI_VIEW_H
 
-#include <QtWidgets/QGraphicsView>
-
-#include <qfrost.h>
+#include "viewbase.h"
 
 namespace qfgui
 {
@@ -30,7 +28,7 @@ QT_FORWARD_DECLARE_CLASS(Block)
 QT_FORWARD_DECLARE_CLASS(MainWindow)
 QT_FORWARD_DECLARE_CLASS(Scene)
 
-class View : public QGraphicsView
+class View : public ViewBase
 {
     Q_OBJECT
 public:
@@ -69,13 +67,6 @@ public:
      */
     void setSceneCursorY(qreal y);
 
-    /**
-     * Изменить масштаб в @p scale раз.
-     * Аналогично вызову QGraphicsView::scale(s, s), но также испускает сигнал
-     * и делает прочие необходимые вещи (например, обновляет шаг сетки).
-     */
-    void scale(qreal s);
-
     QPointF visibleTopLeft() const;
 
     bool isLight() const {
@@ -86,15 +77,10 @@ public:
     void load(QDataStream &in);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void leaveEvent(QEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
     void showEvent(QShowEvent *event);
+
+    Qt::Orientations sceneChangesOrientations() const;
 
     /******************* Рисование различных вещей *******************/
     /**
@@ -118,23 +104,6 @@ protected:
     void drawAxes(QPainter *painter);
 
 private:
-    /// Флаг для включения/отключения ручной прокрутки.
-    bool mIsHandScrolling;
-
-    /// Начальные координаты курсора в глобальных координатах при руч. прокрутке.
-    QPoint mHandScrollingPrevCurpos;
-
-    ///Время, прошедшее от начала ручной прокрутки
-    QTimer *mAutoScrollTimer;
-
-    /**
-     * Количество пикселов, на которые двигается видимая область
-     * (задаёт скорость прокрутки).
-     */
-    int mAutoScrollCount;
-
-    static const int mAutoScrollViewMargin = 4;
-
     /**
      * Промежуток сетки (расстояние между видимыми
      * точками сетки в текущем масштабе)
@@ -149,62 +118,8 @@ private:
     /// Перо для вспомогательной сетки
     QPen mAdditionalGridPen;
 
-    /// Позиция курсора (в координатах сцены)
-    QPointF mMousePos;
-
-    /// Изменилась ли позиция курсора с предыдущего отправления сигнала
-    bool mMousePosChanged;
-
     /// Точка, на которую нужно отцентроваться, когда мы покажемся
     QPointF mPointToCenterOn;
-
-    /**
-     * Изменение промежутка сетки
-     */
-    void updateGridSpan();
-
-    /**
-     * Принцип работы автоматической прокрутки:
-     * При каждом изменении позиции курсора вызывается tryToStartAutoScroll.
-     * Этот метод смотрит, как изменяется инструмент и проверяет, находится ли
-     * курсор достаточно близко к соответствующим краям. Если находится, он
-     * начинает прокрутку методом startAutoScroll. Последний метод запускает
-     * таймер. Этот таймер  по таймауту вызывает метод doAutoScroll, который
-     * собственно осуществляет прокрутку. Если по каким-то причинам очередной
-     * вызов этого метода не прокрутил поле, то вызывается метод stopAutoScroll.
-     */
-
-    /**
-     * Начинает, если необходимо, автоматическую прокрутку.
-     */
-    void tryToStartAutoScroll(const QPoint &pos);
-
-    /**
-     * Запускает таймер автоматической прокрутки.
-     */
-    void startAutoScroll();
-
-    /**
-     * Останавливает таймер автоматической прокрутки.
-     */
-    void stopAutoScroll();
-
-    /**
-     * Начинает ручную прокруту, изменяет форму курсора.
-     * @param pos начальная позиция курсора в глобальных координатах.
-     */
-    void startHandScroll(const QPoint &pos);
-
-    /**
-     * Делает 1 шаг ручной прокрутки.
-     * @param pos новая позиция курсора в глобальных координатах.
-     */
-    void doHandScroll(const QPoint &pos);
-
-    /**
-     * Останавливает ручную прокрутку, возвращает форму курсора к первоночальной
-     */
-    void stopHandScroll();
 
     /**
      * Устанавливает цвет фона и сетки исходя из mIsLight
@@ -214,33 +129,12 @@ private:
 public slots:
     void setLightColorScheme(bool b);
 
-private slots:
     /**
-     * Метод осуществляет один шаг автоматической прокрутки. Он проверяет,
-     * в каких направлениях возможно изменение инструмента в сцене, затем
-     * проверяет, находится ли курсор достаточно близко к краям поля и затем
-     * осуществляет шаг прокрутки. Если шаг прокрутки не был осуществлён, он
-     * вызывает метод stopHandScroll().
+     * Изменение промежутка сетки
      */
-    void doAutoScroll();
-
-    /// Отправляет сигнал о позиции курсора
-    void sendMousePos();
+    void updateGridSpan();
 
 signals:
-    /**
-     * Сигнал о том, что позиция курсора изменилась.
-     * @param newPosition новая позиция в координатах сцены. Если курсор вышел
-     * за пределы, то QFrost::noPoint.
-     */
-    void mouseMoved(const QPointF &newPosition = QFrost::noPoint);
-
-    /**
-     * Сигнал о том, что масштаб изменилась.
-     * @param newScale новый масштаб.
-     */
-    void scaleChanged(qreal newScale);
-
     /**
      * Сигнал о том, что изменилось расстояние между видимыми узлами сетки
      */

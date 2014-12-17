@@ -1,0 +1,167 @@
+/*
+ * Copyright (C) 2014  Denis Pesotsky
+ * 
+ * This file is part of QFrost.
+ * 
+ * QFrost is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * 
+ */
+
+#ifndef QFGUI_VIEWBASE_H
+#define QFGUI_VIEWBASE_H
+
+#include <QGraphicsView>
+
+namespace qfgui {
+
+class ViewBase : public QGraphicsView
+{
+    Q_OBJECT
+public:
+    ViewBase(QGraphicsScene *scene, QWidget* parent = NULL);
+
+    void setMinimumScale(double d) { mMinimumScale = d; }
+    void setMaximumScale(double d) { mMaximumScale = d; }
+
+    /**
+     * Изменить масштаб в @p scale раз.
+     * Аналогично вызову QGraphicsView::scale(s, s), но также испускает сигнал
+     * и делает прочие необходимые вещи (например, обновляет шаг сетки).
+     */
+    void scale(qreal s);
+
+signals:
+    /**
+     * Сигнал о том, что позиция курсора изменилась.
+     * @param newPosition новая позиция в координатах сцены. Если курсор вышел
+     * за пределы, то QFrost::noPoint.
+     */
+    void mouseMoved(const QPointF &newPosition);
+
+    /**
+     * Сигнал о том, что курсора резко перепрыгнул (зашёл за край экрана).
+     * @param newPosition новая позиция в координатах сцены. Если курсор вышел
+     * за пределы, то QFrost::noPoint.
+     */
+    void mouseJumped(const QPointF &newPosition);
+
+    /**
+     * Сигнал о том, что масштаб изменилась.
+     * @param newScale новый масштаб.
+     */
+    void scaleChanged(qreal newScale);
+
+    void startedHandScroll();
+    void stoppedHandScroll();
+
+protected:
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
+    
+    virtual Qt::Orientations sceneChangesOrientations() const {
+        return Qt::Horizontal | Qt::Vertical;
+    }
+    
+    static const int kAutoScrollViewMargin = 4;
+    
+private slots:
+    /**
+    * Метод осуществляет один шаг автоматической прокрутки. Он проверяет,
+    * в каких направлениях возможно изменение инструмента в сцене, затем
+    * проверяет, находится ли курсор достаточно близко к краям поля и затем
+    * осуществляет шаг прокрутки. Если шаг прокрутки не был осуществлён, он
+    * вызывает метод stopHandScroll().
+    */
+   void doAutoScroll();
+
+   /// Отправляет сигнал о позиции курсора (если он менялся с прошлого сигнала).
+   void sendMousePos();
+
+private:
+     /**
+     * Принцип работы автоматической прокрутки:
+     * При каждом изменении позиции курсора вызывается tryToStartAutoScroll.
+     * Этот метод смотрит, как изменяется инструмент и проверяет, находится ли
+     * курсор достаточно близко к соответствующим краям. Если находится, он
+     * начинает прокрутку методом startAutoScroll. Последний метод запускает
+     * таймер. Этот таймер  по таймауту вызывает метод doAutoScroll, который
+     * собственно осуществляет прокрутку. Если по каким-то причинам очередной
+     * вызов этого метода не прокрутил поле, то вызывается метод stopAutoScroll.
+     */
+
+    /**
+     * Начинает, если необходимо, автоматическую прокрутку.
+     */
+    void tryToStartAutoScroll(const QPoint &pos);
+
+    /**
+     * Запускает таймер автоматической прокрутки.
+     */
+    void startAutoScroll();
+
+    /**
+     * Останавливает таймер автоматической прокрутки.
+     */
+    void stopAutoScroll();
+
+    /**
+     * Начинает ручную прокруту, изменяет форму курсора.
+     * @param pos начальная позиция курсора в глобальных координатах.
+     */
+    void startHandScroll(const QPoint &pos);
+
+    /**
+     * Делает 1 шаг ручной прокрутки.
+     * @param pos новая позиция курсора в глобальных координатах.
+     */
+    void doHandScroll(const QPoint &pos);
+
+    /**
+     * Останавливает ручную прокрутку, возвращает форму курсора к первоночальной
+     */
+    void stopHandScroll();
+    
+    /// Флаг для включения/отключения ручной прокрутки.
+    bool mIsHandScrolling;
+    
+    /// Начальные координаты курсора в глобальных координатах при руч. прокрутке.
+    QPoint mHandScrollingPrevCurpos;
+    
+    ///Время, прошедшее от начала ручной прокрутки
+    QTimer *mAutoScrollTimer;
+    
+    /**
+     * Количество пикселов, на которые двигается видимая область
+     * (задаёт скорость прокрутки).
+     */
+    int mAutoScrollCount;
+    
+    /// Позиция курсора (в координатах сцены)
+    QPointF mMousePos;
+    
+    /// Изменилась ли позиция курсора с предыдущего отправления сигнала
+    bool mMousePosChanged;
+    
+    double mMinimumScale;
+    
+    double mMaximumScale;
+};
+}
+
+#endif // QFGUI_VIEWBASE_H

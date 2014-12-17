@@ -55,6 +55,7 @@ set(qfrost_SRCS
 	boundarypolygon.cpp
 	boundarypolygoncalc.cpp
 	about.cpp
+	viewbase.cpp
 	view.cpp
 	block.cpp
 	qfrost.cpp
