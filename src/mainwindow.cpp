@@ -856,7 +856,7 @@ void MainWindow::createStatusBar()
             anchorLabel, SLOT(updateText(QPointF)));
     
     QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
-    slider->setMaximumWidth(200);
+    slider->setMaximumWidth(150);
     statusBar()->addPermanentWidget(slider);
     
     slider->setValue((slider->maximum() + slider->minimum()) / 2);
