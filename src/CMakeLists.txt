@@ -62,6 +62,8 @@ set(qfrost_SRCS
 	scene.cpp
 	smartdoublespinbox.cpp
 	mainwindow.cpp
+	backgrounddialog.cpp
+	backgroundwidget.cpp
 	main.cpp)
 
 if(WIN32)

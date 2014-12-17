@@ -62,6 +62,7 @@
 #include <blockscountlabel.h>
 #include <welcomedialog.h>
 #include <dialog.h>
+#include <backgrounddialog.h>
 
 #ifdef WIN32
 #include <correctedstyle.h>
@@ -425,6 +426,37 @@ void MainWindow::documentWasModified()
     setWindowModified(true);
 }
 
+bool MainWindow::openBackground()
+{
+    const QString fileName = Dialog::getOpenFileName(this,
+                                                     tr("Open Background", "Dialog Title"),
+                                                     QString(),
+                                                     tr("Images") + " (*.png *.jpg *.jpeg *.jpe *.gif *.bmp)");
+
+    if (fileName.isEmpty()) {
+        return false;
+    }
+    
+    QPixmap pixmap(fileName);
+    
+    if (pixmap.isNull()) {
+        QMessageBox::warning(this,
+                             tr("Open Background Failed"),
+                             tr("Cannot open file %1.")
+                             .arg(locale().quoteString(fileName)));
+        return false;
+    }
+    
+    BackgroundDialog *dialog = new BackgroundDialog(pixmap, this);
+    dialog->exec();
+    
+    /*QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+    item->setScale(100);
+    item->setPos(1000, 1000);
+    
+    mScene->addItem(item);*/
+}
+
 void MainWindow::init()
 {
 #ifdef WIN32
@@ -621,6 +653,11 @@ void MainWindow::createActions()
     mDiscretizeColors->setStatusTip(tr("Discretize (sharpen) color of blocks"));
     connect(mDiscretizeColors, SIGNAL(toggled(bool)),
             mColorGenerator, SLOT(setDiscretizeColors(bool)));
+    
+    mOpenBackgroundAct = new QAction(QIcon::fromTheme("games-config-background"),
+                                  tr("Open &Background"), this);
+    mOpenBackgroundAct->setStatusTip(tr("Open background crosscut file"));
+    connect(mOpenBackgroundAct, SIGNAL(triggered()), SLOT(openBackground())); 
 }
 
 void MainWindow::createMenus()
@@ -640,8 +677,9 @@ void MainWindow::createMenus()
     fileMenu->addAction(mExportDataForPlotAct);
     fileMenu->addAction(mExportImageAct);
     fileMenu->addSeparator();
-    fileMenu->addAction(mCloseAct);
+    fileMenu->addAction(mOpenBackgroundAct);
     fileMenu->addSeparator();
+    fileMenu->addAction(mCloseAct);
     fileMenu->addAction(mExitAct);
 
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));

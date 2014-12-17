@@ -130,6 +130,7 @@ private slots:
     bool exportImage();
     void about();
     void documentWasModified();
+    bool openBackground();
 
 private:
     void init();
@@ -186,6 +187,7 @@ private:
     QAction *mFullScreenAct;
     QAction *mViewColorAct;
     QAction *mDiscretizeColors;
+    QAction *mOpenBackgroundAct;
 
     ColorGenerator *mColorGenerator;
 
