@@ -19,6 +19,7 @@
     <file>icons/16x16/actions/edit-redo.png</file>
     <file>icons/16x16/actions/edit-undo.png</file>
     <file>icons/16x16/actions/fill-color.png</file>
+    <file>icons/16x16/actions/games-config-background.png</file>
     <file>icons/16x16/actions/list-add.png</file>
     <file>icons/16x16/actions/list-remove.png</file>
     <file>icons/16x16/actions/media-playback-start.png</file>
@@ -42,6 +43,7 @@
     <file>icons/22x22/actions/edit-redo.png</file>
     <file>icons/22x22/actions/edit-undo.png</file>
     <file>icons/22x22/actions/fill-color.png</file>
+    <file>icons/22x22/actions/games-config-background.png</file>
     <file>icons/22x22/actions/list-add.png</file>
     <file>icons/22x22/actions/list-remove.png</file>
     <file>icons/22x22/actions/media-playback-start.png</file>
@@ -67,6 +69,7 @@
     <file>icons/32x32/actions/edit-redo.png</file>
     <file>icons/32x32/actions/edit-undo.png</file>
     <file>icons/32x32/actions/fill-color.png</file>
+    <file>icons/32x32/actions/games-config-background.png</file>
     <file>icons/32x32/actions/list-add.png</file>
     <file>icons/32x32/actions/list-remove.png</file>
     <file>icons/32x32/actions/media-playback-start.png</file>
@@ -90,6 +93,7 @@
     <file>icons/48x48/actions/edit-redo.png</file>
     <file>icons/48x48/actions/edit-undo.png</file>
     <file>icons/48x48/actions/fill-color.png</file>
+    <file>icons/48x48/actions/games-config-background.png</file>
     <file>icons/48x48/actions/list-add.png</file>
     <file>icons/48x48/actions/list-remove.png</file>
     <file>icons/48x48/actions/media-playback-start.png</file>
