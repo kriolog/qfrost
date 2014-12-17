@@ -493,7 +493,6 @@ void MainWindow::init()
 
     //setCentralWidget(mView);
     setCentralWidget(Ruler::createRulers(mView));
-    mView->scale(2.5 * QFrost::metersInUnit);
 
     createUndo();
     createActions();
@@ -855,6 +854,12 @@ void MainWindow::createStatusBar()
     statusBar()->addPermanentWidget(anchorLabel);
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
+    
+    QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
+    slider->setMaximumWidth(200);
+    statusBar()->addPermanentWidget(slider);
+    
+    slider->setValue((slider->maximum() + slider->minimum()) / 2);
 }
 
 void MainWindow::readSettings()

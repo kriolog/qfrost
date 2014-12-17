@@ -23,23 +23,19 @@
 
 #include <QGraphicsView>
 
+QT_FORWARD_DECLARE_CLASS(QSlider)
+
 namespace qfgui {
 
 class ViewBase : public QGraphicsView
 {
     Q_OBJECT
 public:
-    ViewBase(QGraphicsScene *scene, QWidget* parent = NULL);
+    ViewBase(QGraphicsScene *scene, QWidget* parent = NULL,
+             double minScale = 0.1, double maxScale = 2.0);
 
-    void setMinimumScale(double d) { mMinimumScale = d; }
-    void setMaximumScale(double d) { mMaximumScale = d; }
-
-    /**
-     * Изменить масштаб в @p scale раз.
-     * Аналогично вызову QGraphicsView::scale(s, s), но также испускает сигнал
-     * и делает прочие необходимые вещи (например, обновляет шаг сетки).
-     */
-    void scale(qreal s);
+    QSlider *createScaleSlider(Qt::Orientation orientation, 
+                               QWidget * parent = NULL);
 
 signals:
     /**
@@ -62,6 +58,8 @@ signals:
      */
     void scaleChanged(qreal newScale);
 
+    void slidersValuesChanged(int value);
+
     void startedHandScroll();
     void stoppedHandScroll();
 
@@ -80,6 +78,10 @@ protected:
     
     static const int kAutoScrollViewMargin = 4;
     
+    /// Устанавливает масштаб примерно равным @p factor (в соответствие с шагом
+    /// масштабного слайдера).
+    void setScale(double factor);
+
 private slots:
     /**
     * Метод осуществляет один шаг автоматической прокрутки. Он проверяет,
@@ -92,6 +94,9 @@ private slots:
 
    /// Отправляет сигнал о позиции курсора (если он менялся с прошлого сигнала).
    void sendMousePos();
+
+   /// Устанавливает наш масштаб в соответствие со значением на слайдере.
+   void setScaleFromSliderValue(int value);
 
 private:
      /**
@@ -158,9 +163,15 @@ private:
     /// Изменилась ли позиция курсора с предыдущего отправления сигнала
     bool mMousePosChanged;
     
-    double mMinimumScale;
+    const double mMinimumScale;
+    const double mMaximumScale;
     
-    double mMaximumScale;
+    static const double kScaleStep;
+    
+    const int mMinimumScaleSliderValue;
+    const int mMaximumScaleSliderValue;
+    
+    int mScaleSliderValue;
 };
 }
 

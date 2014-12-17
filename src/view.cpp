@@ -33,7 +33,10 @@
 
 using namespace qfgui;
 
-View::View(Scene *scene, MainWindow *parent): ViewBase(scene, parent),
+View::View(Scene *scene, MainWindow *parent): ViewBase(scene,
+                                                       parent,
+                                                       0.075 * QFrost::metersInUnit,
+                                                       800.0 * QFrost::metersInUnit),
     mGridSpan(QFrost::unitsInGridStep),
     mIsLight(false),
     mMainGridPen(),
@@ -41,9 +44,6 @@ View::View(Scene *scene, MainWindow *parent): ViewBase(scene, parent),
     mPointToCenterOn(QFrost::noPoint)
 {
     updateColorScheme();
-
-    setMinimumScale(0.075 * QFrost::metersInUnit);
-    setMaximumScale(800.0 * QFrost::metersInUnit);
 
     connect(this, SIGNAL(scaleChanged(qreal)), SLOT(updateGridSpan()));
 
@@ -325,20 +325,19 @@ void View::setSceneCursorY(qreal y)
 
 void View::save(QDataStream &out)
 {
-    out << transform().m11();
-    out << mapToScene(viewport()->rect().center());
+    out << transform().m11()
+        << mapToScene(viewport()->rect().center());
 }
 
 void View::load(QDataStream &in)
 {
     Q_ASSERT(in.status() == QDataStream::Ok);
-    double s;
-    in >> s;
-    in >> mPointToCenterOn;
+    double scaleFactor;
+    in >> scaleFactor >> mPointToCenterOn;
     if (in.status() != QDataStream::Ok) {
         throw false;
     }
-    scale(s / transform().m11());
+    setScale(scaleFactor);
     if (isVisible()) {
         centerOn(mPointToCenterOn);
         mPointToCenterOn = QFrost::noPoint;

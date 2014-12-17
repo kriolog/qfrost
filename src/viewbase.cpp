@@ -27,17 +27,27 @@
 #include <QScrollBar>
 #include <QDesktopWidget>
 #include <QMouseEvent>
+#include <QSlider>
+#include <QtMath>
 
 using namespace qfgui;
 
-ViewBase::ViewBase(QGraphicsScene *scene, QWidget *parent):
+const double ViewBase::kScaleStep = 1.25;
+
+ViewBase::ViewBase(QGraphicsScene *scene, QWidget *parent,
+                   double minScale, double maxScale):
     QGraphicsView(scene, parent),
     mIsHandScrolling(false),
     mHandScrollingPrevCurpos(),
     mAutoScrollTimer(),
     mAutoScrollCount(),
     mMousePos(QFrost::noPoint),
-    mMousePosChanged(false)
+    mMousePosChanged(false),
+    mMinimumScale(minScale),
+    mMaximumScale(maxScale),
+    mMinimumScaleSliderValue(qCeil(qLn(mMinimumScale)/qLn(kScaleStep))),
+    mMaximumScaleSliderValue(qFloor(qLn(mMaximumScale)/qLn(kScaleStep))),
+    mScaleSliderValue()
 {
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -74,14 +84,26 @@ ViewBase::ViewBase(QGraphicsScene *scene, QWidget *parent):
     connect(timer, SIGNAL(timeout()), this, SLOT(sendMousePos()));
     // Период 40 мс, т.е. 25 кадров в секунду, как раз для человеского глаза
     timer->start(40);
+    
+    setScaleFromSliderValue(mScaleSliderValue);
 }
 
-void ViewBase::scale(qreal s)
+QSlider *ViewBase::createScaleSlider(Qt::Orientation orientation, QWidget *parent)
 {
-    if (s != 1.0) {
-        QGraphicsView::scale(s, s);
-        emit scaleChanged(transform().m11());
-    }
+    QSlider *slider = new QSlider(orientation, parent);
+    
+    slider->setMinimum(mMinimumScaleSliderValue);
+    slider->setMaximum(mMaximumScaleSliderValue);
+    
+    slider->setValue(mScaleSliderValue);
+    
+    connect(slider, SIGNAL(valueChanged(int)),
+            SLOT(setScaleFromSliderValue(int)));
+    
+    connect(this, SIGNAL(slidersValuesChanged(int)),
+            slider, SLOT(setValue(int)));
+    
+    return slider;
 }
 
 void ViewBase::keyPressEvent(QKeyEvent *event)
@@ -174,13 +196,48 @@ void ViewBase::wheelEvent(QWheelEvent *event)
     //transfrom().m11() соответствует масштабу
     if ((!signumOfDelta && (transform().m11() <= mMaximumScale)) ||
         (signumOfDelta && (transform().m11() >= mMinimumScale))) {
-        scale(tempScaleStep);
+        scale(tempScaleStep, tempScaleStep);
+
         mMousePosChanged = true;
         mMousePos = mapToScene(event->pos());
+
+        if (!signumOfDelta) {
+            ++mScaleSliderValue;
+        } else {
+            --mScaleSliderValue;
+        }
+        emit slidersValuesChanged(mScaleSliderValue);
+        emit scaleChanged(transform().m11());
     }
 
     // QGraphicsView::wheelEvent(event);
     // -- не должен включаться стандартный скролл, нужен только зум
+}
+
+void ViewBase::setScaleFromSliderValue(int value)
+{
+    if (mScaleSliderValue == value) {
+        return;
+    }
+    
+    mScaleSliderValue = value;
+    
+    const double newScaleFactor = qPow(kScaleStep, value);
+    QTransform t(newScaleFactor, transform().m12(), transform().m13(),
+                 transform().m21(), newScaleFactor, transform().m23(),
+                 transform().m31(), transform().m32(), transform().m33());
+    
+    setTransform(t);
+    
+    emit scaleChanged(newScaleFactor);
+    emit slidersValuesChanged(mScaleSliderValue);
+}
+
+void ViewBase::setScale(double factor)
+{
+    const int newScaleSliderValue = qRound(qLn(factor)/qLn(kScaleStep));
+
+    setScaleFromSliderValue(newScaleSliderValue);
 }
 
 void ViewBase::startHandScroll(const QPoint &pos)
@@ -246,9 +303,7 @@ void ViewBase::doHandScroll(const QPoint &pos)
 
     if (mousePos != pos) {
         QCursor::setPos(mousePos);
-        qDebug("mouse jump");
         emit mouseJumped(mapToScene(viewport()->mapFromGlobal(mousePos)));
-        qDebug("lal");
     }
     //запоминаем новую точку отсчёта
     mHandScrollingPrevCurpos = mousePos;
