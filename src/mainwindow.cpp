@@ -859,7 +859,7 @@ void MainWindow::createStatusBar()
     slider->setMaximumWidth(150);
     statusBar()->addPermanentWidget(slider);
     
-    slider->setValue((slider->maximum() + slider->minimum()) / 2);
+    slider->setValue(qRound(double(slider->maximum() + slider->minimum()) / 2.0 * 1.2));
 }
 
 void MainWindow::readSettings()
