@@ -24,7 +24,7 @@
 #include <QtCore/QList>
 
 #include <core/domain.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 #include <graphicsviews/scene.h>
 
 namespace qfgui

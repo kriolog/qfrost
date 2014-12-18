@@ -20,7 +20,7 @@
 #include <undo/removeblockscommand.h>
 
 #include <graphicsviews/scene.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 
 using namespace qfgui;
 

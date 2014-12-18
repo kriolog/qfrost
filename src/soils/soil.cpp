@@ -21,7 +21,7 @@
 
 #include <QtCore/QLocale>
 #include <boundary_conditions/boundarycondition.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 
 using namespace qfgui;
 

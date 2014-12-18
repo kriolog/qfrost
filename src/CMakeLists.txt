@@ -38,14 +38,11 @@ set(qfrost_SRCS
     application.cpp
     backgrounddialog.cpp
     blockscountlabel.cpp
-    block.cpp
-    blockportable.cpp
     boundarypolygoncalc.cpp
     correctedstyle.cpp
     dialog.cpp
     main.cpp
     mainwindow.cpp
-    naturalsortfilterproxymodel.cpp
     physicalpropertydelegate.cpp
     physicalpropertyspinbox.cpp
     pointonboundarypolygon.cpp

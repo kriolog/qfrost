@@ -24,7 +24,7 @@
 #include <boundarypolygoncalc.h>
 #include <graphicsviews/scene.h>
 #include <pointonboundarypolygon.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 
 using namespace qfgui;
 

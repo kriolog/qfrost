@@ -30,7 +30,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPair>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 #include <blockportable.h>
 #include <boundarypolygonportable.h>
 #include <graphicsviews/boundarypolygon.h>

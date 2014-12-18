@@ -25,7 +25,7 @@
 #include <QtCore/QList>
 #include <QtCore/QDataStream>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 
 namespace qfgui
 {

@@ -21,7 +21,7 @@
 
 #include <undo/blockwitholdparameters.h>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 
 using namespace qfgui;
 

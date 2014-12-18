@@ -3,7 +3,8 @@ set(qfrost_itemviews_SRCS
     itemswidget.cpp
     item.cpp
     itemeditdialog.cpp
-	itemsmodel.cpp)
+	itemsmodel.cpp
+	naturalsortfilterproxymodel.cpp)
 
 add_library(qfrost_itemviews STATIC ${qfrost_itemviews_SRCS})
 qt5_use_modules(qfrost_itemviews Widgets)

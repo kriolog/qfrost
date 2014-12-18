@@ -18,7 +18,7 @@
  */
 
 #include <undo/blockwitholdparameters.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 #include <graphicsviews/scene.h>
 #include <soils/soil.h>
 

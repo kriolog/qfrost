@@ -22,7 +22,7 @@
 
 #include <geometry/boost_geometry_adaptation.h>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 
 namespace qfgui
 {

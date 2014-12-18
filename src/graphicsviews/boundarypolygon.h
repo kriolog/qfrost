@@ -23,7 +23,7 @@
 #include <graphicsviews/nonscalableitem.h>
 #include <qfrost.h>
 #include <boundary_conditions/boundarycondition.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 
 namespace qfgui
 {

@@ -23,7 +23,7 @@
 
 #include <core/phased.h>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 #include <boundary_conditions/boundaryconditionspanel.h>
 #include <control_panel/computationcontrol.h>
 #include <control_panel/startingconditions.h>

@@ -22,7 +22,7 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <block.h>
+#include <graphicsviews/block.h>
 #include <graphicsviews/scene.h>
 #include <graphicsviews/view.h>
 #include <qfrost.h>

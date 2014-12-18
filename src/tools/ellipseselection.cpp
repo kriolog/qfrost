@@ -27,7 +27,7 @@
 #include <qfrost.h>
 #include <graphicsviews/scene.h>
 #include <boundarypolygoncalc.h>
-#include <block.h>
+#include <graphicsviews/block.h>
 
 using namespace qfgui;
 
