@@ -19,10 +19,13 @@
  */
 
 #include "backgrounddialog.h"
-#include "backgroundwidget.h"
+#include "viewbase.h"
 
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <QSlider>
 
 using namespace qfgui;
 
@@ -32,7 +35,20 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     
-    mainLayout->addWidget(new BackgroundWidget(pixmap));
+    QGraphicsScene *scene = new QGraphicsScene(pixmap.rect(), this);
+    ViewBase *view = new ViewBase(scene, this);
+    
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    
+    view->setBackgroundBrush(Qt::lightGray);
+    
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+    item->setTransformationMode(Qt::SmoothTransformation);
+    scene->addItem(item);
+    
+    mainLayout->addWidget(view);
+    mainLayout->addWidget(view->createScaleSlider(Qt::Horizontal, this));
     mainLayout->addWidget(mButtons);
     
     connect(mButtons, SIGNAL(accepted()), SLOT(accept()));
