@@ -22,7 +22,7 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QUndoStack>
 
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <boundarypolygoncalc.h>
 
 using namespace qfgui;

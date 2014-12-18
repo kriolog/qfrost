@@ -22,6 +22,7 @@ find_package(Qt5LinguistTools REQUIRED)
 
 include(qfrost_version)
 
+add_subdirectory(graphicsviews)
 add_subdirectory(control_panel)
 add_subdirectory(itemviews)
 add_subdirectory(soils)
@@ -33,39 +34,30 @@ add_subdirectory(computations)
 #add_subdirectory( plot )
 
 set(qfrost_SRCS
-    dialog.cpp
-    welcomedialog.cpp
+    about.cpp
+    application.cpp
+    backgrounddialog.cpp
     blockscountlabel.cpp
+    block.cpp
+    blockportable.cpp
+    boundarypolygoncalc.cpp
+    correctedstyle.cpp
+    dialog.cpp
+    main.cpp
+    mainwindow.cpp
+    naturalsortfilterproxymodel.cpp
+    physicalpropertydelegate.cpp
+    physicalpropertyspinbox.cpp
+    pointonboundarypolygon.cpp
+    positionlabel.cpp
+    qfrost.cpp
+    recentfilesmenu.cpp
+    smartdoublespinbox.cpp
     toolbar.cpp
-	positionlabel.cpp
-	unitsmenu.cpp
-	units.cpp
-	physicalpropertydelegate.cpp
-	physicalpropertyspinbox.cpp
-	colorbar.cpp
-	naturalsortfilterproxymodel.cpp
-	recentfilesmenu.cpp
-	ruler.cpp
-	colorgenerator.cpp
-	application.cpp
-	boundarypolygonportable.cpp
-	blockportable.cpp
-	arrow.cpp
-	pointonboundarypolygon.cpp
-	boundarypolygon.cpp
-	boundarypolygoncalc.cpp
-	about.cpp
-	viewbase.cpp
-	view.cpp
-	block.cpp
-	qfrost.cpp
-	nonscalableitem.cpp
-	scene.cpp
-	smartdoublespinbox.cpp
-	mainwindow.cpp
-	backgrounddialog.cpp
-	backgroundwidget.cpp
-	main.cpp)
+    units.cpp
+    unitsmenu.cpp
+    welcomedialog.cpp
+)
 
 if(WIN32)
 	set(qfrost_SRCS ${qfrost_SRCS} correctedstyle.cpp)
@@ -73,6 +65,7 @@ endif()
 
 set(QFROST_LIBRARIES
 	qfrost_core
+    qfrost_graphicsviews
 	qfrost_control_panel
 	qfrost_computations
 	qfrost_soils

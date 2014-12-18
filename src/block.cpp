@@ -17,23 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <block.h>
+#include "block.h"
 
 #include <cmath>
 
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtGui/QPainter>
 
-#include <arrow.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/arrow.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <computations/computationthread.h>
 #include <core/domain.h>
 #include <core/heatsurface.h>
 #include <qfrost.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <soils/soil.h>
-#include <view.h>
-#include <colorgenerator.h>
+#include <graphicsviews/view.h>
+#include <graphicsviews/colorgenerator.h>
 
 using namespace qfgui;
 

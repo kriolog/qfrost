@@ -21,7 +21,7 @@
 #define QFGUI_POLYGONALSELECTION_H
 
 #include <tools/tool.h>
-#include <nonscalableitem.h>
+#include <graphicsviews/nonscalableitem.h>
 
 namespace qfgui
 {

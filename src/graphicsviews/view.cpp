@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <view.h>
+#include "view.h"
 
 #include <cmath>
 
@@ -25,7 +25,7 @@
 #include <QScrollBar>
 
 #include <qfrost.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <tools/anchor.h>
 #include <mainwindow.h>
 

@@ -20,7 +20,7 @@
 #ifndef QFGUI_GROWINGPOLYGON_H
 #define QFGUI_GROWINGPOLYGON_H
 
-#include <nonscalableitem.h>
+#include <graphicsviews/nonscalableitem.h>
 #include <qfrost.h>
 
 namespace qfgui

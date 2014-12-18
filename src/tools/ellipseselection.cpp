@@ -25,7 +25,7 @@
 #include <QtMath>
 
 #include <qfrost.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <boundarypolygoncalc.h>
 #include <block.h>
 

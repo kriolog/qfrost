@@ -22,11 +22,11 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QUndoStack>
 
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <tools/growingpolygon.h>
 #include <boundarypolygoncalc.h>
 #include <pointonboundarypolygon.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 
 using namespace qfgui;
 

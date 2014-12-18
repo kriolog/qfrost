@@ -20,7 +20,7 @@
 #ifndef QFGUI_BOUNDARYPOLYGONPORTABLE_H
 #define QFGUI_BOUNDARYPOLYGONPORTABLE_H
 
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 
 namespace qfgui
 {

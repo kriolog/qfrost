@@ -22,8 +22,8 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QApplication>
 
-#include <scene.h>
-#include <view.h>
+#include <graphicsviews/scene.h>
+#include <graphicsviews/view.h>
 #include <tools/lug.h>
 #include <tools/anchor.h>
 #include <tools_panel/rectangulartoolsettings.h>

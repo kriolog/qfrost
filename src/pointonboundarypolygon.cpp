@@ -19,7 +19,7 @@
 
 #include <pointonboundarypolygon.h>
 
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <boundarypolygoncalc.h>
 #include <qfrost.h>
 

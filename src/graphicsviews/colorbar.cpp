@@ -19,7 +19,7 @@
 
 #include "colorbar.h"
 
-#include <view.h>
+#include <graphicsviews/view.h>
 #include <colorgenerator.h>
 #include <mainwindow.h>
 #include <control_panel/controlpanel.h>

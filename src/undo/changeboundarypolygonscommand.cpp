@@ -19,7 +19,7 @@
 
 #include <undo/changeboundarypolygonscommand.h>
 
-#include <scene.h>
+#include <graphicsviews/scene.h>
 
 using namespace qfgui;
 

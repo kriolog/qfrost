@@ -24,7 +24,7 @@
 #include <QtCore/qmath.h>
 
 #include <qfrost.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <pointonboundarypolygon.h>
 
 namespace qfgui

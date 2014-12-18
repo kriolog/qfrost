@@ -20,7 +20,7 @@
 #ifndef QFGUI_BOUNDARYPOLYGON_H
 #define QFGUI_BOUNDARYPOLYGON_H
 
-#include <nonscalableitem.h>
+#include <graphicsviews/nonscalableitem.h>
 #include <qfrost.h>
 #include <boundary_conditions/boundarycondition.h>
 #include <block.h>

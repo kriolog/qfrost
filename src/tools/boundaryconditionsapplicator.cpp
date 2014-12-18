@@ -23,9 +23,9 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
 
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <boundarypolygoncalc.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <tools/anchor.h>
 #include <polyline.h>
 #include <boundary_conditions/boundarycondition.h>

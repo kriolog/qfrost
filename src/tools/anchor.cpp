@@ -23,10 +23,10 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <block.h>
-#include <scene.h>
-#include <view.h>
+#include <graphicsviews/scene.h>
+#include <graphicsviews/view.h>
 #include <qfrost.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <tools/boundaryconditionsapplicator.h>
 #include <boundarypolygoncalc.h>
 

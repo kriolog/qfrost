@@ -24,7 +24,7 @@
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/geometries/register/ring.hpp>
 
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 
 BOOST_GEOMETRY_REGISTER_POINT_2D_GET_SET(QPointF, qreal, cs::cartesian, x, y, setX, setY)
 BOOST_GEOMETRY_REGISTER_RING(QPolygonF)

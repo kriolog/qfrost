@@ -38,7 +38,7 @@
 #include <control_panel/dateeditwithundo.h>
 #include <units.h>
 #include <application.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 
 #include <undo/binders/undobinderqcombobox.h>
 

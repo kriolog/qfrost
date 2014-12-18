@@ -23,8 +23,8 @@
 #include <QtCore/QLineF>
 #include <QtMath>
 
-#include <boundarypolygon.h>
-#include <scene.h>
+#include <graphicsviews/boundarypolygon.h>
+#include <graphicsviews/scene.h>
 
 using namespace qfgui;
 

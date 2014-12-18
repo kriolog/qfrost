@@ -20,7 +20,7 @@
 #ifndef QFGUI_POLYLINE_H
 #define QFGUI_POLYLINE_H
 
-#include <nonscalableitem.h>
+#include <graphicsviews/nonscalableitem.h>
 
 namespace qfgui
 {

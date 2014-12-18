@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <blockportable.h>
+#include "blockportable.h"
 #include <soils/soil.h>
 
 using namespace qfgui;

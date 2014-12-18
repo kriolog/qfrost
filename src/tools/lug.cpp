@@ -22,7 +22,7 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <tools/anchor.h>
 
 using namespace qfgui;

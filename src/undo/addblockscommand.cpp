@@ -20,10 +20,10 @@
 #include <undo/addblockscommand.h>
 
 #include <block.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <undo/changeboundarypolygonscommand.h>
 #include <boundarypolygoncalc.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <mainwindow.h>
 
 using namespace qfgui;

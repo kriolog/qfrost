@@ -24,7 +24,7 @@
 #include <QtGui/QPainter>
 
 #include <block.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <tools_panel/blockcreatorsettings.h>
 
 using namespace qfgui;

@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <boundarypolygon.h>
+#include "boundarypolygon.h"
 
 #include <QtCore/qmath.h>
 #include <QtGui/QPainter>
 
 #include <boundarypolygoncalc.h>
 #include <pointonboundarypolygon.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <block.h>
 
 using namespace qfgui;

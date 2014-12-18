@@ -19,7 +19,8 @@
  */
 
 #include "backgrounddialog.h"
-#include "viewbase.h"
+
+#include <graphicsviews/viewbase.h>
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>

@@ -20,7 +20,7 @@
 #ifndef QFGUI_BOUNDARYELLIPSECREATOR_H
 #define QFGUI_BOUNDARYELLIPSECREATOR_H
 
-#include <nonscalableitem.h>
+#include <graphicsviews/nonscalableitem.h>
 #include <tools/rectangulartool.h>
 
 namespace qfgui

@@ -21,7 +21,7 @@
 
 #include <boundary_conditions/boundarycondition.h>
 #include <boundarypolygoncalc.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <mainwindow.h>
 #include <application.h>
 

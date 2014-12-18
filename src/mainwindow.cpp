@@ -38,9 +38,9 @@
 #include <main.h>
 #include <control_panel/controlpanel.h>
 #include <qfrost.h>
-#include <ruler.h>
-#include <scene.h>
-#include <view.h>
+#include <graphicsviews/ruler.h>
+#include <graphicsviews/scene.h>
+#include <graphicsviews/view.h>
 #include <recentfilesmenu.h>
 #include <tools/anchor.h>
 #include <tools_panel/toolspanel.h>
@@ -53,8 +53,8 @@
 #include <control_panel/startingconditions.h>
 #include <application.h>
 #include <computations/blockslogger.h>
-#include <colorgenerator.h>
-#include <colorbar.h>
+#include <graphicsviews/colorgenerator.h>
+#include <graphicsviews/colorbar.h>
 #include <unitsmenu.h>
 #include <units.h>
 #include <positionlabel.h>

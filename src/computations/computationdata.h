@@ -25,7 +25,7 @@
 
 #include <core/domain.h>
 #include <block.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 
 namespace qfgui
 {

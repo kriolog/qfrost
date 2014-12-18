@@ -22,7 +22,7 @@
 #include <QtGui/QPainter>
 
 #include <boundarypolygoncalc.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <pointonboundarypolygon.h>
 #include <block.h>
 

@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <nonscalableitem.h>
+#include "nonscalableitem.h"
 
 #include <QtWidgets/QGraphicsScene>
 
-#include <view.h>
+#include <graphicsviews/view.h>
 
 using namespace qfgui;
 

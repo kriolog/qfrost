@@ -19,7 +19,7 @@
 
 #include <undo/blockwitholdparameters.h>
 #include <block.h>
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <soils/soil.h>
 
 using namespace qfgui;

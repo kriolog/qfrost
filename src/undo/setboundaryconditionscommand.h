@@ -22,7 +22,7 @@
 
 #include <QtWidgets/QUndoCommand>
 
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 
 namespace qfgui
 {

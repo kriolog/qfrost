@@ -24,7 +24,7 @@
 #include <QtGui/QBrush>
 #include <boost/math/constants/constants.hpp>
 
-#include <scene.h>
+#include <graphicsviews/scene.h>
 #include <soils/soil.h>
 #include <core/soilblock.h>
 #include <qfrost.h>

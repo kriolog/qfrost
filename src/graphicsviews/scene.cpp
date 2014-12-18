@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include <scene.h>
+#include "scene.h"
 
 #include <cmath>
 
@@ -33,9 +33,9 @@
 #include <block.h>
 #include <blockportable.h>
 #include <boundarypolygonportable.h>
-#include <boundarypolygon.h>
+#include <graphicsviews/boundarypolygon.h>
 #include <boundarypolygoncalc.h>
-#include <view.h>
+#include <graphicsviews/view.h>
 #include <soils/soil.h>
 #include <computations/computationthread.h>
 #include <computations/blockslogger.h>
