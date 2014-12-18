@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -244,6 +244,18 @@ public:
      */
     static qreal signedProjectionDistance(const QPointF &p,
                                           const QLineF &segment);
+
+    /**
+     * Полигон, вписанный в единичную окружность с центром в (0,0), имеющий
+     * @p numberOfAngles углов.
+     */
+    static QPolygonF unitRoundPolygon(uint numberOfAngles = 120);
+    
+    /**
+     * Полигон, вписанный в эллипс @p ellipse, имеющий @p numberOfAngles углов.
+     */
+    static QPolygonF ellipseShapedPolygon(const QRectF &ellipse,
+                                   uint numberOfAngles = 120);
 
 private:
     const Scene *mScene;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -21,6 +21,7 @@
 
 #include <QtCore/QPair>
 #include <QtCore/QLineF>
+#include <QtMath>
 
 #include <boundarypolygon.h>
 #include <scene.h>
@@ -410,6 +411,61 @@ qreal BoundaryPolygonCalc::signedProjectionDistance(const QPointF &p, const QLin
         result = segment.length();
     }
 
+    return result;
+}
+
+QPolygonF BoundaryPolygonCalc::unitRoundPolygon(uint numberOfAngles)
+{
+    Q_ASSERT(360 % numberOfAngles == 0);
+    // Укладывается ли шаг целое число раз в 90 градусов.
+    Q_ASSERT(numberOfAngles % 4 == 0);
+    
+    QPolygonF result;
+    
+    //Заполняем превую четверть окружности.
+    result << QPointF(1, 0); //для сохранения точности.
+    for (uint i = 1; i < numberOfAngles / 4; ++i) {
+        const double angle = double(i) * (2.0 * boost::math::constants::pi<double>() / double(numberOfAngles));
+        result << QPointF(qCos(angle), qSin(angle));
+    }
+    
+    //Заполняем вторую четверть окружности.
+    result << QPointF(0, 1); //для сохранения точности.
+    for (uint i = 1; i < numberOfAngles / 4 + 1; ++i) {
+        QPointF currentPoint;
+        currentPoint = result.at(numberOfAngles / 4 - i);
+        result << QPointF(-currentPoint.x(), currentPoint.y());
+    }
+    
+    //Заполняем вторую половину окружности.
+    for (uint i = 1; i < numberOfAngles / 2; ++i) {
+        QPointF currentPoint;
+        currentPoint = result.at(numberOfAngles / 2 - i);
+        result << QPointF(currentPoint.x(), -currentPoint.y());
+    }
+    
+    return result;
+}
+
+QPolygonF BoundaryPolygonCalc::ellipseShapedPolygon(const QRectF &ellipse, uint numberOfAngles)
+{
+    /// Полуширина эллипса
+    qreal a;
+    /// Полувысота эллипса
+    qreal b;
+    /// Координаты середины эллипса
+    QPointF shiftPoint;
+    
+    a = ellipse.width() / 2;
+    b = ellipse.height() / 2;
+    shiftPoint = ellipse.center();
+    
+    QPolygonF result;
+    foreach(const QPointF &point, unitRoundPolygon(numberOfAngles)) {
+        result.append(QPointF(point.x() * a, point.y() * b) + shiftPoint);
+    }
+    //Замыкаем полигон
+    result.append(result.first());
     return result;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -78,14 +78,6 @@ private:
     const uint mNumberOfAngles;
 
     Ellipse *mEllipse;
-
-    /**
-     * Полигон, вписанный в единичную окружность с центром в (0,0), имеющий
-     * @a mNumberOfAngles углов.
-     */
-    QPolygonF unitRoundPolygon() const;
-
-    QPolygonF ellipseShapedPolygon() const;
 };
 }
 
