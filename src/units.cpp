@@ -177,7 +177,7 @@ QPair<double, double> Units::minMaxSI(PhysicalProperty property)
     case Density:
         return qMakePair(kUnreachableZero, 10000.0);
     case PowerDensity:
-        return qMakePair(-100.0, 100.0);
+        return qMakePair(-10000.0, 10000.0);
     case Energy:
     case Power:
     case NoProperty:
