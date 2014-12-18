@@ -58,6 +58,7 @@
 #include <tools/blockcreator.h>
 #include <tools/polygonalselection.h>
 #include <tools/rectangularselection.h>
+#include <tools/ellipseselection.h>
 
 #include <geometry/block_within_polygon.h>
 #include <geometry/clip_polyline.h>
@@ -545,6 +546,10 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             mTool = new RectangularSelection(mToolsSettings[mToolToCreate]);
             justCreatedTool = true;
             break;
+        case QFrost::ellipseSelection:
+            mTool = new EllipseSelection(mToolsSettings[mToolToCreate]);
+            justCreatedTool = true;
+            break;
         case QFrost::boundaryEllipseCreator:
             mTool = new BoundaryEllipseCreator(mToolsSettings[mToolToCreate]);
             justCreatedTool = true;
@@ -619,6 +624,7 @@ void Scene::setTool(QFrost::ToolType toolType)
     case QFrost::blockCreator:
     case QFrost::rectangularSelection:
     case QFrost::boundaryEllipseCreator:
+    case QFrost::ellipseSelection:
         break;
     case QFrost::boundaryPolygonCreator:
         mTool = new BoundaryPolygonCreator;
@@ -632,6 +638,8 @@ void Scene::setTool(QFrost::ToolType toolType)
         mTool = new PolygonalSelection;
         addItem(mTool.data());
         break;
+    default:
+        Q_ASSERT(false);
     }
 
     mToolToCreate = toolType;

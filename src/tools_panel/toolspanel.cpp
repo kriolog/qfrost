@@ -77,6 +77,8 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
                                    tr("&Boundary Conditions Applicator"), this)),
     mPickPolygonalSelection(new QAction(QIcon(":/tools/polygonal_selection.png"),
                                         tr("&Polygonal Selection"), this)),
+    mPickEllipseSelection(new QAction(QIcon(":/tools/ellipse_selection.png"),
+                                        tr("&Ellipse Selection"), this)),
     mToolBeforeBlocking(mPickNoTool),
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),
@@ -128,6 +130,10 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
                "of each row and column, if it's needed to fully fill the rectangle.")
             + "<br>" + escHint,
             new BlockCreatorPanel(this), true);
+    addTool(mPickEllipseSelection,
+            tr("Select wanted blocks and you will be able to set their soil "
+            "and staring conditions.") + " " + escHint,
+            new RectangularToolPanel(this));
 
     QGridLayout *toolsLayout = new QGridLayout();
     toolsLayout->setSpacing(0);
@@ -232,6 +238,11 @@ QMap< QFrost::ToolType, ToolSettings * > ToolsPanel::toolsSettings()
     RectangularToolPanel *p3 = qobject_cast<RectangularToolPanel *>(innerWidget(i));
     Q_ASSERT(p3 != NULL);
     result[i] = p3->toolSettings();
+
+    i = QFrost::ellipseSelection;
+    RectangularToolPanel *p4 = qobject_cast<RectangularToolPanel *>(innerWidget(i));
+    Q_ASSERT(p4 != NULL);
+    result[i] = p4->toolSettings();
 
     return result;
 }

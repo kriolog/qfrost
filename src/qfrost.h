@@ -133,12 +133,14 @@ public:
         rectangularSelection,
         /// Создавалка полигонов граничных условий
         boundaryPolygonCreator,
-        /// Создавалка эллиптичесов граничных условий
+        /// Создавалка эллиптических граничных условий
         boundaryEllipseCreator,
         /// Раскрашивалка граничных условий
         boundaryConditionsCreator,
         /// Создавалка блоков
-        blockCreator
+        blockCreator,
+        /// Эллиптическое выделение
+        ellipseSelection
     };
 
     /// Свойство, которое должно быть true, чтобы UndoBinder'ы создавали команды

@@ -10,7 +10,8 @@ set(qfrost_tools_SRCS
 	lug.cpp
 	tool.cpp
 	rectangulartool.cpp
-	rectangularselection.cpp)
+	rectangularselection.cpp
+	ellipseselection.cpp)
 
 add_library(qfrost_tools STATIC ${qfrost_tools_SRCS})
 qt5_use_modules(qfrost_tools Widgets)
