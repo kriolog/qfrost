@@ -29,7 +29,7 @@
 
 #include <boundary_conditions/monthstablemodel.h>
 #include <boundary_conditions/monthstableview.h>
-#include <physicalpropertyspinbox.h>
+#include <units/physicalpropertyspinbox.h>
 #include <mainwindow.h>
 
 using namespace qfgui;

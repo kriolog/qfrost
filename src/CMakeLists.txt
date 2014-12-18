@@ -30,6 +30,7 @@ add_subdirectory(boundary_conditions)
 add_subdirectory(tools)
 add_subdirectory(tools_panel)
 add_subdirectory(undo)
+add_subdirectory(units)
 add_subdirectory(computations)
 #add_subdirectory( plot )
 
@@ -43,16 +44,12 @@ set(qfrost_SRCS
     dialog.cpp
     main.cpp
     mainwindow.cpp
-    physicalpropertydelegate.cpp
-    physicalpropertyspinbox.cpp
     pointonboundarypolygon.cpp
     positionlabel.cpp
     qfrost.cpp
     recentfilesmenu.cpp
     smartdoublespinbox.cpp
     toolbar.cpp
-    units.cpp
-    unitsmenu.cpp
     welcomedialog.cpp
 )
 
@@ -71,6 +68,7 @@ set(QFROST_LIBRARIES
 	qfrost_tools
 	qfrost_tools_panel
 	qfrost_undo
+	qfrost_units
 	${QTSINGLEAPPLICATION_LIBRARIES}
 	${HIERARCHICALHEADERVIEW_LIBRARIES})
 

@@ -32,7 +32,7 @@
 #include <mainwindow.h>
 #include "control_panel/controlpanel.h"
 #include "control_panel/computationcontrol.h"
-#include "units.h"
+#include <units/units.h>
 
 using namespace qfgui;
 

@@ -20,7 +20,7 @@
 #include "positionlabel.h"
 
 #include <qfrost.h>
-#include <units.h>
+#include <units/units.h>
 
 #include <QtCore/QLocale>
 #include <QtWidgets/QApplication>

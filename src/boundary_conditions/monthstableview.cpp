@@ -22,7 +22,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QApplication>
 
-#include <physicalpropertydelegate.h>
+#include <units/physicalpropertydelegate.h>
 
 using namespace qfgui;
 

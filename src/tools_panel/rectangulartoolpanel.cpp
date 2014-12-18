@@ -28,7 +28,7 @@
 #include <smartdoublespinbox.h>
 #include <tools_panel/rectangulartoolsettings.h>
 #include <qfrost.h>
-#include <units.h>
+#include <units/units.h>
 
 using namespace qfgui;
 

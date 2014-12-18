@@ -19,7 +19,7 @@
 
 #include "sortedpointsmodel.h"
 
-#include <units.h>
+#include <units/units.h>
 
 #include <QtCore/qmath.h>
 

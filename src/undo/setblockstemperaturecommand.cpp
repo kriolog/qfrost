@@ -19,7 +19,7 @@
 
 #include <undo/setblockstemperaturecommand.h>
 #include <graphicsviews/block.h>
-#include <units.h>
+#include <units/units.h>
 
 using namespace qfgui;
 

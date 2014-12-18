@@ -21,7 +21,7 @@
 
 #include <mainwindow.h>
 #include <qfrost.h>
-#include <units.h>
+#include <units/units.h>
 #include <soils/soil.h>
 
 #include <QtGui/QStandardItemModel>

@@ -23,7 +23,7 @@
 #include <QtWidgets/QDataWidgetMapper>
 #include <QtWidgets/QVBoxLayout>
 
-#include <physicalpropertyspinbox.h>
+#include <units/physicalpropertyspinbox.h>
 #include <soils/sortedpointswidget.h>
 #include <soils/soilsmodel.h>
 #include <soils/soil.h>

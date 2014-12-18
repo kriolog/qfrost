@@ -55,8 +55,8 @@
 #include <computations/blockslogger.h>
 #include <graphicsviews/colorgenerator.h>
 #include <graphicsviews/colorbar.h>
-#include <unitsmenu.h>
-#include <units.h>
+#include <units/unitsmenu.h>
+#include <units/units.h>
 #include <positionlabel.h>
 #include <toolbar.h>
 #include <blockscountlabel.h>

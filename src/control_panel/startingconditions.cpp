@@ -25,7 +25,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QGroupBox>
 
-#include <physicalpropertyspinbox.h>
+#include <units/physicalpropertyspinbox.h>
 
 using namespace qfgui;
 

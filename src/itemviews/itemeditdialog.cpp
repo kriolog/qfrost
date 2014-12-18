@@ -30,7 +30,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QAbstractItemView>
 
-#include <physicalpropertydelegate.h>
+#include <units/physicalpropertydelegate.h>
 
 using namespace qfgui;
 

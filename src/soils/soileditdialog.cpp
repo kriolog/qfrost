@@ -32,7 +32,7 @@
 #include <soils/soil.h>
 #include <soils/unfrozenwaterwidget.h>
 #include <core/soilblock.h>
-#include <physicalpropertyspinbox.h>
+#include <units/physicalpropertyspinbox.h>
 #include <qfrost.h>
 #include <mainwindow.h>
 

@@ -19,7 +19,7 @@
 
 #include "monthstablemodel.h"
 
-#include <units.h>
+#include <units/units.h>
 
 #include <QtCore/QDate>
 #include <QtCore/QSize>

@@ -30,6 +30,8 @@
 #include <QSlider>
 #include <QtMath>
 
+#include <cmath>
+
 using namespace qfgui;
 
 const double ViewBase::kScaleStep = 1.25;

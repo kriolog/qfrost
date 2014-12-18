@@ -36,7 +36,7 @@
 #include <qfrost.h>
 #include <mainwindow.h>
 #include <control_panel/dateeditwithundo.h>
-#include <units.h>
+#include <units/units.h>
 #include <application.h>
 #include <graphicsviews/scene.h>
 

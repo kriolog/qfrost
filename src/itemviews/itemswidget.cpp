@@ -31,7 +31,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include <naturalsortfilterproxymodel.h>
-#include <physicalpropertydelegate.h>
+#include <units/physicalpropertydelegate.h>
 #include <mainwindow.h>
 #include <../3rdparty/HierarchicalHeaderView/HierarchicalHeaderView.h>
 

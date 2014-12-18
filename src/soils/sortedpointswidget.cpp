@@ -20,7 +20,7 @@
 #include "sortedpointswidget.h"
 
 #include <soils/sortedpointsmodel.h>
-#include <physicalpropertydelegate.h>
+#include <units/physicalpropertydelegate.h>
 
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QHeaderView>
