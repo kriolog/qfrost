@@ -97,6 +97,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
 
     QString escHint(tr("To cancel drawing, press <b>Esc</b> or any tool icon."));
     QString polygonDelHint(tr("Pressing <b>Backspace</b> will delete last added point."));
+
     // Должно совпадать с порядком в QFrost::ToolType!
     addTool(mPickNoTool, "");
     addTool(mPickPolygonalSelection,
@@ -140,16 +141,26 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     toolsLayout->setContentsMargins(QMargins());
     mainLayout->addLayout(toolsLayout);
 
-    int i = 0;
+    QMap<QAction *, QToolButton *> buttons;
     foreach(QAction * action, mTools->actions()) {
         action->setCheckable(true);
         QToolButton *button = new QToolButton(this);
         button->setDefaultAction(action);
         button->setIconSize(QSize(36, 36));
         button->setAutoRaise(true);
-        toolsLayout->addWidget(button, i / 3, i % 3);
-        ++i;
+        buttons[action] = button;
     }
+
+    toolsLayout->addWidget(buttons[mPickNoTool], 0, 0);
+    toolsLayout->addWidget(buttons[mPickBlockCreator], 0, 1);
+
+    toolsLayout->addWidget(buttons[mPickRectangleSelection], 1, 0);
+    toolsLayout->addWidget(buttons[mPickPolygonalSelection], 1, 1);
+    toolsLayout->addWidget(buttons[mPickEllipseSelection], 1, 2);
+
+    toolsLayout->addWidget(buttons[mPickBoundaryPolygonCreator], 2, 0);
+    toolsLayout->addWidget(buttons[mPickBoundaryEllipseCreator], 2, 1);
+    toolsLayout->addWidget(buttons[mPickBoundaryConditionsCreator], 2, 2);
 
     mToolTitle->setWordWrap(true);
 
