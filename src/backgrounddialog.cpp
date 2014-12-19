@@ -20,6 +20,7 @@
 
 #include "backgrounddialog.h"
 
+#include <graphicsviews/cross.h>
 #include <graphicsviews/viewbase.h>
 
 #include <QGraphicsScene>
@@ -32,7 +33,10 @@ using namespace qfgui;
 
 BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     QDialog(parent),
-    mButtons(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel))
+    mButtons(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel)),
+    mPixmapItem(new QGraphicsPixmapItem(pixmap)),
+    mCross1(new Cross(mPixmapItem)),
+    mCross2(new Cross(mPixmapItem))
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     
@@ -44,9 +48,10 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     
     view->setBackgroundBrush(Qt::lightGray);
     
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
-    item->setTransformationMode(Qt::SmoothTransformation);
-    scene->addItem(item);
+    mCross2->setPos(pixmap.width(), pixmap.height());
+    
+    mPixmapItem->setTransformationMode(Qt::SmoothTransformation);
+    scene->addItem(mPixmapItem);
     
     mainLayout->addWidget(view);
     mainLayout->addWidget(view->createScaleSlider(Qt::Horizontal, this));

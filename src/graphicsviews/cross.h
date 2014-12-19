@@ -18,33 +18,28 @@
  * 
  */
 
-#ifndef QFGUI_BACKGROUNDDIALOG_H
-#define QFGUI_BACKGROUNDDIALOG_H
+#ifndef QFGUI_CROSS_H
+#define QFGUI_CROSS_H
 
-#include <QDialog>
+#include <QGraphicsItem>
 
-QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
-QT_FORWARD_DECLARE_CLASS(QGraphicsPixmapItem)
+namespace qfgui {
 
-namespace qfgui
+class Cross : public QGraphicsItem
 {
-
-QT_FORWARD_DECLARE_CLASS(Cross)
-
-class BackgroundDialog : public QDialog
-{
-    Q_OBJECT
 public:
-    BackgroundDialog(const QPixmap &pixmap, QWidget *parent = NULL);
+    Cross(QGraphicsItem * parent = NULL, uint halfSize = 16);
+
+    QRectF boundingRect() const;
+
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget = 0);
 
 private:
-    QDialogButtonBox *const mButtons;
-
-    QGraphicsPixmapItem *const mPixmapItem;
-
-    Cross *const mCross1;
-    Cross *const mCross2;
+    const int mHalfSize;
+    QVector<QPointF> mCrossPointPairs;
 };
 }
 
-#endif // QFGUI_BACKGROUNDDIALOG_H
+#endif // QFGUI_CROSS_H

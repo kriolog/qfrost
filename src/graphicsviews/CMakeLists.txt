@@ -4,6 +4,7 @@ set(qfrost_graphicsviews_SRCS
 	blockportable.cpp
 	boundarypolygon.cpp
 	boundarypolygonportable.cpp
+	cross.cpp
 	colorbar.cpp
 	colorgenerator.cpp
 	nonscalableitem.cpp
