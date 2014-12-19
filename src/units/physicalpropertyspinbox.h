@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -63,6 +63,8 @@ public:
     }
     double forcedMinimum() const;
     double forcedMaximum() const;
+
+    static QDoubleSpinBox *createSceneCoordinateSpinBox();
 
 public slots:
     void setPhysicalProperty(int p);

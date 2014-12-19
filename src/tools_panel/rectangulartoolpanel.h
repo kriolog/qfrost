@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -26,10 +26,10 @@
 #include <tools_panel/rectangulartoolsettings.h>
 
 QT_FORWARD_DECLARE_CLASS(QButtonGroup)
+QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
 
 namespace qfgui
 {
-QT_FORWARD_DECLARE_CLASS(SmartDoubleSpinBox)
 
 class RectangularToolPanel : public SettingsBox
 {
@@ -42,11 +42,11 @@ public:
     }
 
 private:
-    SmartDoubleSpinBox *mRectX;
-    SmartDoubleSpinBox *mRectY;
+    QDoubleSpinBox *mRectX;
+    QDoubleSpinBox *mRectY;
 
-    SmartDoubleSpinBox *mRectWidth;
-    SmartDoubleSpinBox *mRectHeight;
+    QDoubleSpinBox *mRectWidth;
+    QDoubleSpinBox *mRectHeight;
 
     QButtonGroup *mBasepoints;
 

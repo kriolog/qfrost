@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -19,8 +19,6 @@
 
 #include <rectangulartoolpanel.h>
 
-#include <cmath>
-
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QGridLayout>
@@ -28,39 +26,25 @@
 #include <smartdoublespinbox.h>
 #include <tools_panel/rectangulartoolsettings.h>
 #include <qfrost.h>
-#include <units/units.h>
+#include <units/physicalpropertyspinbox.h>
 
 using namespace qfgui;
 
 RectangularToolPanel::RectangularToolPanel(QWidget *parent, bool showHeader,
         RectangularToolSettings *settings)
     : SettingsBox(showHeader ? tr("Geometry") : "" , parent)
-    , mRectX(new SmartDoubleSpinBox(this))
-    , mRectY(new SmartDoubleSpinBox(this))
-    , mRectWidth(new SmartDoubleSpinBox(this))
-    , mRectHeight(new SmartDoubleSpinBox(this))
+    , mRectX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mRectY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mRectWidth(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mRectHeight(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
     , mBasepoints(new QButtonGroup(this))
     , mMustEmitRectChanges(true)
     , mSettings(settings == NULL ? new RectangularToolSettings(this) : settings)
 {
-    mRectWidth->setSingleStep(1);
-    mRectHeight->setSingleStep(1);
-    mRectX->setSingleStep(1);
-    mRectY->setSingleStep(1);
-
-    int decimals = -std::log10(QFrost::metersInUnit);
-
-    mRectWidth->setDecimals(decimals);
     mRectWidth->setMinimum(0);
     mRectWidth->setMaximum(2 * QFrost::sceneHalfSizeInMeters);
-    mRectWidth->setSuffix(" " + Units::meterText());
-    mRectHeight->readProperties(mRectWidth);
-
-    mRectX->setDecimals(decimals);
-    mRectX->setMinimum(-QFrost::sceneHalfSizeInMeters);
-    mRectX->setMaximum(QFrost::sceneHalfSizeInMeters);
-    mRectX->setSuffix(" " + Units::meterText());
-    mRectY->readProperties(mRectX);
+    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mRectHeight));
+    static_cast<SmartDoubleSpinBox*>(mRectHeight)->readProperties(static_cast<SmartDoubleSpinBox*>(mRectWidth));
 
     addRow(tr("&X-Pos:"), mRectX);
     addRow(tr("&Y-Pos:"), mRectY);

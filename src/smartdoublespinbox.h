@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -34,6 +34,7 @@ namespace qfgui
  */
 class SmartDoubleSpinBox : public QDoubleSpinBox
 {
+    Q_OBJECT
 public:
     SmartDoubleSpinBox(QWidget *parent = 0);
     virtual void stepBy(int steps);

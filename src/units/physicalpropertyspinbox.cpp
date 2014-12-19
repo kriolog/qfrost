@@ -224,3 +224,19 @@ double PhysicalPropertySpinBox::forcedMinimum() const
         return minimum();
     }
 }
+
+QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
+{
+    QDoubleSpinBox *result = new SmartDoubleSpinBox();
+    result->setSingleStep(1);
+
+    static const int decimals = -std::log10(QFrost::metersInUnit);
+
+    result->setDecimals(decimals);
+    result->setSuffix(" " + Units::meterText());
+
+    result->setMinimum(-QFrost::sceneHalfSizeInMeters);
+    result->setMaximum(QFrost::sceneHalfSizeInMeters);
+
+    return result;
+}
