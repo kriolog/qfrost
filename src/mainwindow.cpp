@@ -801,6 +801,7 @@ void MainWindow::createToolBars()
     addDockWidget(Qt::LeftDockWidgetArea, mToolsPanel);
 
     QDockWidget *toolOptions = new QDockWidget(tr("Tool Options"));
+    toolOptions->setObjectName("Tool Options");
     toolOptions->setTitleBarWidget(new QWidget());
     toolOptions->setFeatures(QDockWidget::NoDockWidgetFeatures);
     QWidget *toolOptionsPanel = new QWidget(this);
