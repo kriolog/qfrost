@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -327,22 +327,23 @@ bool BoundaryPolygon::contains(const QPolygonF &polygon) const
     return BoundaryPolygonCalc::isContained(this->polygon(), polygon);
 }
 
-QLineF BoundaryPolygon::segment(int i, bool safe) const
+QLineF BoundaryPolygon::segment(int i) const
 {
-    if (safe) {
-        while (i > mCorners.size()) {
-            i -= mCorners.size();
-        }
-        while (i < 0) {
-            i += mCorners.size();
-        }
-        if (i == mCorners.size() - 1) {
-            i = 0;
-        }
+    while (i > mCorners.size()) {
+        i -= mCorners.size();
     }
+    while (i < 0) {
+        i += mCorners.size();
+        }
+    if (i == mCorners.size() - 1) {
+        i = 0;
+    }
+
     Q_ASSERT(i >= 0);
-    Q_ASSERT(i < mCorners.size() - 1);
-    return QLineF(mCorners.at(i).point, mCorners.at(i + 1).point);
+    Q_ASSERT(i < mCorners.size());
+
+    const int j = (i + 1 < mCorners.size()) ? i + 1 : 0;
+    return QLineF(mCorners.at(i).point, mCorners.at(j).point);
 }
 
 bool qfgui::operator==(const ConditionPoint &c1, const ConditionPoint &c2)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -159,9 +159,9 @@ public:
 
     /**
      * Отрезок, соединяющий i-ю и i+1-ю точки полигона.
-     * @param safe допускает i вне [0; mCornersNum-1): учёт цикличности полигона
+     * Допускается i вне [0; mCornersNum-1): учёт цикличности полигона.
      */
-    QLineF segment(int i, bool safe = false) const;
+    QLineF segment(int i) const;
 
     bool isInner() const {
         return parent() != NULL;

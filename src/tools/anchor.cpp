@@ -370,12 +370,10 @@ void Anchor::updateFoundAnchor(const APointOnBoundaryPolygon &pointToAnchor)
 
     // Точки на углах должны иметь правильный угол (актуально для элипсов)
     if (qFuzzyIsNull(mPosOnPolygon.distance())) {
-        const qreal neighbourAngle = mPosOnPolygon.polygon()->segment(mPosOnPolygon.index() - 1,
-                                                                      true).angle();
+        const qreal neighbourAngle = mPosOnPolygon.polygon()->segment(mPosOnPolygon.index() - 1).angle();
         mAnchorAngle = (mAnchorAngle - neighbourAngle) / 2.0;
     } else if (qFuzzyCompare(mPosOnPolygon.distance(), mPosOnPolygon.segment().length())) {
-        const qreal neighbourAngle = mPosOnPolygon.polygon()->segment(mPosOnPolygon.index() + 1,
-                                                                      true).angle();
+        const qreal neighbourAngle = mPosOnPolygon.polygon()->segment(mPosOnPolygon.index() + 1).angle();
         mAnchorAngle = (mAnchorAngle - neighbourAngle) / 2.0;
     }
 
