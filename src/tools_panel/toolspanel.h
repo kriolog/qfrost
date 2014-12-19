@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -30,6 +30,7 @@ QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QStackedWidget)
 QT_FORWARD_DECLARE_CLASS(QActionGroup)
 QT_FORWARD_DECLARE_CLASS(QToolButton)
+QT_FORWARD_DECLARE_CLASS(QVBoxLayout)
 
 namespace qfgui
 {
@@ -69,6 +70,8 @@ public:
 
     QMap<QFrost::ToolType, ToolSettings *> toolsSettings();
 
+    QVBoxLayout *toolSettingsLayout() const { return mToolSettingsLayout; }
+
 private:
     QActionGroup *mTools;
     QAction *mPickNoTool;
@@ -89,6 +92,8 @@ private:
 
     QAction *mHelpAction;
     QToolButton *mHelpButton;
+
+    QVBoxLayout *mToolSettingsLayout;
 
     void addTool(QAction *action,
                  const QString &text = QString(),

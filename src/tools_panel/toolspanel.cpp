@@ -28,6 +28,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QToolTip>
+#include <QtWidgets/QGroupBox>
 
 #include <mainwindow.h>
 #include <tools_panel/blockcreatorpanel.h>
@@ -83,7 +84,8 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),
     mHelpAction(new QAction("?", this)),
-    mHelpButton(new QToolButton(this))
+    mHelpButton(new QToolButton(this)),
+    mToolSettingsLayout(new QVBoxLayout())
 {
     setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea +
                                         Qt::RightDockWidgetArea));
@@ -92,6 +94,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     setMaximumWidth(300);
 
     QWidget *widget = new QWidget(this);
+    widget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     setWidget(widget);
     QVBoxLayout *mainLayout = new QVBoxLayout(widget);
 
@@ -136,8 +139,9 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
             "and staring conditions.") + " " + escHint,
             new RectangularToolPanel(this));
 
-    QGridLayout *toolsLayout = new QGridLayout();
+    QVBoxLayout *toolsLayout = new QVBoxLayout();
     toolsLayout->setSpacing(0);
+    toolsLayout->setMargin(0);
     toolsLayout->setContentsMargins(QMargins());
     mainLayout->addLayout(toolsLayout);
 
@@ -151,16 +155,37 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
         buttons[action] = button;
     }
 
-    toolsLayout->addWidget(buttons[mPickNoTool], 0, 0);
-    toolsLayout->addWidget(buttons[mPickBlockCreator], 0, 1);
+    QHBoxLayout *l1 = new QHBoxLayout();
+    l1->setSpacing(0);
+    l1->setMargin(0);
+    l1->setContentsMargins(QMargins());
+    l1->addWidget(buttons[mPickNoTool]);
+    l1->addWidget(buttons[mPickBlockCreator]);
+    toolsLayout->addLayout(l1);
 
-    toolsLayout->addWidget(buttons[mPickRectangleSelection], 1, 0);
-    toolsLayout->addWidget(buttons[mPickPolygonalSelection], 1, 1);
-    toolsLayout->addWidget(buttons[mPickEllipseSelection], 1, 2);
+    QGroupBox *selectionTools = new QGroupBox(tr("Blocks selection"));
+    selectionTools->setAlignment(Qt::AlignHCenter);
+    selectionTools->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
+    QHBoxLayout *l2 = new QHBoxLayout(selectionTools);
+    l2->setSpacing(0);
+    l2->setMargin(0);
+    l2->setContentsMargins(QMargins());
+    l2->addWidget(buttons[mPickRectangleSelection]);
+    l2->addWidget(buttons[mPickPolygonalSelection]);
+    l2->addWidget(buttons[mPickEllipseSelection]);
+    toolsLayout->addWidget(selectionTools);
 
-    toolsLayout->addWidget(buttons[mPickBoundaryPolygonCreator], 2, 0);
-    toolsLayout->addWidget(buttons[mPickBoundaryEllipseCreator], 2, 1);
-    toolsLayout->addWidget(buttons[mPickBoundaryConditionsCreator], 2, 2);
+    QGroupBox *boundaryTools = new QGroupBox(tr("Boundary polygons"));
+    boundaryTools->setAlignment(Qt::AlignHCenter);
+    boundaryTools->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
+    QHBoxLayout *l3 = new QHBoxLayout(boundaryTools);
+    l3->setSpacing(0);
+    l3->setMargin(0);
+    l3->setContentsMargins(QMargins());
+    l3->addWidget(buttons[mPickBoundaryPolygonCreator]);
+    l3->addWidget(buttons[mPickBoundaryEllipseCreator]);
+    l3->addWidget(buttons[mPickBoundaryConditionsCreator]);
+    toolsLayout->addWidget(boundaryTools);
 
     mToolTitle->setWordWrap(true);
 
@@ -172,8 +197,10 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     titleLayout->setContentsMargins(QMargins());
     titleLayout->addWidget(mHelpButton);
 
-    mainLayout->addLayout(titleLayout);
-    mainLayout->addWidget(mToolsPanels);
+    mToolSettingsLayout->setMargin(0);
+    mToolSettingsLayout->addLayout(titleLayout);
+    mToolSettingsLayout->addWidget(mToolsPanels);
+    mainLayout->addLayout(mToolSettingsLayout);
 
     connect(mTools, SIGNAL(triggered(QAction *)),
             SLOT(slotToolChosen(QAction *)));

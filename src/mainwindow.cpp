@@ -31,6 +31,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QUndoView>
 #include <QtWidgets/QUndoStack>
 
@@ -794,8 +795,20 @@ void MainWindow::createToolBars()
             SLOT(slotComputationDateChanged(QDate)));
 
     mToolsPanel = new ToolsPanel(this);
+    mToolsPanel->setTitleBarWidget(new QWidget());
+    mToolsPanel->setFeatures(QDockWidget::NoDockWidgetFeatures);
     mToolsPanel->setObjectName("Tools Panel");
     addDockWidget(Qt::LeftDockWidgetArea, mToolsPanel);
+
+    QDockWidget *toolOptions = new QDockWidget(tr("Tool Options"));
+    toolOptions->setTitleBarWidget(new QWidget());
+    toolOptions->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    QWidget *toolOptionsPanel = new QWidget(this);
+    mToolsPanel->toolSettingsLayout()->setContentsMargins(QMargins(2, 0, 0, 0));
+    mToolsPanel->toolSettingsLayout()->parentWidget()->layout()->removeItem(mToolsPanel->toolSettingsLayout());
+    toolOptionsPanel->setLayout(mToolsPanel->toolSettingsLayout());
+    toolOptions->setWidget(toolOptionsPanel);
+    addDockWidget(Qt::LeftDockWidgetArea, toolOptions);
 
     mScene->setToolsSettingsMap(mToolsPanel->toolsSettings());
 
