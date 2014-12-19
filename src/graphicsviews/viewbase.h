@@ -32,7 +32,7 @@ class ViewBase : public QGraphicsView
     Q_OBJECT
 public:
     ViewBase(QGraphicsScene *scene, QWidget* parent = NULL,
-             double minScale = 0.1, double maxScale = 8.0);
+             double minScale = 0.1, double maxScale = 10.0);
 
     QSlider *createScaleSlider(Qt::Orientation orientation, 
                                QWidget * parent = NULL);

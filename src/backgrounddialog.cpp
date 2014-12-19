@@ -54,7 +54,9 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     scene->addItem(mPixmapItem);
     
     mainLayout->addWidget(view);
-    mainLayout->addWidget(view->createScaleSlider(Qt::Horizontal, this));
+    QSlider *slider = view->createScaleSlider(Qt::Horizontal, this);
+    Q_ASSERT(slider->minimum() == -slider->maximum());
+    mainLayout->addWidget(slider);
     mainLayout->addWidget(mButtons);
     
     connect(mButtons, SIGNAL(accepted()), SLOT(accept()));
