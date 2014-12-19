@@ -54,10 +54,6 @@ ViewBase::ViewBase(QGraphicsScene *scene, QWidget *parent,
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    
-    /* это делается в setTransformationAnchor(QGraphicsView::AnchorUnderMouse),
-     * но мало ли что там поменяют разработчики Qt. */
     setMouseTracking(true);
     
     setDragMode(QGraphicsView::NoDrag);
@@ -198,6 +194,9 @@ void ViewBase::wheelEvent(QWheelEvent *event)
     //transfrom().m11() соответствует масштабу
     if ((!signumOfDelta && (transform().m11() <= mMaximumScale)) ||
         (signumOfDelta && (transform().m11() >= mMinimumScale))) {
+        if (transformationAnchor() != AnchorUnderMouse) {
+            setTransformationAnchor(AnchorUnderMouse);
+        }
         scale(tempScaleStep, tempScaleStep);
 
         mMousePosChanged = true;
@@ -229,6 +228,12 @@ void ViewBase::setScaleFromSliderValue(int value)
                  transform().m21(), newScaleFactor, transform().m23(),
                  transform().m31(), transform().m32(), transform().m33());
     
+    const bool mustAnchorCenter = (qobject_cast<QSlider*>(sender()) != NULL);
+    if (mustAnchorCenter != (transformationAnchor() == AnchorViewCenter)) {
+        setTransformationAnchor(mustAnchorCenter
+                                ? AnchorViewCenter
+                                : AnchorUnderMouse);
+    }
     setTransform(t);
     
     emit scaleChanged(newScaleFactor);
