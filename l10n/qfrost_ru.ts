@@ -839,365 +839,370 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Open File</source>
         <comment>Dialog Title</comment>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="200"/>
+        <location filename="../src/mainwindow.cpp" line="201"/>
         <source>QFrost files</source>
         <translation>Файлы QFrost</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="208"/>
         <source>Save</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="219"/>
-        <location filename="../src/mainwindow.cpp" line="253"/>
-        <location filename="../src/mainwindow.cpp" line="330"/>
+        <location filename="../src/mainwindow.cpp" line="220"/>
+        <location filename="../src/mainwindow.cpp" line="254"/>
+        <location filename="../src/mainwindow.cpp" line="331"/>
         <source>Export Failed</source>
         <translation>Экспорт не удался</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="223"/>
         <source>Export Data</source>
         <comment>Dialog Title</comment>
         <translation>Экспорт данных</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="224"/>
-        <location filename="../src/mainwindow.cpp" line="258"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="247"/>
-        <location filename="../src/mainwindow.cpp" line="281"/>
-        <location filename="../src/mainwindow.cpp" line="335"/>
+        <location filename="../src/mainwindow.cpp" line="248"/>
+        <location filename="../src/mainwindow.cpp" line="282"/>
+        <location filename="../src/mainwindow.cpp" line="336"/>
         <source>Current data exported</source>
         <translation>Данные экспотированы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="257"/>
         <source>Export Data for Plot</source>
         <comment>Dialog Title</comment>
         <translation>Экспорт данных для построения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="287"/>
+        <location filename="../src/mainwindow.cpp" line="288"/>
         <source>Saving Image Failed</source>
         <translation>Сохранение изображения не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="290"/>
+        <location filename="../src/mainwindow.cpp" line="291"/>
         <source>Save Image</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="292"/>
+        <location filename="../src/mainwindow.cpp" line="293"/>
         <source>PNG files</source>
         <translation>Файлы PNG</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="341"/>
+        <location filename="../src/mainwindow.cpp" line="342"/>
         <source>Save Logger Data Failed</source>
         <translation>Сохранение данных журналирования не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="343"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Comma-separated monthly temperature tables</source>
         <translation>Таблица помесячных значений температуры</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="345"/>
         <source>Text files with bottom block data</source>
         <translation>Температура нижнего блока</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="345"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>Text files for isopleth plotter script</source>
         <translation>Текстовый файл для построителя изоплет</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="349"/>
+        <location filename="../src/mainwindow.cpp" line="350"/>
         <source>Save Logger Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить данные журналирования</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="380"/>
+        <location filename="../src/mainwindow.cpp" line="381"/>
         <source>Logger data exported</source>
         <translation>Данные журналирования экспортированы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="391"/>
+        <location filename="../src/mainwindow.cpp" line="392"/>
         <source>Denis Pesotsky</source>
         <translation>Денис Песоцкий</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="392"/>
+        <location filename="../src/mainwindow.cpp" line="393"/>
         <source>Maxim Torgonsky</source>
         <translation>Максим Торгонский</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="393"/>
+        <location filename="../src/mainwindow.cpp" line="394"/>
         <source>Temperature fields modeling and visualization</source>
         <translation>Моделирование и визуализация температурных полей</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="396"/>
+        <location filename="../src/mainwindow.cpp" line="397"/>
         <source>Main developer</source>
         <translation>Основной разработчик</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="398"/>
+        <location filename="../src/mainwindow.cpp" line="399"/>
         <source>Developer, many ideas and algorythms</source>
         <translation>Разработчик, генератор идей и алгоритмов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="401"/>
+        <location filename="../src/mainwindow.cpp" line="402"/>
         <source>L. N. Chrustalev</source>
         <translation>Л. Н. Хрусталёв</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="402"/>
+        <location filename="../src/mainwindow.cpp" line="403"/>
         <source>Initial computation algorythm</source>
         <translation>Первоначальный алгоритм расчётов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="404"/>
+        <location filename="../src/mainwindow.cpp" line="405"/>
         <source>G. P. Pustovoyt</source>
         <translation>Г. П. Пустовойт</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="405"/>
+        <location filename="../src/mainwindow.cpp" line="406"/>
         <source>Explanation of theory and inspiration</source>
         <translation>Разъяснения по теории и вдохновение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="407"/>
+        <location filename="../src/mainwindow.cpp" line="408"/>
         <source>S. N. Buldovich</source>
         <translation>С. Н. Булдович</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="408"/>
+        <location filename="../src/mainwindow.cpp" line="409"/>
         <source>Help with designing user interface and more</source>
         <translation>Помощь с дизайном пользовательского интерфейса и прочим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="410"/>
+        <location filename="../src/mainwindow.cpp" line="411"/>
         <source>L. V. Emelyanova</source>
         <translation>Л. В. Емельянова</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="411"/>
+        <location filename="../src/mainwindow.cpp" line="412"/>
         <source>Motivation and overall help</source>
         <translation>Толчок к созданию проекта и консультации</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="414"/>
+        <location filename="../src/mainwindow.cpp" line="415"/>
         <source>Help with C++ and Qt</source>
         <translation>Помощь с Qt и C++</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="418"/>
+        <location filename="../src/mainwindow.cpp" line="419"/>
         <source>Help with Qt</source>
         <translation>Помощь с Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="432"/>
+        <location filename="../src/mainwindow.cpp" line="433"/>
         <source>Open Background</source>
         <comment>Dialog Title</comment>
         <translation>Открытие подложки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="434"/>
+        <location filename="../src/mainwindow.cpp" line="435"/>
         <source>Images</source>
         <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="444"/>
+        <location filename="../src/mainwindow.cpp" line="445"/>
         <source>Open Background Failed</source>
         <translation>Не удалось загрузить подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="543"/>
+        <location filename="../src/mainwindow.cpp" line="544"/>
         <source>&amp;New</source>
         <translation>Соз&amp;дать</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="545"/>
+        <location filename="../src/mainwindow.cpp" line="546"/>
         <source>Create a new file</source>
         <translation>Создать новый файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="550"/>
+        <location filename="../src/mainwindow.cpp" line="551"/>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="552"/>
+        <location filename="../src/mainwindow.cpp" line="553"/>
         <source>Open an existing file</source>
         <translation>Открыть существующий файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="557"/>
+        <location filename="../src/mainwindow.cpp" line="558"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="559"/>
+        <location filename="../src/mainwindow.cpp" line="560"/>
         <source>Save the document to disk</source>
         <translation>Сохранить документ на диск</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="563"/>
+        <location filename="../src/mainwindow.cpp" line="564"/>
         <source>Save &amp;As...</source>
         <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="565"/>
+        <location filename="../src/mainwindow.cpp" line="566"/>
         <source>Save the document under a new name</source>
         <translation>Сохранить документ под новым именем</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="569"/>
+        <location filename="../src/mainwindow.cpp" line="570"/>
         <source>&amp;Export...</source>
         <translation>&amp;Экспорт...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="581"/>
+        <location filename="../src/mainwindow.cpp" line="582"/>
         <source>&amp;Export Image...</source>
         <translation>Экспорт &amp;изображения...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="582"/>
+        <location filename="../src/mainwindow.cpp" line="583"/>
         <source>Export workspace to image</source>
         <translation>Сохранение содержимого рабочей области в виде изображения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="586"/>
+        <location filename="../src/mainwindow.cpp" line="587"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="587"/>
+        <location filename="../src/mainwindow.cpp" line="588"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="588"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <source>Close this window</source>
         <translation>Закрыть это окно</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="592"/>
+        <location filename="../src/mainwindow.cpp" line="593"/>
         <source>E&amp;xit</source>
         <translation>В&amp;ыход</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="594"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>Exit the application</source>
         <translation>Выйти из программы (закрыть все окна)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="599"/>
+        <location filename="../src/mainwindow.cpp" line="600"/>
         <source>&amp;About</source>
         <translation>&amp;О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="600"/>
+        <location filename="../src/mainwindow.cpp" line="601"/>
         <source>Show the application&apos;s About box</source>
         <translation>Показать окно с информацией о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="606"/>
         <source>About &amp;Qt</source>
         <translation>О &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="607"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Показать окно с информацией о библиотеке Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="613"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Remove blocks outside domain</source>
         <translation>Удалить блоки вне расчётной области</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Removes blocks that will not be included into domain</source>
         <translation>Удаление блоков, которые не попадают в расчётную область (лежат вне полигонов граничных условий)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="631"/>
+        <location filename="../src/mainwindow.cpp" line="632"/>
         <source>Switch full screen mode</source>
         <translation>Переключить полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="637"/>
+        <location filename="../src/mainwindow.cpp" line="638"/>
         <source>&amp;Light Background</source>
         <translation>&amp;Светлый фон</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="639"/>
+        <location filename="../src/mainwindow.cpp" line="640"/>
         <source>Switch color scheme</source>
         <translation>Переключение цветовой схемы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="649"/>
+        <location filename="../src/mainwindow.cpp" line="650"/>
         <source>&amp;Discretize Colors</source>
         <translation>&amp;Дискретные цвета</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="652"/>
+        <location filename="../src/mainwindow.cpp" line="653"/>
         <source>Discretize (sharpen) color of blocks</source>
         <translation>Дискретизировать цвета блоков</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="657"/>
+        <location filename="../src/mainwindow.cpp" line="658"/>
         <source>Open &amp;Background</source>
         <translation>Открыть графическую &amp;подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="659"/>
         <source>Open background crosscut file</source>
         <translation>Открыть графический файл подложки (разрез)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="664"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="684"/>
+        <location filename="../src/mainwindow.cpp" line="685"/>
         <source>&amp;Edit</source>
         <translation>&amp;Правка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="692"/>
-        <location filename="../src/mainwindow.cpp" line="1300"/>
+        <location filename="../src/mainwindow.cpp" line="693"/>
+        <location filename="../src/mainwindow.cpp" line="1313"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="695"/>
+        <location filename="../src/mainwindow.cpp" line="696"/>
         <source>&amp;Toolbars Shown</source>
         <translation>&amp;Видимые панели инструментов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="712"/>
+        <location filename="../src/mainwindow.cpp" line="713"/>
         <source>Main Toolbar</source>
         <translation>Основная панель инструментов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="831"/>
+        <location filename="../src/mainwindow.cpp" line="803"/>
+        <source>Tool Options</source>
+        <translation>Параметры инструмента</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="844"/>
         <source>Are blocks gridded?
 Blocks are gridded if each
 has not more than one neighbor
@@ -1211,178 +1216,178 @@ each contact fits it&apos;s dimension.</source>
 соответсвует его размерам.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="848"/>
+        <location filename="../src/mainwindow.cpp" line="861"/>
         <source>Cursor</source>
         <translation>Курсор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="853"/>
+        <location filename="../src/mainwindow.cpp" line="866"/>
         <source>Anchor</source>
         <translation>Привязка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="896"/>
+        <location filename="../src/mainwindow.cpp" line="909"/>
         <source>The document %1 has been modified.
 Do you want to save your changes or discard them?</source>
         <translation>Документ %1 был изменён.
 Сохранить изменения или отклонить их?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1310"/>
+        <location filename="../src/mainwindow.cpp" line="1323"/>
         <source>Filling with soil %1...</source>
         <translation>Идёт заливка грунтом %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="331"/>
-        <location filename="../src/mainwindow.cpp" line="1094"/>
-        <location filename="../src/mainwindow.cpp" line="1122"/>
+        <location filename="../src/mainwindow.cpp" line="332"/>
+        <location filename="../src/mainwindow.cpp" line="1107"/>
+        <location filename="../src/mainwindow.cpp" line="1135"/>
         <source>Cannot write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="930"/>
+        <location filename="../src/mainwindow.cpp" line="943"/>
         <source>Cannot load file %1.</source>
         <translation>Не удалось загрузить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1120"/>
+        <location filename="../src/mainwindow.cpp" line="1133"/>
         <source>Cannot read file %1.</source>
         <translation>Не удалось прочитать файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="445"/>
-        <location filename="../src/mainwindow.cpp" line="1124"/>
+        <location filename="../src/mainwindow.cpp" line="446"/>
+        <location filename="../src/mainwindow.cpp" line="1137"/>
         <source>Cannot open file %1.</source>
         <translation>Не удалось открыть файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1008"/>
+        <location filename="../src/mainwindow.cpp" line="1021"/>
         <source>Provided version ID: %1. Wanted version ID: %2.</source>
         <translation>ID версии в файле: %1. Требуемый ID версии: %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1100"/>
+        <location filename="../src/mainwindow.cpp" line="1113"/>
         <source>Unfinished file has been removed.</source>
         <translation>Незавершённый файл был удалён.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1102"/>
+        <location filename="../src/mainwindow.cpp" line="1115"/>
         <source>Unfinished file removal failed, please remove it manually.</source>
         <translation>Незавершённый файл не был удалён, удалите его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1289"/>
+        <location filename="../src/mainwindow.cpp" line="1302"/>
         <source>Exit &amp;Full Screen Mode</source>
         <translation>Выйти из &amp;полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1293"/>
+        <location filename="../src/mainwindow.cpp" line="1306"/>
         <source>&amp;Full Screen Mode</source>
         <translation>&amp;Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="705"/>
+        <location filename="../src/mainwindow.cpp" line="706"/>
         <source>&amp;Help</source>
         <translation>&amp;Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="413"/>
+        <location filename="../src/mainwindow.cpp" line="414"/>
         <source>L.O.R community</source>
         <translation>Сообщество L.O.R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="417"/>
+        <location filename="../src/mainwindow.cpp" line="418"/>
         <source>CrossPlatfrom.RU community</source>
         <translation>Сообщество CrossPlatfrom.RU</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="570"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
         <source>Export blocks data as text</source>
         <translation>Экспортировать информацию о блоках в текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="574"/>
+        <location filename="../src/mainwindow.cpp" line="575"/>
         <source>Export for &amp;plot...</source>
         <translation>Экспорт для &amp;построения…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="575"/>
+        <location filename="../src/mainwindow.cpp" line="576"/>
         <source>Export blocks data, polygons and additional bound points as text for contour plot</source>
         <translation>Экспортировать данные о блоках, полигонах и мнимых граничных точках для 2D постороения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="611"/>
+        <location filename="../src/mainwindow.cpp" line="612"/>
         <source>&amp;Remove Excess Blocks</source>
         <translation>&amp;Удалить лишние блоки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="739"/>
+        <location filename="../src/mainwindow.cpp" line="740"/>
         <source>Command List</source>
         <translation>Список команд</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="817"/>
+        <location filename="../src/mainwindow.cpp" line="830"/>
         <source>Welcome to %1!</source>
         <translation>Добро пожаловать в %1!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="824"/>
+        <location filename="../src/mainwindow.cpp" line="837"/>
         <source>[1D]</source>
         <translation>[1D]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="825"/>
+        <location filename="../src/mainwindow.cpp" line="838"/>
         <source>Are blocks placed one-dimensional (and vertically)?</source>
         <translation>Является ли задача одномерной (и вертикальной)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="829"/>
-        <location filename="../src/mainwindow.cpp" line="830"/>
+        <location filename="../src/mainwindow.cpp" line="842"/>
+        <location filename="../src/mainwindow.cpp" line="843"/>
         <source>[Grid]</source>
         <translation>[Сетка]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="895"/>
+        <location filename="../src/mainwindow.cpp" line="908"/>
         <source>Close Document</source>
         <translation>Закрыть документ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="912"/>
+        <location filename="../src/mainwindow.cpp" line="925"/>
         <source>Load Failed</source>
         <translation>Загрузка не удалась</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="936"/>
+        <location filename="../src/mainwindow.cpp" line="949"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="954"/>
+        <location filename="../src/mainwindow.cpp" line="967"/>
         <source>File is corrupted or is in bad format.</source>
         <translation>Файл повреждён или имеет неправильный формат.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1002"/>
+        <location filename="../src/mainwindow.cpp" line="1015"/>
         <source>File is for older version of %1.</source>
         <translation>Файл предназначен для устаревшей версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1005"/>
+        <location filename="../src/mainwindow.cpp" line="1018"/>
         <source>File is for newer version of %1.</source>
         <translation>Файл предназначен для более новой версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1045"/>
+        <location filename="../src/mainwindow.cpp" line="1058"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1084"/>
+        <location filename="../src/mainwindow.cpp" line="1097"/>
         <source>File saved</source>
         <translation>Файл сохранён</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1138"/>
+        <location filename="../src/mainwindow.cpp" line="1151"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
     </message>
@@ -1579,7 +1584,7 @@ Do you want to save your changes or discard them?</source>
 <context>
     <name>qfgui::Scene</name>
     <message>
-        <location filename="../src/scene.cpp" line="365"/>
+        <location filename="../src/graphicsviews/scene.cpp" line="365"/>
         <source>Computations Start Unsuccessful</source>
         <translation>Старт расчётов не удался</translation>
     </message>
@@ -1950,90 +1955,100 @@ Water Curve</source>
 <context>
     <name>qfgui::ToolsPanel</name>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="64"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="65"/>
         <source>Tools Panel</source>
         <translation>Панель инструментов</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="67"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="68"/>
         <source>&amp;No Tool</source>
         <translation>&amp;Нет инструмента</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="69"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="70"/>
         <source>&amp;Blocks Creator</source>
         <translation>Создание &amp;блоков</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="71"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="72"/>
         <source>&amp;Boundary Polygon Creator</source>
         <translation>&amp;Полигон граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="73"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="74"/>
         <source>&amp;Rectangle Selection</source>
         <translation>П&amp;рямоугольное выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="75"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="76"/>
         <source>&amp;Boundary Ellipse Creator</source>
         <translation>&amp;Эллипс граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="77"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="78"/>
         <source>&amp;Boundary Conditions Applicator</source>
         <translation>&amp;Изменение типа граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="79"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="80"/>
         <source>&amp;Polygonal Selection</source>
         <translation>П&amp;олигональное выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="81"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="82"/>
         <source>&amp;Ellipse Selection</source>
         <translation>&amp;Эллиптическое выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="98"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="101"/>
         <source>To cancel drawing, press &lt;b&gt;Esc&lt;/b&gt; or any tool icon.</source>
         <translation>Для удаления созданного инструмента, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="99"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="102"/>
         <source>Pressing &lt;b&gt;Backspace&lt;/b&gt; will delete last added point.</source>
         <translation>Нажатие &lt;b&gt;Backspace&lt;/b&gt; удалит последнюю добавленную точку.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="104"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="107"/>
         <source>Create polygon with sequential clicks to select blocks and you will be able to set their soil and staring conditions.</source>
         <translation>Создайте полигон последовательными кликами и вы сможете изменять грунт и начальные условия в выделенных им блоках.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="108"/>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="135"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="111"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="138"/>
         <source>Select wanted blocks and you will be able to set their soil and staring conditions.</source>
         <translation>Выделите желаемые блоки и вы сможете изменять их грунт и начальные условия.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="112"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="115"/>
         <source>Draw wanted polygon with sequential clicks and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте полигон последовательными кликами и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="116"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="119"/>
         <source>Draw wanted ellipse and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract  it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте эллипс и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="120"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="123"/>
         <source>Tool for choosing boundary conditions on polygons&apos; borders.&lt;br&gt;First click selects first point. All following clicks allow to choose condition for selected part and start next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to stop sequence.</source>
         <translation>Инструмент для задания граничных условий на участках границ полигонов.&lt;br&gt;Первый клик отмечает первую точку. Последующие клики позволяют выбрать граничное условие для выделенного участка и начинают выделение следующего.&lt;br&gt;Для остановки последовательности, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="126"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="129"/>
         <source>Select rectangle, choose additional properties and create blocks in one of two following ways.&lt;br&gt;Press &lt;b&gt;Enter&lt;/b&gt; to create all block according to geometrical progression.&lt;br&gt;Press &lt;b&gt;Shift+Enter&lt;/b&gt; to create all blocks according to geometrical progression and additional smaller block at end of each row and column, if it&apos;s needed to fully fill the rectangle.</source>
         <translation>Создайте прямоугольник, выберите дополнительные свойства и создайте блоки одним из двух следующих способов.&lt;br&gt;&lt;b&gt;Enter&lt;/b&gt; создаст только блоки, соответствующие геометрической прогрессии.&lt;br&gt;&lt;b&gt;Shift+Enter&lt;/b&gt; создаст блоки, соответствующие геометрической прогрессии и, если это необходимо для полного заполнения прямоугольника, дополнительные меньшие блоки в конце каждой строки и столбца.</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="166"/>
+        <source>Blocks selection</source>
+        <translation>Выделение блоков</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="178"/>
+        <source>Boundary polygons</source>
+        <translation>Граничные полигоны</translation>
     </message>
 </context>
 <context>
@@ -2067,87 +2082,87 @@ Water Curve</source>
 <context>
     <name>qfgui::Units</name>
     <message>
-        <location filename="../src/units.cpp" line="54"/>
+        <location filename="../src/units/units.cpp" line="54"/>
         <source>m</source>
         <extracomment>meter</extracomment>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="257"/>
+        <location filename="../src/units/units.cpp" line="257"/>
         <source>W</source>
         <extracomment>watt</extracomment>
         <translation>Вт</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="259"/>
+        <location filename="../src/units/units.cpp" line="259"/>
         <source>J</source>
         <extracomment>joule</extracomment>
         <translation>Дж</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="261"/>
+        <location filename="../src/units/units.cpp" line="261"/>
         <source>g</source>
         <extracomment>gram</extracomment>
         <translation>г</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="263"/>
+        <location filename="../src/units/units.cpp" line="263"/>
         <source>cal</source>
         <extracomment>calory</extracomment>
         <translation>кал</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="265"/>
+        <location filename="../src/units/units.cpp" line="265"/>
         <source>h</source>
         <extracomment>hour</extracomment>
         <translation>ч</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="267"/>
+        <location filename="../src/units/units.cpp" line="267"/>
         <source>s</source>
         <extracomment>second</extracomment>
         <translation>с</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="271"/>
+        <location filename="../src/units/units.cpp" line="271"/>
         <source>k</source>
         <extracomment>kilo</extracomment>
         <translation>к</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="273"/>
+        <location filename="../src/units/units.cpp" line="273"/>
         <source>M</source>
         <extracomment>mega</extracomment>
         <translation>М</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="276"/>
+        <location filename="../src/units/units.cpp" line="276"/>
         <source>·</source>
         <extracomment>multiplication mark</extracomment>
         <translation>·</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="357"/>
+        <location filename="../src/units/units.cpp" line="357"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="448"/>
+        <location filename="../src/units/units.cpp" line="448"/>
         <source>&amp;SI</source>
         <translation>&amp;СИ</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="450"/>
+        <location filename="../src/units/units.cpp" line="450"/>
         <source>&amp;Default</source>
         <translation>&amp;По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="452"/>
+        <location filename="../src/units/units.cpp" line="452"/>
         <source>&amp;Heat</source>
         <translation>&amp;Heat</translation>
     </message>
     <message>
-        <location filename="../src/units.cpp" line="454"/>
+        <location filename="../src/units/units.cpp" line="454"/>
         <source>&amp;Warm</source>
         <translation>&amp;Warm</translation>
     </message>
@@ -2155,7 +2170,7 @@ Water Curve</source>
 <context>
     <name>qfgui::UnitsMenu</name>
     <message>
-        <location filename="../src/unitsmenu.cpp" line="28"/>
+        <location filename="../src/units/unitsmenu.cpp" line="28"/>
         <source>System of &amp;Units</source>
         <translation>Система &amp;единиц</translation>
     </message>
