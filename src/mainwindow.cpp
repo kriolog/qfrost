@@ -449,6 +449,8 @@ bool MainWindow::openBackground()
     }
     
     BackgroundDialog *dialog = new BackgroundDialog(pixmap, this);
+    connect(dialog, SIGNAL(accepted(QPixmap,QTransform)),
+            mScene, SLOT(setBackground(QPixmap,QTransform)));
     dialog->exec();
     
     /*QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);

@@ -349,6 +349,8 @@ public slots:
      */
     void updateBlocksBrushes();
 
+    void setBackground(const QPixmap &pixmap, const QTransform &transform);
+
 private slots:
     /// Обновляет mIsGridded, mIs1D, mBlocks и mBlocksConst и испускает сигналы
     /// об изменении кол-ва блоков, одномерности и сеточности.
@@ -472,6 +474,9 @@ private:
     
     /// Этим грунтом зальются блоки после выбора начального блока заливки
     const Soil *mSoilToFill;
+
+    /// Графическая подложка (может быть равно 0).
+    QGraphicsPixmapItem *mBackgroundItem;
 
     friend class ChangeBoundaryPolygonsCommand;
     friend class ReadFromComputationDataCommand;

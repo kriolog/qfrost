@@ -215,7 +215,8 @@ public:
     enum ZValues {
         AnchorZValue = 1002,
         ToolZValue = 1001,
-        BoundaryPolygonZValue = 1000
+        BackgroundZValue = 1000,
+        BoundaryPolygonZValue = 999
     };
 
     /// Типы пересечения полигона граничных условий с данным полигоном

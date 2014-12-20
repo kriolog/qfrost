@@ -29,6 +29,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPair>
+#include <QGraphicsPixmapItem>
 
 #include <graphicsviews/block.h>
 #include <blockportable.h>
@@ -84,6 +85,7 @@ Scene::Scene(MainWindow *parent)
     , mUpdateBlocksTimer(new QTimer(this))
     , mIsFillingSoil(false)
     , mSoilToFill(NULL)
+    , mBackgroundItem(NULL)
 {
     //setItemIndexMethod(NoIndex);
     int sceneHalfsize = QFrost::sceneHalfSize * 1.01;
@@ -504,6 +506,19 @@ void Scene::updateBlocksBrushes()
         block->updateFromTemperature();
         block->updateFromThawedPart();
     }
+}
+
+void Scene::setBackground(const QPixmap &pixmap, const QTransform &transform)
+{
+    if (!mBackgroundItem) {
+        mBackgroundItem = new QGraphicsPixmapItem(pixmap);
+        addItem(mBackgroundItem);
+        mBackgroundItem->setZValue(QFrost::BackgroundZValue);
+        mBackgroundItem->setOpacity(0.3);
+    } else {
+        mBackgroundItem->setPixmap(pixmap);
+    }
+    mBackgroundItem->setTransform(transform);
 }
 
 Qt::Orientations Scene::toolChangesOrientations()
