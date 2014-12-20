@@ -42,10 +42,15 @@ class BackgroundDialog : public QDialog
 public:
     BackgroundDialog(const QPixmap &pixmap, QWidget *parent = NULL);
 
+signals:
+    void accepted(const QPixmap &pixmap, const QTransform &transform);
+
 protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private slots:
+    void acceptAndSendResult();
+
     void updateCross1Pos();
     void updateCross2Pos();
 

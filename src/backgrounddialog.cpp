@@ -142,8 +142,19 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     mainLayout->addWidget(slider);
     mainLayout->addWidget(mButtons);
     
-    connect(mButtons, SIGNAL(accepted()), SLOT(accept()));
+    connect(mButtons, SIGNAL(accepted()), SLOT(acceptAndSendResult()));
     connect(mButtons, SIGNAL(rejected()), SLOT(reject()));
+    
+    mCross1->setCursor(Qt::OpenHandCursor);
+    mCross2->setCursor(Qt::OpenHandCursor);
+}
+
+void BackgroundDialog::acceptAndSendResult()
+{
+    const double sx = (mCross1SceneX->value() - mCross2SceneX->value()) /
+                      double(mCross1PixmapX->value() - mCross2PixmapX->value());
+  //  emit accepted();
+    accept();
 }
 
 void BackgroundDialog::checkCrossesPos()
@@ -214,6 +225,8 @@ bool BackgroundDialog::eventFilter(QObject *object, QEvent *event)
 void BackgroundDialog::finishPlacingCross()
 {
     Q_ASSERT(mIsPlacingCross1 != mIsPlacingCross2);
+    mCross1->setCursor(Qt::OpenHandCursor);
+    mCross2->setCursor(Qt::OpenHandCursor);
     if (mIsPlacingCross1) {
         mIsPlacingCross1 = false;
     } else {
@@ -231,7 +244,8 @@ void BackgroundDialog::startPlacingCross1()
         return;
     }
     mIsPlacingCross1 = true;
-    mView->viewport()->setCursor(Qt::BlankCursor);
+    mCross1->setCursor(Qt::BlankCursor);
+    mCross2->setCursor(Qt::BlankCursor);
     mPlaceCross1Button->setEnabled(false);
     mPlaceCross2Button->setEnabled(false);
     mViewPressTimer.start();
@@ -243,7 +257,8 @@ void BackgroundDialog::startPlacingCross2()
         return;
     }
     mIsPlacingCross2 = true;
-    mView->viewport()->setCursor(Qt::BlankCursor);
+    mCross1->setCursor(Qt::BlankCursor);
+    mCross2->setCursor(Qt::BlankCursor);
     mPlaceCross1Button->setEnabled(false);
     mPlaceCross2Button->setEnabled(false);
     mViewPressTimer.start();
