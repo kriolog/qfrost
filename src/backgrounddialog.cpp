@@ -151,9 +151,20 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
 
 void BackgroundDialog::acceptAndSendResult()
 {
-    const double sx = (mCross1SceneX->value() - mCross2SceneX->value()) /
+    const double sx = double(QFrost::sceneUnits(mCross1SceneX->value() - mCross2SceneX->value())) /
                       double(mCross1PixmapX->value() - mCross2PixmapX->value());
-  //  emit accepted();
+    const double sy = double(QFrost::sceneUnits(mCross1SceneY->value() - mCross2SceneY->value())) /
+                      double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dx = -sx*double(mCross1PixmapX->value()) + QFrost::sceneUnits(mCross1SceneX->value());
+    const double dy = -sy*double(mCross1PixmapY->value()) + QFrost::sceneUnits(mCross1SceneY->value());
+
+    QTransform t;
+    t.translate(dx, dy);
+    t.scale(sx, sy);
+
+    emit accepted(mPixmapItem->pixmap(), t);
+
     accept();
 }
 
