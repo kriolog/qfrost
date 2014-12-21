@@ -451,6 +451,7 @@ bool MainWindow::openBackground()
     BackgroundDialog *dialog = new BackgroundDialog(pixmap, this);
     connect(dialog, SIGNAL(accepted(QPixmap,QTransform)),
             mScene, SLOT(setBackground(QPixmap,QTransform)));
+    dialog->setWindowState(dialog->windowState() | Qt::WindowMaximized);
     dialog->exec();
     
     /*QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
