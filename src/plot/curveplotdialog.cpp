@@ -109,33 +109,17 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     //: automatically set slice coordinate limits
     QPushButton *autoLimitCoord = new QPushButton(tr("&Auto"));
-    autoLimitCoord->setSizePolicy(QSizePolicy::Fixed,
-                                  QSizePolicy::Preferred);
     connect(autoLimitCoord, SIGNAL(clicked()),
             SLOT(autoMinMaxCoord()));
     autoMinMaxTemperature();
 
     //: automatically set t limits
     QPushButton *autoLimitTemperature = new QPushButton(tr("A&uto"));
-    autoLimitTemperature->setSizePolicy(QSizePolicy::Fixed,
-                                        QSizePolicy::Preferred);
     connect(autoLimitTemperature, SIGNAL(clicked()),
             SLOT(autoMinMaxTemperature()));
     autoMinMaxCoord();
 
     static const QString minMaxDelimText = "\342\200\223";
-
-    QHBoxLayout *tLimits = new QHBoxLayout;
-    tLimits->addWidget(mMinTemperature, 1);
-    tLimits->addWidget(new QLabel(minMaxDelimText));
-    tLimits->addWidget(mMaxTemperature), 1;
-    tLimits->addWidget(autoLimitTemperature);
-
-    QHBoxLayout *zLimits = new QHBoxLayout;
-    zLimits->addWidget(mMinCoord, 1);
-    zLimits->addWidget(new QLabel(minMaxDelimText));
-    zLimits->addWidget(mMaxCoord, 1);
-    zLimits->addWidget(autoLimitCoord); 
 
     QGroupBox *plotElementsBox = new QGroupBox(tr("Plot Elements"), this);
     QVBoxLayout *plotElements = new QVBoxLayout(plotElementsBox);
@@ -144,16 +128,24 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     plotElements->addWidget(mPlotTransitionTemperature);
     plotElements->addWidget(mShowModelDateText);
 
-    QGroupBox *limitsBox = new QGroupBox(tr("Axis Ranges"), this);
-    QFormLayout *limits = new QFormLayout(limitsBox);
-    limits->addRow(tr("Temperature:"), tLimits);
-    limits->addRow(tr("Coordinate:"), zLimits);
+    QGroupBox *coordLimitBox = new QGroupBox(tr("Coordinate Range"), this);
+    QFormLayout *coordLimits = new QFormLayout(coordLimitBox);
+    coordLimits->addRow(tr("Minimum:"), mMinCoord);
+    coordLimits->addRow(tr("Maximum:"), mMaxCoord);
+    coordLimits->addRow(autoLimitCoord);
+ 
+    QGroupBox *temperatureLimitBox = new QGroupBox(tr("Temperature Range"), this);
+    QFormLayout *temperatureLimits = new QFormLayout(temperatureLimitBox);
+    temperatureLimits->addRow(tr("Minimum:"), mMinTemperature);
+    temperatureLimits->addRow(tr("Maximum:"), mMaxTemperature);
+    temperatureLimits->addRow(autoLimitTemperature);
 
     connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
     QVBoxLayout *settingsLayout = new QVBoxLayout();
     settingsLayout->addWidget(plotElementsBox);
-    settingsLayout->addWidget(limitsBox);
+    settingsLayout->addWidget(coordLimitBox);
+    settingsLayout->addWidget(temperatureLimitBox);
 
     QHBoxLayout *middleLayout = new QHBoxLayout();
     middleLayout->addLayout(settingsLayout);
