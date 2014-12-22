@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -73,6 +73,8 @@ public:
     QComboBox *problemTypeComboBox() const {
         return mProblemType;
     }
+
+    QDate currentDate() const;
 
 private:
     DateEditWithUndo *mInitialDateEdit;

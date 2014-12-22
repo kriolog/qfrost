@@ -29,8 +29,13 @@
 #include <QLabel>
 #include <QtMath>
 
+#include <application.h>
 #include <units/physicalpropertyspinbox.h>
 #include <graphicsviews/block.h>
+#include <plot/curveplot.h>
+#include <mainwindow.h>
+#include <control_panel/controlpanel.h>
+#include <control_panel/computationcontrol.h>
 
 using namespace qfgui;
 
@@ -38,6 +43,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
                                  Qt::Orientation orientation,
                                  QWidget *parent)
     : QDialog(parent)
+    , mPlot(new CurvePlot(orientation, this))
     , mPlotTemperature(new QCheckBox(tr("&Temperature"), this))
     , mPlotThawedPard(new QCheckBox(tr("Thawed &part"), this))
     , mPlotTransitionTemperature(new QCheckBox(tr("T&ransition temperature"), this))
@@ -65,8 +71,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     foreach (Block *block, mSlice) {
         mTemperatures.append(block->soilBlock()->temperature());
-        mThawedParts.append(block->soilBlock()->temperature());
-        mTransitionTemperatures.append(block->soilBlock()->temperature());
+        mThawedParts.append(block->soilBlock()->thawedPart());
+        mTransitionTemperatures.append(block->soilBlock()->transitionTemperature());
 
         const QPointF center = block->metersCenter();
         mCoordsMain.append(orientation == Qt::Horizontal
@@ -87,11 +93,19 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
             SLOT(updateAdditionalLimits()));
     connect(mMaxCoord, SIGNAL(valueChanged(double)),
             SLOT(updateAdditionalLimits()));
+    connect(mMinCoord, SIGNAL(valueChanged(double)),
+            SLOT(setPlotRangeCoords()));
+    connect(mMaxCoord, SIGNAL(valueChanged(double)),
+            SLOT(setPlotRangeCoords()));
 
     connect(mMinTemperature, SIGNAL(valueChanged(double)),
             SLOT(updateAdditionalLimits()));
-    connect(mMinTemperature, SIGNAL(valueChanged(double)),
+    connect(mMaxTemperature, SIGNAL(valueChanged(double)),
             SLOT(updateAdditionalLimits()));
+    connect(mMinTemperature, SIGNAL(valueChanged(double)),
+            SLOT(setPlotRangeTemperature()));
+    connect(mMaxTemperature, SIGNAL(valueChanged(double)),
+            SLOT(setPlotRangeTemperature()));
 
     //: automatically set slice coordinate limits
     QPushButton *autoLimitCoord = new QPushButton(tr("&Auto"));
@@ -137,10 +151,37 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
+    QVBoxLayout *settingsLayout = new QVBoxLayout();
+    settingsLayout->addWidget(plotElementsBox);
+    settingsLayout->addWidget(limitsBox);
+
+    QHBoxLayout *middleLayout = new QHBoxLayout();
+    middleLayout->addLayout(settingsLayout);
+    middleLayout->addWidget(mPlot, 1);
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(plotElementsBox);
-    mainLayout->addWidget(limitsBox);
+    mainLayout->addLayout(middleLayout);
     mainLayout->addWidget(mDialogButtons);
+
+    mPlot->setCoords(mCoordsMain);
+    mPlot->setTemperature(mTemperatures);
+    mPlot->setThawedPart(mThawedParts);
+    mPlot->setTransitionTemperature(mTransitionTemperatures);
+
+    mPlot->setModelDate(Application::findMainWindow(parent)->controlPanel()
+                        ->computationControl()->currentDate());
+ 
+    connect(mPlotTemperature, SIGNAL(toggled(bool)),
+            mPlot, SLOT(setTemperatureVisible(bool)));
+
+    connect(mPlotThawedPard, SIGNAL(toggled(bool)),
+            mPlot, SLOT(setThawedPartVisible(bool)));
+
+    connect(mPlotTransitionTemperature, SIGNAL(toggled(bool)),
+            mPlot, SLOT(setTransitionTemperatureVisible(bool)));
+
+    connect(mShowModelDateText, SIGNAL(toggled(bool)),
+            mPlot, SLOT(setModelDateVisible(bool)));
 
     mPlotTemperature->setChecked(true);
     mPlotThawedPard->setChecked(true);
@@ -203,4 +244,16 @@ void CurvePlotDialog::updateAdditionalLimits()
     mMaxCoord->setMinimum(minCoord);
 
     mIsUpdatingAdditionalLimits = false;
+}
+
+void CurvePlotDialog::setPlotRangeCoords()
+{
+    mPlot->setCoordsAxisRange(mMinCoord->value(),
+                              mMaxCoord->value());
+}
+
+void CurvePlotDialog::setPlotRangeTemperature()
+{
+    mPlot->setTemperatureAxisRange(mMinTemperature->value(),
+                                   mMaxTemperature->value());
 }

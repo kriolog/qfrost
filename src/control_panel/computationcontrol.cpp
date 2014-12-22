@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -353,3 +353,7 @@ void ComputationControl::updateSaveDataMaxYVisibility(int index)
     mSaveDataMaxYLabel->setVisible(mustBeVisible);
 }
 
+QDate ComputationControl::currentDate() const
+{
+    return mInitialDateEdit->date();
+}

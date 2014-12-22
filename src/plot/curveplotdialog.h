@@ -30,6 +30,7 @@ QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
 namespace qfgui {
 
 QT_FORWARD_DECLARE_CLASS(Block)
+QT_FORWARD_DECLARE_CLASS(CurvePlot)
 
 class CurvePlotDialog : public QDialog
 {
@@ -50,7 +51,17 @@ private slots:
     /// mMaxTemperature/mMaxCoord исходя из введённых в них значениях.
     void updateAdditionalLimits();
 
+    /// Устанавливает диапазон оси координат у mPlot в соответствие 
+    /// со значениями mMinCoord и mMaxCoord.
+    void setPlotRangeCoords();
+
+    /// Устанавливает диапазон оси температур у mPlot в соответствие 
+    /// со значениями mMinTemperature и mMaxTemperature.
+    void setPlotRangeTemperature();
+
 private:
+    CurvePlot *mPlot;
+
     QCheckBox *mPlotTemperature;
     QCheckBox *mPlotThawedPard;
     QCheckBox *mPlotTransitionTemperature;
