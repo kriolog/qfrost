@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -163,8 +163,17 @@ void Anchor::paint(QPainter *painter,
         painter->drawPolygon(sandclock_1);
         painter->drawPolygon(sandclock_2);
         break;
-    }
-    case Nowhere:
+    } case OnBlockCenter: {
+        /// Привязка к центру блока
+        static const int diagHalfSize = 3;
+        QVector<QLine> lines;
+        lines << QLine(-circleAnchorHalfSize, 0, circleAnchorHalfSize, 0)
+              << QLine(0, -circleAnchorHalfSize, 0, circleAnchorHalfSize)
+              << QLine(diagHalfSize, diagHalfSize, -diagHalfSize, -diagHalfSize)
+              << QLine(diagHalfSize, -diagHalfSize, -diagHalfSize, diagHalfSize);
+        painter->drawLines(lines);
+        break;
+    } case Nowhere:
         break;
     }
     painter->restore();
@@ -208,7 +217,7 @@ void Anchor::findAnchor(const QPointF &point)
         }
     }
 
-    if (mLogic.testFlag(NeedBlocks)) {
+    if (mLogic.testFlag(NeedBlockBorders) || mLogic.testFlag(NeedBlockCenters)) {
         APoint result;
         result = anchorOnBlock(point);
         if (result.first != QFrost::noPoint) {
@@ -301,42 +310,53 @@ Anchor::APointOnBoundaryPolygon Anchor::anchorOnBoundaryPolygon(const QPointF &p
 
 Anchor::APoint Anchor::anchorOnBlock(const QPointF &point)
 {
+    Q_ASSERT(mLogic.testFlag(NeedBlockCenters) || mLogic.testFlag(NeedBlockBorders));
+
     APoint result;
     QList<Block *> nearestBlocks;
     Block *blockContainingPoint;
     blockContainingPoint = qfScene()->block(point);
     if (blockContainingPoint != NULL) {
         QRectF blockRect = blockContainingPoint->rect();
-        if (isInInnerPart(point, blockRect)) {
-            result = nearestRectCorner(point, blockRect);
-            if (result.first != QFrost::noPoint) {
-                return result;
+        if (mLogic.testFlag(NeedBlockBorders)) {
+            if (isInInnerPart(point, blockRect)) {
+                result = nearestRectCorner(point, blockRect);
+                if (result.first != QFrost::noPoint) {
+                    return result;
+                }
+            } else {
+                result = nearestRectCorner(point, blockRect);
+                if (pointsAreCloseEnought(point, result.first)) {
+                    return result;
+                }
+                result = nearestPointOnRectSide(point, blockRect);
+                if (result.first != QFrost::noPoint) {
+                    return result;
+                }
             }
         } else {
-            result = nearestRectCorner(point, blockRect);
-            if (pointsAreCloseEnought(point, result.first)) {
-                return result;
-            }
-            result = nearestPointOnRectSide(point, blockRect);
-            if (result.first != QFrost::noPoint) {
-                return result;
-            }
+            Q_ASSERT(mLogic.testFlag(NeedBlockCenters));
+            result.first = blockRect.center();
+            result.second = OnBlockCenter;
+            return result;
         }
     } else {
         nearestBlocks = qfScene()->blocks(stickRect(point));
         QList<QRectF> rects;
-        QRectF currentRect;
         foreach(Block * nearestBlock, nearestBlocks) {
-            currentRect = nearestBlock->rect();
-            rects.append(currentRect);
+            rects.append(nearestBlock->rect());
         }
-        result = nearestRectCorner(point, rects);
+        result = (mLogic.testFlag(NeedBlockCenters))
+                 ? nearestRectCenter(point, rects)
+                 : nearestRectCorner(point, rects);
         if (pointsAreCloseEnought(point, result.first)) {
             return result;
         }
-        result = nearestPointOnRectSide(point, rects);
-        if (pointsAreCloseEnought(point, result.first)) {
-            return result;
+        if (mLogic.testFlag(NeedBlockBorders)) {
+            result = nearestPointOnRectSide(point, rects);
+            if (pointsAreCloseEnought(point, result.first)) {
+                return result;
+            }
         }
     }
     return APoint(QFrost::noPoint, Nowhere);
@@ -463,8 +483,8 @@ Anchor::APointOnBoundaryPolygon Anchor::nearestConditionPointOnBoundaryPolygon(c
     PointOnBoundaryPolygon result;
     Q_ASSERT(polygon->corners().last().conditionPoints.isEmpty());
     uint i = 0;
-    foreach(Vertex corner, polygon->corners()) {
-        foreach(ConditionPoint conditionPoint , corner.conditionPoints) {
+    foreach(const Vertex &corner, polygon->corners()) {
+        foreach(const ConditionPoint &conditionPoint , corner.conditionPoints) {
             PointOnBoundaryPolygon currentPoint;
             currentPoint = PointOnBoundaryPolygon(polygon, i, conditionPoint.distance);
             if (firstPointIsCloser(p, currentPoint, result)) {
@@ -576,7 +596,7 @@ Anchor::APoint Anchor::nearestRectCorner(const QPointF &p, const QList< QRectF >
 {
     QPointF result = QFrost::noPoint;
     QPointF currentPoint;
-    foreach(QRectF rect, rects) {
+    foreach(const QRectF &rect, rects) {
         currentPoint = nearestRectCorner(p, rect).first;
         if (currentPoint != QFrost::noPoint) {
             result = closestPoint(p, currentPoint, result);
@@ -585,6 +605,19 @@ Anchor::APoint Anchor::nearestRectCorner(const QPointF &p, const QList< QRectF >
     APoint aresult;
     aresult.first = result;
     aresult.second = OnBlockCorner;
+    return aresult;
+}
+
+Anchor::APoint Anchor::nearestRectCenter(const QPointF &p, const QList< QRectF > &rects) const
+{
+    QPointF result = QFrost::noPoint;
+    QPointF currentPoint;
+    foreach(const QRectF &rect, rects) {
+        result = closestPoint(p, rect.center(), result);
+    }
+    APoint aresult;
+    aresult.first = result;
+    aresult.second = OnBlockCenter;
     return aresult;
 }
 
@@ -615,7 +648,7 @@ Anchor::APoint Anchor::nearestPointOnRectSide(const QPointF &p, const QList<QRec
 {
     QPointF result = QFrost::noPoint;
     QPointF currentPoint;
-    foreach(QRectF rect, rects) {
+    foreach(const QRectF &rect, rects) {
         QRectF extendedRect;
         extendedRect = rect.adjusted(-mStickRadius, -mStickRadius,
                                      mStickRadius, mStickRadius);
@@ -748,14 +781,19 @@ void Anchor::setTool(QFrost::ToolType toolType)
     case QFrost::rectangularSelection:
     case QFrost::boundaryEllipseCreator:
     case QFrost::polygonalSelection:
-        mLogic = NeedBlocks | NeedVisibleGrid;
+        mLogic = NeedBlockBorders | NeedVisibleGrid;
         break;
     case QFrost::boundaryPolygonCreator:
-        mLogic = NeedBlocks | NeedPolygons | NeedVisibleGrid;
+        mLogic = NeedBlockBorders | NeedPolygons | NeedVisibleGrid;
         break;
     case QFrost::boundaryConditionsCreator:
         mLogic = NeedPolygons;
         break;
+    case QFrost::curvePlot:
+        mLogic = NeedBlockCenters;
+        break;
+    default:
+        Q_ASSERT(false);
     }
 
     if (oldLogic != mLogic) {

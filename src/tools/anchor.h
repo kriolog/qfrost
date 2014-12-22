@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -64,12 +64,14 @@ public:
 
     enum AnchorLogicFlag {
         NotNeeded = 0x0,
-        /// Нужна привязка к блокам (к их углам и сторонам)
-        NeedBlocks = 0x1,
+        /// Нужна привязка к границам блоков (к их углам и сторонам)
+        NeedBlockBorders = 0x1,
         /// Нужна привязка к видимой сетке
         NeedVisibleGrid = 0x2,
         /// Нужна привязка к полигонам (к их углам, сторонам и точкам смены условия)
-        NeedPolygons = 0x4
+        NeedPolygons = 0x4,
+        /// Нужна привязка к центрам блоков
+        NeedBlockCenters = 0x8
     };
     Q_DECLARE_FLAGS(AnchorLogicFlags, AnchorLogicFlag)
 
@@ -165,6 +167,7 @@ private:
         Nowhere,
         OnBlockCorner,
         OnBlockSide,
+        OnBlockCenter,
         OnVisibleGrid,
         OnPolygonSide,
         OnPolygonCorner,
@@ -204,7 +207,7 @@ private:
     APointOnBoundaryPolygon anchorOnBoundaryPolygon(const QPointF &point);
 
     /**
-     * Привязка по блокам.
+     * Привязка по блокам (по их сторонам+углам или центрам).
      */
     APoint anchorOnBlock(const QPointF &point);
 
@@ -277,6 +280,11 @@ private:
      * Ближайший к @a p из углов списка прямоугольников @a rects
      */
     APoint nearestRectCorner(const QPointF &p, const QList<QRectF> &rects) const;
+
+    /**
+     * Ближайший к @a p из центров списка прямоугольников @a rects
+     */
+    APoint nearestRectCenter(const QPointF &p, const QList<QRectF> &rects) const;
 
     /**
      * Ближайший к @a p из углов прямоугольника @a rect
