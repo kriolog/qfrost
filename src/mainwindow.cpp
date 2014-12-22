@@ -584,14 +584,14 @@ void MainWindow::createActions()
     connect(mExportAct, SIGNAL(triggered()), this, SLOT(exportData()));
     
     mExportDataForPlotAct = new QAction(QIcon::fromTheme("document-export"),
-                                        tr("Export for &plot..."), this);
+                                        tr("Export for &Plot..."), this);
     mExportDataForPlotAct->setStatusTip(tr("Export blocks data, polygons and "
                                            "additional bound points as text "
                                            "for contour plot"));
     connect(mExportDataForPlotAct, SIGNAL(triggered()), this, SLOT(exportDataForPlot()));
 
     mExportImageAct = new QAction(QIcon::fromTheme("image-x-generic"),
-                                  tr("&Export Image..."), this);
+                                  tr("Export &Image..."), this);
     mExportImageAct->setStatusTip(tr("Export workspace to image"));
     connect(mExportImageAct, SIGNAL(triggered()), this, SLOT(exportImage()));
 
@@ -667,12 +667,12 @@ void MainWindow::createActions()
             mColorGenerator, SLOT(setDiscretizeColors(bool)));
 
     mBackgroundOpenAct = new QAction(QIcon::fromTheme("games-config-background"),
-                                  tr("Open &Background"), this);
+                                  tr("Op&en Background"), this);
     mBackgroundOpenAct->setStatusTip(tr("Open background crosscut file"));
     connect(mBackgroundOpenAct, SIGNAL(triggered()), SLOT(openBackground()));
 
     mBackgroundRemoveAct = new QAction(QIcon::fromTheme("edit-delete"),
-                                       tr("&Remove Background"), this);
+                                       tr("Re&move Background"), this);
     mBackgroundRemoveAct->setEnabled(false);
     connect(mBackgroundRemoveAct, SIGNAL(triggered()),
             mScene, SLOT(removeBackground()));
