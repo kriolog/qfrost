@@ -365,6 +365,9 @@ public slots:
      */
     void setBackgroundVisible(bool visible);
 
+    /// Открывает диалог построения графиков по срезу.
+    void openCurvePlotDialog();
+
 private slots:
     /// Обновляет mIsGridded, mIs1D, mBlocks и mBlocksConst и испускает сигналы
     /// об изменении кол-ва блоков, одномерности и сеточности.

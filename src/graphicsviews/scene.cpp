@@ -553,6 +553,19 @@ void Scene::setBackgroundVisible(bool visible)
     emit backgroundVisibilityChanged(visible);
 }
 
+void Scene::openCurvePlotDialog()
+{
+    if (mAnchor->pos() == QFrost::noPoint) {
+        return;
+    }
+    Block *b = block(mAnchor->pos());
+    if (!b) {
+        qWarning("%s called with anchor outside of block!", Q_FUNC_INFO);
+        return;
+    }
+    b->showArrows(); // tmp
+}
+
 Qt::Orientations Scene::toolChangesOrientations()
 {
     if (mTool.isNull()) {
@@ -601,17 +614,24 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             mTool = new BoundaryEllipseCreator(mToolsSettings[mToolToCreate]);
             justCreatedTool = true;
             break;
+        case QFrost::curvePlot:
+            openCurvePlotDialog();
+            break;
         case QFrost::boundaryPolygonCreator:
         case QFrost::boundaryConditionsCreator:
         case QFrost::polygonalSelection:
             break;
+        default:
+            Q_ASSERT(false);
         }
         if (justCreatedTool) {
             mTool.data()->setPos(anchor()->pos());
             addItem(mTool.data());
             // После этого обязательно запустить основной обработчик нажатий!
         }
-        mToolToCreate = QFrost::noTool;
+        if (mToolToCreate != QFrost::curvePlot) {
+            mToolToCreate = QFrost::noTool;
+        }
     }
     // HACK: временно врубаем у view ScrollHandDrag, тогда не будет deselect'а
     QGraphicsView::DragMode oldDragMode = qfView()->dragMode();
@@ -684,6 +704,8 @@ void Scene::setTool(QFrost::ToolType toolType)
     case QFrost::polygonalSelection:
         mTool = new PolygonalSelection;
         addItem(mTool.data());
+        break;
+    case QFrost::curvePlot:
         break;
     default:
         Q_ASSERT(false);
