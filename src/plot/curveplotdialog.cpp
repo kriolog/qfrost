@@ -22,9 +22,12 @@
 
 #include <QCheckBox>
 #include <QHBoxLayout>
+#include <QGroupBox>
 #include <QFormLayout>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QLabel>
+#include <QtMath>
 
 #include <units/physicalpropertyspinbox.h>
 #include <graphicsviews/block.h>
@@ -35,8 +38,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
                                  Qt::Orientation orientation,
                                  QWidget *parent)
     : QDialog(parent)  
-    , mMinT(new PhysicalPropertySpinBox(Temperature, this))
-    , mMaxT(new PhysicalPropertySpinBox(Temperature, this))
+    , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
+    , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
     , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
     , mSlice(block->slice(orientation))
@@ -46,6 +49,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mCoordsMain()
     , mCoordsNormal()
     , mDialogButtons(new QDialogButtonBox(QDialogButtonBox::Close, this))
+    , mIsUpdatingAdditionalLimits(false)
 {
     Q_ASSERT(!mSlice.isEmpty());
 
@@ -75,40 +79,110 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     }
     mMaxCoord->setMaximum(mCoordsMain.last());
 
-    mMinCoord->setValue(mMinCoord->minimum());
-    mMaxCoord->setValue(mMaxCoord->maximum());
+    connect(mMinCoord, SIGNAL(valueChanged(double)),
+            SLOT(updateAdditionalLimits()));
+    connect(mMaxCoord, SIGNAL(valueChanged(double)),
+            SLOT(updateAdditionalLimits()));
+
+    connect(mMinTemperature, SIGNAL(valueChanged(double)),
+            SLOT(updateAdditionalLimits()));
+    connect(mMinTemperature, SIGNAL(valueChanged(double)),
+            SLOT(updateAdditionalLimits()));
+
+    //: automatically set slice coordinate limits
+    QPushButton *autoLimitCoord = new QPushButton(tr("&Auto"));
+    autoLimitCoord->setSizePolicy(QSizePolicy::Fixed,
+                                  QSizePolicy::Preferred);
+    connect(autoLimitCoord, SIGNAL(clicked()),
+            SLOT(autoMinMaxTemperature()));
+    autoMinMaxTemperature();
 
     //: automatically set t limits
-    QPushButton *tAutoLimit = new QPushButton(tr("Auto t"));
-    //connect(tAutoLimit, SIGNAL(clicked()), this, SLOT(autoLimitsT()));
-    //: automatically set z limits
-    QPushButton *zAutoLimit = new QPushButton(tr("Auto z"));
-    //connect(zAutoLimit, SIGNAL(clicked()), this, SLOT(autoLimitsZ()));
+    QPushButton *autoLimitTemperature = new QPushButton(tr("A&uto"));
+    autoLimitTemperature->setSizePolicy(QSizePolicy::Fixed,
+                                        QSizePolicy::Preferred);
+    connect(autoLimitTemperature, SIGNAL(clicked()),
+            SLOT(autoMinMaxCoord()));
+    autoMinMaxCoord();
+
+    static const QString minMaxDelimText = "\342\200\223";
 
     QHBoxLayout *tLimits = new QHBoxLayout;
-    tLimits->addWidget(mMinT);
-    tLimits->addWidget(mMaxT);
-    tLimits->addWidget(tAutoLimit);
+    tLimits->addWidget(mMinTemperature, 1);
+    tLimits->addWidget(new QLabel(minMaxDelimText));
+    tLimits->addWidget(mMaxTemperature), 1;
+    tLimits->addWidget(autoLimitTemperature);
+
     QHBoxLayout *zLimits = new QHBoxLayout;
-    zLimits->addWidget(mMinCoord);
-    zLimits->addWidget(mMaxCoord);
-    zLimits->addWidget(zAutoLimit);
+    zLimits->addWidget(mMinCoord, 1);
+    zLimits->addWidget(new QLabel(minMaxDelimText));
+    zLimits->addWidget(mMaxCoord, 1);
+    zLimits->addWidget(autoLimitCoord);
 
-    QFormLayout *limits = new QFormLayout;
-    limits->addRow(tr("t:"), tLimits);
-    limits->addRow(tr("z:"), zLimits);
+    QGroupBox *limitsBox = new QGroupBox(tr("Axes Limits Setup"), this);
+    QFormLayout *limits = new QFormLayout(limitsBox);
+    limits->addRow(tr("Temperature:"), tLimits);
+    limits->addRow(tr("Coordinate:"), zLimits);
 
-    QCheckBox *plotTemperatesBox = new QCheckBox(tr("Draw t/v"));
-    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
-            mMinT, SLOT(setEnabled(bool)));
-    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
-            mMaxT, SLOT(setEnabled(bool)));
-    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
-            mMaxT, SLOT(setEnabled(bool)));
-    plotTemperatesBox->setChecked(true);
+    connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(plotTemperatesBox);
-    mainLayout->addLayout(limits);
+    mainLayout->addWidget(limitsBox);
     mainLayout->addWidget(mDialogButtons);
+}
+
+void CurvePlotDialog::autoMinMaxCoord()
+{
+    mMinCoord->setValue(mMinCoord->minimum());
+    mMaxCoord->setValue(mMaxCoord->maximum());
+}
+
+void CurvePlotDialog::autoMinMaxTemperature()
+{
+    double minT = std::numeric_limits<double>::infinity();
+    double maxT = -std::numeric_limits<double>::infinity();
+
+    foreach (double t, mTemperatures) {
+        if (t < minT) {
+            minT = t;
+        }
+        if (t > maxT) {
+            maxT = t;
+        }
+    }
+
+    mMinTemperature->setValue(qFloor(minT));
+    mMaxTemperature->setValue(qCeil(maxT));
+
+    // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
+    if (mMaxTemperature->value() - mMinTemperature->value() < 3.0) {
+        const double avgT = (maxT - minT)/2.0;
+        static const double deltaT = 2.5;
+
+        mMinTemperature->setValue(qFloor(avgT - deltaT));
+        mMaxTemperature->setValue(qCeil(avgT + deltaT));
+    }
+}
+
+void CurvePlotDialog::updateAdditionalLimits()
+{
+    if (mIsUpdatingAdditionalLimits) {
+        return;
+    }
+
+    mIsUpdatingAdditionalLimits = true;
+
+    const double minT = mMinTemperature->value();
+    const double maxT = mMaxTemperature->value();
+
+    mMinTemperature->setMaximum(maxT);
+    mMaxTemperature->setMinimum(minT);
+
+    const double minCoord = mMinCoord->value();
+    const double maxCoord = mMaxCoord->value();
+
+    mMinCoord->setMaximum(maxCoord);
+    mMaxCoord->setMinimum(minCoord);
+
+    mIsUpdatingAdditionalLimits = false;
 }

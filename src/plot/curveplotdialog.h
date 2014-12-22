@@ -38,9 +38,20 @@ public:
                     Qt::Orientation orientation,
                     QWidget *parent = NULL);
 
+private slots:
+    /// Устанавливает значения mMinCoord и mMaxCoord исходя из mCoordsMain.
+    void autoMinMaxCoord();
+
+    /// Устанавливает значения mMinT и mMaxT исходя из mTemperatures.
+    void autoMinMaxTemperature();
+
+    /// Устанавливает максимумы для mMinTemperature/mMinCoord и минимумы для
+    /// mMaxTemperature/mMaxCoord исходя из введённых в них значениях.
+    void updateAdditionalLimits();
+
 private:
-    QDoubleSpinBox *mMinT;
-    QDoubleSpinBox *mMaxT;
+    QDoubleSpinBox *mMinTemperature;
+    QDoubleSpinBox *mMaxTemperature;
     QDoubleSpinBox *mMinCoord;
     QDoubleSpinBox *mMaxCoord;
 
@@ -52,6 +63,8 @@ private:
     QVector<double> mCoordsNormal;
 
     QDialogButtonBox *mDialogButtons;
+
+    bool mIsUpdatingAdditionalLimits;
 };
 }
 
