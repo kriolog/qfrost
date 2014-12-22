@@ -39,6 +39,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QCoreApplication>
 
 using namespace qfgui;
 
@@ -122,12 +123,12 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     cross2ScenePos->addWidget(mCross2SceneY);
     
     QFormLayout *imagePosLayout = new QFormLayout();
-    imagePosLayout->addRow("Image pos 1:", cross1PixmapPos);
-    imagePosLayout->addRow("Image pos 2:", cross2PixmapPos);
+    imagePosLayout->addRow(tr("First image pos:"), cross1PixmapPos);
+    imagePosLayout->addRow(tr("Second image pos:"), cross2PixmapPos);
     
     QFormLayout *scenePosLayout = new QFormLayout();
-    scenePosLayout->addRow("Scene pos 1:", cross1ScenePos);
-    scenePosLayout->addRow("Scene pos 2:", cross2ScenePos);
+    scenePosLayout->addRow(tr("First scene pos:"), cross1ScenePos);
+    scenePosLayout->addRow(tr("Second scene pos:"), cross2ScenePos);
     
     mView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -360,8 +361,10 @@ bool BackgroundDialog::tryLoadReferenceFile()
     if (!ok || in.atEnd()) {
         onBadInput:
         QMessageBox::warning(this, loadFailedTitle,
-                             tr("Reference file %1 has bad format.")
-                             .arg(locale().quoteString(mReferenceFileName)));
+                             tr("Reference file %1 has bad format. "
+                                "Maybe it was created with other version of %2 or incorrectly modified.")
+                             .arg(locale().quoteString(mReferenceFileName))
+                             .arg(QCoreApplication::applicationName()));
         return false;
     }
 
