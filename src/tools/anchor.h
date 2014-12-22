@@ -150,15 +150,6 @@ private:
      */
     qreal mStickRadius;
 
-    /// Нужна привязка к блокам (к их углам и сторонам)
-    bool mNeedBlocks;
-
-    /// Нужна привязка к полигонам (к их углам, сторонам и точкам смены условия)
-    bool mNeedPolygons;
-
-    /// Нужна привязка к видимой сетке
-    bool mNeedVisibleGrid;
-
     /// Необходимые привязки
     AnchorLogicFlags mLogic;
 
