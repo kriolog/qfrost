@@ -59,6 +59,15 @@ private slots:
     /// со значениями mMinTemperature и mMaxTemperature.
     void setPlotRangeTemperature();
 
+    /// Открывает диалог сохранения графика в PDF.
+    bool savePDF();
+
+    /// Открывает диалог сохранения графика в PNG.
+    bool savePNG();
+
+    /// Открывает диалог сохранения первичных данных.
+    bool savePrimaryData();
+
 private:
     CurvePlot *mPlot;
 
@@ -79,6 +88,10 @@ private:
     QVector<double> mTransitionTemperatures;
     QVector<double> mCoordsMain;
     QVector<double> mCoordsNormal;
+
+    QPushButton *mSavePNGButton;
+    QPushButton *mSavePDFButton;
+    QPushButton *mSavePrimaryData;
 
     QDialogButtonBox *mDialogButtons;
 

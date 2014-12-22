@@ -134,6 +134,11 @@ CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
     mPlot->replot();
 }
 
+QSize CurvePlot::plotSize() const
+{
+    return mPlot->size();
+}
+
 void CurvePlot::setCoords(const QVector<double> &data)
 {
     Q_ASSERT(mCoords.isEmpty());
@@ -200,4 +205,15 @@ void CurvePlot::setTemperatureAxisRange(double lower, double upper)
 {
     mTemperature->valueAxis()->setRange(lower, upper);
     mPlot->replot();
+}
+
+bool CurvePlot::savePDF(const QString &fileName)
+{
+    return mPlot->savePdf(fileName);
+}
+
+bool CurvePlot::savePNG(const QString &fileName,
+                        int width, int height, double scale)
+{
+    return mPlot->savePng(fileName, width, height, scale);
 }

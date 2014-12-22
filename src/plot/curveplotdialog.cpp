@@ -47,7 +47,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mPlotTemperature(new QCheckBox(tr("&Temperature"), this))
     , mPlotThawedPard(new QCheckBox(tr("Thawed &part"), this))
     , mPlotTransitionTemperature(new QCheckBox(tr("T&ransition temperature"), this))
-    , mShowModelDateText(new QCheckBox(tr("Show model &date in title")))
+    , mShowModelDateText(new QCheckBox(tr("Show &model date in title")))
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
@@ -58,6 +58,9 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mTransitionTemperatures()
     , mCoordsMain()
     , mCoordsNormal()
+    , mSavePNGButton(new QPushButton("Save PNG &Image"))
+    , mSavePDFButton(new QPushButton("Save PDF &Document"))
+    , mSavePrimaryData(new QPushButton("&Save Primary Data"))
     , mDialogButtons(new QDialogButtonBox(QDialogButtonBox::Close, this))
     , mIsUpdatingAdditionalLimits(false)
 {
@@ -121,6 +124,10 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
             SLOT(autoMinMaxTemperature()));
     autoMinMaxCoord();
 
+    connect(mSavePNGButton, SIGNAL(clicked()), SLOT(savePNG()));
+    connect(mSavePDFButton, SIGNAL(clicked()), SLOT(savePDF()));
+    connect(mSavePrimaryData, SIGNAL(clicked()), SLOT(savePrimaryData()));
+
     static const QString minMaxDelimText = "\342\200\223";
 
     QGroupBox *plotElementsBox = new QGroupBox(tr("Plot Elements"), this);
@@ -142,12 +149,19 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     temperatureLimits->addRow(tr("Maximum:"), mMaxTemperature);
     temperatureLimits->addRow(autoLimitTemperature);
 
+    QGroupBox *saveBox = new QGroupBox(tr("Save Graph or Data"), this);
+    QVBoxLayout *saveLayout = new QVBoxLayout(saveBox);
+    saveLayout->addWidget(mSavePNGButton);
+    saveLayout->addWidget(mSavePDFButton);
+    saveLayout->addWidget(mSavePrimaryData);
+
     connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
     QVBoxLayout *settingsLayout = new QVBoxLayout();
     settingsLayout->addWidget(plotElementsBox);
     settingsLayout->addWidget(coordLimitBox);
     settingsLayout->addWidget(temperatureLimitBox);
+    settingsLayout->addWidget(saveBox);
     settingsLayout->addStretch(1);
 
     QHBoxLayout *middleLayout = new QHBoxLayout();
@@ -251,4 +265,19 @@ void CurvePlotDialog::setPlotRangeTemperature()
 {
     mPlot->setTemperatureAxisRange(mMinTemperature->value(),
                                    mMaxTemperature->value());
+}
+
+bool CurvePlotDialog::savePDF()
+{
+    return false;
+}
+
+bool CurvePlotDialog::savePNG()
+{
+    return false;
+}
+
+bool CurvePlotDialog::savePrimaryData()
+{
+    return false;
 }

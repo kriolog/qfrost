@@ -35,6 +35,8 @@ class CurvePlot : public QFrame
 public:
     CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent = NULL);
 
+    QSize plotSize() const;
+
 public slots:
     void setCoords(const QVector<double> &data);
 
@@ -50,6 +52,9 @@ public slots:
 
     void setCoordsAxisRange(double lower, double upper);
     void setTemperatureAxisRange(double lower, double upper);
+
+    bool savePDF(const QString &fileName);
+    bool savePNG(const QString &fileName, int width, int height, double scale);
 
 private:
     QCustomPlot *mPlot;
