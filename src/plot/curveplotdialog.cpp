@@ -27,10 +27,15 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QMessageBox>
 #include <QtMath>
+#include <QFile>
+#include <QTextStream>
 
 #include <application.h>
+#include <dialog.h>
 #include <units/physicalpropertyspinbox.h>
+#include <units/units.h>
 #include <graphicsviews/block.h>
 #include <plot/curveplot.h>
 #include <mainwindow.h>
@@ -63,6 +68,13 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mSavePrimaryData(new QPushButton("&Save Primary Data"))
     , mDialogButtons(new QDialogButtonBox(QDialogButtonBox::Close, this))
     , mIsUpdatingAdditionalLimits(false)
+    , mSavedFileBaseName(Application::findMainWindow(this)->currentFileBasePath()
+                         + '_' + modelDate().toString("yyyy-MM-dd") + '_' +
+                         (orientation == Qt::Horizontal ? "Z_" : "X_") +
+                         QString::number(orientation == Qt::Horizontal
+                                         ? block->metersCenter().y()
+                                         : block->metersCenter().x(),
+                                         'f', mMaxCoord->decimals()))
 {
     Q_ASSERT(!mSlice.isEmpty());
 
@@ -177,8 +189,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     mPlot->setThawedPart(mThawedParts);
     mPlot->setTransitionTemperature(mTransitionTemperatures);
 
-    mPlot->setModelDate(Application::findMainWindow(parent)->controlPanel()
-                        ->computationControl()->currentDate());
+    mPlot->setModelDate(modelDate());
  
     connect(mPlotTemperature, SIGNAL(toggled(bool)),
             mPlot, SLOT(setTemperatureVisible(bool)));
@@ -269,15 +280,97 @@ void CurvePlotDialog::setPlotRangeTemperature()
 
 bool CurvePlotDialog::savePDF()
 {
-    return false;
+    static const QString extension = ".pdf";
+
+    QString fileName = Dialog::getSaveFileName(this,
+                                               tr("Save PDF", "Dialog Title"),
+                                               mSavedFileBaseName + extension,
+                                               tr("PDF files")
+                                               + QString(" (*%1)").arg(extension));
+
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    if (!mPlot->savePDF(fileName)) {
+        QMessageBox::warning(this, tr("Save Failed"),
+                             tr("Can not save file %1.")
+                             .arg(locale().quoteString(fileName)));
+        return false;
+    }
+
+    return true;
 }
 
 bool CurvePlotDialog::savePNG()
 {
-    return false;
+    static const QString extension = ".png";
+
+    QString fileName = Dialog::getSaveFileName(this,
+                                               tr("Save PNG", "Dialog Title"),
+                                               mSavedFileBaseName + extension,
+                                               tr("PDF files")
+                                               + QString(" (*%1)").arg(extension));
+
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    if (!mPlot->savePNG(fileName, mPlot->width(), mPlot->height(), 2.0)) {
+        QMessageBox::warning(this, tr("Save Failed"),
+                             tr("Can not save file %1.")
+                             .arg(locale().quoteString(fileName)));
+        return false;
+    }
+
+    return true;
 }
 
 bool CurvePlotDialog::savePrimaryData()
 {
-    return false;
+    static const QString extension = ".txt";
+
+    QString fileName = Dialog::getSaveFileName(this,
+                                               tr("Save Primary Data", "Dialog Title"),
+                                               mSavedFileBaseName + extension,
+                                               tr("Text files")
+                                               + QString(" (*%1)").arg(extension));
+
+    if (fileName.isEmpty()) {
+        return false;
+    }
+
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        QMessageBox::warning(this, tr("Save Failed"),
+                             tr("Can not write to file %1.")
+                             .arg(locale().quoteString(fileName)));
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << "#X\tZ\tT\tVth\tTbf\n";
+
+    const int temperatureDecimals = Units::decimals(Temperature);
+    foreach (const Block *block, mSlice) {
+        const QPointF center = block->metersCenter();
+        out << center.x() << "\t"
+            << center.y() << "\t"
+            << QString::number(block->soilBlock()->temperature(),
+                               'f', temperatureDecimals) << "\t"
+            << qRound(block->soilBlock()->thawedPart() * 100.0) << "\t"
+            << QString::number(block->soilBlock()->transitionTemperature(),
+                               'f', temperatureDecimals) << "\n";
+    }
+
+    return true;
+}
+
+QDate CurvePlotDialog::modelDate() const
+{
+    MainWindow *m = Application::findMainWindow(this);
+    Q_ASSERT(m);
+    return m->controlPanel()->computationControl()->currentDate();
 }

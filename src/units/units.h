@@ -175,7 +175,11 @@ public:
     /// энергии и мощности в скобках.
     static QString systemText(System system);
 
+    /// Аббревиатура метра (для суффиксов в спинбоксах и пр.).
     static QString meterText();
+
+    /// С точностью до этого знака изменяются значения величины.
+    static int decimals(PhysicalProperty property);
 
     void save(QDataStream &out);
     void load(QDataStream &in);
@@ -186,9 +190,6 @@ signals:
 private:
     /// Минимальное и максимальное значения величины @p property в СИ
     static QPair<double, double> minMaxSI(PhysicalProperty property);
-
-    /// С точностью до этого знака изменяются значения величины.
-    static int decimals(PhysicalProperty property);
 
     /// В этом разряде при каждом шаге изменяются значения величины.
     static int stepDecimals(PhysicalProperty property);

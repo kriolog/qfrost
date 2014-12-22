@@ -69,6 +69,9 @@ private slots:
     bool savePrimaryData();
 
 private:
+    /// Текущее время модели.
+    QDate modelDate() const;
+
     CurvePlot *mPlot;
 
     QCheckBox *mPlotTemperature;
@@ -96,6 +99,9 @@ private:
     QDialogButtonBox *mDialogButtons;
 
     bool mIsUpdatingAdditionalLimits;
+
+    /// Название (полный путь минус расширение) сохраняемых файлов.
+    const QString mSavedFileBaseName;
 };
 }
 
