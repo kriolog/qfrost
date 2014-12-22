@@ -195,7 +195,13 @@ double centerCoord(const Block *block, Qt::Orientation sliceOrientation)
 
 QList<Block *> Block::slice(Qt::Orientation orientation)
 {
-    return halfSlice(orientation, true) + halfSlice(orientation, false);
+    QList<Block *> halfSliceBefore = halfSlice(orientation, true);
+    QList<Block *> halfSliceAfter = halfSlice(orientation, false);
+
+    QList<Block *> thisBlock;
+    thisBlock << this;
+
+    return halfSliceBefore + thisBlock + halfSliceAfter;
 }
 
 QList<Block *> Block::halfSlice(Qt::Orientation orientation, bool before)
@@ -230,7 +236,11 @@ QList<Block *> Block::halfSlice(Qt::Orientation orientation, bool before)
             }
         }
         if (nextBlock) {
-            result << nextBlock;
+            if (before) {
+                result.prepend(nextBlock);
+            } else {
+                result.append(nextBlock);
+            }
         }
         prevBlock = nextBlock;
     }
