@@ -148,6 +148,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     settingsLayout->addWidget(plotElementsBox);
     settingsLayout->addWidget(coordLimitBox);
     settingsLayout->addWidget(temperatureLimitBox);
+    settingsLayout->addStretch(1);
 
     QHBoxLayout *middleLayout = new QHBoxLayout();
     middleLayout->addLayout(settingsLayout);
