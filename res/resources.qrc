@@ -27,6 +27,7 @@
     <file>tools/rectangle_selection.png</file>
     <file>tools/polygonal_selection.png</file>
     <file>tools/ellipse_selection.png</file>
+    <file>tools/curve_plot.png</file>
     <file>gpl-3.0-standalone.html</file>
     <file>discretize-colors_16x16.png</file>
     <file>discretize-colors_22x22.png</file>
