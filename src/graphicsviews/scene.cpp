@@ -1013,7 +1013,7 @@ void Scene::exportData(QTextStream &out) const
 
     const int temperatureDecimals = Units::decimals(Temperature);
     foreach (const Block *block, blocks) {
-        const QPointF center = block->metersCenter();
+        const QPointF &center = block->metersCenter();
         out << center.x() << "\t"
             << center.y() << "\t"
             << QString::number(block->soilBlock()->temperature(),

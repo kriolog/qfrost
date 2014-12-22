@@ -355,7 +355,7 @@ bool CurvePlotDialog::savePrimaryData()
 
     const int temperatureDecimals = Units::decimals(Temperature);
     foreach (const Block *block, mSlice) {
-        const QPointF center = block->metersCenter();
+        const QPointF &center = block->metersCenter();
         out << center.x() << "\t"
             << center.y() << "\t"
             << QString::number(block->soilBlock()->temperature(),
