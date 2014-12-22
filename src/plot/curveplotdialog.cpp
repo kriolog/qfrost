@@ -98,7 +98,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     autoLimitCoord->setSizePolicy(QSizePolicy::Fixed,
                                   QSizePolicy::Preferred);
     connect(autoLimitCoord, SIGNAL(clicked()),
-            SLOT(autoMinMaxTemperature()));
+            SLOT(autoMinMaxCoord()));
     autoMinMaxTemperature();
 
     //: automatically set t limits
@@ -106,7 +106,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     autoLimitTemperature->setSizePolicy(QSizePolicy::Fixed,
                                         QSizePolicy::Preferred);
     connect(autoLimitTemperature, SIGNAL(clicked()),
-            SLOT(autoMinMaxCoord()));
+            SLOT(autoMinMaxTemperature()));
     autoMinMaxCoord();
 
     static const QString minMaxDelimText = "\342\200\223";
@@ -130,7 +130,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     plotElements->addWidget(mPlotTransitionTemperature);
     plotElements->addWidget(mShowModelDateText);
 
-    QGroupBox *limitsBox = new QGroupBox(tr("Axes Range"), this);
+    QGroupBox *limitsBox = new QGroupBox(tr("Axis Ranges"), this);
     QFormLayout *limits = new QFormLayout(limitsBox);
     limits->addRow(tr("Temperature:"), tLimits);
     limits->addRow(tr("Coordinate:"), zLimits);
@@ -141,6 +141,11 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     mainLayout->addWidget(plotElementsBox);
     mainLayout->addWidget(limitsBox);
     mainLayout->addWidget(mDialogButtons);
+
+    mPlotTemperature->setChecked(true);
+    mPlotThawedPard->setChecked(true);
+    mPlotTransitionTemperature->setChecked(true);
+    mShowModelDateText->setChecked(true);
 }
 
 void CurvePlotDialog::autoMinMaxCoord()
