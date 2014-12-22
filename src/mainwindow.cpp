@@ -667,7 +667,7 @@ void MainWindow::createActions()
             mColorGenerator, SLOT(setDiscretizeColors(bool)));
 
     mBackgroundOpenAct = new QAction(QIcon::fromTheme("games-config-background"),
-                                  tr("Op&en Background"), this);
+                                  tr("Op&en Background..."), this);
     mBackgroundOpenAct->setStatusTip(tr("Open background crosscut file"));
     connect(mBackgroundOpenAct, SIGNAL(triggered()), SLOT(openBackground()));
 
