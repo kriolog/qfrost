@@ -199,9 +199,7 @@ public:
      *  x2 z2 t2 v2
      * (V в процентах)
      */
-    void exportData(QTextStream &out,
-                    int tDecimals = 1,
-                    int vDecimals = 0) const;
+    void exportData(QTextStream &out) const;
 
     /**
      * Записывает в @p out данные для построения изолиний.

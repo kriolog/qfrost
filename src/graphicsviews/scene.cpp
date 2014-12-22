@@ -66,6 +66,7 @@
 
 #include <geometry/block_within_polygon.h>
 #include <geometry/clip_polyline.h>
+#include <units/units.h>
 
 using namespace qfgui;
 
@@ -1000,9 +1001,7 @@ void Scene::save(QDataStream &out) const
     /**************************************************************************/
 }
 
-void Scene::exportData(QTextStream &out,
-                       int tDecimals,
-                       int vDecimals) const
+void Scene::exportData(QTextStream &out) const
 {
     QList<const Block *> blocks = blocksConst();
     if (blocks.isEmpty()) {
@@ -1010,18 +1009,18 @@ void Scene::exportData(QTextStream &out,
     }
     qSort(blocks.begin(), blocks.end(), xzLessThan);
 
-    out << "x" << "\t"
-        << "y" << "\t"
-        << "t" << "\t"
-        << "v"
-        << "\n";
-    foreach(const Block * block, blocks) {
-        QPointF center = QFrost::meters(block->rect().center());
+    out << "#X\tZ\tT\tVth\tTbf\n";
+
+    const int temperatureDecimals = Units::decimals(Temperature);
+    foreach (const Block *block, blocks) {
+        const QPointF center = block->metersCenter();
         out << center.x() << "\t"
             << center.y() << "\t"
-            << QString::number(block->soilBlock()->temperature(), 'f', tDecimals) << "\t"
-            << QString::number(block->soilBlock()->thawedPart() * 100, 'f', vDecimals)  << "\t"
-            << "\n";
+            << QString::number(block->soilBlock()->temperature(),
+                               'f', temperatureDecimals) << "\t"
+            << qRound(block->soilBlock()->thawedPart() * 100.0) << "\t"
+            << QString::number(block->soilBlock()->transitionTemperature(),
+                               'f', temperatureDecimals) << "\n";
     }
 }
 
