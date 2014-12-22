@@ -63,6 +63,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 {
     Q_ASSERT(!mSlice.isEmpty());
 
+    setWindowTitle("Curve Plot");
+
     mTemperatures.reserve(mSlice.size());
     mThawedParts.reserve(mSlice.size());
     mTransitionTemperatures.reserve(mSlice.size());
