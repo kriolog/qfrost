@@ -72,7 +72,7 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mSaveReferenceFile(new QCheckBox(tr("&Save input data to reference file %1")
                                      .arg(locale().quoteString(mReferenceFileName))))
 {
-    setWindowTitle("Background Reference");
+    setWindowTitle(tr("Background Reference"));
     
     mViewPressTimer.start();
     
