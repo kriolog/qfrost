@@ -57,7 +57,7 @@ CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
     layout->addWidget(mPlot);
     layout->setMargin(0);
 
-    mPlot->setMinimumSize(200, 200);
+    mPlot->setMinimumSize(300, 300);
 
     const QFont titleFont(QFont().family(), 12, QFont::Bold);
     mModelDate->setFont(titleFont);
