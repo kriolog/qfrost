@@ -131,6 +131,7 @@ private slots:
     void about();
     void documentWasModified();
     bool openBackground();
+    bool removeBackground();
     void updateBackgroundVisibilityAct(bool visible);
 
 private:

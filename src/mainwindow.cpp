@@ -427,6 +427,17 @@ void MainWindow::documentWasModified()
     setWindowModified(true);
 }
 
+bool MainWindow::removeBackground()
+{
+    if (QMessageBox::question(this, tr("Remove Background", "Dialog Title"),
+                              tr("Do you really want to remove background?"))
+                              != QMessageBox::Yes) {
+        return false;
+    }
+    mScene->removeBackground();
+    return true;
+}
+
 bool MainWindow::openBackground()
 {
     const QString fileName = Dialog::getOpenFileName(this,
@@ -674,8 +685,7 @@ void MainWindow::createActions()
     mBackgroundRemoveAct = new QAction(QIcon::fromTheme("edit-delete"),
                                        tr("Re&move Background"), this);
     mBackgroundRemoveAct->setEnabled(false);
-    connect(mBackgroundRemoveAct, SIGNAL(triggered()),
-            mScene, SLOT(removeBackground()));
+    connect(mBackgroundRemoveAct, SIGNAL(triggered()), SLOT(removeBackground()));
     connect(mScene, SIGNAL(backgroundChanged(bool)),
             mBackgroundRemoveAct, SLOT(setEnabled(bool)));
 
