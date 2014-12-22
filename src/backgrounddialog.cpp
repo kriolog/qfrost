@@ -367,6 +367,17 @@ bool BackgroundDialog::tryLoadReferenceFile()
                                 "Maybe it was created with other version of %2 or incorrectly modified.")
                              .arg(locale().quoteString(mReferenceFileName))
                              .arg(QCoreApplication::applicationName()));
+
+        mCross1PixmapX->setValue(0);
+        mCross1PixmapY->setValue(0);
+        mCross2PixmapX->setValue(mPixmapItem->pixmap().width());
+        mCross2PixmapY->setValue(mPixmapItem->pixmap().height());
+
+        mCross1SceneX->setValue(0.0);
+        mCross1SceneY->setValue(0.0);
+        mCross2SceneX->setValue(0.0);
+        mCross2SceneY->setValue(0.0);
+
         return false;
     }
 
