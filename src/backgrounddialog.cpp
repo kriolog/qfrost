@@ -342,9 +342,11 @@ bool BackgroundDialog::tryLoadReferenceFile()
         return false;
     }
 
+    QWidget *const messageBoxParent = isVisible() ? this : parentWidget();
+
     const QString loadFailedTitle = tr("Load Reference File Failed");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, loadFailedTitle,
+        QMessageBox::warning(messageBoxParent, loadFailedTitle,
                              tr("Reference file %1 exists but can not be opened.")
                              .arg(locale().quoteString(mReferenceFileName))
                              + "\n\n" + file.errorString());
@@ -360,7 +362,7 @@ bool BackgroundDialog::tryLoadReferenceFile()
     mCross1PixmapX->setValue(token.toInt(&ok));
     if (!ok || in.atEnd()) {
         onBadInput:
-        QMessageBox::warning(this, loadFailedTitle,
+        QMessageBox::warning(messageBoxParent, loadFailedTitle,
                              tr("Reference file %1 has bad format. "
                                 "Maybe it was created with other version of %2 or incorrectly modified.")
                              .arg(locale().quoteString(mReferenceFileName))
@@ -412,7 +414,7 @@ bool BackgroundDialog::tryLoadReferenceFile()
 
     // загрузка завершена
     mSaveReferenceFile->setChecked(false);
-    QMessageBox::information(this, tr("Loaded Reference File"),
+    QMessageBox::information(messageBoxParent, tr("Loaded Reference File"),
                              tr("Loaded reference data from file %1.")
                              .arg(locale().quoteString(mReferenceFileName)));
 
