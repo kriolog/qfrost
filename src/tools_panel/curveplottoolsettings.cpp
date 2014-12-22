@@ -18,16 +18,13 @@
  *
  */
 
-#include "curveplotdialog.h"
-
-#include <graphicsviews/block.h>
+#include "curveplottoolsettings.h"
 
 using namespace qfgui;
 
-CurvePlotDialog::CurvePlotDialog(const QList<Block *> &slice, QWidget *parent)
-    : QDialog(parent)
+CurvePlotToolSettings::CurvePlotToolSettings(QObject *parent):
+    ToolSettings(parent),
+    mOrientation(Qt::Vertical)
 {
-    foreach (Block *block, slice) {
-        block->showArrows();
-    }
+
 }

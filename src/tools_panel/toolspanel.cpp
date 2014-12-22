@@ -36,6 +36,8 @@
 #include <tools_panel/toolsettings.h>
 #include <tools_panel/rectangulartoolsettings.h>
 #include <tools_panel/rectangulartoolpanel.h>
+#include <tools_panel/curveplottoolpanel.h>
+#include <tools_panel/curveplottoolsettings.h>
 
 using namespace qfgui;
 
@@ -143,7 +145,8 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     addTool(mPickCurvePlot,
             tr("Select single block to plot temperature (and thawed part) graphs "
                "for horizontal or vertical slice through it.<br>"
-               "Resulting graphs and initial (numerical) data can be saved to file system."));
+               "Resulting graphs and initial (numerical) data can be saved to file system."),
+            new CurvePlotToolPanel(this));
 
     QVBoxLayout *toolsLayout = new QVBoxLayout();
     toolsLayout->setSpacing(0);
@@ -288,6 +291,11 @@ QMap< QFrost::ToolType, ToolSettings * > ToolsPanel::toolsSettings()
     RectangularToolPanel *p4 = qobject_cast<RectangularToolPanel *>(innerWidget(i));
     Q_ASSERT(p4 != NULL);
     result[i] = p4->toolSettings();
+
+    i = QFrost::curvePlot;
+    CurvePlotToolPanel *p5 = qobject_cast<CurvePlotToolPanel *>(innerWidget(i));
+    Q_ASSERT(p5 != NULL);
+    result[i] = p5->toolSettings();
 
     return result;
 }

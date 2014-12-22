@@ -1,5 +1,7 @@
 set(qfrost_tools_panel_SRCS
 	blockcreatorsettings.cpp
+	curveplottoolpanel.cpp
+	curveplottoolsettings.cpp
 	rectangulartoolsettings.cpp
 	toolsettings.cpp
 	settingsbox.cpp

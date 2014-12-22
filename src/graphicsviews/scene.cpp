@@ -62,6 +62,8 @@
 #include <tools/rectangularselection.h>
 #include <tools/ellipseselection.h>
 
+#include <tools_panel/curveplottoolsettings.h>
+
 #include <geometry/block_within_polygon.h>
 #include <geometry/clip_polyline.h>
 
@@ -556,16 +558,21 @@ void Scene::setBackgroundVisible(bool visible)
 
 void Scene::openCurvePlotDialog()
 {
+    Q_ASSERT(mToolToCreate == QFrost::curvePlot);
+
     if (mAnchor->pos() == QFrost::noPoint) {
         return;
     }
+
     Block *const b = block(mAnchor->pos());
     if (!b) {
         qWarning("%s called with anchor outside of block!", Q_FUNC_INFO);
         return;
     }
 
-    CurvePlotDialog *dialog = new CurvePlotDialog(b->slice(Qt::Horizontal), 
+    CurvePlotToolSettings *settings = qobject_cast<CurvePlotToolSettings*>(mToolsSettings[mToolToCreate]);
+    Q_ASSERT(settings);
+    CurvePlotDialog *dialog = new CurvePlotDialog(b->slice(settings->orientation()), 
                                                   qfView());
     dialog->exec();
 }
