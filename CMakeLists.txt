@@ -9,6 +9,11 @@ set(COPYRIGHT_YEARS "2010-2014")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+add_subdirectory(3rdparty/qcustomplot)
+set(QCUSTOMPLOT_INCLUDE_DIRS
+	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qcustomplot)
+set(QCUSTOMPLOT_LIBRARIES qcustomplot)
+
 add_subdirectory(3rdparty/qtsingleapplication)
 set(QTSINGLEAPPLICATION_INCLUDE_DIRS
 	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qtsingleapplication)

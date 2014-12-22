@@ -10,6 +10,7 @@ add_subdirectory(core)
 
 include_directories(${QTSINGLEAPPLICATION_INCLUDE_DIRS})
 include_directories(${HIERARCHICALHEADERVIEW_INCLUDE_DIRS})
+include_directories(${QCUSTOMPLOT_INCLUDE_DIRS})
 
 # Tell CMake to run moc when necessary:
 set(CMAKE_AUTOMOC ON)
@@ -59,7 +60,7 @@ endif()
 
 set(QFROST_LIBRARIES
 	qfrost_core
-    qfrost_graphicsviews
+	qfrost_graphicsviews
 	qfrost_control_panel
 	qfrost_computations
 	qfrost_soils
@@ -71,7 +72,9 @@ set(QFROST_LIBRARIES
 	qfrost_undo
 	qfrost_units
 	${QTSINGLEAPPLICATION_LIBRARIES}
-	${HIERARCHICALHEADERVIEW_LIBRARIES})
+	${HIERARCHICALHEADERVIEW_LIBRARIES}
+        ${QCUSTOMPLOT_LIBRARIES}
+)
 
 if(CMAKE_BUILD_TYPE MATCHES Release)
 	add_definitions(-DQT_NO_DEBUG_OUTPUT)
