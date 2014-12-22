@@ -572,7 +572,7 @@ void Scene::openCurvePlotDialog()
 
     CurvePlotToolSettings *settings = qobject_cast<CurvePlotToolSettings*>(mToolsSettings[mToolToCreate]);
     Q_ASSERT(settings);
-    CurvePlotDialog *dialog = new CurvePlotDialog(b->slice(settings->orientation()), 
+    CurvePlotDialog *dialog = new CurvePlotDialog(b, settings->orientation(), 
                                                   qfView());
     dialog->exec();
 }

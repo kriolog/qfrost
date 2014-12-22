@@ -23,6 +23,9 @@
 
 #include <QDialog>
 
+QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
+QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
+
 namespace qfgui {
 
 QT_FORWARD_DECLARE_CLASS(Block)
@@ -31,7 +34,24 @@ class CurvePlotDialog : public QDialog
 {
     Q_OBJECT
 public:
-    CurvePlotDialog(const QList<Block *> &slice, QWidget *parent = NULL);
+    CurvePlotDialog(Block *block,
+                    Qt::Orientation orientation,
+                    QWidget *parent = NULL);
+
+private:
+    QDoubleSpinBox *mMinT;
+    QDoubleSpinBox *mMaxT;
+    QDoubleSpinBox *mMinCoord;
+    QDoubleSpinBox *mMaxCoord;
+
+    QList<Block*> mSlice;
+    QVector<double> mTemperatures;
+    QVector<double> mThawedParts;
+    QVector<double> mTransitionTemperatures;
+    QVector<double> mCoordsMain;
+    QVector<double> mCoordsNormal;
+
+    QDialogButtonBox *mDialogButtons;
 };
 }
 

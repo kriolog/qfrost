@@ -20,14 +20,95 @@
 
 #include "curveplotdialog.h"
 
+#include <QCheckBox>
+#include <QHBoxLayout>
+#include <QFormLayout>
+#include <QDialogButtonBox>
+#include <QPushButton>
+
+#include <units/physicalpropertyspinbox.h>
 #include <graphicsviews/block.h>
 
 using namespace qfgui;
 
-CurvePlotDialog::CurvePlotDialog(const QList<Block *> &slice, QWidget *parent)
-    : QDialog(parent)
+CurvePlotDialog::CurvePlotDialog(Block *block,
+                                 Qt::Orientation orientation,
+                                 QWidget *parent)
+    : QDialog(parent)  
+    , mMinT(new PhysicalPropertySpinBox(Temperature, this))
+    , mMaxT(new PhysicalPropertySpinBox(Temperature, this))
+    , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mSlice(block->slice(orientation))
+    , mTemperatures()
+    , mThawedParts()
+    , mTransitionTemperatures()
+    , mCoordsMain()
+    , mCoordsNormal()
+    , mDialogButtons(new QDialogButtonBox(QDialogButtonBox::Close, this))
 {
-    foreach (Block *block, slice) {
-        block->showArrows();
+    Q_ASSERT(!mSlice.isEmpty());
+
+    mTemperatures.reserve(mSlice.size());
+    mThawedParts.reserve(mSlice.size());
+    mTransitionTemperatures.reserve(mSlice.size());
+    mCoordsMain.reserve(mSlice.size());
+    mCoordsNormal.reserve(mSlice.size());
+
+    foreach (Block *block, mSlice) {
+        mTemperatures.append(block->soilBlock()->temperature());
+        mThawedParts.append(block->soilBlock()->temperature());
+        mTransitionTemperatures.append(block->soilBlock()->temperature());
+
+        const QPointF center = block->metersCenter();
+        mCoordsMain.append(orientation == Qt::Horizontal
+                           ? center.x() : center.y());
+        mCoordsNormal.append(orientation == Qt::Horizontal
+                             ? center.y() : center.x());
+
+        block->showArrows(); // TMP
     }
+
+    mMinCoord->setMinimum(mCoordsMain.first());
+    if (mMinCoord->minimum() > 0.0 && mMinCoord->minimum() < 1.0) {
+        mMinCoord->setMinimum(0.0);
+    }
+    mMaxCoord->setMaximum(mCoordsMain.last());
+
+    mMinCoord->setValue(mMinCoord->minimum());
+    mMaxCoord->setValue(mMaxCoord->maximum());
+
+    //: automatically set t limits
+    QPushButton *tAutoLimit = new QPushButton(tr("Auto t"));
+    //connect(tAutoLimit, SIGNAL(clicked()), this, SLOT(autoLimitsT()));
+    //: automatically set z limits
+    QPushButton *zAutoLimit = new QPushButton(tr("Auto z"));
+    //connect(zAutoLimit, SIGNAL(clicked()), this, SLOT(autoLimitsZ()));
+
+    QHBoxLayout *tLimits = new QHBoxLayout;
+    tLimits->addWidget(mMinT);
+    tLimits->addWidget(mMaxT);
+    tLimits->addWidget(tAutoLimit);
+    QHBoxLayout *zLimits = new QHBoxLayout;
+    zLimits->addWidget(mMinCoord);
+    zLimits->addWidget(mMaxCoord);
+    zLimits->addWidget(zAutoLimit);
+
+    QFormLayout *limits = new QFormLayout;
+    limits->addRow(tr("t:"), tLimits);
+    limits->addRow(tr("z:"), zLimits);
+
+    QCheckBox *plotTemperatesBox = new QCheckBox(tr("Draw t/v"));
+    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
+            mMinT, SLOT(setEnabled(bool)));
+    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
+            mMaxT, SLOT(setEnabled(bool)));
+    connect(plotTemperatesBox, SIGNAL(toggled(bool)),
+            mMaxT, SLOT(setEnabled(bool)));
+    plotTemperatesBox->setChecked(true);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(plotTemperatesBox);
+    mainLayout->addLayout(limits);
+    mainLayout->addWidget(mDialogButtons);
 }
