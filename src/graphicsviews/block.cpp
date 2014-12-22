@@ -184,6 +184,61 @@ void Block::updateFromThawedPart()
     updateConditionBrush();
 }
 
+/// Координата центра @p block на перпендикулярной @p sliceOrientation оси.
+double centerCoord(const Block *block, Qt::Orientation sliceOrientation)
+{
+    const QPointF center = block->rect().center();
+    return (sliceOrientation == Qt::Horizontal)
+           ? center.y()
+           : center.x();
+}
+
+QList<Block *> Block::slice(Qt::Orientation orientation)
+{
+    return halfSlice(orientation, true) + halfSlice(orientation, false);
+}
+
+QList<Block *> Block::halfSlice(Qt::Orientation orientation, bool before)
+{
+    const double cCoord = centerCoord(this, orientation);
+
+    QList<Block *> result;
+
+    Block *prevBlock = this;
+    while (prevBlock) {
+        const QList<BlockContact> &contacts = orientation == Qt::Horizontal
+                                              ? (before
+                                                 ? prevBlock->mContactsLeft 
+                                                 : prevBlock->mContactsRight)
+                                              : (before
+                                                 ? prevBlock->mContactsTop
+                                                 : prevBlock->mContactsBottom);
+
+        Block *nextBlock = NULL;
+        if (contacts.isEmpty()) {
+            break;
+        } else if (contacts.size() == 1) {
+            nextBlock = contacts.first().block();
+        } else {
+            foreach (const BlockContact &contact, contacts) {
+                Block *const b = contact.block();
+                if (!nextBlock
+                    || qAbs(centerCoord(b, orientation) - cCoord) <
+                       qAbs(centerCoord(nextBlock, orientation) - cCoord)) {
+                    nextBlock = b;
+                }
+            }
+        }
+        if (nextBlock) {
+            result << nextBlock;
+        }
+        prevBlock = nextBlock;
+    }
+
+    return result;
+}
+
+
 void Block::moveDataToDomain(qfcore::Domain *domain, bool isAxiallySymmetric)
 {
     mIsInDomain = true;

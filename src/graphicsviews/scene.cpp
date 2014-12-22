@@ -558,12 +558,15 @@ void Scene::openCurvePlotDialog()
     if (mAnchor->pos() == QFrost::noPoint) {
         return;
     }
-    Block *b = block(mAnchor->pos());
+    Block *const b = block(mAnchor->pos());
     if (!b) {
         qWarning("%s called with anchor outside of block!", Q_FUNC_INFO);
         return;
     }
-    b->showArrows(); // tmp
+
+    foreach (Block *block, b->slice(Qt::Vertical)) {
+        block->showArrows();
+    }
 }
 
 Qt::Orientations Scene::toolChangesOrientations()
