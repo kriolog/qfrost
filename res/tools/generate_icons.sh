@@ -23,8 +23,8 @@ create_pngs_no_aa() {
   done
 }
 
-ICONS_AA=(boundary_condition boundary_ellipse boundary_polygon no_tool polygonal_selection ellipse_selection curve_plot)
-ICONS_NO_AA=(blocks_creator rectangle_selection)
+ICONS_AA=(boundary_condition boundary_ellipse boundary_polygon no_tool polygonal_selection ellipse_selection)
+ICONS_NO_AA=(blocks_creator rectangle_selection curve_plot)
 
 create_pngs_aa ICONS_AA[@]
 create_pngs_no_aa ICONS_NO_AA[@]
