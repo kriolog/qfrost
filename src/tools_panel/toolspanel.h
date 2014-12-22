@@ -82,6 +82,7 @@ private:
     QAction *mPickBoundaryConditionsCreator;
     QAction *mPickPolygonalSelection;
     QAction *mPickEllipseSelection;
+    QAction *mPickCurvePlot;
 
     /// Инструмент, выбранный при последнем вызове slotBlockTools(true)
     QAction *mToolBeforeBlocking;

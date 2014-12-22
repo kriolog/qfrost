@@ -140,7 +140,9 @@ public:
         /// Создавалка блоков
         blockCreator,
         /// Эллиптическое выделение
-        ellipseSelection
+        ellipseSelection,
+        /// Построение температурных кривых
+        curvePlot
     };
 
     /// Свойство, которое должно быть true, чтобы UndoBinder'ы создавали команды

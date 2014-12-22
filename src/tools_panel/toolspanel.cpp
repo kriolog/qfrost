@@ -80,6 +80,8 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
                                         tr("&Polygonal Selection"), this)),
     mPickEllipseSelection(new QAction(QIcon(":/tools/ellipse_selection.png"),
                                         tr("&Ellipse Selection"), this)),
+    mPickCurvePlot(new QAction(QIcon(":/tools/curve_plot.png"),
+                                     "&Curve Plot", this)),
     mToolBeforeBlocking(mPickNoTool),
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),
@@ -138,6 +140,10 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
             tr("Select wanted blocks and you will be able to set their soil "
             "and staring conditions.") + " " + escHint,
             new RectangularToolPanel(this));
+    addTool(mPickCurvePlot,
+            tr("Select single block to plot temperature (and thawed part) graphs "
+               "for horizontal or vertical slice through it.<br>"
+               "Resulting graphs and initial (numerical) data can be saved to file system."));
 
     QVBoxLayout *toolsLayout = new QVBoxLayout();
     toolsLayout->setSpacing(0);
@@ -161,6 +167,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     l1->setContentsMargins(QMargins());
     l1->addWidget(buttons[mPickNoTool]);
     l1->addWidget(buttons[mPickBlockCreator]);
+    l1->addWidget(buttons[mPickCurvePlot]);
     toolsLayout->addLayout(l1);
 
     QGroupBox *selectionTools = new QGroupBox(tr("Blocks selection"));
