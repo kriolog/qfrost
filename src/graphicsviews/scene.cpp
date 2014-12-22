@@ -41,6 +41,7 @@
 #include <computations/computationthread.h>
 #include <computations/blockslogger.h>
 #include <mainwindow.h>
+#include <plot/curveplotdialog.h>
 
 #include <undo/addblockscommand.h>
 #include <undo/removeblockscommand.h>
@@ -564,9 +565,9 @@ void Scene::openCurvePlotDialog()
         return;
     }
 
-    foreach (Block *block, b->slice(Qt::Vertical)) {
-        block->showArrows();
-    }
+    CurvePlotDialog *dialog = new CurvePlotDialog(b->slice(Qt::Horizontal), 
+                                                  qfView());
+    dialog->exec();
 }
 
 Qt::Orientations Scene::toolChangesOrientations()

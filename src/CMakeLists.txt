@@ -32,7 +32,7 @@ add_subdirectory(tools_panel)
 add_subdirectory(undo)
 add_subdirectory(units)
 add_subdirectory(computations)
-#add_subdirectory( plot )
+add_subdirectory(plot)
 
 set(qfrost_SRCS
     about.cpp
@@ -66,6 +66,7 @@ set(QFROST_LIBRARIES
 	qfrost_itemviews
 	qfrost_boundary_conditions
 	qfrost_tools
+	qfrost_plot
 	qfrost_tools_panel
 	qfrost_undo
 	qfrost_units
