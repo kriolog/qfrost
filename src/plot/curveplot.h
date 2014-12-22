@@ -21,7 +21,7 @@
 #ifndef QFGUI_CURVEPLOT_H
 #define QFGUI_CURVEPLOT_H
 
-#include <QWidget>
+#include <QFrame>
 
 QT_FORWARD_DECLARE_CLASS(QCustomPlot)
 QT_FORWARD_DECLARE_CLASS(QCPPlotTitle)
@@ -29,7 +29,7 @@ QT_FORWARD_DECLARE_CLASS(QCPGraph)
 
 namespace qfgui {
 
-class CurvePlot : public QWidget
+class CurvePlot : public QFrame
 {
     Q_OBJECT
 public:

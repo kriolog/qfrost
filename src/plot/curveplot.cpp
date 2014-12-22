@@ -20,6 +20,8 @@
 
 #include "curveplot.h"
 
+#include <QFrame>
+
 #include <qcustomplot.h>
 
 using namespace qfgui;
@@ -40,7 +42,7 @@ QCPGraph *createGraph(QCustomPlot *plot,
 }
 
 CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
     , mPlot(new QCustomPlot(this))
     , mModelDate(new QCPPlotTitle(mPlot, ""))
     , mTemperature(createGraph(mPlot, coordsAxeOrientation))
@@ -126,6 +128,8 @@ CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
                         ? tr("Depth, m")
                         : tr("X coordinate, m"));
     thawedPartAxis->setLabel(tr("Thawed part"));
+
+    setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     mPlot->replot();
 }
