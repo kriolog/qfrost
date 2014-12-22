@@ -23,6 +23,7 @@
 
 #include <QDialog>
 
+QT_FORWARD_DECLARE_CLASS(QCheckBox)
 QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
 
@@ -50,6 +51,12 @@ private slots:
     void updateAdditionalLimits();
 
 private:
+    QCheckBox *mPlotTemperature;
+    QCheckBox *mPlotThawedPard;
+    QCheckBox *mPlotTransitionTemperature;
+
+    QCheckBox *mShowModelDateText;
+
     QDoubleSpinBox *mMinTemperature;
     QDoubleSpinBox *mMaxTemperature;
     QDoubleSpinBox *mMinCoord;

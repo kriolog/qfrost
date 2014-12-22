@@ -37,7 +37,11 @@ using namespace qfgui;
 CurvePlotDialog::CurvePlotDialog(Block *block,
                                  Qt::Orientation orientation,
                                  QWidget *parent)
-    : QDialog(parent)  
+    : QDialog(parent)
+    , mPlotTemperature(new QCheckBox(tr("&Temperature"), this))
+    , mPlotThawedPard(new QCheckBox(tr("Thawed &part"), this))
+    , mPlotTransitionTemperature(new QCheckBox(tr("T&ransition temperature"), this))
+    , mShowModelDateText(new QCheckBox(tr("Show model &date in title")))
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
@@ -117,9 +121,16 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     zLimits->addWidget(mMinCoord, 1);
     zLimits->addWidget(new QLabel(minMaxDelimText));
     zLimits->addWidget(mMaxCoord, 1);
-    zLimits->addWidget(autoLimitCoord);
+    zLimits->addWidget(autoLimitCoord); 
 
-    QGroupBox *limitsBox = new QGroupBox(tr("Axes Limits Setup"), this);
+    QGroupBox *plotElementsBox = new QGroupBox(tr("Plot Elements"), this);
+    QVBoxLayout *plotElements = new QVBoxLayout(plotElementsBox);
+    plotElements->addWidget(mPlotTemperature);
+    plotElements->addWidget(mPlotThawedPard);
+    plotElements->addWidget(mPlotTransitionTemperature);
+    plotElements->addWidget(mShowModelDateText);
+
+    QGroupBox *limitsBox = new QGroupBox(tr("Axes Range"), this);
     QFormLayout *limits = new QFormLayout(limitsBox);
     limits->addRow(tr("Temperature:"), tLimits);
     limits->addRow(tr("Coordinate:"), zLimits);
@@ -127,6 +138,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(plotElementsBox);
     mainLayout->addWidget(limitsBox);
     mainLayout->addWidget(mDialogButtons);
 }
