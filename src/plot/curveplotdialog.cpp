@@ -155,9 +155,10 @@ void CurvePlotDialog::autoMinMaxTemperature()
     mMaxTemperature->setValue(qCeil(maxT));
 
     // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
-    if (mMaxTemperature->value() - mMinTemperature->value() < 3.0) {
+    static const double minTemperatureRange = 5.0;
+    if (mMaxTemperature->value() - mMinTemperature->value() < 5.0) {
         const double avgT = (maxT - minT)/2.0;
-        static const double deltaT = 2.5;
+        static const double deltaT = minTemperatureRange / 2.0;
 
         mMinTemperature->setValue(qFloor(avgT - deltaT));
         mMaxTemperature->setValue(qCeil(avgT + deltaT));
