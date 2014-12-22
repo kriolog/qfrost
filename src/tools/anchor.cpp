@@ -781,6 +781,7 @@ void Anchor::setTool(QFrost::ToolType toolType)
     case QFrost::rectangularSelection:
     case QFrost::boundaryEllipseCreator:
     case QFrost::polygonalSelection:
+    case QFrost::ellipseSelection:
         mLogic = NeedBlockBorders | NeedVisibleGrid;
         break;
     case QFrost::boundaryPolygonCreator:
