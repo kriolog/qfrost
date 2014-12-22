@@ -345,14 +345,105 @@
 <context>
     <name>qfgui::BackgroundDialog</name>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="57"/>
+        <location filename="../src/backgrounddialog.cpp" line="65"/>
         <source>&amp;Place</source>
         <translation>&amp;Установить</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="58"/>
+        <location filename="../src/backgrounddialog.cpp" line="66"/>
         <source>P&amp;lace</source>
         <translation>У&amp;становить</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="72"/>
+        <source>&amp;Save input data to reference file %1</source>
+        <translation>&amp;Сохранить введённые данные в привязочный файл %1</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="126"/>
+        <source>First image pos:</source>
+        <translation>Первая точка на изображении:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="127"/>
+        <source>Second image pos:</source>
+        <translation>Вторая точка на изображении:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="130"/>
+        <source>First scene pos:</source>
+        <translation>Первая точка на сцене:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="131"/>
+        <source>Second scene pos:</source>
+        <translation>Вторая точка на сцене:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="153"/>
+        <source>Save input data to reference file (*.%1) in the same folder with image.
+It will be automatically loaded when you open this image again.</source>
+        <translation>Сохранить введённые данные в файл привязки (*.%1) в папке с изображением.
+Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="305"/>
+        <source>Save Reference File</source>
+        <translation>Сохранение файла привязки</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="306"/>
+        <source>%1 already exists.
+Do you want to replace it?</source>
+        <translation>%1 уже существует.
+Хотите заменить его?</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="315"/>
+        <source>Save Reference File Failed</source>
+        <translation>Сохранение файла привязки не удалось</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="316"/>
+        <source>Can not write file %1.</source>
+        <translation>Не удалась запись в файл %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="329"/>
+        <source>Saved Reference File</source>
+        <translation>Файл привязки сохранён</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="330"/>
+        <source>Saved reference file %1.
+It will be loaded when you open this image again.</source>
+        <translation>Файл привязки сохранён как %1.
+Он будет загружен при последующем использовании этого изображения.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="345"/>
+        <source>Load Reference File Failed</source>
+        <translation>Загрузка файла привязки не удалась</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="348"/>
+        <source>Reference file %1 exists but can not be opened.</source>
+        <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="364"/>
+        <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
+        <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="415"/>
+        <source>Loaded Reference File</source>
+        <translation>Загружен файл привязки</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="416"/>
+        <source>Loaded reference data from file %1.</source>
+        <translation>Информация о привязке загружена из файла %1.</translation>
     </message>
 </context>
 <context>
