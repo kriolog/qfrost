@@ -63,8 +63,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mTransitionTemperatures()
     , mCoordsMain()
     , mCoordsNormal()
-    , mSavePNGButton(new QPushButton(tr("Save PNG &Image...")))
-    , mSavePDFButton(new QPushButton(tr("Save PDF &Document...")))
+    , mSavePNGButton(new QPushButton(tr("Save &Raster Image...")))
+    , mSavePDFButton(new QPushButton(tr("Save &Vector Image...")))
     , mSavePrimaryData(new QPushButton(tr("&Save Primary Data...")))
     , mDialogButtons(new QDialogButtonBox(QDialogButtonBox::Close, this))
     , mIsUpdatingAdditionalLimits(false)
@@ -140,6 +140,10 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     connect(mSavePDFButton, SIGNAL(clicked()), SLOT(savePDF()));
     connect(mSavePrimaryData, SIGNAL(clicked()), SLOT(savePrimaryData()));
 
+    mSavePNGButton->setToolTip(tr("Save plots to PNG file with specified size and scale."));
+    mSavePDFButton->setToolTip(tr("Save plots to (vector) PDF file with specified size."));
+    mSavePrimaryData->setToolTip(tr("Save plot primary data to simple text file."));
+
     static const QString minMaxDelimText = "\342\200\223";
 
     QGroupBox *plotElementsBox = new QGroupBox(tr("Plot Elements"), this);
@@ -170,10 +174,10 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     connect(mDialogButtons, SIGNAL(rejected()), SLOT(reject()));
 
     QVBoxLayout *settingsLayout = new QVBoxLayout();
+    settingsLayout->addWidget(saveBox);
     settingsLayout->addWidget(plotElementsBox);
     settingsLayout->addWidget(coordLimitBox);
     settingsLayout->addWidget(temperatureLimitBox);
-    settingsLayout->addWidget(saveBox);
     settingsLayout->addStretch(1);
 
     QHBoxLayout *middleLayout = new QHBoxLayout();
