@@ -510,7 +510,8 @@ void Scene::updateBlocksBrushes()
 
 void Scene::setBackground(const QPixmap &pixmap, const QTransform &transform)
 {
-    if (!mBackgroundItem) {
+    const bool hadBackgroundItem = mBackgroundItem;
+    if (!hadBackgroundItem) {
         mBackgroundItem = new QGraphicsPixmapItem(pixmap);
         addItem(mBackgroundItem);
         mBackgroundItem->setZValue(QFrost::BackgroundZValue);
@@ -518,7 +519,38 @@ void Scene::setBackground(const QPixmap &pixmap, const QTransform &transform)
     } else {
         mBackgroundItem->setPixmap(pixmap);
     }
+
     mBackgroundItem->setTransform(transform);
+
+    emit backgroundChanged(true);
+    if (!hadBackgroundItem) {
+        emit backgroundAdded();
+    } else {
+        setBackgroundVisible(true); // оно само проверит, видима ли она уже
+    }
+}
+
+void Scene::removeBackground()
+{
+    if (!mBackgroundItem) {
+        return;
+    }
+    removeItem(mBackgroundItem);
+    delete mBackgroundItem;
+    mBackgroundItem = NULL;
+    
+    emit backgroundChanged(false);
+    emit backgroundRemoved();
+}
+
+void Scene::setBackgroundVisible(bool visible)
+{
+    Q_ASSERT(mBackgroundItem);
+    if (mBackgroundItem->isVisible() == visible) {
+        return;
+    }
+    mBackgroundItem->setVisible(visible);
+    emit backgroundVisibilityChanged(visible);
 }
 
 Qt::Orientations Scene::toolChangesOrientations()

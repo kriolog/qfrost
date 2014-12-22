@@ -349,7 +349,21 @@ public slots:
      */
     void updateBlocksBrushes();
 
+    /**
+     * Устанавливает картинку подложки из @p pixmap и её трансформацию равной
+     * @p transform.
+     */
     void setBackground(const QPixmap &pixmap, const QTransform &transform);
+ 
+    /*
+     * Удаляет графическую подложку.
+     */
+    void removeBackground();
+
+    /*
+     * Показывает или прячет графическую подложку.
+     */
+    void setBackgroundVisible(bool visible);
 
 private slots:
     /// Обновляет mIsGridded, mIs1D, mBlocks и mBlocksConst и испускает сигналы
@@ -401,6 +415,18 @@ signals:
 
     /// Сигнал об осуществлении (или отмене) заливки грунтом
     void soilFillApplyDone();
+
+    /// Сигнал о (первой) установке графической подложки.
+    void backgroundAdded();
+ 
+    /// Сигнал об удалении графической подложки.
+    void backgroundRemoved();
+
+    /// Сигнал об изменении (в т.ч. установке и удалении) графической подложки.
+    void backgroundChanged(bool hasBackground);
+
+    /// Сигнал об изменении видимости графической подложки.
+    void backgroundVisibilityChanged(bool visible);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

@@ -131,6 +131,7 @@ private slots:
     void about();
     void documentWasModified();
     bool openBackground();
+    void updateBackgroundVisibilityAct(bool visible);
 
 private:
     void init();
@@ -187,7 +188,10 @@ private:
     QAction *mFullScreenAct;
     QAction *mViewColorAct;
     QAction *mDiscretizeColors;
-    QAction *mOpenBackgroundAct;
+
+    QAction *mBackgroundOpenAct;
+    QAction *mBackgroundRemoveAct;
+    QAction *mBackgroundVisibilityAct;
 
     ColorGenerator *mColorGenerator;
 

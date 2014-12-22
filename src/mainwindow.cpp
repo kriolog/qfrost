@@ -454,12 +454,21 @@ bool MainWindow::openBackground()
     dialog->setWindowState(dialog->windowState() | Qt::WindowMaximized);
     dialog->exec();
     
-    /*QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
-    item->setScale(100);
-    item->setPos(1000, 1000);
-    
-    mScene->addItem(item);*/
+    return true;
 }
+
+void MainWindow::updateBackgroundVisibilityAct(bool visible)
+{
+    mBackgroundVisibilityAct->setChecked(visible);
+    mBackgroundVisibilityAct->setText(visible
+                                      ? tr("Hide &Background") 
+                                      : tr("Show &Background"));
+    // Глазик серый, когда картинка спрятана, и цветной, когда она показана
+    mBackgroundVisibilityAct->setIcon(visible
+                                      ? QIcon::fromTheme("layer-visible-on")
+                                      : QIcon::fromTheme("layer-visible-off"));
+}
+
 
 void MainWindow::init()
 {
@@ -656,11 +665,31 @@ void MainWindow::createActions()
     mDiscretizeColors->setStatusTip(tr("Discretize (sharpen) color of blocks"));
     connect(mDiscretizeColors, SIGNAL(toggled(bool)),
             mColorGenerator, SLOT(setDiscretizeColors(bool)));
-    
-    mOpenBackgroundAct = new QAction(QIcon::fromTheme("games-config-background"),
+
+    mBackgroundOpenAct = new QAction(QIcon::fromTheme("games-config-background"),
                                   tr("Open &Background"), this);
-    mOpenBackgroundAct->setStatusTip(tr("Open background crosscut file"));
-    connect(mOpenBackgroundAct, SIGNAL(triggered()), SLOT(openBackground())); 
+    mBackgroundOpenAct->setStatusTip(tr("Open background crosscut file"));
+    connect(mBackgroundOpenAct, SIGNAL(triggered()), SLOT(openBackground()));
+
+    mBackgroundRemoveAct = new QAction(QIcon::fromTheme("edit-delete"),
+                                       tr("&Remove Background"), this);
+    mBackgroundRemoveAct->setEnabled(false);
+    connect(mBackgroundRemoveAct, SIGNAL(triggered()),
+            mScene, SLOT(removeBackground()));
+    connect(mScene, SIGNAL(backgroundChanged(bool)),
+            mBackgroundRemoveAct, SLOT(setEnabled(bool)));
+
+    mBackgroundVisibilityAct = new QAction(this);
+    mBackgroundVisibilityAct->setCheckable(true);
+    mBackgroundVisibilityAct->setEnabled(false);
+    connect(mBackgroundVisibilityAct, SIGNAL(triggered(bool)),
+            mScene, SLOT(setBackgroundVisible(bool)));
+    connect(mScene, SIGNAL(backgroundChanged(bool)),
+            mBackgroundVisibilityAct, SLOT(setEnabled(bool)));
+    connect(mScene, SIGNAL(backgroundVisibilityChanged(bool)),
+            SLOT(updateBackgroundVisibilityAct(bool)));
+
+    updateBackgroundVisibilityAct(true);
 }
 
 void MainWindow::createMenus()
@@ -680,7 +709,9 @@ void MainWindow::createMenus()
     fileMenu->addAction(mExportDataForPlotAct);
     fileMenu->addAction(mExportImageAct);
     fileMenu->addSeparator();
-    fileMenu->addAction(mOpenBackgroundAct);
+    fileMenu->addAction(mBackgroundOpenAct);
+    fileMenu->addAction(mBackgroundRemoveAct);
+    fileMenu->addAction(mBackgroundVisibilityAct);
     fileMenu->addSeparator();
     fileMenu->addAction(mCloseAct);
     fileMenu->addAction(mExitAct);
