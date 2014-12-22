@@ -360,88 +360,93 @@
         <translation>&amp;Сохранить введённые данные в привязочный файл %1</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="126"/>
+        <location filename="../src/backgrounddialog.cpp" line="75"/>
+        <source>Background Reference</source>
+        <translation>Привязка графической подложки</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="128"/>
         <source>First image pos:</source>
         <translation>Первая точка на изображении:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="127"/>
+        <location filename="../src/backgrounddialog.cpp" line="129"/>
         <source>Second image pos:</source>
         <translation>Вторая точка на изображении:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="130"/>
+        <location filename="../src/backgrounddialog.cpp" line="132"/>
         <source>First scene pos:</source>
         <translation>Первая точка на сцене:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="131"/>
+        <location filename="../src/backgrounddialog.cpp" line="133"/>
         <source>Second scene pos:</source>
         <translation>Вторая точка на сцене:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="153"/>
+        <location filename="../src/backgrounddialog.cpp" line="155"/>
         <source>Save input data to reference file (*.%1) in the same folder with image.
 It will be automatically loaded when you open this image again.</source>
         <translation>Сохранить введённые данные в файл привязки (*.%1) в папке с изображением.
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="305"/>
+        <location filename="../src/backgrounddialog.cpp" line="307"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="306"/>
+        <location filename="../src/backgrounddialog.cpp" line="308"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="315"/>
+        <location filename="../src/backgrounddialog.cpp" line="317"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="316"/>
+        <location filename="../src/backgrounddialog.cpp" line="318"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="329"/>
+        <location filename="../src/backgrounddialog.cpp" line="331"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="330"/>
+        <location filename="../src/backgrounddialog.cpp" line="332"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="345"/>
+        <location filename="../src/backgrounddialog.cpp" line="349"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="348"/>
+        <location filename="../src/backgrounddialog.cpp" line="352"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="364"/>
+        <location filename="../src/backgrounddialog.cpp" line="368"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="415"/>
+        <location filename="../src/backgrounddialog.cpp" line="430"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="416"/>
+        <location filename="../src/backgrounddialog.cpp" line="431"/>
         <source>Loaded reference data from file %1.</source>
         <translation>Информация о привязке загружена из файла %1.</translation>
     </message>
@@ -875,6 +880,114 @@ At least %n steps per day is needed.</source>
         <location filename="../src/control_panel/controlpanel.h" line="51"/>
         <source>Computations</source>
         <translation>Расчёты</translation>
+    </message>
+</context>
+<context>
+    <name>qfgui::CurvePlot</name>
+    <message>
+        <location filename="../src/plot/curveplot.cpp" line="126"/>
+        <source>Temperature, °C</source>
+        <translation>Температура, °C</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplot.cpp" line="128"/>
+        <source>Depth, m</source>
+        <translation>Глубина, м</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplot.cpp" line="129"/>
+        <source>X coordinate, m</source>
+        <translation>Координата X, м</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplot.cpp" line="130"/>
+        <source>Thawed part</source>
+        <translation>Отн. объём талой фазы</translation>
+    </message>
+</context>
+<context>
+    <name>qfgui::CurvePlotDialog</name>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="47"/>
+        <source>&amp;Temperature</source>
+        <translation>&amp;Температура</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="48"/>
+        <source>Thawed &amp;part</source>
+        <translation>&amp;Отн. объём талой фазы</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="49"/>
+        <source>T&amp;ransition temperature</source>
+        <translation>Температура &amp;фазового перехода</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="50"/>
+        <source>Show model &amp;date in title</source>
+        <translation>Показывать модельное &amp;время в заголовке</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="66"/>
+        <source>Curve Plot</source>
+        <translation>Построение кривых</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="113"/>
+        <source>&amp;Auto</source>
+        <extracomment>automatically set slice coordinate limits</extracomment>
+        <translation>&amp;Авто</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="119"/>
+        <source>A&amp;uto</source>
+        <extracomment>automatically set t limits</extracomment>
+        <translation>А&amp;вто</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="126"/>
+        <source>Plot Elements</source>
+        <translation>Элементы построения</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="133"/>
+        <source>Coordinate Range</source>
+        <translation>Диапазон пространственных координат</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="135"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="141"/>
+        <source>Minimum:</source>
+        <translation>Минимум:</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="136"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="142"/>
+        <source>Maximum:</source>
+        <translation>Максимум:</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="139"/>
+        <source>Temperature Range</source>
+        <translation>Диапазон температур</translation>
+    </message>
+</context>
+<context>
+    <name>qfgui::CurvePlotToolPanel</name>
+    <message>
+        <location filename="../src/tools_panel/curveplottoolpanel.cpp" line="31"/>
+        <source>Slice Orientation</source>
+        <translation>Ориентация среза</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/curveplottoolpanel.cpp" line="32"/>
+        <source>&amp;Vertical</source>
+        <translation>&amp;Вертикальная</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/curveplottoolpanel.cpp" line="33"/>
+        <source>&amp;Horizontal</source>
+        <translation>&amp;Горизонтальная</translation>
     </message>
 </context>
 <context>
@@ -1714,7 +1827,7 @@ Do you want to save your changes or discard them?</source>
 <context>
     <name>qfgui::Scene</name>
     <message>
-        <location filename="../src/graphicsviews/scene.cpp" line="367"/>
+        <location filename="../src/graphicsviews/scene.cpp" line="370"/>
         <source>Computations Start Unsuccessful</source>
         <translation>Старт расчётов не удался</translation>
     </message>
@@ -2085,98 +2198,104 @@ Water Curve</source>
 <context>
     <name>qfgui::ToolsPanel</name>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="65"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="67"/>
         <source>Tools Panel</source>
         <translation>Панель инструментов</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="68"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="70"/>
         <source>&amp;No Tool</source>
         <translation>&amp;Нет инструмента</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="70"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="72"/>
         <source>&amp;Blocks Creator</source>
         <translation>Создание &amp;блоков</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="72"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="74"/>
         <source>&amp;Boundary Polygon Creator</source>
         <translation>&amp;Полигон граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="74"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="76"/>
         <source>&amp;Rectangle Selection</source>
         <translation>П&amp;рямоугольное выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="76"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="78"/>
         <source>&amp;Boundary Ellipse Creator</source>
         <translation>&amp;Эллипс граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="78"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="80"/>
         <source>&amp;Boundary Conditions Applicator</source>
         <translation>&amp;Изменение типа граничных условий</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="80"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="82"/>
         <source>&amp;Polygonal Selection</source>
         <translation>П&amp;олигональное выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="82"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="84"/>
         <source>&amp;Ellipse Selection</source>
         <translation>&amp;Эллиптическое выделение</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="101"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="105"/>
         <source>To cancel drawing, press &lt;b&gt;Esc&lt;/b&gt; or any tool icon.</source>
         <translation>Для удаления созданного инструмента, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="102"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="106"/>
         <source>Pressing &lt;b&gt;Backspace&lt;/b&gt; will delete last added point.</source>
         <translation>Нажатие &lt;b&gt;Backspace&lt;/b&gt; удалит последнюю добавленную точку.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="107"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="111"/>
         <source>Create polygon with sequential clicks to select blocks and you will be able to set their soil and staring conditions.</source>
         <translation>Создайте полигон последовательными кликами и вы сможете изменять грунт и начальные условия в выделенных им блоках.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="111"/>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="138"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="115"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="142"/>
         <source>Select wanted blocks and you will be able to set their soil and staring conditions.</source>
         <translation>Выделите желаемые блоки и вы сможете изменять их грунт и начальные условия.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="115"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="119"/>
         <source>Draw wanted polygon with sequential clicks and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте полигон последовательными кликами и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="119"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="123"/>
         <source>Draw wanted ellipse and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract  it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте эллипс и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="123"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="127"/>
         <source>Tool for choosing boundary conditions on polygons&apos; borders.&lt;br&gt;First click selects first point. All following clicks allow to choose condition for selected part and start next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to stop sequence.</source>
         <translation>Инструмент для задания граничных условий на участках границ полигонов.&lt;br&gt;Первый клик отмечает первую точку. Последующие клики позволяют выбрать граничное условие для выделенного участка и начинают выделение следующего.&lt;br&gt;Для остановки последовательности, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="129"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="133"/>
         <source>Select rectangle, choose additional properties and create blocks in one of two following ways.&lt;br&gt;Press &lt;b&gt;Enter&lt;/b&gt; to create all block according to geometrical progression.&lt;br&gt;Press &lt;b&gt;Shift+Enter&lt;/b&gt; to create all blocks according to geometrical progression and additional smaller block at end of each row and column, if it&apos;s needed to fully fill the rectangle.</source>
         <translation>Создайте прямоугольник, выберите дополнительные свойства и создайте блоки одним из двух следующих способов.&lt;br&gt;&lt;b&gt;Enter&lt;/b&gt; создаст только блоки, соответствующие геометрической прогрессии.&lt;br&gt;&lt;b&gt;Shift+Enter&lt;/b&gt; создаст блоки, соответствующие геометрической прогрессии и, если это необходимо для полного заполнения прямоугольника, дополнительные меньшие блоки в конце каждой строки и столбца.</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="166"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="146"/>
+        <source>Select single block to plot temperature (and thawed part) graphs for horizontal or vertical slice through it.&lt;br&gt;Resulting graphs and initial (numerical) data can be saved to file system.</source>
+        <translation>Выберите блок для построения графика температуры (и относительного объёма талой фазы) по горизонтальному или вертикальному срезу через него.
+Полученные графики и использованные для них первичные данные могут быть сохранены на диск.</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="176"/>
         <source>Blocks selection</source>
         <translation>Выделение блоков</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="178"/>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="188"/>
         <source>Boundary polygons</source>
         <translation>Граничные полигоны</translation>
     </message>
