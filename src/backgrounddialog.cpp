@@ -34,12 +34,19 @@
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
-
-#include <QDebug>
+#include <QCheckBox>
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <QMessageBox>
 
 using namespace qfgui;
 
-BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
+const QString BackgroundDialog::kReferenceFileExtension = ".qfref";
+
+BackgroundDialog::BackgroundDialog(const QString &imageFileName,
+                                   const QPixmap &pixmap,
+                                   QWidget *parent) :
     QDialog(parent),
     mView(new ViewBase(new QGraphicsScene(pixmap.rect(), this), this)),
     mButtons(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel)),
@@ -58,7 +65,11 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     mPlaceCross2Button(new QPushButton(tr("P&lace"))),
     mIsPlacingCross1(false),
     mIsPlacingCross2(false),
-    mViewPressTimer()
+    mViewPressTimer(),
+    mReferenceFileName(QFileInfo(imageFileName + kReferenceFileExtension)
+                       .absoluteFilePath()),
+    mSaveReferenceFile(new QCheckBox(tr("&Save input data to reference file %1")
+                                     .arg(locale().quoteString(mReferenceFileName))))
 {
     mViewPressTimer.start();
     
@@ -136,10 +147,16 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     QHBoxLayout *posLayout = new QHBoxLayout();
     posLayout->addLayout(imagePosLayout);
     posLayout->addLayout(scenePosLayout);
+
+    mSaveReferenceFile->setChecked(true);
+    mSaveReferenceFile->setToolTip(tr("Save input data to reference file (*.%1) in the same folder with image.\n"
+                                      "It will be automatically loaded when you open this image again.")
+                                   .arg(kReferenceFileExtension));
     
     mainLayout->addLayout(posLayout);
     mainLayout->addWidget(mView);
     mainLayout->addWidget(slider);
+    mainLayout->addWidget(mSaveReferenceFile);
     mainLayout->addWidget(mButtons);
     
     connect(mButtons, SIGNAL(accepted()), SLOT(acceptAndSendResult()));
@@ -147,6 +164,8 @@ BackgroundDialog::BackgroundDialog(const QPixmap &pixmap, QWidget *parent) :
     
     mCross1->setCursor(Qt::OpenHandCursor);
     mCross2->setCursor(Qt::OpenHandCursor);
+    
+    tryLoadReferenceFile();
 }
 
 void BackgroundDialog::acceptAndSendResult()
@@ -164,6 +183,10 @@ void BackgroundDialog::acceptAndSendResult()
     t.scale(sx, sy);
 
     emit accepted(mPixmapItem->pixmap(), t);
+
+    if (mSaveReferenceFile->isChecked()) {
+        saveReferenceFile();
+    }
 
     accept();
 }
@@ -192,7 +215,6 @@ void BackgroundDialog::updateCross2Pos()
 
 bool BackgroundDialog::eventFilter(QObject *object, QEvent *event)
 {
-    qDebug() << event;
     const bool isPlacing = (mIsPlacingCross1 || mIsPlacingCross2);
 
     Q_ASSERT(!isPlacing || (mIsPlacingCross1 != mIsPlacingCross2));
@@ -273,4 +295,123 @@ void BackgroundDialog::startPlacingCross2()
     mPlaceCross1Button->setEnabled(false);
     mPlaceCross2Button->setEnabled(false);
     mViewPressTimer.start();
+}
+
+bool BackgroundDialog::saveReferenceFile()
+{
+    QFile file(mReferenceFileName);
+    if (file.exists()) {
+        if (QMessageBox::question(this, tr("Save Reference File"),
+                                  tr("%1 already exists.\nDo you want to replace it?")
+                                  .arg(locale().quoteString(mReferenceFileName)))
+            != QMessageBox::Yes)
+        {
+            return false;
+        }
+    }
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        QMessageBox::warning(this, tr("Save Reference File Failed"),
+                             tr("Can not write file %1.")
+                             .arg(locale().quoteString(mReferenceFileName))
+                            + "\n\n" + file.errorString());
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << mCross1PixmapX->value() << " " << mCross1PixmapY->value() << " "
+        << mCross2PixmapX->value() << " " << mCross2PixmapY->value() << "\n"
+        << mCross1SceneX->value() << " " << mCross1SceneY->value() << " "
+        << mCross2SceneX->value() << " " << mCross2SceneY->value() << "\n";
+
+    QMessageBox::information(this, tr("Saved Reference File"),
+                             tr("Saved reference file %1.\n"
+                                "It will be loaded when you open this image again.")
+                                .arg(locale().quoteString(mReferenceFileName)));
+
+    return true;
+}
+
+bool BackgroundDialog::tryLoadReferenceFile()
+{
+    QFile file(mReferenceFileName);
+
+    if (!file.exists()) {
+        return false;
+    }
+
+    const QString loadFailedTitle = tr("Load Reference File Failed");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, loadFailedTitle,
+                             tr("Reference file %1 exists but can not be opened.")
+                             .arg(locale().quoteString(mReferenceFileName))
+                             + "\n\n" + file.errorString());
+        return false;
+    }
+
+    QTextStream in(&file);
+
+    QString token;
+    bool ok;
+ 
+    in >> token;
+    mCross1PixmapX->setValue(token.toInt(&ok));
+    if (!ok || in.atEnd()) {
+        onBadInput:
+        QMessageBox::warning(this, loadFailedTitle,
+                             tr("Reference file %1 has bad format.")
+                             .arg(locale().quoteString(mReferenceFileName)));
+        return false;
+    }
+
+    in >> token;
+    mCross1PixmapY->setValue(token.toInt(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross2PixmapX->setValue(token.toInt(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross2PixmapY->setValue(token.toInt(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross1SceneX->setValue(token.toDouble(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross1SceneY->setValue(token.toDouble(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross2SceneX->setValue(token.toDouble(&ok));
+    if (!ok || in.atEnd()) {
+        goto onBadInput;
+    }
+
+    in >> token;
+    mCross2SceneY->setValue(token.toDouble(&ok));
+    if (!ok) {
+        goto onBadInput;
+    }
+
+    // загрузка завершена
+    mSaveReferenceFile->setChecked(false);
+    QMessageBox::information(this, tr("Loaded Reference File"),
+                             tr("Loaded reference data from file %1.")
+                             .arg(locale().quoteString(mReferenceFileName)));
+
+    return true;
 }

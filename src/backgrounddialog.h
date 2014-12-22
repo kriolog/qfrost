@@ -29,6 +29,7 @@ QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 QT_FORWARD_DECLARE_CLASS(QGraphicsPixmapItem)
 QT_FORWARD_DECLARE_CLASS(QSpinBox)
 QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
+QT_FORWARD_DECLARE_CLASS(QCheckBox)
 
 namespace qfgui
 {
@@ -40,7 +41,9 @@ class BackgroundDialog : public QDialog
 {
     Q_OBJECT
 public:
-    BackgroundDialog(const QPixmap &pixmap, QWidget *parent = NULL);
+    BackgroundDialog(const QString &imageFileName,
+                     const QPixmap &pixmap, 
+                     QWidget *parent = NULL);
 
 signals:
     void accepted(const QPixmap &pixmap, const QTransform &transform);
@@ -49,6 +52,8 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private slots:
+    /// Отправляет сигналом результат, сохраняет файл привязки (если отмечена
+    /// соответствующая галочка) и вызывает accept().
     void acceptAndSendResult();
 
     void updateCross1Pos();
@@ -60,6 +65,15 @@ private slots:
     void startPlacingCross1();
     void startPlacingCross2();
     void finishPlacingCross();
+
+    /// Сохраняет файл привязки. Если файл уже существует, сперва спрашивает,
+    /// нужно ли его перезаписывать.
+    /// @returns был ли сохранён файл.
+    bool saveReferenceFile();
+
+    /// Если файл привязки существует, пытается загрузмть его, снимает галочку 
+    /// сохранения (mSaveReferenceFile) и уведомляет об успешной загрузке.
+    bool tryLoadReferenceFile();
 
 private:
     ViewBase *const mView;
@@ -88,6 +102,14 @@ private:
     bool mIsPlacingCross2;
 
     QElapsedTimer mViewPressTimer;
+
+    /// Путь к файлу привязки.
+    const QString mReferenceFileName;
+
+    QCheckBox *mSaveReferenceFile;
+
+    /// Расширение файла привязки картинки (начинается с точки).
+    static const QString kReferenceFileExtension;
 };
 }
 
