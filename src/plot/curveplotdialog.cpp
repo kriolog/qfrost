@@ -100,11 +100,15 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
         block->showArrows(); // TMP
     }
 
-    mMinCoord->setMinimum(mCoordsMain.first());
-    if (mMinCoord->minimum() > 0.0 && mMinCoord->minimum() < 1.0) {
-        mMinCoord->setMinimum(0.0);
-    }
-    mMaxCoord->setMaximum(mCoordsMain.last());
+    mMinCoord->setMinimum(mCoordsMain.first() -
+                          (orientation == Qt::Horizontal
+                           ? mSlice.first()->metersRect().width()
+                           : mSlice.first()->metersRect().height()) / 2.0);
+
+    mMaxCoord->setMaximum(mCoordsMain.last() +
+                          (orientation == Qt::Horizontal
+                           ? mSlice.last()->metersRect().width()
+                           : mSlice.last()->metersRect().height()) / 2.0);
 
     connect(mMinCoord, SIGNAL(valueChanged(double)),
             SLOT(updateAdditionalLimits()));
