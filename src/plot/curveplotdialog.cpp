@@ -97,7 +97,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
         mCoordsNormal.append(orientation == Qt::Horizontal
                              ? center.y() : center.x());
 
-        block->showArrows(); // TMP
+        block->setMarkered(true);
     }
 
     mMinCoord->setMinimum(mCoordsMain.first() -
@@ -215,7 +215,17 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     mPlotThawedPard->setChecked(true);
     mPlotTransitionTemperature->setChecked(true);
     mShowModelDateText->setChecked(true);
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
+
+CurvePlotDialog::~CurvePlotDialog()
+{
+    foreach (Block *block, mSlice) {
+        block->setMarkered(false);
+    }
+}
+
 
 void CurvePlotDialog::autoMinMaxCoord()
 {

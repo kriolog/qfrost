@@ -40,6 +40,8 @@ public:
                     Qt::Orientation orientation,
                     QWidget *parent = NULL);
 
+    virtual ~CurvePlotDialog();
+
 private slots:
     /// Устанавливает значения mMinCoord и mMaxCoord исходя из mCoordsMain.
     void autoMinMaxCoord();

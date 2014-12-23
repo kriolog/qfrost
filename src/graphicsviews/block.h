@@ -282,6 +282,11 @@ public:
      */
     QList<Block *> halfSlice(Qt::Orientation orientation, bool before);
 
+    /**
+     * Меняет цвет этого блока на специальный и обратно.
+     */
+    void setMarkered(bool mark);
+
 protected:
     /**
      * Тут мы отслеживаем смену сцены, чтобы обновляться исходя из scale
@@ -351,6 +356,9 @@ private:
 
     /// Заливка, соответствующая температуре и количеству незамёрзшей воды.
     QBrush mConditionBrush;
+
+    /// Должны ли мы игнорировать заливку и рисоваться маркерным цветом.
+    bool mMustUseMarkerBrush;
 
     /// Обновляет заливку, завязанную на температуру и кол-во незамёрзшей воды.
     void updateConditionBrush();

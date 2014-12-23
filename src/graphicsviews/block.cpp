@@ -56,6 +56,7 @@ Block::Block(const QRectF &inRect,
       mTemperatureBrush(mColorGenerator->colorFromTemperature(mSoilBlock)),
       mThawedPartBrush(mColorGenerator->colorFromThawedPart(mSoilBlock)),
       mConditionBrush(),
+      mMustUseMarkerBrush(false),
       mContactsTop(),
       mContactsBottom(),
       mContactsLeft(),
@@ -124,7 +125,7 @@ void Block::paint(QPainter *painter,
         painter->setPen(Qt::NoPen);
     }
 
-    painter->setBrush(*mBrush);
+    painter->setBrush(mMustUseMarkerBrush ? QBrush(Qt::black) : *mBrush);
 
     painter->drawRect(mZeroRect);
 
@@ -248,6 +249,14 @@ QList<Block *> Block::halfSlice(Qt::Orientation orientation, bool before)
     return result;
 }
 
+void Block::setMarkered(bool mark)
+{
+    if (mMustUseMarkerBrush == mark) {
+        return;
+    }
+    mMustUseMarkerBrush = mark;
+    update();
+}
 
 void Block::moveDataToDomain(qfcore::Domain *domain, bool isAxiallySymmetric)
 {
