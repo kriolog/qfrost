@@ -83,7 +83,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     mPickEllipseSelection(new QAction(QIcon(":/tools/ellipse_selection.png"),
                                         tr("&Ellipse Selection"), this)),
     mPickCurvePlot(new QAction(QIcon(":/tools/curve_plot.png"),
-                                     "&Curve Plot", this)),
+                                     tr("&Curve Plot"), this)),
     mToolBeforeBlocking(mPickNoTool),
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),

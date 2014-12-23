@@ -907,22 +907,22 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::CurvePlot</name>
     <message>
-        <location filename="../src/plot/curveplot.cpp" line="126"/>
+        <location filename="../src/plot/curveplot.cpp" line="123"/>
         <source>Temperature, °C</source>
         <translation>Температура, °C</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplot.cpp" line="128"/>
+        <location filename="../src/plot/curveplot.cpp" line="125"/>
         <source>Depth, m</source>
         <translation>Глубина, м</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplot.cpp" line="129"/>
+        <location filename="../src/plot/curveplot.cpp" line="126"/>
         <source>X coordinate, m</source>
         <translation>Координата X, м</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplot.cpp" line="130"/>
+        <location filename="../src/plot/curveplot.cpp" line="127"/>
         <source>Thawed part</source>
         <translation>Отн. объём талой фазы</translation>
     </message>
@@ -970,108 +970,108 @@ At least %n steps per day is needed.</source>
         <translation>Построение кривых</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="128"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="132"/>
         <source>&amp;Auto</source>
         <extracomment>automatically set slice coordinate limits</extracomment>
         <translation>&amp;Авто</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="134"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="138"/>
         <source>A&amp;uto</source>
         <extracomment>automatically set t limits</extracomment>
         <translation>А&amp;вто</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="143"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="147"/>
         <source>Save plots to PNG file with specified size and scale.</source>
         <translation>Сохранить построения в PNG файл с указанием его размера и масштаба.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="144"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="148"/>
         <source>Save plots to (vector) PDF file with specified size.</source>
         <translation>Сохранить построения в (векторный) PDF файл с указанием его размера.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="145"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="149"/>
         <source>Save plot primary data to simple text file.</source>
         <translation>Сохранить первичные данные по срезу в виде простого текстового файла.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="149"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="153"/>
         <source>Plot Elements</source>
         <translation>Элементы построения</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="156"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="160"/>
         <source>Coordinate Range</source>
         <translation>Диапазон пространственных координат</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="158"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="164"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="162"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="168"/>
         <source>Minimum:</source>
         <translation>Минимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="159"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="165"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="163"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="169"/>
         <source>Maximum:</source>
         <translation>Максимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="162"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="166"/>
         <source>Temperature Range</source>
         <translation>Диапазон температур</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="168"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="172"/>
         <source>Save Graph or Data</source>
         <translation>Сохранение изображения или данных</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="290"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="294"/>
         <source>Save PDF</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="292"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="316"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="296"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="320"/>
         <source>PDF files</source>
         <translation>Файлы PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="300"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="324"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="350"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="304"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="354"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="301"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="325"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="305"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="329"/>
         <source>Can not save file %1.</source>
         <translation>Не удалось сохранить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="314"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="318"/>
         <source>Save PNG</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PNG</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="338"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="342"/>
         <source>Save Primary Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить первичные данные</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="340"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="344"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="351"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="355"/>
         <source>Can not write to file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
@@ -2345,6 +2345,11 @@ Water Curve</source>
         <location filename="../src/tools_panel/toolspanel.cpp" line="84"/>
         <source>&amp;Ellipse Selection</source>
         <translation>&amp;Эллиптическое выделение</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="86"/>
+        <source>&amp;Curve Plot</source>
+        <translation>Построение &amp;кривых</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="105"/>
