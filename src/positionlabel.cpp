@@ -32,7 +32,7 @@ using namespace qfgui;
 
 PositionLabel::PositionLabel(const QString &title,
                              QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
     , mXLabel(new QLabel(this))
     , mYLabel(new QLabel(this))
     , mPositionText(new QStackedWidget(this))

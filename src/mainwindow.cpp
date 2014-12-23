@@ -894,7 +894,9 @@ void MainWindow::createStatusBar()
     connect(mScene, SIGNAL(griddityChanged(bool)),
             indicatorGrid, SLOT(setEnabled(bool)));
 
-    QWidget *indicators = new QWidget();
+    static const int statusWidgetsFrameStyle = QFrame::Panel | QFrame::Sunken;
+
+    QFrame *indicators = new QFrame();
     QHBoxLayout *indicatorsLayout = new QHBoxLayout(indicators);
     indicatorsLayout->setContentsMargins(0, 0, 0, 0);
     indicatorsLayout->addWidget(new BlocksCountLabel(mScene, this));
@@ -902,16 +904,19 @@ void MainWindow::createStatusBar()
     indicatorsLayout->addWidget(indicatorGrid);
     indicatorsLayout->addSpacing(3);
     statusBar()->addPermanentWidget(indicators);
+    indicators->setFrameStyle(statusWidgetsFrameStyle);
 
     PositionLabel *cursorLabel = new PositionLabel(tr("Cursor"), this);
     statusBar()->addPermanentWidget(cursorLabel);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
+    cursorLabel->setFrameStyle(statusWidgetsFrameStyle);
 
     PositionLabel *anchorLabel = new PositionLabel(tr("Anchor"), this);
     statusBar()->addPermanentWidget(anchorLabel);
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
+    anchorLabel->setFrameStyle(statusWidgetsFrameStyle);
     
     QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
     slider->setMaximumWidth(150);

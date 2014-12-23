@@ -20,7 +20,7 @@
 #ifndef QFGUI_POSITIONLABEL_H
 #define QFGUI_POSITIONLABEL_H
 
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QFrame>
 
 QT_FORWARD_DECLARE_CLASS(QStackedWidget)
 QT_FORWARD_DECLARE_CLASS(QLabel)
@@ -28,7 +28,7 @@ QT_FORWARD_DECLARE_CLASS(QLabel)
 namespace qfgui
 {
 
-class PositionLabel : public QWidget
+class PositionLabel : public QFrame
 {
     Q_OBJECT
 public:
