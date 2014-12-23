@@ -20,6 +20,8 @@
 
 #include "curveplot.h"
 
+#include <qfrost.h>
+
 #include <QFrame>
 
 #include <qcustomplot.h>
@@ -147,7 +149,7 @@ void CurvePlot::setCoords(const QVector<double> &data)
 
 void CurvePlot::setModelDate(const QDate &date)
 {
-    mModelDate->setText(date.toString(Qt::DefaultLocaleShortDate));
+    mModelDate->setText(date.toString(QFrost::dateFormat()));
 }
 
 void CurvePlot::setTemperature(const QVector<double> &data)
