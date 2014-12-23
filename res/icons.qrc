@@ -3,6 +3,7 @@
     <file>icons/128x128/actions/application-exit.png</file>
     <file>icons/128x128/actions/document-edit.png</file>
     <file>icons/128x128/actions/list-remove.png</file>
+    <file>icons/128x128/actions/transform-scale.png</file>
     <file>icons/128x128/apps/accessories-calculator.png</file>
     <file>icons/128x128/mimetypes/image-x-generic.png</file>
     <file>icons/16x16/actions/application-exit.png</file>
@@ -16,14 +17,18 @@
     <file>icons/16x16/actions/document-save.png</file>
     <file>icons/16x16/actions/edit-clear.png</file>
     <file>icons/16x16/actions/edit-copy.png</file>
+    <file>icons/16x16/actions/edit-delete.png</file>
     <file>icons/16x16/actions/edit-redo.png</file>
     <file>icons/16x16/actions/edit-undo.png</file>
     <file>icons/16x16/actions/fill-color.png</file>
     <file>icons/16x16/actions/games-config-background.png</file>
+    <file>icons/16x16/actions/layer-visible-off.png</file>
+    <file>icons/16x16/actions/layer-visible-on.png</file>
     <file>icons/16x16/actions/list-add.png</file>
     <file>icons/16x16/actions/list-remove.png</file>
     <file>icons/16x16/actions/media-playback-start.png</file>
     <file>icons/16x16/actions/media-playback-stop.png</file>
+    <file>icons/16x16/actions/transform-scale.png</file>
     <file>icons/16x16/actions/view-fullscreen.png</file>
     <file>icons/16x16/actions/view-restore.png</file>
     <file>icons/16x16/actions/window-close.png</file>
@@ -40,14 +45,18 @@
     <file>icons/22x22/actions/document-save.png</file>
     <file>icons/22x22/actions/edit-clear.png</file>
     <file>icons/22x22/actions/edit-copy.png</file>
+    <file>icons/22x22/actions/edit-delete.png</file>
     <file>icons/22x22/actions/edit-redo.png</file>
     <file>icons/22x22/actions/edit-undo.png</file>
     <file>icons/22x22/actions/fill-color.png</file>
     <file>icons/22x22/actions/games-config-background.png</file>
+    <file>icons/22x22/actions/layer-visible-off.png</file>
+    <file>icons/22x22/actions/layer-visible-on.png</file>
     <file>icons/22x22/actions/list-add.png</file>
     <file>icons/22x22/actions/list-remove.png</file>
     <file>icons/22x22/actions/media-playback-start.png</file>
     <file>icons/22x22/actions/media-playback-stop.png</file>
+    <file>icons/22x22/actions/transform-scale.png</file>
     <file>icons/22x22/actions/view-fullscreen.png</file>
     <file>icons/22x22/actions/view-restore.png</file>
     <file>icons/22x22/actions/window-close.png</file>
@@ -66,14 +75,18 @@
     <file>icons/32x32/actions/document-save.png</file>
     <file>icons/32x32/actions/edit-clear.png</file>
     <file>icons/32x32/actions/edit-copy.png</file>
+    <file>icons/32x32/actions/edit-delete.png</file>
     <file>icons/32x32/actions/edit-redo.png</file>
     <file>icons/32x32/actions/edit-undo.png</file>
     <file>icons/32x32/actions/fill-color.png</file>
     <file>icons/32x32/actions/games-config-background.png</file>
+    <file>icons/32x32/actions/layer-visible-off.png</file>
+    <file>icons/32x32/actions/layer-visible-on.png</file>
     <file>icons/32x32/actions/list-add.png</file>
     <file>icons/32x32/actions/list-remove.png</file>
     <file>icons/32x32/actions/media-playback-start.png</file>
     <file>icons/32x32/actions/media-playback-stop.png</file>
+    <file>icons/32x32/actions/transform-scale.png</file>
     <file>icons/32x32/actions/view-fullscreen.png</file>
     <file>icons/32x32/actions/view-restore.png</file>
     <file>icons/32x32/actions/window-close.png</file>
@@ -90,14 +103,18 @@
     <file>icons/48x48/actions/document-save.png</file>
     <file>icons/48x48/actions/edit-clear.png</file>
     <file>icons/48x48/actions/edit-copy.png</file>
+    <file>icons/48x48/actions/edit-delete.png</file>
     <file>icons/48x48/actions/edit-redo.png</file>
     <file>icons/48x48/actions/edit-undo.png</file>
     <file>icons/48x48/actions/fill-color.png</file>
     <file>icons/48x48/actions/games-config-background.png</file>
+    <file>icons/48x48/actions/layer-visible-off.png</file>
+    <file>icons/48x48/actions/layer-visible-on.png</file>
     <file>icons/48x48/actions/list-add.png</file>
     <file>icons/48x48/actions/list-remove.png</file>
     <file>icons/48x48/actions/media-playback-start.png</file>
     <file>icons/48x48/actions/media-playback-stop.png</file>
+    <file>icons/48x48/actions/transform-scale.png</file>
     <file>icons/48x48/actions/view-fullscreen.png</file>
     <file>icons/48x48/actions/view-restore.png</file>
     <file>icons/48x48/actions/window-close.png</file>
@@ -106,6 +123,7 @@
     <file>icons/64x64/actions/application-exit.png</file>
     <file>icons/64x64/actions/document-edit.png</file>
     <file>icons/64x64/actions/list-remove.png</file>
+    <file>icons/64x64/actions/transform-scale.png</file>
     <file>icons/64x64/apps/accessories-calculator.png</file>
     <file>icons/64x64/mimetypes/image-x-generic.png</file>
     <file>icons/index.theme</file>
