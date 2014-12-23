@@ -126,7 +126,7 @@ CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
                         : tr("X coordinate, m"));
     thawedPartAxis->setLabel(tr("Thawed part"));
 
-    setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 
     mPlot->replot();
 }
