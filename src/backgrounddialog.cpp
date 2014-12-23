@@ -26,6 +26,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QGroupBox>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <QSlider>
@@ -143,19 +144,23 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     QHBoxLayout *cross1ScenePos = new QHBoxLayout();
     cross1ScenePos->addWidget(mCross1SceneX, 1);
     cross1ScenePos->addWidget(autoSetCross1SceneX);
+    cross1ScenePos->addSpacing(8);
     cross1ScenePos->addWidget(mCross1SceneY, 1);
     cross1ScenePos->addWidget(autoSetCross1SceneY);
     QHBoxLayout *cross2ScenePos = new QHBoxLayout();
     cross2ScenePos->addWidget(mCross2SceneX, 1);
     cross2ScenePos->addWidget(autoSetCross2SceneX);
+    cross2ScenePos->addSpacing(8);
     cross2ScenePos->addWidget(mCross2SceneY, 1);
     cross2ScenePos->addWidget(autoSetCross2SceneY);
     
-    QFormLayout *imagePosLayout = new QFormLayout();
+    QGroupBox *imagePosBox = new QGroupBox(tr("Anchor Points on Image (Coordinates in Pixels)"));
+    QFormLayout *imagePosLayout = new QFormLayout(imagePosBox);
     imagePosLayout->addRow(tr("First image pos:"), cross1PixmapPos);
     imagePosLayout->addRow(tr("Second image pos:"), cross2PixmapPos);
     
-    QFormLayout *scenePosLayout = new QFormLayout();
+    QGroupBox *scenePosBox = new QGroupBox(tr("Anchor Points on Domain (Coordinates in Meters)"));
+    QFormLayout *scenePosLayout = new QFormLayout(scenePosBox);
     scenePosLayout->addRow(tr("First scene pos:"), cross1ScenePos);
     scenePosLayout->addRow(tr("Second scene pos:"), cross2ScenePos);
     
@@ -175,8 +180,8 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     Q_ASSERT(slider->minimum() == -slider->maximum());
     
     QHBoxLayout *posLayout = new QHBoxLayout();
-    posLayout->addLayout(imagePosLayout);
-    posLayout->addLayout(scenePosLayout);
+    posLayout->addWidget(imagePosBox);
+    posLayout->addWidget(scenePosBox);
 
     mSaveReferenceFile->setChecked(true);
     mSaveReferenceFile->setToolTip(tr("Save input data to reference file (*.%1) in the same folder with image.\n"
@@ -184,9 +189,9 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
                                    .arg(kReferenceFileExtension));
     
     mainLayout->addLayout(posLayout);
+    mainLayout->addWidget(mSaveReferenceFile);
     mainLayout->addWidget(mView);
     mainLayout->addWidget(slider);
-    mainLayout->addWidget(mSaveReferenceFile);
     mainLayout->addWidget(mButtons);
     
     connect(mButtons, SIGNAL(accepted()), SLOT(acceptAndSendResult()));
