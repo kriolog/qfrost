@@ -108,21 +108,48 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross2PixmapX->setValue(pixmap.width());
     mCross2PixmapY->setValue(pixmap.height());
     
+    const QIcon autoSetCoordIcon = QIcon::fromTheme("transform-scale");
+    QPushButton *autoSetCross1SceneX = new QPushButton(autoSetCoordIcon, "");
+    QPushButton *autoSetCross1SceneY = new QPushButton(autoSetCoordIcon, "");
+    QPushButton *autoSetCross2SceneX = new QPushButton(autoSetCoordIcon, "");
+    QPushButton *autoSetCross2SceneY = new QPushButton(autoSetCoordIcon, "");
+    
+    const QString autoSetSceneCoordHelp = tr("Set this coordinate automatically for uniform image scaling.\n"
+                                             "All pixmap and remaining scene coordinates must be set.");
+    autoSetCross1SceneX->setToolTip(autoSetSceneCoordHelp);
+    autoSetCross1SceneY->setToolTip(autoSetSceneCoordHelp);
+    autoSetCross2SceneX->setToolTip(autoSetSceneCoordHelp);
+    autoSetCross2SceneY->setToolTip(autoSetSceneCoordHelp);
+    
+    autoSetCross1SceneX->setFlat(true);
+    autoSetCross1SceneY->setFlat(true);
+    autoSetCross2SceneX->setFlat(true);
+    autoSetCross2SceneY->setFlat(true);
+    
+    connect(autoSetCross1SceneX, SIGNAL(clicked()), SLOT(autoSetCross1SceneX()));
+    connect(autoSetCross1SceneY, SIGNAL(clicked()), SLOT(autoSetCross1SceneY()));
+    connect(autoSetCross2SceneX, SIGNAL(clicked()), SLOT(autoSetCross2SceneX()));
+    connect(autoSetCross2SceneY, SIGNAL(clicked()), SLOT(autoSetCross2SceneY()));
+    
     QHBoxLayout *cross1PixmapPos = new QHBoxLayout();
-    cross1PixmapPos->addWidget(mCross1PixmapX);
-    cross1PixmapPos->addWidget(mCross1PixmapY);
+    cross1PixmapPos->addWidget(mCross1PixmapX, 1);
+    cross1PixmapPos->addWidget(mCross1PixmapY, 1);
     cross1PixmapPos->addWidget(mPlaceCross1Button);
     QHBoxLayout *cross2PixmapPos = new QHBoxLayout();
-    cross2PixmapPos->addWidget(mCross2PixmapX);
-    cross2PixmapPos->addWidget(mCross2PixmapY);
+    cross2PixmapPos->addWidget(mCross2PixmapX, 1);
+    cross2PixmapPos->addWidget(mCross2PixmapY, 1);
     cross2PixmapPos->addWidget(mPlaceCross2Button);
     
     QHBoxLayout *cross1ScenePos = new QHBoxLayout();
-    cross1ScenePos->addWidget(mCross1SceneX);
-    cross1ScenePos->addWidget(mCross1SceneY);
+    cross1ScenePos->addWidget(mCross1SceneX, 1);
+    cross1ScenePos->addWidget(autoSetCross1SceneX);
+    cross1ScenePos->addWidget(mCross1SceneY, 1);
+    cross1ScenePos->addWidget(autoSetCross1SceneY);
     QHBoxLayout *cross2ScenePos = new QHBoxLayout();
-    cross2ScenePos->addWidget(mCross2SceneX);
-    cross2ScenePos->addWidget(mCross2SceneY);
+    cross2ScenePos->addWidget(mCross2SceneX, 1);
+    cross2ScenePos->addWidget(autoSetCross2SceneX);
+    cross2ScenePos->addWidget(mCross2SceneY, 1);
+    cross2ScenePos->addWidget(autoSetCross2SceneY);
     
     QFormLayout *imagePosLayout = new QFormLayout();
     imagePosLayout->addRow(tr("First image pos:"), cross1PixmapPos);
@@ -432,4 +459,44 @@ bool BackgroundDialog::tryLoadReferenceFile()
                              .arg(locale().quoteString(mReferenceFileName)));
 
     return true;
+}
+
+void BackgroundDialog::autoSetCross1SceneX()
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dx = r * (mCross1SceneY->value() - mCross2SceneY->value());
+
+    mCross1SceneX->setValue(mCross2SceneX->value() + dx);
+}
+
+void BackgroundDialog::autoSetCross1SceneY()
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r;
+
+    mCross1SceneY->setValue(mCross2SceneY->value() + dy);
+}
+
+void BackgroundDialog::autoSetCross2SceneX()
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dx = r * (mCross1SceneY->value() - mCross2SceneY->value());
+
+    mCross2SceneX->setValue(mCross1SceneX->value() - dx);
+}
+
+void BackgroundDialog::autoSetCross2SceneY()
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r;
+
+    mCross2SceneY->setValue(mCross1SceneY->value() - dy);
 }
