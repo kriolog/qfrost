@@ -200,7 +200,10 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross1->setCursor(Qt::OpenHandCursor);
     mCross2->setCursor(Qt::OpenHandCursor);
     
-    tryLoadReferenceFile();
+    if (tryLoadReferenceFile()) {
+        mSaveReferenceFile->setText(mSaveReferenceFile->text() + " " +
+                                    tr("(replace old one)"));
+    }
 }
 
 void BackgroundDialog::acceptAndSendResult()

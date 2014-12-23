@@ -409,61 +409,66 @@ It will be automatically loaded when you open this image again.</source>
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="339"/>
+        <location filename="../src/backgrounddialog.cpp" line="205"/>
+        <source>(replace old one)</source>
+        <translation>(заменить старый)</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="342"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="340"/>
+        <location filename="../src/backgrounddialog.cpp" line="343"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="349"/>
+        <location filename="../src/backgrounddialog.cpp" line="352"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="350"/>
+        <location filename="../src/backgrounddialog.cpp" line="353"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="363"/>
+        <location filename="../src/backgrounddialog.cpp" line="366"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="364"/>
+        <location filename="../src/backgrounddialog.cpp" line="367"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="381"/>
+        <location filename="../src/backgrounddialog.cpp" line="384"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="384"/>
+        <location filename="../src/backgrounddialog.cpp" line="387"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="400"/>
+        <location filename="../src/backgrounddialog.cpp" line="403"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="462"/>
+        <location filename="../src/backgrounddialog.cpp" line="465"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="463"/>
+        <location filename="../src/backgrounddialog.cpp" line="466"/>
         <source>Loaded reference data from file %1.</source>
         <translation>Информация о привязке загружена из файла %1.</translation>
     </message>
@@ -952,7 +957,7 @@ At least %n steps per day is needed.</source>
     <message>
         <location filename="../src/plot/curveplotdialog.cpp" line="67"/>
         <source>Save &amp;Vector Image...</source>
-        <translation>Сохранить &amp;векторное изображение...</translation>
+        <translation>Сохранить векторное &amp;изображение...</translation>
     </message>
     <message>
         <location filename="../src/plot/curveplotdialog.cpp" line="68"/>
