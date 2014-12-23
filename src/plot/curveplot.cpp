@@ -46,23 +46,18 @@ QCPGraph *createGraph(QCustomPlot *plot,
 CurvePlot::CurvePlot(Qt::Orientation coordsAxeOrientation, QWidget *parent)
     : QFrame(parent)
     , mPlot(new QCustomPlot(this))
-    , mModelDate(new QCPPlotTitle(mPlot, ""))
+    , mModelDate(NULL)
+    , mModelDateText()
     , mTemperature(createGraph(mPlot, coordsAxeOrientation))
     , mThawedPart(createGraph(mPlot, coordsAxeOrientation, true))
     , mTransitionTemperature(createGraph(mPlot, coordsAxeOrientation))
     , mCoords()
 {
-    mPlot->plotLayout()->insertRow(0);
-    mPlot->plotLayout()->addElement(0, 0, mModelDate);
-
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(mPlot);
     layout->setMargin(0);
 
     mPlot->setMinimumSize(300, 300);
-
-    const QFont titleFont(QFont().family(), 12, QFont::Bold);
-    mModelDate->setFont(titleFont);
 
     QCPAxis *const coordAxis = mTemperature->keyAxis();
     QCPAxis *const coordAxis2 = coordsAxeOrientation == Qt::Horizontal
@@ -149,7 +144,10 @@ void CurvePlot::setCoords(const QVector<double> &data)
 
 void CurvePlot::setModelDate(const QDate &date)
 {
-    mModelDate->setText(date.toString(QFrost::dateFormat()));
+    mModelDateText = date.toString(QFrost::dateFormat());
+    if (mModelDate) {
+        mModelDate->setText(mModelDateText);
+    }
 }
 
 void CurvePlot::setTemperature(const QVector<double> &data)
@@ -175,7 +173,22 @@ void CurvePlot::setTransitionTemperature(const QVector<double> &data)
 
 void CurvePlot::setModelDateVisible(bool visible)
 {
-    mModelDate->setVisible(visible);
+    if (visible == (mModelDate != NULL)) {
+        return;
+    }
+
+    if (!visible) {
+        mPlot->plotLayout()->remove(mModelDate);
+        mModelDate = NULL;
+        mPlot->plotLayout()->simplify();
+    } else {
+        mModelDate = new QCPPlotTitle(mPlot, mModelDateText);
+        const QFont titleFont(QFont().family(), 12, QFont::Bold);
+        mModelDate->setFont(titleFont);
+        mPlot->plotLayout()->insertRow(0);
+        mPlot->plotLayout()->addElement(0, 0, mModelDate);
+    }
+
     mPlot->replot();
 }
 

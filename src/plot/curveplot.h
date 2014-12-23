@@ -60,12 +60,13 @@ private:
     QCustomPlot *mPlot;
 
     QCPPlotTitle *mModelDate;
+    QString mModelDateText;
 
     QCPGraph *mTemperature;
     QCPGraph *mThawedPart;
     QCPGraph *mTransitionTemperature;
 
-    QVector<double> mCoords;;
+    QVector<double> mCoords;
 };
 }
 
