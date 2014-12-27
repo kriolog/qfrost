@@ -51,6 +51,8 @@ signals:
 protected:
     bool eventFilter(QObject *object, QEvent *event);
 
+    void showEvent(QShowEvent *event);
+
 private slots:
     /// Отправляет сигналом результат, сохраняет файл привязки (если отмечена
     /// соответствующая галочка) и вызывает accept().
@@ -88,6 +90,9 @@ private slots:
     /// так, чтобы картинка масштабировалась одинаково по обеим осям.
     void autoSetCross2SceneY();
 
+    /// Показывает окошко с оповещением об успешной загрузке файла привязки.
+    void showReferenceFileNotification();
+
 private:
     ViewBase *const mView;
 
@@ -123,6 +128,9 @@ private:
 
     /// Расширение файла привязки картинки (начинается с точки).
     static const QString kReferenceFileExtension;
+
+    /// Должны ли мы показать сообщение о загрузке файла привязки в showEvent().
+    bool mNeedReferenceFileNotification;
 };
 }
 

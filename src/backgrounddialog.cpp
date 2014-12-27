@@ -40,6 +40,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QTimer>
 #include <QCoreApplication>
 
 using namespace qfgui;
@@ -71,7 +72,8 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mReferenceFileName(QFileInfo(imageFileName + kReferenceFileExtension)
                        .absoluteFilePath()),
     mSaveReferenceFile(new QCheckBox(tr("&Save input data to reference file %1")
-                                     .arg(locale().quoteString(mReferenceFileName))))
+                                     .arg(locale().quoteString(mReferenceFileName)))),
+    mNeedReferenceFileNotification(false)
 {
     setWindowTitle(tr("Background Reference"));
     
@@ -200,10 +202,7 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross1->setCursor(Qt::OpenHandCursor);
     mCross2->setCursor(Qt::OpenHandCursor);
     
-    if (tryLoadReferenceFile()) {
-        mSaveReferenceFile->setText(mSaveReferenceFile->text() + " " +
-                                    tr("(replace old one)"));
-    }
+    tryLoadReferenceFile();
 }
 
 void BackgroundDialog::acceptAndSendResult()
@@ -460,11 +459,17 @@ bool BackgroundDialog::tryLoadReferenceFile()
         goto onBadInput;
     }
 
-    // загрузка завершена
+    /******************* Загрузка файла привязки успешна... *******************/
+    // ... снимем галку сохранения файла привязки, чтобы не перезаписывать...
     mSaveReferenceFile->setChecked(false);
-    QMessageBox::information(messageBoxParent, tr("Loaded Reference File"),
-                             tr("Loaded reference data from file %1.")
-                             .arg(locale().quoteString(mReferenceFileName)));
+    // ... добавим к тексту этой галочки примечание о замене старого файла...
+    mSaveReferenceFile->setText(mSaveReferenceFile->text() + " " + tr("(replace old one)"));
+    // ... и уведомим пользователя о загрузке файла (или же запланируем это).
+    if (isVisible()) {
+        QTimer::singleShot(0, this, SLOT(showReferenceFileNotification()));
+    } else {
+        mNeedReferenceFileNotification = true;
+    }
 
     return true;
 }
@@ -507,4 +512,23 @@ void BackgroundDialog::autoSetCross2SceneY()
     const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r;
 
     mCross2SceneY->setValue(mCross1SceneY->value() - dy);
+}
+
+void BackgroundDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+
+    if (mNeedReferenceFileNotification) {
+        // Используем задержку (хотя бы 100 мс), чтобы окно хорошо расположилось
+        QTimer::singleShot(250, this, SLOT(showReferenceFileNotification()));
+    }
+}
+
+void BackgroundDialog::showReferenceFileNotification()
+{
+    Q_ASSERT(mNeedReferenceFileNotification);
+
+    QMessageBox::information(this, tr("Loaded Reference File"),
+                             tr("Loaded corresponding reference file from image directory.\n"
+                                "It is recommended to check coordinates before proceeding."));
 }
