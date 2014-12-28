@@ -372,19 +372,19 @@ It will be automatically loaded when you open this image again.</source>
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="506"/>
+        <location filename="../src/backgrounddialog.cpp" line="521"/>
         <source>(replace old one)</source>
         <translation>(заменить старый)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="572"/>
+        <location filename="../src/backgrounddialog.cpp" line="587"/>
         <source>Loaded corresponding reference file from image directory.
 It is recommended to check coordinates before proceeding.</source>
         <translation>Загружен соответствующий изображению файл привязки.
 Проверьте значения координат до установки подложки.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="381"/>
+        <location filename="../src/backgrounddialog.cpp" line="396"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
@@ -439,51 +439,65 @@ All the rest coordinates (4 pixmap &amp; 3 domain) must be set.</source>
         <translation>Позиция 2 в рассчётной области</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="382"/>
+        <location filename="../src/backgrounddialog.cpp" line="258"/>
+        <source>Non-Uniform Scale</source>
+        <translation>Неравномерное масштабирование</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="259"/>
+        <source>Background aspect ratio (as it&apos;s shown in domain) will differ from original. For uniform scaling use any of four buttons next to domain pos input fields.
+
+Are you sure to continue and show non-uniformly scaled background?</source>
+        <translation>Полученное соотношение сторон подложки отличается от исходного. Это исправит любая из 4 кнопок около форм ввода координат в метрах.
+
+Продолжить установку подложки с неравномерным масштабированием?</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="397"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="391"/>
+        <location filename="../src/backgrounddialog.cpp" line="406"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="392"/>
+        <location filename="../src/backgrounddialog.cpp" line="407"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="405"/>
+        <location filename="../src/backgrounddialog.cpp" line="420"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="406"/>
+        <location filename="../src/backgrounddialog.cpp" line="421"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="423"/>
+        <location filename="../src/backgrounddialog.cpp" line="438"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="426"/>
+        <location filename="../src/backgrounddialog.cpp" line="441"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="442"/>
+        <location filename="../src/backgrounddialog.cpp" line="457"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="571"/>
+        <location filename="../src/backgrounddialog.cpp" line="586"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
     </message>
