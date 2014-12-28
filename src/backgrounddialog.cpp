@@ -247,17 +247,32 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
 
 void BackgroundDialog::acceptAndSendResult()
 {
-    const double sx = double(QFrost::sceneUnits(mCross1SceneX->value() - mCross2SceneX->value())) /
-                      double(mCross1PixmapX->value() - mCross2PixmapX->value());
-    const double sy = double(QFrost::sceneUnits(mCross1SceneY->value() - mCross2SceneY->value())) /
-                      double(mCross1PixmapY->value() - mCross2PixmapY->value());
+    const double dxScene = mCross1SceneX->value() - mCross2SceneX->value();
+    const double dyScene = mCross1SceneY->value() - mCross2SceneY->value();
 
-    const double dx = -sx*double(mCross1PixmapX->value()) + QFrost::sceneUnits(mCross1SceneX->value());
-    const double dy = -sy*double(mCross1PixmapY->value()) + QFrost::sceneUnits(mCross1SceneY->value());
+    const double dxImage = mCross1PixmapX->value() - mCross2PixmapX->value();
+    const double dyImage = mCross1PixmapY->value() - mCross2PixmapY->value();
+
+    if (qAbs(dxScene/dyScene - dxImage/dyImage) > 0.01) {
+        if (QMessageBox::question(this,
+                                  tr("Non-Uniform Scale"),
+                                  tr("Background aspect ratio (as it's shown in domain) will differ from original. "
+                                     "For uniform scaling use any of four buttons next to domain pos input fields.\n\n"
+                                     "Are you sure to continue and show non-uniformly scaled background?"))
+            != QMessageBox::Yes) {
+            return;
+        }
+    }
+ 
+    const double xScale = double(QFrost::sceneUnits(dxScene)) / dxImage;
+    const double yScale = double(QFrost::sceneUnits(dyScene)) / dyImage;
+
+    const double xShift = -xScale * double(mCross1PixmapX->value()) + QFrost::sceneUnits(mCross1SceneX->value());
+    const double yShift = -yScale * double(mCross1PixmapY->value()) + QFrost::sceneUnits(mCross1SceneY->value());
 
     QTransform t;
-    t.translate(dx, dy);
-    t.scale(sx, sy);
+    t.translate(xShift, yShift);
+    t.scale(xScale, yScale);
 
     emit accepted(mPixmapItem->pixmap(), t);
 
