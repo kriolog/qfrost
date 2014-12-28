@@ -64,8 +64,8 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross1SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
     mCross2SceneX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
     mCross2SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
-    mPlaceCross1Button(new QPushButton(tr("&Place"))),
-    mPlaceCross2Button(new QPushButton(tr("P&lace"))),
+    mPlaceCross1Button(new QPushButton()),
+    mPlaceCross2Button(new QPushButton()),
     mIsPlacingCross1(false),
     mIsPlacingCross2(false),
     mViewPressTimer(),
@@ -111,60 +111,100 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross2PixmapX->setValue(pixmap.width());
     mCross2PixmapY->setValue(pixmap.height());
     
-    const QIcon autoSetCoordIcon = QIcon::fromTheme("transform-scale");
-    QPushButton *autoSetCross1SceneX = new QPushButton(autoSetCoordIcon, "");
-    QPushButton *autoSetCross1SceneY = new QPushButton(autoSetCoordIcon, "");
-    QPushButton *autoSetCross2SceneX = new QPushButton(autoSetCoordIcon, "");
-    QPushButton *autoSetCross2SceneY = new QPushButton(autoSetCoordIcon, "");
+    const QIcon setWithMouseIcon = QIcon::fromTheme("transform-move");
+    mPlaceCross1Button->setIcon(setWithMouseIcon);
+    mPlaceCross2Button->setIcon(setWithMouseIcon);
     
-    const QString autoSetSceneCoordHelp = tr("Set this coordinate automatically for uniform image scaling.\n"
-                                             "All pixmap and remaining scene coordinates must be set.");
-    autoSetCross1SceneX->setToolTip(autoSetSceneCoordHelp);
-    autoSetCross1SceneY->setToolTip(autoSetSceneCoordHelp);
-    autoSetCross2SceneX->setToolTip(autoSetSceneCoordHelp);
-    autoSetCross2SceneY->setToolTip(autoSetSceneCoordHelp);
+    const QString setWithMouseTip = tr("Set both coordinates for cross by placing cursor over image.\n"
+                                       "Cross will follow mouse in image area. Left click to finish.");
+    mPlaceCross1Button->setToolTip(setWithMouseTip);
+    mPlaceCross2Button->setToolTip(setWithMouseTip);
     
-    autoSetCross1SceneX->setFlat(true);
-    autoSetCross1SceneY->setFlat(true);
-    autoSetCross2SceneX->setFlat(true);
-    autoSetCross2SceneY->setFlat(true);
+    const QIcon setAutoCoordIcon = QIcon::fromTheme("transform-scale");
+    QPushButton *autoSetCross1SceneX = new QPushButton(setAutoCoordIcon, "");
+    QPushButton *autoSetCross1SceneY = new QPushButton(setAutoCoordIcon, "");
+    QPushButton *autoSetCross2SceneX = new QPushButton(setAutoCoordIcon, "");
+    QPushButton *autoSetCross2SceneY = new QPushButton(setAutoCoordIcon, "");
+    
+    const QString setAutoSceneCoordTip = tr("Set this coordinate automatically for uniform image scaling.\n"
+                                            "All the rest coordinates (4 pixmap & 3 domain) must be set.");
+    autoSetCross1SceneX->setToolTip(setAutoSceneCoordTip);
+    autoSetCross1SceneY->setToolTip(setAutoSceneCoordTip);
+    autoSetCross2SceneX->setToolTip(setAutoSceneCoordTip);
+    autoSetCross2SceneY->setToolTip(setAutoSceneCoordTip);
+    
+    autoSetCross1SceneX->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    autoSetCross1SceneY->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    autoSetCross2SceneX->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    autoSetCross2SceneY->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     
     connect(autoSetCross1SceneX, SIGNAL(clicked()), SLOT(autoSetCross1SceneX()));
     connect(autoSetCross1SceneY, SIGNAL(clicked()), SLOT(autoSetCross1SceneY()));
     connect(autoSetCross2SceneX, SIGNAL(clicked()), SLOT(autoSetCross2SceneX()));
     connect(autoSetCross2SceneY, SIGNAL(clicked()), SLOT(autoSetCross2SceneY()));
     
-    QHBoxLayout *cross1PixmapPos = new QHBoxLayout();
-    cross1PixmapPos->addWidget(mCross1PixmapX, 1);
-    cross1PixmapPos->addWidget(mCross1PixmapY, 1);
-    cross1PixmapPos->addWidget(mPlaceCross1Button);
-    QHBoxLayout *cross2PixmapPos = new QHBoxLayout();
-    cross2PixmapPos->addWidget(mCross2PixmapX, 1);
-    cross2PixmapPos->addWidget(mCross2PixmapY, 1);
-    cross2PixmapPos->addWidget(mPlaceCross2Button);
+    QGroupBox *imagePos1Box = new QGroupBox(tr("Image Position 1"));
+    imagePos1Box->setFlat(true);
+    QFormLayout *imagePos1CoordsLayout = new QFormLayout();
+    imagePos1CoordsLayout->addRow(tr("X:"), mCross1PixmapX);
+    imagePos1CoordsLayout->addRow(tr("Y:"), mCross1PixmapY);
+    QHBoxLayout *imagePos1Layout = new QHBoxLayout(imagePos1Box);
+    imagePos1Layout->addLayout(imagePos1CoordsLayout, 1);
+    imagePos1Layout->addWidget(mPlaceCross1Button);
     
-    QHBoxLayout *cross1ScenePos = new QHBoxLayout();
-    cross1ScenePos->addWidget(mCross1SceneX, 1);
-    cross1ScenePos->addWidget(autoSetCross1SceneX);
-    cross1ScenePos->addSpacing(8);
-    cross1ScenePos->addWidget(mCross1SceneY, 1);
-    cross1ScenePos->addWidget(autoSetCross1SceneY);
-    QHBoxLayout *cross2ScenePos = new QHBoxLayout();
-    cross2ScenePos->addWidget(mCross2SceneX, 1);
-    cross2ScenePos->addWidget(autoSetCross2SceneX);
-    cross2ScenePos->addSpacing(8);
-    cross2ScenePos->addWidget(mCross2SceneY, 1);
-    cross2ScenePos->addWidget(autoSetCross2SceneY);
+    QGroupBox *imagePos2Box = new QGroupBox(tr("Image Position 2"));
+    imagePos2Box->setFlat(true);
+    QFormLayout *imagePos2CoordsLayout = new QFormLayout();
+    imagePos2CoordsLayout->addRow(tr("X:"), mCross2PixmapX);
+    imagePos2CoordsLayout->addRow(tr("Y:"), mCross2PixmapY);
+    QHBoxLayout *imagePos2Layout = new QHBoxLayout(imagePos2Box);
+    imagePos2Layout->addLayout(imagePos2CoordsLayout, 1);
+    imagePos2Layout->addWidget(mPlaceCross2Button);
+    
+    mPlaceCross1Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    mPlaceCross2Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    
+    QHBoxLayout *scenePos1XLayout = new QHBoxLayout();
+    scenePos1XLayout->setMargin(0);
+    scenePos1XLayout->addWidget(mCross1SceneX, 1);
+    scenePos1XLayout->addWidget(autoSetCross1SceneX);
+    
+    QHBoxLayout *scenePos1YLayout = new QHBoxLayout();
+    scenePos1YLayout->setMargin(0);
+    scenePos1YLayout->addWidget(mCross1SceneY, 1);
+    scenePos1YLayout->addWidget(autoSetCross1SceneY);
+    
+    QHBoxLayout *scenePos2XLayout = new QHBoxLayout();
+    scenePos2XLayout->setMargin(0);
+    scenePos2XLayout->addWidget(mCross2SceneX, 1);
+    scenePos2XLayout->addWidget(autoSetCross2SceneX);
+    
+    QHBoxLayout *scenePos2YLayout = new QHBoxLayout();
+    scenePos2YLayout->setMargin(0);
+    scenePos2YLayout->addWidget(mCross2SceneY, 1);
+    scenePos2YLayout->addWidget(autoSetCross2SceneY);
+    
+    QGroupBox *scenePos1Box = new QGroupBox(tr("Domain Position 1"));
+    scenePos1Box->setFlat(true);
+    QFormLayout *scenePos1Layout = new QFormLayout(scenePos1Box);
+    scenePos1Layout->addRow(tr("X:"), scenePos1XLayout);
+    scenePos1Layout->addRow(tr("Y:"), scenePos1YLayout);
+    
+    QGroupBox *scenePos2Box = new QGroupBox(tr("Domain Position 2"));
+    scenePos2Box->setFlat(true);
+    QFormLayout *scenePos2Layout = new QFormLayout(scenePos2Box);
+    scenePos2Layout->addRow(tr("X:"), scenePos2XLayout);
+    scenePos2Layout->addRow(tr("Y:"), scenePos2YLayout);
     
     QGroupBox *imagePosBox = new QGroupBox(tr("Anchor Points on Image (Coordinates in Pixels)"));
-    QFormLayout *imagePosLayout = new QFormLayout(imagePosBox);
-    imagePosLayout->addRow(tr("First image pos:"), cross1PixmapPos);
-    imagePosLayout->addRow(tr("Second image pos:"), cross2PixmapPos);
+    QHBoxLayout *imagePosLayout = new QHBoxLayout(imagePosBox);
+    imagePosLayout->addWidget(imagePos1Box);
+    imagePosLayout->addWidget(imagePos2Box);
     
     QGroupBox *scenePosBox = new QGroupBox(tr("Anchor Points on Domain (Coordinates in Meters)"));
-    QFormLayout *scenePosLayout = new QFormLayout(scenePosBox);
-    scenePosLayout->addRow(tr("First scene pos:"), cross1ScenePos);
-    scenePosLayout->addRow(tr("Second scene pos:"), cross2ScenePos);
+    QHBoxLayout *scenePosLayout = new QHBoxLayout(scenePosBox);
+    scenePosLayout->addWidget(scenePos1Box);
+    scenePosLayout->addWidget(scenePos2Box);
     
     mView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -182,8 +222,8 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     Q_ASSERT(slider->minimum() == -slider->maximum());
     
     QHBoxLayout *posLayout = new QHBoxLayout();
-    posLayout->addWidget(imagePosBox);
-    posLayout->addWidget(scenePosBox);
+    posLayout->addWidget(imagePosBox, 1);
+    posLayout->addWidget(scenePosBox, 1);
 
     mSaveReferenceFile->setChecked(true);
     mSaveReferenceFile->setToolTip(tr("Save input data to reference file (*.%1) in the same folder with image.\n"
