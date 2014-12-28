@@ -345,132 +345,147 @@
 <context>
     <name>qfgui::BackgroundDialog</name>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="66"/>
-        <source>&amp;Place</source>
-        <translation>&amp;Установить</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="67"/>
-        <source>P&amp;lace</source>
-        <translation>У&amp;становить</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="73"/>
+        <location filename="../src/backgrounddialog.cpp" line="74"/>
         <source>&amp;Save input data to reference file %1</source>
         <translation>&amp;Сохранить введённые данные в привязочный файл %1</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="76"/>
+        <location filename="../src/backgrounddialog.cpp" line="78"/>
         <source>Background Reference</source>
         <translation>Привязка графической подложки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="118"/>
-        <source>Set this coordinate automatically for uniform image scaling.
-All pixmap and remaining scene coordinates must be set.</source>
-        <translation>Выставить рассчётную координату для сохранения первоначального соотношения сторон изображения.
-Все прочие координаты (пиксельные и в расчётной области) должны быть установлены.</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="157"/>
+        <location filename="../src/backgrounddialog.cpp" line="199"/>
         <source>Anchor Points on Image (Coordinates in Pixels)</source>
         <translation>Опорные точки на изображении (координаты в пикселах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="159"/>
-        <source>First image pos:</source>
-        <translation>Первая точка на изображении:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="160"/>
-        <source>Second image pos:</source>
-        <translation>Вторая точка на изображении:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="162"/>
+        <location filename="../src/backgrounddialog.cpp" line="204"/>
         <source>Anchor Points on Domain (Coordinates in Meters)</source>
         <translation>Опорные точки в расчётной области (координаты в метрах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="164"/>
-        <source>First scene pos:</source>
-        <translation>Первая точка на сцене:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="165"/>
-        <source>Second scene pos:</source>
-        <translation>Вторая точка на сцене:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="187"/>
+        <location filename="../src/backgrounddialog.cpp" line="229"/>
         <source>Save input data to reference file (*.%1) in the same folder with image.
 It will be automatically loaded when you open this image again.</source>
         <translation>Сохранить введённые данные в файл привязки (*.%1) в папке с изображением.
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="205"/>
+        <location filename="../src/backgrounddialog.cpp" line="506"/>
         <source>(replace old one)</source>
         <translation>(заменить старый)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="342"/>
+        <location filename="../src/backgrounddialog.cpp" line="572"/>
+        <source>Loaded corresponding reference file from image directory.
+It is recommended to check coordinates before proceeding.</source>
+        <translation>Загружен соответствующий изображению файл привязки.
+Проверьте значения координат до установки подложки.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="381"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="343"/>
+        <location filename="../src/backgrounddialog.cpp" line="118"/>
+        <source>Set both coordinates for cross by placing cursor over image.
+Cross will follow mouse in image area. Left click to finish.</source>
+        <translation>Установка координат отметки на изображении мышью.
+Крест следует за курсором до нажатия левой кнопки.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="129"/>
+        <source>Set this coordinate automatically for uniform image scaling.
+All the rest coordinates (4 pixmap &amp; 3 domain) must be set.</source>
+        <translation>Установка значения для сохранения исходного соотношения сторон изображения.
+Прочие координаты (пиксельные и в расчётной области) должны быть установлены.</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="146"/>
+        <source>Image Position 1</source>
+        <translation>Позиция 1 на изображении</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="149"/>
+        <location filename="../src/backgrounddialog.cpp" line="158"/>
+        <location filename="../src/backgrounddialog.cpp" line="190"/>
+        <location filename="../src/backgrounddialog.cpp" line="196"/>
+        <source>X:</source>
+        <translation>X:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="150"/>
+        <location filename="../src/backgrounddialog.cpp" line="159"/>
+        <location filename="../src/backgrounddialog.cpp" line="191"/>
+        <location filename="../src/backgrounddialog.cpp" line="197"/>
+        <source>Y:</source>
+        <translation>Y:</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="155"/>
+        <source>Image Position 2</source>
+        <translation>Позиция 2 на изображении</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="187"/>
+        <source>Domain Position 1</source>
+        <translation>Позиция 1 в рассчётной области</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="193"/>
+        <source>Domain Position 2</source>
+        <translation>Позиция 2 в рассчётной области</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="382"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="352"/>
+        <location filename="../src/backgrounddialog.cpp" line="391"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="353"/>
+        <location filename="../src/backgrounddialog.cpp" line="392"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="366"/>
+        <location filename="../src/backgrounddialog.cpp" line="405"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="367"/>
+        <location filename="../src/backgrounddialog.cpp" line="406"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="384"/>
+        <location filename="../src/backgrounddialog.cpp" line="423"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="387"/>
+        <location filename="../src/backgrounddialog.cpp" line="426"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="403"/>
+        <location filename="../src/backgrounddialog.cpp" line="442"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="465"/>
+        <location filename="../src/backgrounddialog.cpp" line="571"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="466"/>
-        <source>Loaded reference data from file %1.</source>
-        <translation>Информация о привязке загружена из файла %1.</translation>
     </message>
 </context>
 <context>
@@ -1029,49 +1044,49 @@ At least %n steps per day is needed.</source>
         <translation>Сохранение изображения или данных</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="294"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="304"/>
         <source>Save PDF</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="296"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="320"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="306"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="330"/>
         <source>PDF files</source>
         <translation>Файлы PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="304"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="354"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="314"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="338"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="364"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="305"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="329"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="315"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="339"/>
         <source>Can not save file %1.</source>
         <translation>Не удалось сохранить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="318"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
         <source>Save PNG</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PNG</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="342"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="352"/>
         <source>Save Primary Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить первичные данные</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="344"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="354"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="355"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="365"/>
         <source>Can not write to file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
@@ -1519,7 +1534,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="737"/>
-        <location filename="../src/mainwindow.cpp" line="1358"/>
+        <location filename="../src/mainwindow.cpp" line="1363"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
@@ -1553,47 +1568,47 @@ each contact fits it&apos;s dimension.</source>
 соответсвует его размерам.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="906"/>
+        <location filename="../src/mainwindow.cpp" line="909"/>
         <source>Cursor</source>
         <translation>Курсор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="911"/>
+        <location filename="../src/mainwindow.cpp" line="915"/>
         <source>Anchor</source>
         <translation>Привязка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="954"/>
+        <location filename="../src/mainwindow.cpp" line="959"/>
         <source>The document %1 has been modified.
 Do you want to save your changes or discard them?</source>
         <translation>Документ %1 был изменён.
 Сохранить изменения или отклонить их?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1368"/>
+        <location filename="../src/mainwindow.cpp" line="1373"/>
         <source>Filling with soil %1...</source>
         <translation>Идёт заливка грунтом %1...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="332"/>
-        <location filename="../src/mainwindow.cpp" line="1152"/>
-        <location filename="../src/mainwindow.cpp" line="1180"/>
+        <location filename="../src/mainwindow.cpp" line="1157"/>
+        <location filename="../src/mainwindow.cpp" line="1185"/>
         <source>Cannot write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="988"/>
+        <location filename="../src/mainwindow.cpp" line="993"/>
         <source>Cannot load file %1.</source>
         <translation>Не удалось загрузить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1178"/>
+        <location filename="../src/mainwindow.cpp" line="1183"/>
         <source>Cannot read file %1.</source>
         <translation>Не удалось прочитать файл %1.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="457"/>
-        <location filename="../src/mainwindow.cpp" line="1182"/>
+        <location filename="../src/mainwindow.cpp" line="1187"/>
         <source>Cannot open file %1.</source>
         <translation>Не удалось открыть файл %1.</translation>
     </message>
@@ -1603,27 +1618,27 @@ Do you want to save your changes or discard them?</source>
         <translation>Экспорт &amp;для построения...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1066"/>
+        <location filename="../src/mainwindow.cpp" line="1071"/>
         <source>Provided version ID: %1. Wanted version ID: %2.</source>
         <translation>ID версии в файле: %1. Требуемый ID версии: %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1158"/>
+        <location filename="../src/mainwindow.cpp" line="1163"/>
         <source>Unfinished file has been removed.</source>
         <translation>Незавершённый файл был удалён.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1160"/>
+        <location filename="../src/mainwindow.cpp" line="1165"/>
         <source>Unfinished file removal failed, please remove it manually.</source>
         <translation>Незавершённый файл не был удалён, удалите его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1347"/>
+        <location filename="../src/mainwindow.cpp" line="1352"/>
         <source>Exit &amp;Full Screen Mode</source>
         <translation>Выйти из &amp;полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1351"/>
+        <location filename="../src/mainwindow.cpp" line="1356"/>
         <source>&amp;Full Screen Mode</source>
         <translation>&amp;Полноэкранный режим</translation>
     </message>
@@ -1694,47 +1709,47 @@ Do you want to save your changes or discard them?</source>
         <translation>[Сетка]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="953"/>
+        <location filename="../src/mainwindow.cpp" line="958"/>
         <source>Close Document</source>
         <translation>Закрыть документ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="970"/>
+        <location filename="../src/mainwindow.cpp" line="975"/>
         <source>Load Failed</source>
         <translation>Загрузка не удалась</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="994"/>
+        <location filename="../src/mainwindow.cpp" line="999"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1012"/>
+        <location filename="../src/mainwindow.cpp" line="1017"/>
         <source>File is corrupted or is in bad format.</source>
         <translation>Файл повреждён или имеет неправильный формат.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1060"/>
+        <location filename="../src/mainwindow.cpp" line="1065"/>
         <source>File is for older version of %1.</source>
         <translation>Файл предназначен для устаревшей версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1063"/>
+        <location filename="../src/mainwindow.cpp" line="1068"/>
         <source>File is for newer version of %1.</source>
         <translation>Файл предназначен для более новой версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1103"/>
+        <location filename="../src/mainwindow.cpp" line="1108"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1142"/>
+        <location filename="../src/mainwindow.cpp" line="1147"/>
         <source>File saved</source>
         <translation>Файл сохранён</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1196"/>
+        <location filename="../src/mainwindow.cpp" line="1201"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
     </message>
