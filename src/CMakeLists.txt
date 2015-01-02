@@ -118,9 +118,9 @@ qt5_add_resources(QRC_SOURCES
 	../res/icons.qrc
 	${L10N_RES})
 
-set(qfrost_target ../qfrost)
+set(qfrost_target qfrost)
 if(WIN32)
-	set(qfrost_target ../QFrost)
+	set(qfrost_target QFrost)
 endif()
 
 add_version_info(${qfrost_target} qfrost_SRCS)
@@ -129,6 +129,11 @@ add_executable(${qfrost_target}
 	${qfrost_SRCS}
 	${QRC_SOURCES}
 	${QM_FILES})
+
+set_target_properties(${qfrost_target}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
 
 qt5_use_modules(${qfrost_target} Widgets)
 target_link_libraries(${qfrost_target} ${QFROST_LIBRARIES})
