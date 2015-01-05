@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -26,7 +26,7 @@
 namespace qfgui
 {
 
-QT_FORWARD_DECLARE_CLASS(MainWindow);
+QT_FORWARD_DECLARE_CLASS(MainWindow)
 
 class WelcomeDialog : public QDialog
 {

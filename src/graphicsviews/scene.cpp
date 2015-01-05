@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -809,8 +809,6 @@ void Scene::updateBlocksInfo()
     bool isGridded = true;
 
     if (!mBlocks.isEmpty()) {
-        const bool firstBlockLeftSideIsAtLeftHalfPlane = (blocks().first()->rect().left() < 0);
-
         foreach(Block * b, mBlocks) {
             if (is_1d) {
                 if (!b->contactsLeft().isEmpty() || !b->contactsRight().isEmpty()) {
@@ -1050,14 +1048,6 @@ static void printPoint(const QPointF &p, QTextStream &out,
     if (newLine) {
         out << "\n";
     }
-}
-
-static void printPoint(double x, double y,
-                       QTextStream &out,
-                       const QString &delim = "\t",
-                       bool newLine = true)
-{
-    printPoint(QPointF(x, y), out, delim, newLine);
 }
 
 static bool blockIntersectsPolygonSide(const Block *block,

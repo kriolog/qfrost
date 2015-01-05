@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2014  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -24,13 +24,13 @@
 
 #include <qfrost.h>
 
-QT_FORWARD_DECLARE_CLASS(QUndoStack);
+QT_FORWARD_DECLARE_CLASS(QUndoStack)
 
 namespace qfgui
 {
 
-QT_FORWARD_DECLARE_CLASS(Item);
-QT_FORWARD_DECLARE_CLASS(ItemEditCommand);
+QT_FORWARD_DECLARE_CLASS(Item)
+QT_FORWARD_DECLARE_CLASS(ItemEditCommand)
 
 class ItemsModel : public QAbstractTableModel
 {
@@ -47,12 +47,14 @@ public:
     ItemsModel(ItemsModel *other, int row);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const {
+        Q_UNUSED(parent)
         return mFixedItem == NULL
                ? mItems.size()
                : mItems.size() + 1;
     }
 
     int columnCount(const QModelIndex &parent = QModelIndex()) const {
+        Q_UNUSED(parent)
         return mProperties.size();
     }
 

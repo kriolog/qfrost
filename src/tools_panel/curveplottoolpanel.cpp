@@ -28,7 +28,7 @@
 using namespace qfgui;
 
 CurvePlotToolPanel::CurvePlotToolPanel(QWidget *parent):
-    SettingsBox(tr("Slice Orientation")),
+    SettingsBox(tr("Slice Orientation"), parent),
     mVerticalSlice(new QRadioButton(tr("&Vertical"))),
     mHorizontalSlice(new QRadioButton(tr("&Horizontal"))),
     mSettings(new CurvePlotToolSettings(this))
