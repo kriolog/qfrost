@@ -97,7 +97,7 @@ public:
         return mColorGenerator;
     }
 
-    const Units *units() const {
+    Units *const units() {
         return mUnits;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015  Denis Pesotsky
+ * Copyright (C) 2012  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -54,7 +54,7 @@ protected:
     /// Унаследованные классы могут модифицировать здесь @p changes.
     /// По умолчанию ничего не делает.
     virtual void prepareChanges(ItemChanges &changes) const {
-        Q_UNUSED(changes)
+
     }
 
 private:

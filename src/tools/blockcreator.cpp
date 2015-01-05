@@ -134,7 +134,7 @@ void BlockCreator::drawBlocks(QPainter *painter)
         complementaryLinesInScene.append(QLineF(point1, point2));
     }
 
-    painter->setPen(QPen(Qt::darkGreen, 0, Qt::DotLine));
+    painter->setPen(QPen((Qt::darkGreen, 0, Qt::DotLine)));
     painter->drawLines(complementaryLinesInScene);
 
     /* Общая рамка */

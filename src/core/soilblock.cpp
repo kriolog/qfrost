@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -43,11 +43,11 @@ SoilBlock::SoilBlock(const double &width, const double &height):
     mUnfrozenWaterCurve(),
     mMoistureTotal(0.3),
     mDryDensity(1400),
+    mTemperatureCurve(),
+    mHeatDiff(0),
     mAdditionalTransitionHeat(0),
     mMinBfMoisture(0),
-    mTemperatureCurve(),
-    mInternalHeatSourcePowerDensity(0),
-    mHeatDiff(0)
+    mInternalHeatSourcePowerDensity(0)
 {
     mDimensions.push_back(width);
     mDimensions.push_back(height);

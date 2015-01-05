@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2015  Denis Pesotsky
+ * Copyright (C) 2010-2013  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -345,13 +345,11 @@ void ItemsModel::duplicateItem(int row)
 
 QVariant ItemsModel::minimum(const QModelIndex &index) const
 {
-    Q_UNUSED(index)
     return QVariant();
 }
 
 QVariant ItemsModel::maximum(const QModelIndex &index) const
 {
-    Q_UNUSED(index)
     return QVariant();
 }
 
@@ -426,7 +424,7 @@ QString ItemsModel::nextName() const
     int i = 0;
     QString nameTemplate = newItemNameTemplate();
     if (!nameTemplate.contains("%1")) {
-        qWarning("ItemsModel: New item name template must contain placeholder! "
+        qWarning("ItemsModel: New item name template must contain '%1'! "
                  "Check translation file for %s.", metaObject()->className());
         nameTemplate = "%1";
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015  Denis Pesotsky
+ * Copyright (C) 2012  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -155,7 +155,6 @@ void ColorBar::updatePos(const QSize &viewPortSize)
 
 void ColorBar::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event)
     if (mIsTemporaryHidden) {
         return;
     }
@@ -175,17 +174,15 @@ void ColorBar::updateVisibility(QFrost::BlockStyle style)
     bool mustShow;
     switch (style) {
     case QFrost::blockShowsTemperature:
-    case QFrost::blockShowsTemperatureField:
+    case  QFrost::blockShowsTemperatureField:
         mustShow = mShowsTemperature;
         break;
-    case QFrost::blockShowsThawedPartField:
+    case  QFrost::blockShowsThawedPartField:
         mustShow = !mShowsTemperature;
         break;
-    case QFrost::blockShowsConditionField:
+    case  QFrost::blockShowsConditionField:
         mustShow = true;
         break;
-    case QFrost::blockShowsSoil:
-    case QFrost::blockShowsBoundaryConditions:
     default:
         mustShow = false;
     }

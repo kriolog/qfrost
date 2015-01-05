@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015  Denis Pesotsky
+ * Copyright (C) 2012  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -134,9 +134,9 @@ public:
     Units(QObject *parent);
 
     /// Выбранная на данный момент система единиц для @p propery
-    const Unit &unit(PhysicalProperty property) const;
+    const Unit &unit(PhysicalProperty property);
     /// Выбранная на данный момент система единиц для @p propery
-    const Unit &unit(int property) const;
+    const Unit &unit(int property);
 
     static const Unit &unit(const QObject *object, PhysicalProperty property) {
         return units(object)->unit(property);
@@ -146,7 +146,7 @@ public:
         return units(object)->unit(property);
     }
 
-    static const Units *units(const QObject *object);
+    static Units *const units(const QObject *object);
 
     /// Перечисление возможных систем единиц.
     /// Соответствующие значения не изменяются для обратной совместимости.

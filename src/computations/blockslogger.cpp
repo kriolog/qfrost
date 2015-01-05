@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2015  Denis Pesotsky
+ * Copyright (C) 2011-2013  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -53,7 +53,7 @@ void BlocksLogger::addData(const ComputationData &data)
 }
 
 /// Количество лет (не целое) даты @p date от начала года. Всегда < 1.0.
-static double yearsFromAnnumStart(const QDate &date)
+static const double yearsFromAnnumStart(const QDate &date)
 {
     const QDate firstDateInYear(date.year(), 1, 1);
 
@@ -61,7 +61,7 @@ static double yearsFromAnnumStart(const QDate &date)
 }
 
 /// Разница в годах (не целая) между @p date1 и @p date2
-static double yearsPassed(const QDate &date1, const QDate &date2)
+static const double yearsPassed(const QDate &date1, const QDate &date2)
 {
     Q_ASSERT(date1 <= date2);
     return yearsFromAnnumStart(date1) + (date2.year() - date1.year()) + yearsFromAnnumStart(date2);
