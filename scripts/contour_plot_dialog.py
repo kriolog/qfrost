@@ -41,7 +41,7 @@ class AreaPlotCanvas(FigureCanvas):
         fig = Figure(dpi=100)
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
-        self.axes.hold(False)
+        #self.axes.hold(False)
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
@@ -50,7 +50,6 @@ class AreaPlotCanvas(FigureCanvas):
                                    QtWidgets.QSizePolicy.Expanding,
                                    QtWidgets.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
-
 
 
 class AreaPlotDialog(QtWidgets.QMainWindow):
@@ -90,11 +89,53 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         exit_action.setStatusTip('Close this dialog')
         exit_action.triggered.connect(self.close)
 
-        visibility_action1 = VisibilityAction('Temperature Color Map', self)
-        visibility_action1.triggered.connect(self.__plot.set_visibility_contourf_t)
+        uses_t_act_text = 'Temperature'
+        uses_v_act_text = 'Thawed part'
 
-        visibility_action2 = VisibilityAction('Temperature Contours', self)
-        visibility_action2.triggered.connect(self.__plot.set_visibility_contour_t)
+        # Цветовая карта
+        map_separator_act = QtWidgets.QAction('Color Map', self)
+        map_separator_act.setSeparator(True)
+
+        map_visibility_act = VisibilityAction('Show Color Map', self)
+        map_visibility_act.triggered.connect(self.__plot.set_map_visibility)
+        map_visibility_act.setShortcut(QtGui.QKeySequence("Ctrl+M"))
+
+        map_uses_act_group = QtWidgets.QActionGroup(self)
+        map_uses_act_group.setExclusive(True)
+        map_visibility_act.triggered.connect(map_uses_act_group.setEnabled)
+
+        map_uses_t_act = QtWidgets.QAction(uses_t_act_text, map_uses_act_group)
+        map_uses_t_act.setCheckable(True)
+        map_uses_t_act.setChecked(True)
+        map_uses_t_act.toggled.connect(self.__plot.set_map_uses_t)
+
+        map_uses_v_act = QtWidgets.QAction(uses_v_act_text, map_uses_act_group)
+        map_uses_v_act.setCheckable(True)
+
+        # Изолинии
+        iso_separator_act = QtWidgets.QAction('Contours', self)
+        iso_separator_act.setSeparator(True)
+
+        iso_visibility_act = VisibilityAction('Show Contours', self)
+        iso_visibility_act.triggered.connect(self.__plot.set_iso_visibility)
+        iso_visibility_act.setShortcut(QtGui.QKeySequence("Ctrl+I"))
+
+        iso_uses_act_group = QtWidgets.QActionGroup(self)
+        iso_uses_act_group.setExclusive(True)
+        iso_visibility_act.triggered.connect(iso_uses_act_group.setEnabled)
+
+        iso_uses_t_act = QtWidgets.QAction(uses_t_act_text, iso_uses_act_group)
+        iso_uses_t_act.setCheckable(True)
+        iso_uses_t_act.setChecked(True)
+        iso_uses_t_act.toggled.connect(self.__plot.set_iso_uses_t)
+
+        iso_uses_v_act = QtWidgets.QAction(uses_v_act_text, iso_uses_act_group)
+        iso_uses_v_act.setCheckable(True)
+
+        # Дополнительнып элементы построения
+        act_visibility_act = VisibilityAction('Mark Phase Transitions', self)
+        act_visibility_act.setChecked(False)
+        act_visibility_act.triggered.connect(self.__plot.set_act_visibility)
 
         menubar = self.menuBar()
         file = menubar.addMenu('&File')
@@ -104,8 +145,14 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         file.addAction(exit_action)
 
         view = menubar.addMenu('&View')
-        view.addAction(visibility_action1)
-        view.addAction(visibility_action2)
+        view.addAction(map_separator_act)
+        view.addAction(map_visibility_act)
+        view.addActions(map_uses_act_group.actions())
+        view.addAction(iso_separator_act)
+        view.addAction(iso_visibility_act)
+        view.addActions(iso_uses_act_group.actions())
+        view.addSeparator()
+        view.addAction(act_visibility_act)
 
         self.__updateTitle()
 

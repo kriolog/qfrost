@@ -5,11 +5,13 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 import numpy
 from matplotlib import pyplot as plt
+from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MultipleLocator
 import matplotlib.tri as tri
 from matplotlib.path import Path
 import matplotlib.colors as col
 from matplotlib.colorbar import Colorbar
+import matplotlib.cm as cm
 from matplotlib.patches import PathPatch
 from matplotlib.tri import UniformTriRefiner, TriAnalyzer
 import itertools
@@ -182,31 +184,51 @@ def _domain_path(outer_polygons_points, inner_polygons_points,
     return Path(points, codes)
 
 
+def _format_percent(x, i):
+    return str(int(round(x*100.0, 0))) + '%'
+
+_percent_formatter = FuncFormatter(_format_percent)
+
 class ContourPlot(QObject):
-    __full_triang = None
-    __known_triang = None
+    __known_triang = None # Результат триангуляции по центрам блоков
+    __full_triang = None  # Результат триангуляции по всем точкам (включая края)
 
-    __cmapT = None
-    __cmapV = None
+    __cmap_t = None  # Цвета температуры
+    __cmap_v = None  # Цвета V_th (для полной карты)
+    __cmap_v2 = None # Цвета V_th (для фронтовой карты - прозрачность переменна)
 
-    __Vt = None
-    __Vv = None
+    __levels_t = None # Ключевые уровни для температуры
+    __levels_v = None # Ключевые уровни для V_th
 
-    __domain_patch = None
+    __domain_patch = None # Построение формы расчётной области (PathPatch)
 
-    __fig = None
-    __axes = None
+    __fig = None  # Фигура, которую мы рисуем
+    __axes = None # Пара осей, внутри которой идут построения
 
-    __colorbar = None
+    __colorbar = None    # Цветовая шкала (она всегда одна: или t, или v)
 
-    __contourf_t = None
-    __contour_t = None
+    __contourf_t = None  # Карта температуры (ContourSet)
+    __contourf_v = None  # Карта отн. объёма талой фазы (ContourSet)
+    __contour_t = None   # Изолинии температуры (ContourSet)
+    __contour_v = None   # Изолинии отн. объёма талой фазы (ContourSet)
+    __contourf_v2 = None # Фронтовая карта отн. объёма талой фазы (ContourSet)
 
-    __show_contourf_t = True
-    __show_contour_t = True
+    __map_shown = True  # Нужно ли показывать цветовую карту
+    __map_use_t = True  # Является ли источником данных для карты температура
+                        # (если False, то отн. объём талой фазы)
 
-    stateChanged = pyqtSignal('QString')
-    stateCleared = pyqtSignal()
+    __iso_shown = True  # Нужно ли показывать изолинии
+    __iso_use_t = True  # Является ли источником данных для изолиний температура
+                        # (если False, то отн. объём талой фазы)
+
+    __act_shown = False # Нужно ли показывать над основым построением фронтовую
+                        # карту отн. объёма талой фазы
+
+    __orig_axes_anchor = None      # Anchor у осей для построения без шкалы
+    __orig_axes_subplotspec = None # Subplotspec у осей для построения без шкалы
+
+    stateChanged = pyqtSignal('QString') # Смена статуса (т.е. этапа построения)
+    stateCleared = pyqtSignal()          # Очистка статуса - построение готово
 
     def __init__(self, figure):
         """В конструкторе настраиваются цветовые шкалы и ключевые значения."""
@@ -234,62 +256,104 @@ class ContourPlot(QObject):
                              (0.5,  1.0, 1.0),
                              (0.55, 0.0, 0.0),
                              (1.0,  0.0, 0.0)]}
-        self.__cmapT = col.LinearSegmentedColormap('QFrostT', ctdictT)
+        self.__cmap_t = col.LinearSegmentedColormap('QFrostT', ctdictT)
 
-        # Цвета шкалы относительного объёма талой фазы
+        # Цвета шкалы отн. объёма талой фазы (для полной карты)
+        startcolor = (0.0, 100.0/255.0, 0.0)
+        endcolor = (0.0, 1.0, 0.0)
+        self.__cmap_v = col.LinearSegmentedColormap.from_list('QFrostV',
+                                                               [startcolor,
+                                                                endcolor])
+
+        # Цвета шкалы отн. объёма талой фазы (для выделения фронта)
         startcolor = (0.0, 0.3, 0.0, 0.0)
         midcolor = (0.0, 0.3, 0.0, 1.0)
         endcolor = startcolor
-        self.__cmapV = col.LinearSegmentedColormap.from_list('QFrostV',
-                                                           [startcolor,
-                                                            startcolor,
-                                                            startcolor,
-                                                            midcolor,
-                                                            endcolor,
-                                                            endcolor,
-                                                            endcolor])
+        self.__cmap_v2 = col.LinearSegmentedColormap.from_list('QFrostV2',
+                                                               [startcolor,
+                                                                startcolor,
+                                                                startcolor,
+                                                                midcolor,
+                                                                endcolor,
+                                                                endcolor,
+                                                                endcolor])
 
         # Ключевые значения температуры
-        self.__Vt = [i/2.0 for i in range(-20, 21)]
+        self.__levels_t = [i/2.0 for i in range(-20, 21)]
 
-        # Ключевые значения относительного объёма талой фазы
-        self.__Vv = [i/20.0 for i in range(0, 21)]
-        self.__Vv[0] = 1e-15
-        self.__Vv[-1] = 1.0 - self.__Vv[0]
+        # Ключевые значения отн. объёма талой фазы
+        self.__levels_v = [i/20.0 for i in range(0, 21)]
+        self.__levels_v[0] = 1e-15
+        self.__levels_v[-1] = 1.0 - self.__levels_v[0]
 
+        # Обе координаты - это метры, так что пусть оси будут равномасштабны
         self.__axes.set_aspect('equal')
+
+        # Показываем сетку
         self.__axes.grid(True, ls='-', c='#e0e0e0')
+
+        # Автоматически подгоняем размер фигуры под содержимое
+        #self.__fig.set_tight_layout(True)
+
+        # Запомним параметры осей, пока не добавлена цветовая шкала
+        self.__orig_axes_anchor = self.__axes.get_anchor()
+        self.__orig_axes_subplotspec = self.__axes.get_subplotspec()
 
 
     @pyqtSlot(bool)
-    def set_visibility_contourf_t(self, visible):
-        if self.__show_contourf_t == visible:
+    def set_map_visibility(self, visible):
+        if self.__map_shown == visible:
             return
+        self.__map_shown = visible
+        contourf = self.__contourf_t if self.__map_use_t else self.__contourf_v
+        self.__set_visibility_contour(contourf, visible)
+        if visible:
+            self.__colorbar_create()
+        else:
+            self.__colorbar_remove()
+        self.__redraw()
 
-        self.__show_contourf_t = visible
 
-        if self.__contourf_t is not None:
-            for collection in self.__contourf_t.collections:
-                collection.set_visible(visible)
+    @pyqtSlot(bool)
+    def set_map_uses_t(self, use_t):
+        if self.__map_use_t == use_t:
+            return
+        self.__map_use_t = use_t
+        if self.__map_shown:
+            self.__set_visibility_contour(self.__contourf_t, use_t)
+            self.__set_visibility_contour(self.__contourf_v, not use_t)
+            self.__colorbar_create()
             self.__redraw()
 
 
     @pyqtSlot(bool)
-    def set_visibility_contour_t(self, visible):
-        if self.__show_contour_t == visible:
+    def set_iso_visibility(self, visible):
+        if self.__iso_shown == visible:
             return
+        self.__iso_shown = visible
+        contour = self.__contour_t if self.__iso_use_t else self.__contour_v
+        self.__set_visibility_contour(contour, visible)
+        self.__redraw()
 
-        self.__show_contour_t = visible
 
-        if self.__contour_t is not None:
-            for collection in self.__contour_t.collections:
-                collection.set_visible(visible)
+    @pyqtSlot(bool)
+    def set_iso_uses_t(self, use_t):
+        if self.__iso_use_t == use_t:
+            return
+        self.__iso_use_t = use_t
+        if self.__iso_shown:
+            self.__set_visibility_contour(self.__contour_t, use_t)
+            self.__set_visibility_contour(self.__contour_v, not use_t)
+            self.__redraw()
 
-            if visible:
-                self.__clabel_t_fill()
-            else:
-                self.__clabel_t_clear()
 
+    @pyqtSlot(bool)
+    def set_act_visibility(self, visible):
+        if self.__act_shown == visible:
+            return
+        self.__act_shown = visible
+        if self.__contourf_v2 is not None:
+            self.__set_visibility_contour(self.__contourf_v2, visible)
             self.__redraw()
 
 
@@ -298,16 +362,13 @@ class ContourPlot(QObject):
             self.__domain_patch.remove()
             self.__domain_patch = None
 
-        if self.__contourf_t is not None:
-            for collection in self.__contourf_t.collections:
-                collection.remove()
-            self.__contourf_t = None
+        self.__colorbar_remove()
 
-        if self.__contour_t is not None:
-            self.__clabel_t_clear()
-            for collection in self.__contour_t.collections:
-                collection.remove()
-            self.__contour_t = None
+        for contour_set in [self.__contourf_t, self.__contourf_v,
+                            self.__contour_t, self.__contour_v,
+                            self.__contourf_v2]:
+            if contour_set is not None:
+                self.__remove_contour(contour_set)
 
         self.__redraw()
 
@@ -364,63 +425,139 @@ class ContourPlot(QObject):
                   temperatures, thawed_parts,
                   temperatures_bounds, thawed_parts_bounds):
         """Делает построение по указанным данным (сетка должна быть задана)."""
-        temperatures_full = numpy.concatenate((temperatures, temperatures_bounds))
-        thawed_parts_full = numpy.concatenate((thawed_parts, thawed_parts_bounds))
+        t_full = numpy.concatenate((temperatures, temperatures_bounds))
+        v_full = numpy.concatenate((thawed_parts, thawed_parts_bounds))
 
-        self.stateChanged.emit('Plotting temperatures map...')
-        self.__contourf_t = tri.TriContourSet(self.__axes,
-                                              self.__full_triang, temperatures_full,
-                                              self.__Vt, cmap=self.__cmapT,
-                                              filled=True,
-                                              extend='both',
-                                              antialiased=False)
-        # антиалиасинг красив, если цвета сильно меняются, иначе всё портят щели
+        # Цветовая карта температуры #
+        self.stateChanged.emit('Plotting temperature map...')
+        self.__contourf_t = self.__contourf(t_full,
+                                            self.__levels_t,
+                                            self.__cmap_t)
+        if not (self.__map_shown and self.__map_use_t):
+            self.__hide_contour(self.__contourf_t)
 
-        if not self.__show_contourf_t:
-            for collection in self.__contourf_t.collections:
-                collection.set_visible(False)
+        # Цветовая карта отн. объёма талой фазы #
+        self.stateChanged.emit('Plotting thawed part map...')
+        self.__contourf_v = self.__contourf(v_full,
+                                            self.__levels_v,
+                                            self.__cmap_v)
+        if not (self.__map_shown and not self.__map_use_t):
+            self.__hide_contour(self.__contourf_v)
 
-        for collection in self.__contourf_t.collections:
-            collection.set_clip_path(self.__domain_patch)
+        # Цветовая шкала (если она необходима) #
+        if self.__map_shown:
+            self.__colorbar_create()
 
-        # Добавляем шкалу температур (если ещё не сделали этого)
-        if self.__colorbar is None:
-            self.__colorbar = self.__axes.figure.colorbar(self.__contourf_t,
-                                                          ticks=MultipleLocator(base=1.0))
-            self.__colorbar.set_label(u"Температура $T$, °C")
+        # Цветовая карта отн. объёма талой фазы (фронтовая) #
+        self.stateChanged.emit('Plotting thawed part map for transition zone...')
+        self.__contourf_v2 = self.__contourf(v_full,
+                                             self.__levels_v,
+                                             self.__cmap_v2)
+        if not self.__act_shown:
+            self.__hide_contour(self.__contourf_v2)
 
-        self.stateChanged.emit('Plotting temperatures contours...')
-        self.__contour_t = tri.TriContourSet(self.__axes,
-                                             self.__known_triang, temperatures,
-                                             self.__Vt,
-                                             filled=False,
-                                             colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
-                                             linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
+        # Изолинии температуры #
+        self.stateChanged.emit('Plotting temperature contours...')
+        self.__contour_t = self.__contour(temperatures, self.__levels_t)
+        self.__contour_t.clabel(fontsize=8, fmt='%1.1f')
+        if not (self.__iso_shown and self.__iso_use_t):
+            self.__hide_contour(self.__contour_t)
 
-        if not self.__show_contour_t:
-            for collection in self.__contour_t.collections:
-                collection.set_visible(False)
-        else:
-            self.__clabel_t_fill()
+        # Изолинии отн. объёма талой фазы #
+        self.stateChanged.emit('Plotting thawed part contours...')
+        self.__contour_v = self.__contour(thawed_parts, self.__levels_v)
+        self.__contour_v.clabel(fontsize=8, fmt=_percent_formatter)
+        if not (self.__iso_shown and not self.__iso_use_t):
+            self.__hide_contour(self.__contour_v)
 
-        for collection in self.__contour_t.collections:
-            collection.set_clip_path(self.__domain_patch)
-            collection.set_zorder(5)
-
+        # Рендеринг #
         self.stateChanged.emit('Drawing...')
         self.__redraw()
 
         self.stateCleared.emit()
 
 
-    def __clabel_t_fill(self):
-        self.__contour_t.clabel(fontsize=8, fmt=r'$%1.1f$')
-
-
-    def __clabel_t_clear(self):
-        while self.__contour_t.labelCValues:
-            self.__contour_t.pop_label()
-
-
     def __redraw(self):
         self.__fig.canvas.draw()
+
+
+    def __set_visibility_contour(self, contour_set, visible):
+        if contour_set is not None:
+            for collection in contour_set.collections:
+                collection.set_visible(visible)
+            for caption in contour_set.labelTexts:
+                caption.set_visible(visible)
+
+
+    def __hide_contour(self, contour_set):
+        self.__set_visibility_contour(contour_set, False)
+
+
+    def __remove_contour(self, contour_set):
+        for collection in contour_set.collections:
+            collection.remove()
+        for caption in contour_set.labelTexts:
+            caption.remove()
+        del contour_set
+        contour_set = None
+
+
+    def __contourf(self, values, levels, cmap):
+        result = tri.TriContourSet(self.__axes,
+                                   self.__full_triang,
+                                   values,
+                                   levels,
+                                   cmap=cmap,
+                                   filled=True,
+                                   extend='both',
+                                   antialiased=False)
+        for collection in result.collections:
+            collection.set_clip_path(self.__domain_patch)
+        return result
+
+
+    def __contour(self, values, levels):
+        result = tri.TriContourSet(self.__axes,
+                                   self.__known_triang,
+                                   values,
+                                   levels,
+                                   filled=False,
+                                   colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
+                                   linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
+
+        for collection in result.collections:
+            collection.set_clip_path(self.__domain_patch)
+            collection.set_zorder(5)
+        return result
+
+
+    def __colorbar_create(self):
+        self.__colorbar_remove()
+        if self.__map_use_t:
+            if self.__contourf_t is None:
+                print('Can not create colorbar without corresponding contourf!')
+            else:
+                self.__colorbar = self.__fig.colorbar(self.__contourf_t,
+                                                      ticks=MultipleLocator(base=1.0),
+                                                      use_gridspec=True)
+                self.__colorbar.set_label(u"Температура $T$, °C")
+        else:
+            if self.__contourf_v is None:
+                print('Can not create colorbar without corresponding contourf!')
+            else:
+                self.__colorbar = self.__fig.colorbar(self.__contourf_v,
+                                                      ticks=self.__levels_v,
+                                                      format=_percent_formatter,
+                                                      use_gridspec=True)
+                self.__colorbar.set_label("Относительный объём талой фазы $V_{th}$")
+
+
+    def __colorbar_remove(self):
+        if self.__colorbar is not None:
+            self.__colorbar.remove()
+            del self.__colorbar
+            self.__colorbar = None
+            self.__axes.set_subplotspec(self.__orig_axes_subplotspec)
+            self.__axes.update_params()
+            self.__axes.set_anchor(self.__orig_axes_anchor)
+            self.__axes.set_position(self.__axes.figbox)
