@@ -4,7 +4,8 @@
 import sys
 import numpy
 
-from PyQt5.QtCore import pyqtSlot as Slot
+from PyQt5.QtCore import pyqtSlot
+
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
@@ -64,8 +65,16 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
+        self.__canvas = AreaPlotCanvas(self)
+        self.setCentralWidget(self.__canvas)
+
+        self.__plot = contour_plot.ContourPlot(self.__canvas.figure)
+        self.__plot.stateChanged.connect(self.statusBar().showMessage)
+        self.__plot.stateCleared.connect(self.statusBar().clearMessage)
+
         open_action = QtWidgets.QAction(QtGui.QIcon.fromTheme('document-open'),
                                         'Open File...', self)
+        open_action.setShortcut(QtGui.QKeySequence.Open)
         open_action.setStatusTip('Open file with 2D plot data from QFrost')
         open_action.triggered.connect(self.open_data)
 
@@ -81,6 +90,12 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         exit_action.setStatusTip('Close this dialog')
         exit_action.triggered.connect(self.close)
 
+        visibility_action1 = VisibilityAction('Temperature Color Map', self)
+        visibility_action1.triggered.connect(self.__plot.set_visibility_contourf_t)
+
+        visibility_action2 = VisibilityAction('Temperature Contours', self)
+        visibility_action2.triggered.connect(self.__plot.set_visibility_contour_t)
+
         menubar = self.menuBar()
         file = menubar.addMenu('&File')
         file.addAction(open_action)
@@ -88,15 +103,9 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         file.addSeparator()
         file.addAction(exit_action)
 
-        self.__canvas = AreaPlotCanvas(self)
-        self.setCentralWidget(self.__canvas)
-
-        self.__plot = contour_plot.ContourPlot(self.__canvas.figure)
-
-        self.statusBar()
-
-        self.__plot.stateChanged.connect(self.statusBar().showMessage)
-        self.__plot.stateCleared.connect(self.statusBar().clearMessage)
+        view = menubar.addMenu('&View')
+        view.addAction(visibility_action1)
+        view.addAction(visibility_action2)
 
         self.__updateTitle()
 
@@ -202,6 +211,20 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
                                          self.__STATUSBAR_MESSAGE_TIMEOUT)
             return True
 
+
+class VisibilityAction(QtWidgets.QAction):
+    def __init__(self, text, parent=None, checked=True):
+        QtWidgets.QAction.__init__(self, text, parent)
+        self.setCheckable(True)
+        self.setChecked(checked)
+        self.triggered.connect(self.__update_icon)
+        self.__update_icon(self.isChecked())
+
+
+    @pyqtSlot(bool)
+    def __update_icon(self, visible):
+        icon_name = "layer-visible-on" if visible else "layer-visible-off"
+        self.setIcon(QtGui.QIcon.fromTheme(icon_name))
 
 
 def main():

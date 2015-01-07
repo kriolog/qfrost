@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 import numpy
 from matplotlib import pyplot as plt
@@ -204,7 +204,6 @@ class ContourPlot(QObject):
 
     __show_contourf_t = True
     __show_contour_t = True
-    __show_clabel_t = True
 
     stateChanged = pyqtSignal('QString')
     stateCleared = pyqtSignal()
@@ -262,6 +261,38 @@ class ContourPlot(QObject):
         self.__axes.grid(True, ls='-', c='#e0e0e0')
 
 
+    @pyqtSlot(bool)
+    def set_visibility_contourf_t(self, visible):
+        if self.__show_contourf_t == visible:
+            return
+
+        self.__show_contourf_t = visible
+
+        if self.__contourf_t is not None:
+            for collection in self.__contourf_t.collections:
+                collection.set_visible(visible)
+            self.__redraw()
+
+
+    @pyqtSlot(bool)
+    def set_visibility_contour_t(self, visible):
+        if self.__show_contour_t == visible:
+            return
+
+        self.__show_contour_t = visible
+
+        if self.__contour_t is not None:
+            for collection in self.__contour_t.collections:
+                collection.set_visible(visible)
+
+            if visible:
+                self.__clabel_t_fill()
+            else:
+                self.__clabel_t_clear()
+
+            self.__redraw()
+
+
     def clear(self):
         if self.__domain_patch is not None:
             self.__domain_patch.remove()
@@ -273,14 +304,12 @@ class ContourPlot(QObject):
             self.__contourf_t = None
 
         if self.__contour_t is not None:
-            for _ in range(0, len(self.__contour_t.labelCValues)):
-                self.__contour_t.pop_label()
-
+            self.__clabel_t_clear()
             for collection in self.__contour_t.collections:
                 collection.remove()
             self.__contour_t = None
 
-        self.__fig.canvas.draw()
+        self.__redraw()
 
 
     def set_mesh(self,
@@ -347,6 +376,10 @@ class ContourPlot(QObject):
                                               antialiased=False)
         # антиалиасинг красив, если цвета сильно меняются, иначе всё портят щели
 
+        if not self.__show_contourf_t:
+            for collection in self.__contourf_t.collections:
+                collection.set_visible(False)
+
         for collection in self.__contourf_t.collections:
             collection.set_clip_path(self.__domain_patch)
 
@@ -364,13 +397,30 @@ class ContourPlot(QObject):
                                              colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
                                              linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
 
-        self.__contour_t.clabel(fontsize=8, fmt=r'$%1.1f$')
+        if not self.__show_contour_t:
+            for collection in self.__contour_t.collections:
+                collection.set_visible(False)
+        else:
+            self.__clabel_t_fill()
 
         for collection in self.__contour_t.collections:
             collection.set_clip_path(self.__domain_patch)
             collection.set_zorder(5)
 
         self.stateChanged.emit('Drawing...')
-        self.__fig.canvas.draw()
+        self.__redraw()
 
         self.stateCleared.emit()
+
+
+    def __clabel_t_fill(self):
+        self.__contour_t.clabel(fontsize=8, fmt=r'$%1.1f$')
+
+
+    def __clabel_t_clear(self):
+        while self.__contour_t.labelCValues:
+            self.__contour_t.pop_label()
+
+
+    def __redraw(self):
+        self.__fig.canvas.draw()
