@@ -202,7 +202,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
             except Exception as e:
                 QtWidgets.qApp.restoreOverrideCursor()
                 self.__showWarning('Open Failed',
-                                   'Cannot open file {0}.'.format(filename_quote),
+                                   'Cannot open {0}.'.format(filename_quote),
                                    'Open failed!', e)
                 return False
             else:
@@ -217,7 +217,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
                 except Exception as e:
                     QtWidgets.qApp.restoreOverrideCursor()
                     self.__showWarning('Open Failed',
-                                       'Cannot parse file {0}.'.format(filename_quote),
+                                       'Cannot parse {0}.'.format(filename_quote),
                                        'Open failed!', e)
                     return False
                 else:
@@ -246,7 +246,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         except Exception as e:
             QtWidgets.qApp.restoreOverrideCursor()
             self.__showWarning('Save Failed',
-                               'Cannot save file {0}.'.format(filename_quote),
+                               'Cannot save {0}.'.format(filename_quote),
                                'Save failed!', e)
             return False
         else:
