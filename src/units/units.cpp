@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -209,6 +209,7 @@ int Units::decimals(PhysicalProperty property)
         return 2;
     case Energy:
     case Power:
+    case NoProperty:
     default:
         return 0;
     }
@@ -466,22 +467,23 @@ QString Units::systemText(Units::System system)
            .arg(createUnit(Power, system).suffix());
 }
 
-const Unit &Units::unit(PhysicalProperty property)
+const Unit &Units::unit(PhysicalProperty property) const
 {
     QMap<PhysicalProperty, Unit>::ConstIterator it = mUnitMap.find(property);
     if (it == mUnitMap.constEnd()) {
-        it = mUnitMap.insert(property,
-                             createUnit(property, mSystem));
+        Units *u = const_cast<Units*>(this);
+        it = u->mUnitMap.insert(property,
+                                u->createUnit(property, u->mSystem));
     }
     return *it;
 }
 
-const Unit &Units::unit(int property)
+const Unit &Units::unit(int property) const
 {
     return unit(static_cast<PhysicalProperty>(property));
 }
 
-Units *const Units::units(const QObject *object)
+const Units *Units::units(const QObject *object)
 {
     return Application::findMainWindow(object)->units();
 }
@@ -535,7 +537,8 @@ void UnitsSystemActionGroup::changeUnitSystem()
     Q_ASSERT(action != NULL);
     Q_ASSERT(action->data().type() == QVariant::Int);
     if (action != NULL) {
-        Units::units(this)->setSystem(static_cast<Units::System>(action->data().toInt()));
+        const Units::System s = static_cast<Units::System>(action->data().toInt());
+        const_cast<Units*>(Units::units(this))->setSystem(s);
     }
 }
 

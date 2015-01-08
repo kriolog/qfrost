@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -181,7 +181,7 @@ void Item::load(QDataStream &in)
             i < metaObject()->propertyCount(); ++i) {
         QVariant v;
         in >> v;
-        if (v.typeName() == "qint32") {
+        if (v.type() == QVariant::Int) {
             v = QVariant(int(v.value<qint32>()));
         }
         if (v.userType() != metaObject()->property(i).userType()) {
