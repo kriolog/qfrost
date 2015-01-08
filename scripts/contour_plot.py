@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import qApp
 
 import numpy
 from matplotlib import pyplot as plt
@@ -361,6 +362,17 @@ class ContourPlot(QObject):
         if self.__contourf_v2 is not None:
             self.__set_visibility_contour(self.__contourf_v2, visible)
             self.__redraw()
+
+
+    @pyqtSlot()
+    def replot_iso(self):
+        if self.__contour_t is not None:
+            qApp.setOverrideCursor(Qt.WaitCursor)
+            for contour_set in [self.__contour_t, self.__contour_v]:
+                self.__remove_contour_set(contour_set)
+            self.__plot_iso()
+            self.__redraw()
+            qApp.restoreOverrideCursor()
 
 
     def clear(self):

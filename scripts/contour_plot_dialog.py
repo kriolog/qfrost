@@ -129,6 +129,10 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         iso_uses_v_act = QtWidgets.QAction(uses_v_act_text, iso_uses_act_group)
         iso_uses_v_act.setCheckable(True)
 
+        iso_replot_act = QtWidgets.QAction('Replot Contours', self)
+        iso_replot_act.setStatusTip('Replot contours - use to polish labels after resizing image')
+        iso_replot_act.triggered.connect(self.__plot.replot_iso)
+
         # Дополнительнып элементы построения
         act_visibility_act = VisibilityAction('Mark Phase Transitions', self)
         act_visibility_act.setChecked(False)
@@ -148,6 +152,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         view.addAction(iso_separator_act)
         view.addAction(iso_visibility_act)
         view.addActions(iso_uses_act_group.actions())
+        view.addAction(iso_replot_act)
         view.addSeparator()
         view.addAction(act_visibility_act)
 
