@@ -16,7 +16,7 @@ matplotlib.use('qt5agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-import contour_plot
+from contour_plot import ContourPlot
 
 def _readpart(f, dtype=numpy.float, sep='\t'):
     """Многомерный массив (numpy.array), полученный из части текстового файла.
@@ -39,9 +39,6 @@ def _readpart(f, dtype=numpy.float, sep='\t'):
 class AreaPlotCanvas(FigureCanvas):
     def __init__(self, parent=None):
         fig = Figure(dpi=100)
-        self.axes = fig.add_subplot(111)
-        # We want the axes cleared every time plot() is called
-        #self.axes.hold(False)
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
@@ -67,7 +64,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         self.__canvas = AreaPlotCanvas(self)
         self.setCentralWidget(self.__canvas)
 
-        self.__plot = contour_plot.ContourPlot(self.__canvas.figure)
+        self.__plot = ContourPlot(self.__canvas.figure)
         self.__plot.stateChanged.connect(self.statusBar().showMessage)
         self.__plot.stateCleared.connect(self.statusBar().clearMessage)
 
