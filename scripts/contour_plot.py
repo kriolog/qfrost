@@ -190,8 +190,14 @@ def _format_percent(x, i):
 _percent_formatter = FuncFormatter(_format_percent)
 
 class ContourPlot(QObject):
-    __known_triang = None # Результат триангуляции по центрам блоков
-    __full_triang = None  # Результат триангуляции по всем точкам (включая края)
+    __triang = None      # Результат триангуляции по центрам блоков
+    __triang_ext = None  # Результат триангуляции по всем точкам (включая края)
+
+    __temperatures = None # Температуры по центрам блоков
+    __thawed_parts = None # Отн. объёмы талой фазы по центрам блоков
+
+    __temperatures_ext = None # Температуры по центрам блоков и краям
+    __thawed_parts_ext = None # Отн. объёмы талой фазы по центрам блоков и краям
 
     __cmap_t = None  # Цвета температуры
     __cmap_v = None  # Цвета V_th (для полной карты)
@@ -367,8 +373,7 @@ class ContourPlot(QObject):
         for contour_set in [self.__contourf_t, self.__contourf_v,
                             self.__contour_t, self.__contour_v,
                             self.__contourf_v2]:
-            if contour_set is not None:
-                self.__remove_contour(contour_set)
+            self.__remove_contour_set(contour_set)
 
         self.__redraw()
 
@@ -406,17 +411,17 @@ class ContourPlot(QObject):
         self.__axes.add_patch(self.__domain_patch)
 
         self.stateChanged.emit('Triangulating (known points)...')
-        self.__known_triang = tri.Triangulation(block_centers_x, block_centers_y)
+        self.__triang = tri.Triangulation(block_centers_x, block_centers_y)
 
         self.stateChanged.emit('Triangulating (all points)...')
-        self.__full_triang = tri.Triangulation(full_x, full_y)
+        self.__triang_ext = tri.Triangulation(full_x, full_y)
 
         self.stateChanged.emit('Updating triangulation mask (detecting outer triangles)...')
-        _add_mask_domain(self.__known_triang, outer_polygons, inner_polygons)
+        _add_mask_domain(self.__triang, outer_polygons, inner_polygons)
 
         self.stateChanged.emit('Updating triangulation mask (detecting flat triangles)...')
-        _add_mask_flat(self.__known_triang)
-        _add_mask_flat(self.__full_triang)
+        _add_mask_flat(self.__triang)
+        _add_mask_flat(self.__triang_ext)
 
         self.stateCleared.emit()
 
@@ -425,12 +430,46 @@ class ContourPlot(QObject):
                   temperatures, thawed_parts,
                   temperatures_bounds, thawed_parts_bounds):
         """Делает построение по указанным данным (сетка должна быть задана)."""
-        t_full = numpy.concatenate((temperatures, temperatures_bounds))
-        v_full = numpy.concatenate((thawed_parts, thawed_parts_bounds))
+        self.__temperatures = temperatures
+        self.__thawed_parts = thawed_parts
 
+        self.__temperatures_ext = numpy.concatenate((temperatures, temperatures_bounds))
+        self.__thawed_parts_ext = numpy.concatenate((thawed_parts, thawed_parts_bounds))
+
+        self.__plot_map()
+
+        if self.__map_shown:
+            self.__colorbar_create()
+
+        self.__plot_act()
+        self.__plot_iso()
+
+        self.stateChanged.emit('Drawing...')
+        self.__redraw()
+
+        self.stateCleared.emit()
+
+
+    def __plot_iso(self):
+        self.stateChanged.emit('Plotting temperature contours...')
+        self.__contour_t = self.__contour(self.__temperatures, self.__levels_t)
+        self.__contour_t.clabel(fontsize=8, fmt='%1.1f')
+        if not (self.__iso_shown and self.__iso_use_t):
+            self.__hide_contour(self.__contour_t)
+
+        self.stateChanged.emit('Plotting thawed part contours...')
+        self.__contour_v = self.__contour(self.__thawed_parts, self.__levels_v)
+        self.__contour_v.clabel(fontsize=8, fmt=_percent_formatter)
+        if not (self.__iso_shown and not self.__iso_use_t):
+            self.__hide_contour(self.__contour_v)
+
+        self.stateCleared.emit()
+
+
+    def __plot_map(self):
         # Цветовая карта температуры #
         self.stateChanged.emit('Plotting temperature map...')
-        self.__contourf_t = self.__contourf(t_full,
+        self.__contourf_t = self.__contourf(self.__temperatures_ext,
                                             self.__levels_t,
                                             self.__cmap_t)
         if not (self.__map_shown and self.__map_use_t):
@@ -438,42 +477,22 @@ class ContourPlot(QObject):
 
         # Цветовая карта отн. объёма талой фазы #
         self.stateChanged.emit('Plotting thawed part map...')
-        self.__contourf_v = self.__contourf(v_full,
+        self.__contourf_v = self.__contourf(self.__thawed_parts_ext,
                                             self.__levels_v,
                                             self.__cmap_v)
         if not (self.__map_shown and not self.__map_use_t):
             self.__hide_contour(self.__contourf_v)
 
-        # Цветовая шкала (если она необходима) #
-        if self.__map_shown:
-            self.__colorbar_create()
+        self.stateCleared.emit()
 
-        # Цветовая карта отн. объёма талой фазы (фронтовая) #
+
+    def __plot_act(self):
         self.stateChanged.emit('Plotting thawed part map for transition zone...')
-        self.__contourf_v2 = self.__contourf(v_full,
+        self.__contourf_v2 = self.__contourf(self.__thawed_parts_ext,
                                              self.__levels_v,
                                              self.__cmap_v2)
         if not self.__act_shown:
             self.__hide_contour(self.__contourf_v2)
-
-        # Изолинии температуры #
-        self.stateChanged.emit('Plotting temperature contours...')
-        self.__contour_t = self.__contour(temperatures, self.__levels_t)
-        self.__contour_t.clabel(fontsize=8, fmt='%1.1f')
-        if not (self.__iso_shown and self.__iso_use_t):
-            self.__hide_contour(self.__contour_t)
-
-        # Изолинии отн. объёма талой фазы #
-        self.stateChanged.emit('Plotting thawed part contours...')
-        self.__contour_v = self.__contour(thawed_parts, self.__levels_v)
-        self.__contour_v.clabel(fontsize=8, fmt=_percent_formatter)
-        if not (self.__iso_shown and not self.__iso_use_t):
-            self.__hide_contour(self.__contour_v)
-
-        # Рендеринг #
-        self.stateChanged.emit('Drawing...')
-        self.__redraw()
-
         self.stateCleared.emit()
 
 
@@ -493,7 +512,10 @@ class ContourPlot(QObject):
         self.__set_visibility_contour(contour_set, False)
 
 
-    def __remove_contour(self, contour_set):
+    def __remove_contour_set(self, contour_set):
+        """Удаляет весь ContourSet contour_set (включая подписи)"""
+        if contour_set is None:
+            return
         for collection in contour_set.collections:
             collection.remove()
         for caption in contour_set.labelTexts:
@@ -504,7 +526,7 @@ class ContourPlot(QObject):
 
     def __contourf(self, values, levels, cmap):
         result = tri.TriContourSet(self.__axes,
-                                   self.__full_triang,
+                                   self.__triang_ext,
                                    values,
                                    levels,
                                    cmap=cmap,
@@ -518,7 +540,7 @@ class ContourPlot(QObject):
 
     def __contour(self, values, levels):
         result = tri.TriContourSet(self.__axes,
-                                   self.__known_triang,
+                                   self.__triang,
                                    values,
                                    levels,
                                    filled=False,
