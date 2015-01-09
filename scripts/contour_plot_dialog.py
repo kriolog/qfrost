@@ -93,7 +93,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         map_separator_act = QtWidgets.QAction('Color Map', self)
         map_separator_act.setSeparator(True)
 
-        map_visibility_act = VisibilityAction('Show Color Map', self)
+        map_visibility_act = VisibilityAction('Color &Map', self)
         map_visibility_act.triggered.connect(self.__plot.set_map_visibility)
         map_visibility_act.setShortcut(QtGui.QKeySequence("Ctrl+M"))
 
@@ -113,7 +113,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         iso_separator_act = QtWidgets.QAction('Contours', self)
         iso_separator_act.setSeparator(True)
 
-        iso_visibility_act = VisibilityAction('Show Contours', self)
+        iso_visibility_act = VisibilityAction('&Contours', self)
         iso_visibility_act.triggered.connect(self.__plot.set_iso_visibility)
         iso_visibility_act.setShortcut(QtGui.QKeySequence("Ctrl+I"))
 
@@ -134,8 +134,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         iso_replot_act.triggered.connect(self.__plot.replot_iso)
 
         # Дополнительнып элементы построения
-        act_visibility_act = VisibilityAction('Mark Phase Transitions', self)
-        act_visibility_act.setChecked(False)
+        act_visibility_act = VisibilityAction('&Phase Transition Zone', self, False)
         act_visibility_act.triggered.connect(self.__plot.set_act_visibility)
 
         menubar = self.menuBar()
@@ -262,18 +261,24 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
 
 
 class VisibilityAction(QtWidgets.QAction):
-    def __init__(self, text, parent=None, checked=True):
-        QtWidgets.QAction.__init__(self, text, parent)
+    __subject_text = '' # что показывается или прячется (в винительном патеже)
+
+
+    def __init__(self, subject_text, parent=None, checked=True):
+        QtWidgets.QAction.__init__(self, parent)
+        self.__subject_text = subject_text
         self.setCheckable(True)
         self.setChecked(checked)
-        self.triggered.connect(self.__update_icon)
-        self.__update_icon(self.isChecked())
+        self.triggered.connect(self.__update)
+        self.__update(self.isChecked())
 
 
     @pyqtSlot(bool)
-    def __update_icon(self, visible):
-        icon_name = "layer-visible-on" if visible else "layer-visible-off"
+    def __update(self, visible):
+        icon_name = 'layer-visible-on' if visible else 'layer-visible-off'
         self.setIcon(QtGui.QIcon.fromTheme(icon_name))
+        object_text = 'Hide' if visible else 'Show'
+        self.setText(object_text + ' ' + self.__subject_text)
 
 
 def main():
