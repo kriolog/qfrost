@@ -300,7 +300,7 @@ class ContourPlot(QObject):
         self.__axes.grid(True, ls='-', c='#e0e0e0')
 
         # Автоматически подгоняем размер фигуры под содержимое
-        #self.__fig.set_tight_layout(True)
+        self.__fig.set_tight_layout(True)
 
         # Запомним параметры осей, пока не добавлена цветовая шкала
         self.__orig_axes_anchor = self.__axes.get_anchor()
