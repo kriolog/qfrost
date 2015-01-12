@@ -47,6 +47,7 @@ SoilBlock::SoilBlock(const double &width, const double &height):
     mMinBfMoisture(0),
     mTemperatureCurve(),
     mInternalHeatSourcePowerDensity(0),
+    mInternalHeatPerStep(0),
     mHeatDiff(0)
 {
     mDimensions.push_back(width);
@@ -143,19 +144,21 @@ void SoilBlock::setZForAxiallySymmetricProblem(double r)
 
 void SoilBlock::setTimeStep(double inTimeStep)
 {
-    /* Шаг по времени не хранится напрямую: используется
-     * только отношение шага по времени к объёму.
-     * Это нужно для того, чтобы не считать этот параметр
-     * каждый раз. Сам же шаг по времени после этого не нужен. */
+    /* Величина шага по времени не используется сама по себе, зато используется
+     * её отношение к объёму блока */
     mTimeStepPerVolume = inTimeStep;
     for (std::size_t  i = 0; i < mDimensions.size(); ++i) {
         mTimeStepPerVolume /= mDimensions.at(i);
     }
+
+    /* Кол-во тепла, каждый шаг поступающего из внутренних источников, равняется
+     * mInternalHeatPerStep * vol * mTimeStepPerVolume; сокращаем объём и ... */
+    mInternalHeatPerStep = mInternalHeatSourcePowerDensity * inTimeStep;
 }
 
 void SoilBlock::moveInTime()
 {
-    mEnthalpy += ((mHeatDiff + mInternalHeatSourcePowerDensity) * mTimeStepPerVolume);
+    mEnthalpy += mHeatDiff * mTimeStepPerVolume + mInternalHeatPerStep;
     mHeatDiff = 0.0;
     calcCondition();
     calcIEConductivity();

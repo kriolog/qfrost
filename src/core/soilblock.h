@@ -109,6 +109,9 @@ private:
     /// Плотность внутренних источников тепла на единицу объёма
     double mInternalHeatSourcePowerDensity;
 
+    /// Количество тепла от внутренних источников за один шаг по времени
+    double mInternalHeatPerStep;
+
     /**
      * Величина теплового потока, который подействует на блок при очередном
      * шаге во времени. Прилегающие поверхности теплопотока скидывают сюда
@@ -175,7 +178,7 @@ public:
 
     /**
      * Функция, которую надо вызывать при изменении шага по времени.
-     * Пересчитывает величину @a timeStepPerVolume.
+     * Пересчитывает значения @a mTimeStepPerVolume и @a mInternalHeatPerStep.
      * @param inTimeStep новый шаг по времени
      */
     void setTimeStep(double inTimeStep);
