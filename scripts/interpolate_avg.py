@@ -121,7 +121,7 @@ def interp_avg(x, y, num):
         raise ValueError("num must be positive integer")
 
     step = (x[-1]-x[0])/num
-    ax = [x[0]] + [x[0] + step * i for i in range(1, num-1)] + [x[-1]]
+    ax = [x[0] + step * i for i in range(0, num+1)]
 
     funclist, condfuncs = spline_avg_piecefunctions(x, y)
     condlist = [func(ax) for func in condfuncs]
@@ -203,11 +203,9 @@ class InterpMonthly:
 
         step = (x[-1]-x[0])/num
 
-        # FIXME лучше разбивать посуточно по steps_per_day (погрешность меньше)
         x0 = dt.datetime.combine(x[0], dt.time())
-        xN = dt.datetime.combine(x[-1], dt.time())
 
-        ax = [x0] + [x0 + step * i for i in range(1, num)]
+        ax = [x0 + step * i for i in range(0, num+1)]
         ay = []
 
         year = x[0].year
@@ -222,7 +220,7 @@ class InterpMonthly:
                 if (x.month > cur_month):
                     func = next(func_it)
                 else:
-                    # сменился год (видимо, дошли до xN) - перезапустим итерацию
+                    # сменился год: видимо, достигли конца ax, где он уже другой 
                     func_it = iter(funcs)
                     func = next(func_it)
                 cur_month = x.month
