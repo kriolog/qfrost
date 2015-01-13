@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+import datetime as dt
 
 def spline_avg_coeffs(x, y):
     """Коэффициенты сплайна периодической функции, заданной средними значениями.
@@ -41,6 +42,9 @@ def spline_avg_coeffs(x, y):
 
     for i in range(0, n):
         h = x[i+1] - x[i]
+
+        if isinstance(h, dt.timedelta):
+            h = h.total_seconds()
 
         if h <= 0:
             raise ValueError("x should be sorted in ascending order")
@@ -94,17 +98,30 @@ def spline_avg_piecefunctions(x, y):
     def condfuncgen(x_min, x_max):
         def thefunc(x):
             return (x >= x_min) & (x <= x_max)
-            #return lambda x: np.logical_and(np.core.umath.greater_equal(x, x_min),
-            #                                np.core.umath.less_equal(x, x_max))
-        return thefunc
+
+        def thefunc2(x):
+            result = np.ones(len(x), dtype=bool) 
+            for i in range(0, len(x)):
+                result[i] = thefunc(x[i])
+            return result
+        return thefunc if not isinstance(x_min, dt.date) else thefunc2
 
     def piecefuncgen(coeffs, x0):
         def thefunc(x):
             result = coeffs[0]
+            h = x - x0
+            if isinstance(h, dt.timedelta):
+                h = h.total_seconds()
             for i in range(1, len(coeffs)):
-                result += coeffs[i] * pow(x - x0, i)
+                result += coeffs[i] * pow(h, i)
             return result
-        return thefunc
+
+        def thefunc2(x):
+            result = []
+            for i in range(0, len(x)):
+                result.append(thefunc(x[i]))
+            return result
+        return thefunc if not isinstance(x0, dt.date) else thefunc2
 
     funclist = []
     condfuncs = []
@@ -130,9 +147,9 @@ def interp_avg(x, y, num):
     if not isinstance(num, int) or num <= 0:
         raise ValueError("num must be positive integer")
 
-    step = (x[-1]-x[0])/(num-1)
 
-    ax = [x[0] + step * i for i in range(0, num)]
+    step = (x[-1]-x[0])/(num-1)
+    ax = [x[0]] + [x[0] + step * i for i in range(1, num-1)] + [x[-1]]
 
     funclist, condfuncs = spline_avg_piecefunctions(x, y)
     condlist = [func(ax) for func in condfuncs]
