@@ -5,7 +5,6 @@ import copy
 import numpy as np
 import datetime as dt
 from warnings import warn
-from calendar import isleap
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as mticker
@@ -36,12 +35,7 @@ def _polynom_str(x0, coeffs):
 
 def _next_range(arr):
     """Возвращает массив, полученный прибавлением к `arr` значения `arr[-1]`."""
-    result = copy.copy(arr)
     delta = arr[-1] - arr[0]
-    if isinstance(arr[0], dt.date):
-        year_delta = dt.timedelta(days=366 if isleap(arr[0].year) else 365)
-        if abs((delta - year_delta).seconds) < 5:
-            delta = year_delta
     return [d + delta for d in arr]
 
 
