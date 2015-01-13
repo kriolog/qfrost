@@ -3,6 +3,7 @@
 
 import numpy as np
 import datetime as dt
+from calendar import isleap
 
 def spline_avg_coeffs(x, y):
     """Коэффициенты сплайна периодической функции, заданной средними значениями.
@@ -95,40 +96,12 @@ def spline_avg_piecefunctions(x, y):
     """
     spline_coeffs = spline_avg_coeffs(x, y)
 
-    def condfuncgen(x_min, x_max):
-        def thefunc(x):
-            return (x >= x_min) & (x <= x_max)
-
-        def thefunc2(x):
-            result = np.ones(len(x), dtype=bool) 
-            for i in range(0, len(x)):
-                result[i] = thefunc(x[i])
-            return result
-        return thefunc if not isinstance(x_min, dt.date) else thefunc2
-
-    def piecefuncgen(coeffs, x0):
-        def thefunc(x):
-            result = coeffs[0]
-            h = x - x0
-            if isinstance(h, dt.timedelta):
-                h = h.total_seconds()
-            for i in range(1, len(coeffs)):
-                result += coeffs[i] * pow(h, i)
-            return result
-
-        def thefunc2(x):
-            result = []
-            for i in range(0, len(x)):
-                result.append(thefunc(x[i]))
-            return result
-        return thefunc if not isinstance(x0, dt.date) else thefunc2
-
     funclist = []
     condfuncs = []
 
     for i in range(0, len(y)):
-        condfuncs.append(condfuncgen(x[i], x[i+1]))
-        funclist.append(piecefuncgen(spline_coeffs[i], x[i]))
+        condfuncs.append(_condfuncgen(x[i], x[i+1]))
+        funclist.append(_piecefuncgen(spline_coeffs[i], x[i]))
 
     return funclist, condfuncs
 
@@ -147,8 +120,7 @@ def interp_avg(x, y, num):
     if not isinstance(num, int) or num <= 0:
         raise ValueError("num must be positive integer")
 
-
-    step = (x[-1]-x[0])/(num-1)
+    step = (x[-1]-x[0])/num
     ax = [x[0]] + [x[0] + step * i for i in range(1, num-1)] + [x[-1]]
 
     funclist, condfuncs = spline_avg_piecefunctions(x, y)
@@ -156,3 +128,163 @@ def interp_avg(x, y, num):
 
     func = funclist[0]
     return ax, np.piecewise(ax, condlist, funclist)
+
+
+"""Интерполяционный сплайн периодической функции, определяемой среднемесячными.
+
+Вычисляет коэффициенты для 2 сплайнов (для високосных и невисокосных лет), после
+чего возможна интерполяция по любой точке на временной оси, ведь сплайн является
+периодическим (значение и 1 переменная в его первой и последней точке совпадают)
+и, поскольку он задан по среднемесячным значениям, не изменяется от года к году.
+"""
+class InterpMonthly:
+    __year_comm = 2013
+    __year_leap = 2012
+
+    __x_comm = []
+    __x_leap = []
+
+    __coeffs_comm = []
+    __coeffs_leap = []
+
+    __piece_funcs_comm = []
+    __piece_funcs_leap = []
+
+    __y = []
+
+    def __init__(self, y):
+        """При инициализации вычисляет пару сплайнов: високосный и невисокосный.
+           Для этого используется `y` - массив (из 12) среднемесячных значений.
+        """
+        if len(y) != 12:
+            raise ValueError('monthly averages array should contain 12 elements, not %d' % len(y))
+
+        assert(isleap(self.__year_leap))
+        assert(not isleap(self.__year_comm))
+
+        self.__y = y
+
+        self.__x_comm = self.__x_arr(False)
+        self.__x_leap = self.__x_arr(True)
+
+        self.__coeffs_comm = spline_avg_coeffs(self.__x_comm, y)
+        self.__coeffs_leap = spline_avg_coeffs(self.__x_leap, y)
+
+        for i in range(0, len(y)):
+            self.__piece_funcs_comm.append(_piecefuncgen(self.__coeffs_comm[i],
+                                                         self.__x_comm[i]))
+            self.__piece_funcs_leap.append(_piecefuncgen(self.__coeffs_leap[i],
+                                                         self.__x_leap[i]))
+
+
+    def val(self, x):
+        """Возвращает значение сплайна для даты (или даты-времени) `x`."""
+        if not isinstance(x, dt.date):
+            raise TypeError("expected date instance, got %s" % type(input))
+
+        is_leap = isleap(x.year)
+
+        year = self.__year_leap if is_leap else self.__year_comm
+
+        funcs = self.__piece_funcs_leap if is_leap else self.__piece_funcs_comm
+        func = funcs[x.month - 1]
+
+        return func(x.replace(year=year))
+
+
+    def interp(self, steps_per_day, is_leap):
+        if not isinstance(steps_per_day, int) or steps_per_day <= 0:
+            raise ValueError("steps_per_day must be positive integer")
+
+        days_num = 366 if is_leap else 365
+
+        num = steps_per_day * days_num
+        x = self.__x_leap if is_leap else self.__x_comm
+
+        step = (x[-1]-x[0])/num
+
+        # FIXME лучше разбивать посуточно по steps_per_day (погрешность меньше)
+        x0 = dt.datetime.combine(x[0], dt.time())
+        xN = dt.datetime.combine(x[-1], dt.time())
+
+        ax = [x0] + [x0 + step * i for i in range(1, num)]
+        ay = []
+
+        year = x[0].year
+
+        funcs = self.__piece_funcs_leap if is_leap else self.__piece_funcs_comm
+        func_it = iter(funcs)
+        func = next(func_it)
+
+        cur_month = 1
+        for x in ax:
+            if (x.month != cur_month):
+                if (x.month > cur_month):
+                    func = next(func_it)
+                else:
+                    # сменился год (видимо, дошли до xN) - перезапустим итерацию
+                    func_it = iter(funcs)
+                    func = next(func_it)
+                cur_month = x.month
+            ay.append(func(x.replace(year=year)))
+
+        return ax, ay
+
+
+    def step_func(self, is_leap):
+        x = self.__x_leap if is_leap else self.__x_comm
+
+        sx = []
+        sy = []
+
+        for i in range(0, len(self.__y)):
+            sx.append(x[i])
+            sy.append(self.__y[i])
+
+            sx.append(x[i+1])
+            sy.append(self.__y[i])
+
+        sx.append(x[-1])
+        sy.append(self.__y[0])
+
+        return sx, sy
+
+
+    def __x_arr(self, is_leap):
+        """13 дат, разбивающих год на 12 участков, соответствующих месяцам."""
+        year = 2012 if is_leap else 2013
+        return np.array([dt.date(year, month, 1) for month in range(1, 13)]
+                        + [dt.date(year + 1, 1, 1)])
+
+
+"""Генератор булевых функций принадлежности к интервалу [`x_min` ; `x_max`]."""
+def _condfuncgen(x_min, x_max):
+    def thefunc(x):
+        if hasattr(x, '__iter__'):
+            return [thefunc(v) for v in x]
+        else:
+            return (x >= x_min) & (x <= x_max)
+
+    return thefunc
+
+
+"""Генератор функции для N-мерного многочлена (типа a + b*(x-x0) + c*(x- x0)^2),
+коэффициенты которого задаются массивом `coeffs`, а вместо x0 используется `x0`.
+"""
+def _piecefuncgen(coeffs, x0):
+    def thefunc(x):
+        if hasattr(x, '__iter__'):
+            return [thefunc(v) for v in x]
+        else:
+            result = coeffs[0]
+            x0_fixed = x0
+            if isinstance(x, dt.datetime) and not isinstance(x0, dt.datetime):
+                x0_fixed = dt.datetime.combine(x0, dt.time())
+            h = x - x0_fixed
+            if isinstance(h, dt.timedelta):
+                h = h.total_seconds()
+            for i in range(1, len(coeffs)):
+                result += coeffs[i] * pow(h, i)
+            return result
+
+    return thefunc

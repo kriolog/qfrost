@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import copy
 import numpy as np
 import datetime as dt
 from warnings import warn
+from calendar import isleap
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as mticker
-from interpolate_avg import spline_avg_coeffs, interp_avg
+from interpolate_avg import spline_avg_coeffs, interp_avg, InterpMonthly
 
 def _polynom_str(x0, coeffs):
     """Понятное человеку текстовое представление многочлена N степени.
@@ -31,16 +33,16 @@ def _polynom_str(x0, coeffs):
             result += '^{}'.format(i)
     return result
 
+
 def _next_range(arr):
     """Возвращает массив, полученный прибавлением к `arr` значения `arr[-1]`."""
-    if not isinstance(arr[0], dt.date):
-        return arr + arr[-1]
-    else:
-        result = arr
-        delta = arr[-1] - arr[0]
-        for i in range(0, len(arr)):
-            result[i] += delta
-        return result
+    result = copy.copy(arr)
+    delta = arr[-1] - arr[0]
+    if isinstance(arr[0], dt.date):
+        year_delta = dt.timedelta(days=366 if isleap(arr[0].year) else 365)
+        if abs((delta - year_delta).seconds) < 5:
+            delta = year_delta
+    return [d + delta for d in arr]
 
 
 def _step_func(x, y):
@@ -108,35 +110,65 @@ def _setup_monthly_axis(axis):
 
 
 def main():
-    y = np.array([-20.7, -21.7, -19.5, -12.9, -5.2, 1.9,
-                  7.4, 6.9, 3.4, -3.9, -12.5, -18.1])
+    y = np.array([-20.7, -21.7, -19.5,
+                  -12.9, -5.2, 1.9,
+                  7.4, 6.9, 3.4,
+                  -3.9, -12.5, -18.1])
 
-    #x = 30 * np.arange(0, len(y)+1, dtype=int)
-    x = np.array([dt.date(2014, month, 1) for month in range(1, 13)] + [dt.date(2015, 1, 1)])
+    use_monthly_class = True
 
-    result = spline_avg_coeffs(x, y)
+    ax = []
+    ay = []
+    sx = []
+    sy = []
+    ax2 = []
+    ay2 = []
+    sx2 = []
+    sy2 = []
 
-    #print('x_i\tx_i+1\ty_i\tf_i(x)')
-    #for i in range(0, len(y)):
-    #    polynom = _polynom_str(x[i], result[i])
-    #    print('{}\t{}\t{}\t{}'.format(x[i], x[i+1], y[i], polynom))
+    if use_monthly_class:
+        interp_monthly = InterpMonthly(y)
 
-    ax, ay = interp_avg(x, y, 1000)
-    sx, sy = _step_func(x, y)
+        ax, ay = interp_monthly.interp(24, True)
+        sx, sy = interp_monthly.step_func(True)
+
+        ax2, ay2 = interp_monthly.interp(550, False)
+        sx2, sy2 = interp_monthly.step_func(False)
+    else:
+        x = 30 * np.arange(0, len(y)+1, dtype=int)
+        #x = np.array([dt.date(2014, month, 1) for month in range(1, 13)] + [dt.date(2015, 1, 1)])
+
+        ax, ay = interp_avg(x, y, 1000)
+        sx, sy = _step_func(x, y)
+
+        ax2, ay2 = _next_range(ax), ay
+        sx2, sy2 = _next_range(sx), sy
+
+    ax3, ay3 = _next_range(ax2), ay2
+    sx3, sy3 = _next_range(sx2), sy2
 
     fig, axes = plt.subplots()
 
-    axes.plot(ax, ay)
-    axes.plot(_next_range(ax), ay, color='gray', ls=':')
-    axes.plot(sx, sy, antialiased=False)
-    axes.plot(_next_range(sx), sy, antialiased=False, color='gray', ls='--')
+    extra_color = '0.3'
+    extra_ls = ':'
+    extra_steps_ls = '--'
 
-    if isinstance(x[0], dt.date):
+    axes.plot(ax, ay, color=extra_color, ls=extra_ls)
+    axes.plot(sx, sy, antialiased=False, color=extra_color, ls=extra_steps_ls)
+
+    axes.plot(ax2, ay2)
+    axes.plot(sx2, sy2, antialiased=False)
+
+    axes.plot(ax3, ay3, color=extra_color, ls=extra_ls)
+    axes.plot(sx3, sy3, antialiased=False, color=extra_color, ls=extra_steps_ls)
+
+    if isinstance(ax[0], dt.date):
         _setup_monthly_axis(axes.xaxis)
 
     axes.grid()
 
     plt.show()
+
 
 if __name__ == '__main__':
     main()
