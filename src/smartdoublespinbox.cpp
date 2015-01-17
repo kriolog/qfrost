@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -63,14 +63,4 @@ void SmartDoubleSpinBox::stepBy(int steps)
     }
 
     setValue(newValue);
-}
-
-void SmartDoubleSpinBox::readProperties(QDoubleSpinBox *other)
-{
-    setRange(other->minimum(), other->maximum());
-    setValue(other->value());
-    setSingleStep(other->singleStep());
-    setSuffix(other->suffix());
-    setDecimals(other->decimals());
-    setSpecialValueText(other->specialValueText());
 }

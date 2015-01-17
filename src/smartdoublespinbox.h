@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -46,12 +46,6 @@ public:
     void setDenySteppingToNonMultipleBound(bool deny) {
         mDenyStepingToNonmultipleBounds = deny;
     }
-
-    /**
-     * Берёт диапазон, суффикс, шаг, число знаков, specialValueText
-     * и значение у @p other
-     */
-    void readProperties(QDoubleSpinBox *other);
 
 private:
     /**
