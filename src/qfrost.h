@@ -254,6 +254,10 @@ public:
     /// Второй элемент -- является ли полученный текст точным (или примерным).
     static QPair<QString, bool> singleStepInfo(int numStepsInDay);
 
+    /// Наибольший размер иконки @p icon с высотой, не превышающий @p maxHeight.
+    /// В отличие от actualSize, этот размер всегда содержится в availableSizes.
+    static QSize upperBoundIconSize(const QIcon &icon, int maxHeight);
+
 private:
     /**
      * Коэффициент для получения метров из единиц сцены.

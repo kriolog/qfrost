@@ -238,6 +238,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     // Выбираем иконки для кнопок автолимита исходя из направления осей.
     if (orientation == Qt::Horizontal) {
+        // Лучше использовать fromTheme вместе с полным названием иконки - иначе
+        // не пройдёт копирование скриптом! Никаких масок и тернарных операторов.
         mAutoMinMaxCoord->setIcon(QIcon::fromTheme("zoom-fit-width"));
         mAutoMinMaxTemperature->setIcon(QIcon::fromTheme("zoom-fit-height"));
     } else {
@@ -247,15 +249,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     // Подбираем максимальный размер для этих иконок (по высоте спинбоксов).
     const int maxIconHeight = mMinCoord->height() + mMaxCoord->height();
-    QSize autoIconSize = mAutoMinMaxCoord->iconSize();
-    foreach(const QSize &iconSize, mAutoMinMaxCoord->icon().availableSizes()) {
-        if (iconSize.height() > maxIconHeight) {
-            continue;
-        }
-        if (iconSize.height() > autoIconSize.height()) {
-            autoIconSize = iconSize;
-        }
-    }
+    const QSize autoIconSize = QFrost::upperBoundIconSize(mAutoMinMaxCoord->icon(),
+                                                          maxIconHeight);
     mAutoMinMaxCoord->setIconSize(autoIconSize);
     mAutoMinMaxTemperature->setIconSize(autoIconSize);
 

@@ -23,6 +23,7 @@
 #include <QtCore/QtMath>
 #include <QtCore/QLocale>
 #include <QtCore/QTime>
+#include <QtGui/QIcon>
 
 using namespace qfgui;
 
@@ -83,4 +84,17 @@ QPair< QString, bool > QFrost::singleStepInfo(int numStepsInDay)
         const bool isPrecise = (86400 % numStepsInDay == 0);
         return qMakePair(time.toString("HH:mm:ss"), isPrecise);
     }
+}
+
+QSize QFrost::upperBoundIconSize(const QIcon &icon, int maxHeight)
+{
+    const QSize maxSize(maxHeight, maxHeight);
+    QSize result;
+    foreach (const QSize &iconSize, icon.availableSizes()) {
+        const int height = iconSize.height();
+        if (height > result.height() && height <= maxHeight) {
+            result = iconSize;
+        }
+    }
+    return result;
 }
