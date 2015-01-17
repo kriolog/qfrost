@@ -65,6 +65,7 @@ public:
     double forcedMaximum() const;
 
     static QDoubleSpinBox *createSceneCoordinateSpinBox();
+    static QDoubleSpinBox *createBlockSizeSpinBox();
 
 public slots:
     void setPhysicalProperty(int p);

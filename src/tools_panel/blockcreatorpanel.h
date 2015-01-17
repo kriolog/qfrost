@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -26,12 +26,12 @@
 #include <tools_panel/blockcreatorsettings.h>
 
 QT_FORWARD_DECLARE_CLASS(QButtonGroup)
+QT_FORWARD_DECLARE_CLASS(QDoubleSpinBox)
 
 namespace qfgui
 {
 
 QT_FORWARD_DECLARE_CLASS(RectangularToolPanel)
-QT_FORWARD_DECLARE_CLASS(SmartDoubleSpinBox)
 
 class BlockCreatorPanel : public QWidget
 {
@@ -50,11 +50,11 @@ signals:
     void signalChangeBlocksQ(const QSizeF &newQ);
 
 private:
-    SmartDoubleSpinBox *mWidthSpinBox;
-    SmartDoubleSpinBox *mWidthQSpinBox;
+    QDoubleSpinBox *mWidthSpinBox;
+    QDoubleSpinBox *mWidthQSpinBox;
 
-    SmartDoubleSpinBox *mHeightSpinBox;
-    SmartDoubleSpinBox *mHeightQSpinBox;
+    QDoubleSpinBox *mHeightSpinBox;
+    QDoubleSpinBox *mHeightQSpinBox;
 
     BlockCreatorSettings *mSettings;
 

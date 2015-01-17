@@ -28,14 +28,15 @@
 #include <smartdoublespinbox.h>
 #include <tools_panel/rectangulartoolpanel.h>
 #include <units/units.h>
+#include <units/physicalpropertyspinbox.h>
 
 using namespace qfgui;
 
 BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     : QWidget(parent)
-    , mWidthSpinBox(new SmartDoubleSpinBox(this))
+    , mWidthSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox())
     , mWidthQSpinBox(new SmartDoubleSpinBox(this))
-    , mHeightSpinBox(new SmartDoubleSpinBox(this))
+    , mHeightSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox())
     , mHeightQSpinBox(new SmartDoubleSpinBox(this))
     , mSettings(new BlockCreatorSettings(this))
     , mRectangularToolPanel(new RectangularToolPanel(this, true, mSettings))
@@ -47,30 +48,27 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
             this, SLOT(slotSetBlocksSize()));
     connect(mHeightSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(slotSetBlocksSize()));
+    slotSetBlocksSize();
 
     connect(mWidthQSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(slotSetBlocksQ()));
     connect(mHeightQSpinBox, SIGNAL(valueChanged(double)),
             this, SLOT(slotSetBlocksQ()));
 
-    mWidthSpinBox->setRange(0, 10);
-    mWidthSpinBox->setDecimals(QFrost::meterDecimalsBlockSize);
-    mWidthSpinBox->setValue(0.1);
-    mWidthSpinBox->setSingleStep(0.01);
-    mWidthSpinBox->setSuffix(Units::meterSuffix());
-    mWidthSpinBox->setSpecialValueText(tr("\342\210\236"));
-    mWidthSpinBox->setToolTip(tr("Width of first block"));
-
-    mHeightSpinBox->readProperties(mWidthSpinBox);
-    mHeightSpinBox->setToolTip(tr("Height of first block"));
+    const QString infinityTipSuffix = " " + tr("(for 1D use 0 \342\200\224 will be infinite)");
+    mWidthSpinBox->setToolTip(tr("Width of first block") + infinityTipSuffix);
+    mHeightSpinBox->setToolTip(tr("Height of first block") + infinityTipSuffix);
 
     mWidthQSpinBox->setRange(1, 2);
     mWidthQSpinBox->setDecimals(3);
     mWidthQSpinBox->setValue(1);
     mWidthQSpinBox->setSingleStep(0.005);
-    mWidthQSpinBox->setToolTip(tr("Geometric ratio for x"));
 
-    mHeightQSpinBox->readProperties(mWidthQSpinBox);
+    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mWidthQSpinBox));
+    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mHeightQSpinBox));
+    static_cast<SmartDoubleSpinBox*>(mHeightQSpinBox)->readProperties(static_cast<SmartDoubleSpinBox*>(mWidthQSpinBox));
+
+    mWidthQSpinBox->setToolTip(tr("Geometric ratio for x"));
     mHeightQSpinBox->setToolTip(tr("Geometric ratio for y"));
 
     SettingsBox *xBox = new SettingsBox(tr("Hor. Progression"), this);

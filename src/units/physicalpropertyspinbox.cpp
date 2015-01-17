@@ -228,13 +228,31 @@ double PhysicalPropertySpinBox::forcedMinimum() const
 QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
 {
     QDoubleSpinBox *result = new SmartDoubleSpinBox();
-    result->setSingleStep(1);
 
-    result->setDecimals(QFrost::meterDecimals);
     result->setSuffix(Units::meterSuffix());
 
-    result->setMinimum(-QFrost::sceneHalfSizeInMeters);
-    result->setMaximum(QFrost::sceneHalfSizeInMeters);
+    result->setDecimals(QFrost::meterDecimals);
+    result->setRange(-QFrost::sceneHalfSizeInMeters, QFrost::sceneHalfSizeInMeters);
+    result->setSingleStep(1);
+
+    return result;
+}
+
+QDoubleSpinBox *PhysicalPropertySpinBox::createBlockSizeSpinBox()
+{
+    Q_ASSERT(QFrost::meterDecimalsBlockSize <= QFrost::meterDecimals);
+
+    QDoubleSpinBox *result = new SmartDoubleSpinBox();
+
+    result->setSuffix(Units::meterSuffix());
+
+    result->setDecimals(QFrost::meterDecimalsBlockSize);
+    result->setRange(0, 10);
+    result->setSingleStep(0.01);
+
+    result->setSpecialValueText("\342\210\236");
+
+    result->setValue(0.1); // дефолтные размеры блока - 10x10см
 
     return result;
 }
