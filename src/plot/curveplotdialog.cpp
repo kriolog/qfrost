@@ -50,7 +50,6 @@ static QGroupBox *createMinMaxGroupBox(const QString &title,
                                        QPushButton *autoMinMax,
                                        QCheckBox *saveMinMax)
 {
-
     QFormLayout *limits = new QFormLayout();
     limits->addRow(CurvePlotDialog::tr("Minimum:"), minSpinBox);
     limits->addRow(CurvePlotDialog::tr("Maximum:"), maxSpinBox);
@@ -81,12 +80,12 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
     //: text from button that automatically set coordinate limits
-    , mAutoMinMaxTemperature(new QPushButton(tr("A&uto"), this))
+    , mAutoMinMaxTemperature(new QPushButton("", this))
     , mSaveMinMaxTemperature(new QCheckBox(tr("Restore this ra&nge for next plot"), this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     //: text from button that automatically sets temperature limits
-    , mAutoMinMaxCoord(new QPushButton(tr("&Auto"), this))
+    , mAutoMinMaxCoord(new QPushButton("", this))
     , mSaveMinMaxCoord(new QCheckBox(tr("Rest&ore this range for next plot"), this))
     , mSlice(block->slice(orientation))
     , mTemperatures()
@@ -236,6 +235,29 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     // Цепляемся на rejected(), т.к. у нас есть только кнопка закрытия.
     connect(this, SIGNAL(rejected()), SLOT(emitSavingMinMax()));
+
+    // Выбираем иконки для кнопок автолимита исходя из направления осей.
+    if (orientation == Qt::Horizontal) {
+        mAutoMinMaxCoord->setIcon(QIcon::fromTheme("zoom-fit-width"));
+        mAutoMinMaxTemperature->setIcon(QIcon::fromTheme("zoom-fit-height"));
+    } else {
+        mAutoMinMaxCoord->setIcon(QIcon::fromTheme("zoom-fit-height"));
+        mAutoMinMaxTemperature->setIcon(QIcon::fromTheme("zoom-fit-width"));
+    }
+
+    // Подбираем максимальный размер для этих иконок (по высоте спинбоксов).
+    const int maxIconHeight = mMinCoord->height() + mMaxCoord->height();
+    QSize autoIconSize = mAutoMinMaxCoord->iconSize();
+    foreach(const QSize &iconSize, mAutoMinMaxCoord->icon().availableSizes()) {
+        if (iconSize.height() > maxIconHeight) {
+            continue;
+        }
+        if (iconSize.height() > autoIconSize.height()) {
+            autoIconSize = iconSize;
+        }
+    }
+    mAutoMinMaxCoord->setIconSize(autoIconSize);
+    mAutoMinMaxTemperature->setIconSize(autoIconSize);
 
     setAttribute(Qt::WA_DeleteOnClose);
 }
