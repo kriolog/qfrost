@@ -494,11 +494,13 @@ void Scene::slotSetBlocksStyle(QFrost::BlockStyle style)
 
         mBlocksNeedPen = (mBlocksStyle != QFrost::blockShowsTemperatureField
                           && mBlocksStyle != QFrost::blockShowsThawedPartField
-                          && mBlocksStyle != QFrost::blockShowsConditionField);
+                          && mBlocksStyle != QFrost::blockShowsConditionField
+                          && mBlocksStyle != QFrost::blockShowsTemperatureDiffField);
 
         foreach(Block * block, blocks()) {
             block->updateBrush();
         }
+
         // перерисовываемся, ибо updateBrush это не делает
         update();
     }

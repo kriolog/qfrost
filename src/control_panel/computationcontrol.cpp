@@ -154,17 +154,18 @@ ComputationControl::ComputationControl(QWidget *parent)
     QGroupBox *stylesBox = new QGroupBox(tr("Blocks Style"), this);
 
     QButtonGroup *styles = new QButtonGroup(this);
-    QAbstractButton *styleTemperate = new QRadioButton(tr("&Temperature"),
-            stylesBox);
+    QAbstractButton *styleTemp = new QRadioButton(tr("&Temperature"), stylesBox);
+    QAbstractButton *styleTempDiff = new QRadioButton(tr("Temperature &minus Tbf"), stylesBox);
     QAbstractButton *styleMixed = new QRadioButton(tr("&Mixed"), stylesBox);
-    QAbstractButton *styleWater = new QRadioButton(tr("T&hawed volume fraction"),
-            stylesBox);
+    QAbstractButton *styleWater = new QRadioButton(tr("T&hawed volume fraction"), stylesBox);
 
-    styles->addButton(styleTemperate, QFrost::blockShowsTemperatureField);
+    styles->addButton(styleTemp, QFrost::blockShowsTemperatureField);
+    styles->addButton(styleTempDiff, QFrost::blockShowsTemperatureDiffField);
     styles->addButton(styleMixed, QFrost::blockShowsConditionField);
     styles->addButton(styleWater, QFrost::blockShowsThawedPartField);
 
-    styleTemperate->setToolTip(tr("Color of block represents temperature"));
+    styleTemp->setToolTip(tr("Color of block represents temperature"));
+    styleTempDiff->setToolTip(tr("Color of block represents temperature relative to phase transition"));
     styleMixed->setToolTip(tr("If block is at phase transition,<br/>"
                               "it's color repesents thawed volume fraction;<br/>"
                               "else it represents temperature"));
@@ -173,11 +174,12 @@ ComputationControl::ComputationControl(QWidget *parent)
     connect(styles, SIGNAL(buttonClicked(int)),
             parent, SLOT(changeBlocksStyleForComputation(int)));
 
-    styleTemperate->click();
+    styleTemp->click();
 
     QVBoxLayout *stylesLayout = new QVBoxLayout(stylesBox);
     //stylesLayout->setSizeConstraint(QLayout::SetMinimumSize);
-    stylesLayout->addWidget(styleTemperate);
+    stylesLayout->addWidget(styleTemp);
+    stylesLayout->addWidget(styleTempDiff);
     stylesLayout->addWidget(styleWater);
     stylesLayout->addWidget(styleMixed);
 

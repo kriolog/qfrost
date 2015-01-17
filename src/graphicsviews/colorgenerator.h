@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -43,14 +43,18 @@ class ColorGenerator: public QObject
     Q_OBJECT
 public:
     ColorGenerator(QObject *parent);
+
     QColor colorFromTemperature(const qfcore::SoilBlock &soilBlock) const;
+    QColor colorFromTemperatureDiff(const qfcore::SoilBlock &soilBlock) const;
     QColor colorFromThawedPart(const qfcore::SoilBlock &soilBlock) const;
+
     bool discretizesColors() const {
         return mDiscretizeColors;
     }
     void drawTemperatureLegend(QPainter *painter,
                                const QRect &rect,
-                               bool useDarkPen) const;
+                               bool useDarkPen,
+                               const QString &zeroLabel = "0") const;
     void drawThawedPartLegend(QPainter *painter,
                               const QRectF &rect,
                               bool useDarkPen) const;
@@ -65,6 +69,8 @@ signals:
     void changed(bool justDiscreteness = false);
 
 private:
+    QColor colorFromTemperature(double t) const;
+
     bool mDiscretizeColors;
 
     double mT1;

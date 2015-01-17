@@ -40,6 +40,7 @@ ColorBar::ColorBar(View *parent,
     , mNeighbour(rightBar)
     , mIsLeft(rightBar != NULL)
     , mShowsTemperature(showsTemperature)
+    , mTemperatureZeroTick()
 {
     setAttribute(Qt::WA_TransparentForMouseEvents, true);
     resize(40, mShowsTemperature ? 300 : 200);
@@ -164,7 +165,8 @@ void ColorBar::paintEvent(QPaintEvent *event)
     QPainter p(this);
     //p.fillRect(rect(), Qt::yellow);
     if (mShowsTemperature) {
-        mColorGenerator->drawTemperatureLegend(&p, rect(), view->isLight());
+        mColorGenerator->drawTemperatureLegend(&p, rect(), view->isLight(),
+                                               mTemperatureZeroTick);
     } else {
         mColorGenerator->drawThawedPartLegend(&p, rect(), view->isLight());
     }
@@ -176,6 +178,7 @@ void ColorBar::updateVisibility(QFrost::BlockStyle style)
     switch (style) {
     case QFrost::blockShowsTemperature:
     case QFrost::blockShowsTemperatureField:
+    case QFrost::blockShowsTemperatureDiffField:
         mustShow = mShowsTemperature;
         break;
     case QFrost::blockShowsThawedPartField:
@@ -189,5 +192,8 @@ void ColorBar::updateVisibility(QFrost::BlockStyle style)
     default:
         mustShow = false;
     }
+    mTemperatureZeroTick = (style == QFrost::blockShowsTemperatureDiffField)
+                           ? "T<sub>bf</sub>"
+                           : "0";
     setVisible(mustShow);
 }

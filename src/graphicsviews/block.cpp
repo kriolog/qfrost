@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -54,6 +54,7 @@ Block::Block(const QRectF &inRect,
       mColorGenerator(colorGenerator),
       mBrush(),
       mTemperatureBrush(mColorGenerator->colorFromTemperature(mSoilBlock)),
+      mTemperatureDiffBrush(mColorGenerator->colorFromTemperatureDiff(mSoilBlock)),
       mThawedPartBrush(mColorGenerator->colorFromThawedPart(mSoilBlock)),
       mConditionBrush(),
       mMustUseMarkerBrush(false),
@@ -169,8 +170,9 @@ void Block::updateConditionBrush()
 void Block::updateFromTemperature()
 {
     mTemperatureBrush = QBrush(mColorGenerator->colorFromTemperature(mSoilBlock));
+    mTemperatureDiffBrush = QBrush(mColorGenerator->colorFromTemperatureDiff(mSoilBlock));
     updateFromThawedPart();
-    if (mBrush == &mTemperatureBrush) {
+    if (mBrush == &mTemperatureBrush || mBrush == &mTemperatureDiffBrush) {
         update();
     }
 }

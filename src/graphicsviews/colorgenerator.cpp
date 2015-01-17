@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -28,6 +28,7 @@
 #include <QtGui/QLinearGradient>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmapCache>
+#include <QtGui/QStaticText>
 
 #include <core/soilblock.h>
 
@@ -45,6 +46,16 @@ ColorGenerator::ColorGenerator(QObject *parent)
 
 QColor ColorGenerator::colorFromTemperature(const qfcore::SoilBlock &soilBlock) const
 {
+    return colorFromTemperature(soilBlock.temperature());
+}
+
+QColor ColorGenerator::colorFromTemperatureDiff(const qfcore::SoilBlock &soilBlock) const
+{
+    return colorFromTemperature(soilBlock.temperature() - soilBlock.transitionTemperature());
+}
+
+QColor ColorGenerator::colorFromTemperature(double t) const
+{
     /*
      * Для положительных:
      *      0       ->      mT1    ->     mT2   ->    mT3+
@@ -53,14 +64,17 @@ QColor ColorGenerator::colorFromTemperature(const qfcore::SoilBlock &soilBlock) 
      *  <=mT1:    255      255   255..0
      *  <=mT2:    255    255..0     0
      *  <=mT3:  255..127    0       0
-     * Для отрицательных меняются местами красная и синяя составляющие. */
+     * Для отрицательных меняются местами красная и синяя составляющие.
+     */
 
-    double t = soilBlock.temperature();
     if (t == 0.0) {
         return QColor(255, 255, 255);
     }
+
     const bool temperatureIsPositive = (t > 0);
-    t = temperatureIsPositive ? t : -t;
+    if (!temperatureIsPositive) {
+        t = -t;
+    }
 
     int a = 255;
     int b = 255;
@@ -127,9 +141,7 @@ void ColorGenerator::setDiscretizeColors(bool discretizeColors)
     }
 }
 
-void ColorGenerator::drawTemperatureLegend(QPainter *painter,
-        const QRect &rect,
-        bool useDarkPen) const
+void ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect, bool useDarkPen, const QString &zeroLabel) const
 {
     static const int penWidth = 3;
     QRectF scaleRect = rect;
@@ -221,6 +233,7 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter,
     foreach(const QGradientStop & s, stops) {
         qreal y;
         QString t;
+        bool mustUseStaticText = false;
         if (s.first == 0.5) {
             if (zeroIsDrawn) {
                 continue;
@@ -228,7 +241,8 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter,
                 zeroIsDrawn = true;
             }
             y = barRect.center().y();
-            t = "0";
+            t = zeroLabel;
+            mustUseStaticText = (zeroLabel != "0");
         } else {
             y = qRound(barRect.bottom() - cap - s.first * (barRect.height() - 2.0 * cap));
             double temp = s.first / k - mT3;
@@ -238,19 +252,40 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter,
             }
         }
 
-        const int textY = qRound(y + qreal(painter->fontMetrics().tightBoundingRect(t).height()) / 2.0);
+        const QStaticText staticText(t);
+
+        const double textYDelta = double(mustUseStaticText
+                                         ? staticText.size().height()
+                                         : painter->fontMetrics().tightBoundingRect(t).height())
+                                  / 2.0;
+
+        const int textY = qRound(y + (mustUseStaticText ? -textYDelta : textYDelta));
         if (!useDarkPen) {
             painter->setPen(Qt::black);
-            painter->drawText(QPoint(textX, textY), t);
-            painter->drawText(QPoint(textX + 1, textY), t);
-            painter->drawText(QPoint(textX - 1, textY), t);
-            painter->drawText(QPoint(textX, textY - 1), t);
-            painter->drawText(QPoint(textX, textY + 1), t);
+            QList<QPoint> shadowPoints;
+            shadowPoints << QPoint(textX, textY)
+                         << QPoint(textX + 1, textY)
+                         << QPoint(textX - 1, textY)
+                         << QPoint(textX, textY - 1)
+                         << QPoint(textX, textY + 1);
+            if (mustUseStaticText) {
+                foreach(const QPoint &p, shadowPoints) {
+                    painter->drawStaticText(p, staticText);
+                }
+            } else {
+                foreach(const QPoint &p, shadowPoints) {
+                    painter->drawText(p, t);
+                }
+            }
         }
         painter->setPen(bordersAndTextColor);
         painter->drawLine(barRect.right() - 7, y,
                           barRect.right(), y);
-        painter->drawText(QPoint(textX, textY), t);
+        if (mustUseStaticText) {
+            painter->drawStaticText(QPoint(textX, textY), staticText);
+        } else {
+            painter->drawText(QPoint(textX, textY), t);
+        }
     }
 
     painter->restore();

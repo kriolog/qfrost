@@ -165,16 +165,17 @@ public:
     /// Текст для undo-команды (для QComboBox и пр.)
     static const int UndoTextRole;
 
-    /// Что показывают блоки в сцене
+    /// Что отображают блоки в сцене
     enum BlockStyle {
-        blockShowsSoil,               ///< Грунт (и есть рамка)
-        blockShowsTemperature,        ///< Температуру (и есть рамка)
-        blockShowsBoundaryConditions,///< Ничего не показывает (и есть рамка)
-        blockShowsTemperatureField,  ///< Температуру
-        blockShowsThawedPartField,  ///< Кол-во незамёрзшей воды
-        blockShowsConditionField     /**< Температуру, а если он находится
-                                         *   в состоянии фазового перехода, то
-                                         *   кол-во незамёрзшей воды */
+        blockShowsSoil,                 ///< Грунт (и рамку)
+        blockShowsTemperature,          ///< Температуру (и рамку)
+        blockShowsBoundaryConditions,   ///< Ничего не показывает (только рамку)
+        blockShowsTemperatureField,     ///< Температуру (без рамки)
+        blockShowsTemperatureDiffField, ///< Разницу между T и T_bf (без рамки)
+        blockShowsThawedPartField,      ///< Отн. объём талой фазы (без рамки)
+        blockShowsConditionField        /**< Температуру, если фазовых переходов
+                                             нет: блок 100% талый/мёрзлый; иначе
+                                             отн. объём талой фазы (без рамки)*/
     };
 
     /// Метры из единиц сцены

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -351,6 +351,9 @@ private:
     /// Заливка, соответствующая температуре.
     QBrush mTemperatureBrush;
 
+    /// Заливка, соответствующая разнице между температурой и Tbf.
+    QBrush mTemperatureDiffBrush;
+
     /// Заливка, соответствующая количеству незамёрзшей воды.
     QBrush mThawedPartBrush;
 
@@ -535,6 +538,9 @@ void Block::updateBrush()
     case QFrost::blockShowsTemperature:
     case QFrost::blockShowsTemperatureField:
         mBrush = &mTemperatureBrush;
+        break;
+    case QFrost::blockShowsTemperatureDiffField:
+        mBrush = &mTemperatureDiffBrush;
         break;
     case QFrost::blockShowsThawedPartField:
         mBrush = &mThawedPartBrush;
