@@ -972,148 +972,154 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::CurvePlotDialog</name>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="52"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="77"/>
         <source>&amp;Temperature</source>
         <translation>&amp;Температура</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="53"/>
-        <source>Thawed &amp;part</source>
-        <translation>&amp;Отн. объём талой фазы</translation>
-    </message>
-    <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="54"/>
-        <source>T&amp;ransition temperature</source>
-        <translation>Температура &amp;фазового перехода</translation>
-    </message>
-    <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="55"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="80"/>
         <source>Show &amp;model date in title</source>
-        <translation>Показать &amp;модельное время</translation>
+        <translation>&amp;Модельное время (в заголовке)</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="66"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="97"/>
         <source>Save &amp;Raster Image...</source>
         <translation>Сохранить &amp;растровое изображение...</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="67"/>
-        <source>Save &amp;Vector Image...</source>
-        <translation>Сохранить векторное &amp;изображение...</translation>
-    </message>
-    <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="68"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="99"/>
         <source>&amp;Save Primary Data...</source>
         <translation>Сохранить первичные &amp;данные...</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="81"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="116"/>
         <source>Curve Plot</source>
         <translation>Построение кривых</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="132"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="89"/>
         <source>&amp;Auto</source>
-        <extracomment>automatically set slice coordinate limits</extracomment>
         <translation>&amp;Авто</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="138"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="78"/>
+        <source>Thawed &amp;volume fraction</source>
+        <translation>Отн. &amp;объём талой фазы</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="79"/>
+        <source>Transition t&amp;emperature</source>
+        <translation>Температура &amp;фазового перехода</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="84"/>
         <source>A&amp;uto</source>
-        <extracomment>automatically set t limits</extracomment>
         <translation>А&amp;вто</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="147"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="85"/>
+        <source>Restore this ra&amp;nge for next plot</source>
+        <translation>&amp;Запомнить для след. построения</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="90"/>
+        <source>Rest&amp;ore this range for next plot</source>
+        <translation>За&amp;помнить для след. построения</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="98"/>
+        <source>Save Vector &amp;Image...</source>
+        <translation>Сохранить &amp;векторное изображение...</translation>
+    </message>
+    <message>
+        <location filename="../src/plot/curveplotdialog.cpp" line="165"/>
         <source>Save plots to PNG file with specified size and scale.</source>
         <translation>Сохранить построения в PNG файл с указанием его размера и масштаба.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="148"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="166"/>
         <source>Save plots to (vector) PDF file with specified size.</source>
         <translation>Сохранить построения в (векторный) PDF файл с указанием его размера.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="149"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="167"/>
         <source>Save plot primary data to simple text file.</source>
         <translation>Сохранить первичные данные по срезу в виде простого текстового файла.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="153"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="171"/>
         <source>Plot Elements</source>
         <translation>Элементы построения</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="160"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="178"/>
         <source>Coordinate Range</source>
         <translation>Диапазон пространственных координат</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="162"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="168"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="55"/>
         <source>Minimum:</source>
         <translation>Минимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="163"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="169"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="56"/>
         <source>Maximum:</source>
         <translation>Максимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="166"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="184"/>
         <source>Temperature Range</source>
         <translation>Диапазон температур</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="172"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="190"/>
         <source>Save Graph or Data</source>
         <translation>Сохранение изображения или данных</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="304"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="326"/>
         <source>Save PDF</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="306"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="330"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="352"/>
         <source>PDF files</source>
         <translation>Файлы PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="314"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="338"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="364"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="336"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="360"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="386"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="315"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="339"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="337"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="361"/>
         <source>Can not save file %1.</source>
         <translation>Не удалось сохранить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="350"/>
         <source>Save PNG</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PNG</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="352"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="374"/>
         <source>Save Primary Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить первичные данные</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="354"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="376"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="365"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="387"/>
         <source>Can not write to file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
@@ -1973,7 +1979,7 @@ Do you want to save your changes or discard them?</source>
 <context>
     <name>qfgui::Scene</name>
     <message>
-        <location filename="../src/graphicsviews/scene.cpp" line="371"/>
+        <location filename="../src/graphicsviews/scene.cpp" line="372"/>
         <source>Computations Start Unsuccessful</source>
         <translation>Старт расчётов не удался</translation>
     </message>
