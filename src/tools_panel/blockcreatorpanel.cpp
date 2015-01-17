@@ -64,15 +64,20 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     connect(mHeightQSpinBox, SIGNAL(valueChanged(double)), SLOT(slotSetBlocksQ()));
     slotSetBlocksQ();
 
-    const QString infinityTipSuffix = " " + tr("(for 1D use 0 \342\200\224 will be infinite)");
-    mWidthSpinBox->setToolTip(tr("Width of first block") + infinityTipSuffix);
-    mHeightSpinBox->setToolTip(tr("Height of first block") + infinityTipSuffix);
+    mWidthSpinBox->setToolTip(tr("The first term of width progression (i.e., initial block's width).\n"
+                                 "Zero out (%1) to occupy whole tool width (1D vertical model).")
+                              .arg(mWidthSpinBox->specialValueText()));
+    mHeightSpinBox->setToolTip(tr("The first term of height progression (i.e., initial block's height).\n"
+                                  "Zero out (%1) to occupy whole tool height (1D horizontal model).")
+                               .arg(mHeightSpinBox->specialValueText()));
 
-    mWidthQSpinBox->setToolTip(tr("Geometric ratio for x"));
-    mHeightQSpinBox->setToolTip(tr("Geometric ratio for y"));
+    mWidthQSpinBox->setToolTip(tr("Common ratio of width progression.\n"
+                                  "For fixed width use unity (minumum)."));
+    mHeightQSpinBox->setToolTip(tr("Common ratio of height progression.\n"
+                                   "For fixed height use unity (minimum)."));
 
-    SettingsBox *xBox = new SettingsBox(tr("Hor. Progression"), this);
-    SettingsBox *yBox = new SettingsBox(tr("Vert. Progression"), this);
+    SettingsBox *xBox = new SettingsBox(tr("Width Progression"), this);
+    SettingsBox *yBox = new SettingsBox(tr("Height Progression"), this);
 
     xBox->addRow(tr("&b<sub>1</sub>"), mWidthSpinBox);
     xBox->addRow(tr("&q"), mWidthQSpinBox);
@@ -86,9 +91,10 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     mainLayout->addWidget(mRectangularToolPanel);
 
     SettingsBox *miscBox = new SettingsBox(tr("Miscellaneous"), this);
-    QCheckBox *mustChangePolygons = new QCheckBox(tr("Change\n&polygons"), miscBox);
+    QCheckBox *mustChangePolygons = new QCheckBox(tr("Append &polygon"), miscBox);
     QString s;
-    s = tr("If checked, applying tool will append rectangular boundary polygon.<br> Else will not change any polygons.");
+    s = tr("If enabled, will append rectangular boundary polygon when applying tool.\n"
+           "Else will create blocks without modifying (or creating) any polygons at all.");
     mustChangePolygons->setToolTip(s);
     connect(mustChangePolygons, SIGNAL(stateChanged(int)),
             SLOT(slotSetMustChangePolygons(int)));
@@ -113,5 +119,5 @@ void BlockCreatorPanel::slotSetBlocksQ()
 
 void BlockCreatorPanel::slotSetMustChangePolygons(int state)
 {
-    mSettings->setMustChangePolygons(state != 0);
+    mSettings->setMustChangePolygons(state != Qt::Unchecked);
 }
