@@ -32,41 +32,41 @@
 
 using namespace qfgui;
 
+static QDoubleSpinBox *createCommonRatioSpinBox(QWidget *parent = NULL)
+{
+    QDoubleSpinBox *result = new SmartDoubleSpinBox(parent);
+
+    result->setRange(1, 2);
+    result->setDecimals(3);
+    result->setSingleStep(0.005);
+    result->setValue(1);
+
+    return result;
+}
+
 BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     : QWidget(parent)
     , mWidthSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox(this))
-    , mWidthQSpinBox(new SmartDoubleSpinBox(this))
+    , mWidthQSpinBox(createCommonRatioSpinBox(this))
     , mHeightSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox(this))
-    , mHeightQSpinBox(new SmartDoubleSpinBox(this))
+    , mHeightQSpinBox(createCommonRatioSpinBox(this))
     , mSettings(new BlockCreatorSettings(this))
     , mRectangularToolPanel(new RectangularToolPanel(this, true, mSettings))
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(QMargins());
 
-    connect(mWidthSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(slotSetBlocksSize()));
-    connect(mHeightSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(slotSetBlocksSize()));
+    connect(mWidthSpinBox, SIGNAL(valueChanged(double)), SLOT(slotSetBlocksSize()));
+    connect(mHeightSpinBox, SIGNAL(valueChanged(double)), SLOT(slotSetBlocksSize()));
     slotSetBlocksSize();
 
-    connect(mWidthQSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(slotSetBlocksQ()));
-    connect(mHeightQSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(slotSetBlocksQ()));
+    connect(mWidthQSpinBox, SIGNAL(valueChanged(double)), SLOT(slotSetBlocksQ()));
+    connect(mHeightQSpinBox, SIGNAL(valueChanged(double)), SLOT(slotSetBlocksQ()));
+    slotSetBlocksQ();
 
     const QString infinityTipSuffix = " " + tr("(for 1D use 0 \342\200\224 will be infinite)");
     mWidthSpinBox->setToolTip(tr("Width of first block") + infinityTipSuffix);
     mHeightSpinBox->setToolTip(tr("Height of first block") + infinityTipSuffix);
-
-    mWidthQSpinBox->setRange(1, 2);
-    mWidthQSpinBox->setDecimals(3);
-    mWidthQSpinBox->setValue(1);
-    mWidthQSpinBox->setSingleStep(0.005);
-
-    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mWidthQSpinBox));
-    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mHeightQSpinBox));
-    static_cast<SmartDoubleSpinBox*>(mHeightQSpinBox)->readProperties(static_cast<SmartDoubleSpinBox*>(mWidthQSpinBox));
 
     mWidthQSpinBox->setToolTip(tr("Geometric ratio for x"));
     mHeightQSpinBox->setToolTip(tr("Geometric ratio for y"));
