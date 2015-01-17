@@ -115,6 +115,14 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mPlaceCross1Button->setIcon(setWithMouseIcon);
     mPlaceCross2Button->setIcon(setWithMouseIcon);
     
+    // HACK Пришлось отнимать число > 12, чтобы не вышла слишком большая кнопка,
+    //      превышающая по высоте соответствующую ей форму (с парой спинбоксов).
+    //      Вероятно, это связано с CSS padding/margin кнопки, но как их узнать?
+    const int maxSetWithMouseHeight = mCross1PixmapX->height() + mCross1PixmapY->height() - 14;
+    const QSize setWithMouseIconSize = QFrost::upperBoundIconSize(setWithMouseIcon, maxSetWithMouseHeight);
+    mPlaceCross1Button->setIconSize(setWithMouseIconSize);
+    mPlaceCross2Button->setIconSize(setWithMouseIconSize);
+    
     const QString setWithMouseTip = tr("Set both coordinates for cross by placing cursor over image.\n"
                                        "Cross will follow mouse in image area. Left click to finish.");
     mPlaceCross1Button->setToolTip(setWithMouseTip);
@@ -160,7 +168,6 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     QHBoxLayout *imagePos2Layout = new QHBoxLayout(imagePos2Box);
     imagePos2Layout->addLayout(imagePos2CoordsLayout, 1);
     imagePos2Layout->addWidget(mPlaceCross2Button);
-    
     mPlaceCross1Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     mPlaceCross2Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     
