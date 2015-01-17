@@ -3,7 +3,10 @@
     <file>icons/128x128/actions/application-exit.png</file>
     <file>icons/128x128/actions/document-edit.png</file>
     <file>icons/128x128/actions/list-remove.png</file>
+    <file>icons/128x128/actions/transform-move.png</file>
     <file>icons/128x128/actions/transform-scale.png</file>
+    <file>icons/128x128/actions/zoom-fit-height.png</file>
+    <file>icons/128x128/actions/zoom-fit-width.png</file>
     <file>icons/128x128/apps/accessories-calculator.png</file>
     <file>icons/128x128/mimetypes/image-x-generic.png</file>
     <file>icons/16x16/actions/application-exit.png</file>
@@ -28,10 +31,13 @@
     <file>icons/16x16/actions/list-remove.png</file>
     <file>icons/16x16/actions/media-playback-start.png</file>
     <file>icons/16x16/actions/media-playback-stop.png</file>
+    <file>icons/16x16/actions/transform-move.png</file>
     <file>icons/16x16/actions/transform-scale.png</file>
     <file>icons/16x16/actions/view-fullscreen.png</file>
     <file>icons/16x16/actions/view-restore.png</file>
     <file>icons/16x16/actions/window-close.png</file>
+    <file>icons/16x16/actions/zoom-fit-height.png</file>
+    <file>icons/16x16/actions/zoom-fit-width.png</file>
     <file>icons/16x16/apps/accessories-calculator.png</file>
     <file>icons/16x16/mimetypes/image-x-generic.png</file>
     <file>icons/22x22/actions/application-exit.png</file>
@@ -56,10 +62,13 @@
     <file>icons/22x22/actions/list-remove.png</file>
     <file>icons/22x22/actions/media-playback-start.png</file>
     <file>icons/22x22/actions/media-playback-stop.png</file>
+    <file>icons/22x22/actions/transform-move.png</file>
     <file>icons/22x22/actions/transform-scale.png</file>
     <file>icons/22x22/actions/view-fullscreen.png</file>
     <file>icons/22x22/actions/view-restore.png</file>
     <file>icons/22x22/actions/window-close.png</file>
+    <file>icons/22x22/actions/zoom-fit-height.png</file>
+    <file>icons/22x22/actions/zoom-fit-width.png</file>
     <file>icons/22x22/apps/accessories-calculator.png</file>
     <file>icons/22x22/mimetypes/image-x-generic.png</file>
     <file>icons/256x256/apps/accessories-calculator.png</file>
@@ -86,10 +95,13 @@
     <file>icons/32x32/actions/list-remove.png</file>
     <file>icons/32x32/actions/media-playback-start.png</file>
     <file>icons/32x32/actions/media-playback-stop.png</file>
+    <file>icons/32x32/actions/transform-move.png</file>
     <file>icons/32x32/actions/transform-scale.png</file>
     <file>icons/32x32/actions/view-fullscreen.png</file>
     <file>icons/32x32/actions/view-restore.png</file>
     <file>icons/32x32/actions/window-close.png</file>
+    <file>icons/32x32/actions/zoom-fit-height.png</file>
+    <file>icons/32x32/actions/zoom-fit-width.png</file>
     <file>icons/32x32/apps/accessories-calculator.png</file>
     <file>icons/32x32/mimetypes/image-x-generic.png</file>
     <file>icons/48x48/actions/application-exit.png</file>
@@ -114,16 +126,22 @@
     <file>icons/48x48/actions/list-remove.png</file>
     <file>icons/48x48/actions/media-playback-start.png</file>
     <file>icons/48x48/actions/media-playback-stop.png</file>
+    <file>icons/48x48/actions/transform-move.png</file>
     <file>icons/48x48/actions/transform-scale.png</file>
     <file>icons/48x48/actions/view-fullscreen.png</file>
     <file>icons/48x48/actions/view-restore.png</file>
     <file>icons/48x48/actions/window-close.png</file>
+    <file>icons/48x48/actions/zoom-fit-height.png</file>
+    <file>icons/48x48/actions/zoom-fit-width.png</file>
     <file>icons/48x48/apps/accessories-calculator.png</file>
     <file>icons/48x48/mimetypes/image-x-generic.png</file>
     <file>icons/64x64/actions/application-exit.png</file>
     <file>icons/64x64/actions/document-edit.png</file>
     <file>icons/64x64/actions/list-remove.png</file>
+    <file>icons/64x64/actions/transform-move.png</file>
     <file>icons/64x64/actions/transform-scale.png</file>
+    <file>icons/64x64/actions/zoom-fit-height.png</file>
+    <file>icons/64x64/actions/zoom-fit-width.png</file>
     <file>icons/64x64/apps/accessories-calculator.png</file>
     <file>icons/64x64/mimetypes/image-x-generic.png</file>
     <file>icons/index.theme</file>
