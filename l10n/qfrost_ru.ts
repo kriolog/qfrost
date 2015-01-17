@@ -778,6 +778,11 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>&amp;Температура</translation>
     </message>
     <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="158"/>
+        <source>Temperature &amp;minus Tbf</source>
+        <translation>Температура &amp;минус Tbf</translation>
+    </message>
+    <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="159"/>
         <source>&amp;Mixed</source>
         <translation>С&amp;мешанный</translation>
@@ -788,18 +793,18 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>Цвет блока показывает его температуру</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="171"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="172"/>
         <source>Color of block represents thawed volume fraction</source>
         <translation>Цвет блока показывает степень его протаивания</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="284"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="286"/>
         <source>Single step %1 %2</source>
         <extracomment>%1 is equality symbol (= or ≈), %2 is time (HH:mm:ss)</extracomment>
         <translation>Шаг %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="168"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="169"/>
         <source>If block is at phase transition,&lt;br/&gt;it&apos;s color repesents thawed volume fraction;&lt;br/&gt;else it represents temperature</source>
         <translation>Если в блоке идёт фазовый переход, его цвет&lt;br/&gt;показывает степень его протаивания;&lt;br/&gt;иначе — температуру</translation>
     </message>
@@ -841,32 +846,37 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>&amp;Отн. объём талой фазы</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="199"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="168"/>
+        <source>Color of block represents temperature relative to phase transition</source>
+        <translation>Цвет блока показывает его температуру за вычетом температуры фазового перехода</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="201"/>
         <source>Number of steps to do in each astronomical day</source>
         <translation>Количество шагов, совершающихся дла каждых суток модели</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="200"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="202"/>
         <source>Initial date for computation.&lt;br/&gt;When computation is active, it shows represented date.</source>
         <translation>Начальная дата расчётов.&lt;br/&gt;В ходе расчётов эта дата показывает отображённую на блоках ситуацию.</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="202"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="204"/>
         <source>Final date for computation</source>
         <translation>Конечная дата расчётов</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="203"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="205"/>
         <source>Start computation</source>
         <translation>Начать расчёты</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="204"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="206"/>
         <source>Stop computation</source>
         <translation>Остановить расчёты</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="205"/>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="207"/>
         <source>Continuously redraw blocks when computation is active</source>
         <translation>Перерисовывать блоки во время расчётов (незначительно замедляет счёт)</translation>
     </message>
