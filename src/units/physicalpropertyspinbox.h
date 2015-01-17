@@ -42,10 +42,12 @@ class PhysicalPropertySpinBox : public SmartDoubleSpinBox
                WRITE setPhysicalProperty)
     Q_PROPERTY(double forcedMinimum
                READ forcedMinimum
-               WRITE setForcedMinimum)
+               WRITE setForcedMinimum
+               RESET resetForcedMinimum)
     Q_PROPERTY(double forcedMaximum
                READ forcedMaximum
-               WRITE setForcedMaximum)
+               WRITE setForcedMaximum
+               RESET resetForcedMaximum)
 public:
     PhysicalPropertySpinBox(PhysicalProperty property,
                             QWidget *parent);
@@ -78,10 +80,16 @@ public:
 
 public slots:
     void setPhysicalProperty(int p);
+
     /// Выставляет минимум в @p min; не меняет его при смене единиц измерения
     void setForcedMinimum(double min);
     /// Выставляет максимум в @p max; не меняет его при смене единиц измерения
     void setForcedMaximum(double max);
+
+    /// Убирает дополнительно установленный минимум
+    void resetForcedMinimum();
+    /// Убирает дополнительно установленный максимум
+    void resetForcedMaximum();
 
 protected:
     QValidator::State validate(QString &input, int &pos) const;

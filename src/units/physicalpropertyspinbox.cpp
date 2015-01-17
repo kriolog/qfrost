@@ -130,6 +130,20 @@ void PhysicalPropertySpinBox::setForcedMaximum(double max)
     mHelperSpinBox->setMaximum(mUnit->fromSI(max));
 }
 
+void PhysicalPropertySpinBox::resetForcedMinimum()
+{
+    mMinimumIsForced = false;
+    mHelperSpinBox->setMinimum(mUnit->minimumVisible());
+    setMinimum(mUnit->minimum());
+}
+
+void PhysicalPropertySpinBox::resetForcedMaximum()
+{
+    mMaximumIsForced = false;
+    mHelperSpinBox->setMaximum(mUnit->maximumVisible());
+    setMaximum(mUnit->maximum());
+}
+
 void PhysicalPropertySpinBox::getPropertiesFromUnit()
 {
     if (mUnit == NULL) {
