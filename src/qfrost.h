@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -89,8 +89,11 @@ public:
      */
     static const qreal accuracy;
 
-    /// Сколько метров в одной единице чертежа
+    /// Сколько метров в одной единице чертежа. Равняется 10^-metersDecimal.
     static const double metersInUnit;
+
+    /// Количество знаков после запятой для значений координат сцены (в метрах).
+    static const int meterDecimals = 3;
 
     /// Минимальный размер блоков
     static const double minBlockSize;

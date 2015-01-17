@@ -230,9 +230,7 @@ QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
     QDoubleSpinBox *result = new SmartDoubleSpinBox();
     result->setSingleStep(1);
 
-    static const int decimals = -std::log10(QFrost::metersInUnit);
-
-    result->setDecimals(decimals);
+    result->setDecimals(QFrost::meterDecimals);
     result->setSuffix(Units::meterSuffix());
 
     result->setMinimum(-QFrost::sceneHalfSizeInMeters);

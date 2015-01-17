@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -20,13 +20,15 @@
 #include <qfrost.h>
 
 #include <QtCore/Qt>
+#include <QtCore/QtMath>
 #include <QtCore/QLocale>
 #include <QtCore/QTime>
 
 using namespace qfgui;
 
-// Если ставить 0.01, то блоки размером 0.01 м имеют некрасивый текст
-const double QFrost::metersInUnit = 0.001;
+// Если эта величина равна 0.01, то блоки размером 0.01м имеют некрасивый текст.
+// Т.е. оно должно быть хотя бы в 10 раз быть больше минимального размера блока.
+const double QFrost::metersInUnit = qPow(10.0, -QFrost::meterDecimals);
 
 const double QFrost::minBlockSize = 0.01 / metersInUnit * unitsInGridStep;
 
