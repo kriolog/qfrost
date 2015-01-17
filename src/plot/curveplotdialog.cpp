@@ -44,11 +44,36 @@
 
 using namespace qfgui;
 
+static QGroupBox *createMinMaxGroupBox(const QString &title,
+                                       QDoubleSpinBox *minSpinBox,
+                                       QDoubleSpinBox *maxSpinBox,
+                                       QPushButton *autoMinMax,
+                                       QCheckBox *saveMinMax)
+{
+
+    QFormLayout *limits = new QFormLayout();
+    limits->addRow(CurvePlotDialog::tr("Minimum:"), minSpinBox);
+    limits->addRow(CurvePlotDialog::tr("Maximum:"), maxSpinBox);
+
+    QHBoxLayout *limitsWithButton = new QHBoxLayout();
+    limitsWithButton->addLayout(limits, 1);
+    limitsWithButton->addWidget(autoMinMax);
+    autoMinMax->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    QGroupBox *groupBox = new QGroupBox(title);
+    QVBoxLayout *groupBoxLayout = new QVBoxLayout(groupBox);
+    groupBoxLayout->addLayout(limitsWithButton);
+    groupBoxLayout->addWidget(saveMinMax);
+
+    return groupBox;
+}
+
 CurvePlotDialog::CurvePlotDialog(Block *block,
                                  Qt::Orientation orientation,
                                  QWidget *parent)
     : QDialog(parent)
     , mPlot(new CurvePlot(orientation, this))
+    , mOrientation(orientation)
     , mPlotTemperature(new QCheckBox(tr("&Temperature"), this))
     , mPlotThawedPard(new QCheckBox(tr("Thawed &part"), this))
     , mPlotTransitionTemperature(new QCheckBox(tr("T&ransition temperature"), this))
@@ -56,11 +81,13 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
     //: text from button that automatically set coordinate limits
-    , mAutoMinMaxTemperature(new QPushButton(tr("&Auto"), this))
+    , mAutoMinMaxTemperature(new QPushButton(tr("A&uto"), this))
+    , mSaveMinMaxTemperature(new QCheckBox(tr("Restore these values for &next plot"), this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     //: text from button that automatically sets temperature limits
-    , mAutoMinMaxCoord(new QPushButton(tr("A&uto"), this))
+    , mAutoMinMaxCoord(new QPushButton(tr("&Auto"), this))
+    , mSaveMinMaxCoord(new QCheckBox(tr("Restore these &values for next plot"), this))
     , mSlice(block->slice(orientation))
     , mTemperatures()
     , mThawedParts()
@@ -79,6 +106,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
                                          ? block->metersCenter().y()
                                          : block->metersCenter().x(),
                                          'f', mMaxCoord->decimals()))
+    , mKnownCoordMin()
+    , mKnownCoordMax()
     , mKnownTemperatureMin()
     , mKnownTemperatureMax()
 {
@@ -106,19 +135,7 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
         block->setMarkered(true);
     }
 
-    mKnownCoordMin = mCoordsMain.first() -
-                     (orientation == Qt::Horizontal
-                      ? mSlice.first()->metersRect().width()
-                      : mSlice.first()->metersRect().height()) / 2.0;
-
-    mKnownCoordMax = mCoordsMain.last() +
-                     (orientation == Qt::Horizontal
-                      ? mSlice.last()->metersRect().width()
-                      : mSlice.last()->metersRect().height()) / 2.0;
-
-    mMinCoord->setMinimum(mKnownCoordMin);
-    mMaxCoord->setMaximum(mKnownCoordMax);
-
+    updateKnownCoordLimits();
     updateKnownTemperatureLimits();
 
     connect(mMinCoord, SIGNAL(valueChanged(double)), SLOT(updateAdditionalLimits()));
@@ -158,17 +175,17 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     plotElements->addWidget(mPlotTransitionTemperature);
     plotElements->addWidget(mShowModelDateText);
 
-    QGroupBox *coordLimitBox = new QGroupBox(tr("Coordinate Range"), this);
-    QFormLayout *coordLimits = new QFormLayout(coordLimitBox);
-    coordLimits->addRow(tr("Minimum:"), mMinCoord);
-    coordLimits->addRow(tr("Maximum:"), mMaxCoord);
-    coordLimits->addRow(mAutoMinMaxCoord);
+    QGroupBox *coordLimitBox = createMinMaxGroupBox(tr("Coordinate Range"),
+                                                    mMinCoord,
+                                                    mMaxCoord,
+                                                    mAutoMinMaxCoord,
+                                                    mSaveMinMaxCoord);
  
-    QGroupBox *temperatureLimitBox = new QGroupBox(tr("Temperature Range"), this);
-    QFormLayout *temperatureLimits = new QFormLayout(temperatureLimitBox);
-    temperatureLimits->addRow(tr("Minimum:"), mMinTemperature);
-    temperatureLimits->addRow(tr("Maximum:"), mMaxTemperature);
-    temperatureLimits->addRow(mAutoMinMaxTemperature);
+    QGroupBox *temperatureLimitBox = createMinMaxGroupBox(tr("Temperature Range"),
+                                                          mMinTemperature,
+                                                          mMaxTemperature,
+                                                          mAutoMinMaxTemperature,
+                                                          mSaveMinMaxTemperature);
 
     QGroupBox *saveBox = new QGroupBox(tr("Save Graph or Data"), this);
     QVBoxLayout *saveLayout = new QVBoxLayout(saveBox);
@@ -217,6 +234,9 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     mPlotTransitionTemperature->setChecked(true);
     mShowModelDateText->setChecked(true);
 
+    // Цепляемся на rejected(), т.к. у нас есть только кнопка закрытия.
+    connect(this, SIGNAL(rejected()), SLOT(emitSavingMinMax()));
+
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -227,35 +247,26 @@ CurvePlotDialog::~CurvePlotDialog()
     }
 }
 
+void CurvePlotDialog::loadMinMaxCoord(double min, double max)
+{
+    setMinMaxCoord(min, max);
+    mSaveMinMaxCoord->setChecked(true);
+}
+
+void CurvePlotDialog::loadMinMaxTemperature(double min, double max)
+{
+    setMinMaxTemperature(min, max);
+    mSaveMinMaxTemperature->setChecked(true);
+}
 
 void CurvePlotDialog::autoMinMaxCoord()
 {
-    mIsUpdatingAdditionalLimits = true;
-
-    mMinCoord->setMinimum(mKnownCoordMin);
-    mMinCoord->setMaximum(mKnownCoordMax);
-    mMaxCoord->setMinimum(mKnownCoordMin);
-    mMaxCoord->setMaximum(mKnownCoordMax);
-
-    mMinCoord->setValue(mKnownCoordMin);
-    mMaxCoord->setValue(mKnownCoordMax);
-
-    mIsUpdatingAdditionalLimits = false;
-    updateAdditionalLimits();
+    setMinMaxCoord(mKnownCoordMin, mKnownCoordMax);
 }
 
 void CurvePlotDialog::autoMinMaxTemperature()
 {
-    mIsUpdatingAdditionalLimits = true;
-
-    mMinTemperature->resetForcedMaximum();
-    mMaxTemperature->resetForcedMinimum();
-
-    mMinTemperature->setValue(mKnownTemperatureMin);
-    mMaxTemperature->setValue(mKnownTemperatureMax);
-
-    mIsUpdatingAdditionalLimits = false;
-    updateAdditionalLimits();
+    setMinMaxTemperature(mKnownTemperatureMin, mKnownTemperatureMax);
 }
 
 void CurvePlotDialog::updateAdditionalLimits()
@@ -397,11 +408,36 @@ bool CurvePlotDialog::savePrimaryData()
     return true;
 }
 
+void CurvePlotDialog::emitSavingMinMax()
+{
+    if (mSaveMinMaxCoord->isChecked()) {
+        emit savingMinMaxCoord(mMinCoord->value(),
+                               mMaxCoord->value());
+    }
+    if (mSaveMinMaxTemperature->isChecked()) {
+        emit savingMinMaxTemperature(mMinTemperature->value(),
+                                     mMaxTemperature->value());
+    }
+}
+
 QDate CurvePlotDialog::modelDate() const
 {
     MainWindow *m = Application::findMainWindow(this);
     Q_ASSERT(m);
     return m->controlPanel()->computationControl()->currentDate();
+}
+
+void CurvePlotDialog::updateKnownCoordLimits()
+{
+    mKnownCoordMin = mCoordsMain.first() -
+                     (mOrientation == Qt::Horizontal
+                      ? mSlice.first()->metersRect().width()
+                      : mSlice.first()->metersRect().height()) / 2.0;
+
+    mKnownCoordMax = mCoordsMain.last() +
+                     (mOrientation == Qt::Horizontal
+                      ? mSlice.last()->metersRect().width()
+                      : mSlice.last()->metersRect().height()) / 2.0;
 }
 
 void CurvePlotDialog::updateKnownTemperatureLimits()
@@ -426,10 +462,94 @@ void CurvePlotDialog::updateKnownTemperatureLimits()
     // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
     static const double minTemperatureRange = 5.0;
     if (temperatureRange < minTemperatureRange) {
-        const double avgT = (mKnownTemperatureMax - mKnownTemperatureMin) / 2.0;
+        const double avgT = temperatureRange / 2.0;
         static const double deltaT = minTemperatureRange / 2.0;
 
         mKnownTemperatureMin = qFloor(avgT - deltaT);
         mKnownTemperatureMax = qCeil(avgT + deltaT);
     }
+}
+
+void CurvePlotDialog::setMinMaxCoord(double min, double max)
+{
+    Q_ASSERT(min < max);
+
+    mIsUpdatingAdditionalLimits = true;
+
+    mMinCoord->setMaximum(max);
+    mMaxCoord->setMinimum(min);
+
+    mMinCoord->setValue(min);
+    mMaxCoord->setValue(max);
+
+    mIsUpdatingAdditionalLimits = false;
+    updateAdditionalLimits();
+}
+
+void CurvePlotDialog::setMinMaxTemperature(double min, double max)
+{
+    Q_ASSERT(min < max);
+
+    mIsUpdatingAdditionalLimits = true;
+
+    mMinTemperature->resetForcedMaximum();
+    mMaxTemperature->resetForcedMinimum();
+
+    mMinTemperature->setValue(min);
+    mMaxTemperature->setValue(max);
+
+    mIsUpdatingAdditionalLimits = false;
+    updateAdditionalLimits();
+}
+
+CurvePlotDialogSpawner::CurvePlotDialogSpawner(QWidget *parent)
+    : QObject(parent)
+    , mSavedMinMaxCoord(false)
+    , mMinCoord()
+    , mMaxCoord()
+    , mSavedMinMaxTemperature(false)
+    , mMinTemperature()
+    , mMaxTemperature()
+{
+
+}
+
+CurvePlotDialog *CurvePlotDialogSpawner::execDialog(Block *block,
+                                                    Qt::Orientation orientation)
+{
+    QWidget *widget = qobject_cast<QWidget*>(parent());
+    Q_ASSERT(widget);
+
+    CurvePlotDialog *dialog = new CurvePlotDialog(block, orientation, widget);
+
+    connect(dialog, SIGNAL(savingMinMaxCoord(double,double)),
+            SLOT(saveMinMaxCoord(double,double)));
+    connect(dialog, SIGNAL(savingMinMaxTemperature(double,double)),
+            SLOT(saveMinMaxTemperature(double,double)));
+
+    if (mSavedMinMaxCoord) {
+        dialog->loadMinMaxCoord(mMinCoord, mMaxCoord);
+        mSavedMinMaxCoord = false;
+    }
+
+    if (mSavedMinMaxTemperature) {
+        dialog->loadMinMaxTemperature(mMinTemperature, mMaxTemperature);
+        mSavedMinMaxTemperature = false;
+    }
+
+    dialog->exec();
+}
+
+void CurvePlotDialogSpawner::saveMinMaxCoord(double min, double max)
+{
+    mSavedMinMaxCoord = true;
+    mMinCoord = min;
+    mMaxCoord = max;
+}
+
+void CurvePlotDialogSpawner::saveMinMaxTemperature(double min, double max)
+{
+    mSavedMinMaxTemperature = true;
+    mMinTemperature = min;
+    mMaxTemperature = max;
 }

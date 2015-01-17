@@ -90,6 +90,7 @@ Scene::Scene(MainWindow *parent)
     , mIsFillingSoil(false)
     , mSoilToFill(NULL)
     , mBackgroundItem(NULL)
+    , mCurvePlotDialogSpawner(NULL)
 {
     //setItemIndexMethod(NoIndex);
     int sceneHalfsize = QFrost::sceneHalfSize * 1.01;
@@ -567,17 +568,20 @@ void Scene::openCurvePlotDialog()
         return;
     }
 
-    Block *const b = block(mAnchor->pos());
-    if (!b) {
+    Block *const selectedBlock = block(mAnchor->pos());
+    if (!selectedBlock) {
         qWarning("%s called with anchor outside of block!", Q_FUNC_INFO);
         return;
     }
 
     CurvePlotToolSettings *settings = qobject_cast<CurvePlotToolSettings*>(mToolsSettings[mToolToCreate]);
     Q_ASSERT(settings);
-    CurvePlotDialog *dialog = new CurvePlotDialog(b, settings->orientation(), 
-                                                  qfView());
-    dialog->exec();
+
+    if (!mCurvePlotDialogSpawner) {
+        mCurvePlotDialogSpawner = new CurvePlotDialogSpawner(qfView());
+    }
+
+    mCurvePlotDialogSpawner->execDialog(selectedBlock, settings->orientation());
 }
 
 Qt::Orientations Scene::toolChangesOrientations()

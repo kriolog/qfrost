@@ -43,6 +43,16 @@ public:
 
     virtual ~CurvePlotDialog();
 
+    void loadMinMaxCoord(double min, double max);
+    void loadMinMaxTemperature(double min, double max);
+
+signals:
+    /// Испускается после подтверждения, если надо запомнить лимиты координат.
+    void savingMinMaxCoord(double min, double max);
+
+    /// Испускается после подтверждения, если надо запомнить лимиты температур.
+    void savingMinMaxTemperature(double min, double max);
+
 private slots:
     /// Устанавливает значения mMinCoord и mMaxCoord исходя из mCoordsMain.
     void autoMinMaxCoord();
@@ -79,14 +89,24 @@ private slots:
     /// Открывает диалог сохранения первичных данных.
     bool savePrimaryData();
 
+    /// Испускает savingMinMaxCoord / savingMinMaxTemperature, если есть галки.
+    void emitSavingMinMax();
+
 private:
     /// Текущее время модели.
     QDate modelDate() const;
 
-    /// Обновляет mMinTemperatureLimit и mMaxTemperatureLimit по вбитым данным.
+    /// Обновляет mMinCoordLimit и mMaxCoordLimit для активного среза.
+    void updateKnownCoordLimits();
+    /// Обновляет mMinTemperatureLimit/mMaxTemperatureLimit для активного среза.
     void updateKnownTemperatureLimits();
 
+    void setMinMaxCoord(double min, double max);
+    void setMinMaxTemperature(double min, double max);
+
     CurvePlot *mPlot;
+
+    const Qt::Orientation mOrientation;
 
     QCheckBox *mPlotTemperature;
     QCheckBox *mPlotThawedPard;
@@ -97,10 +117,12 @@ private:
     PhysicalPropertySpinBox *mMinTemperature;
     PhysicalPropertySpinBox *mMaxTemperature;
     QPushButton *mAutoMinMaxTemperature;
+    QCheckBox *mSaveMinMaxTemperature;
 
     QDoubleSpinBox *mMinCoord;
     QDoubleSpinBox *mMaxCoord;
     QPushButton *mAutoMinMaxCoord;
+    QCheckBox *mSaveMinMaxCoord;
 
     QList<Block*> mSlice;
     QVector<double> mTemperatures;
@@ -126,6 +148,32 @@ private:
     double mKnownTemperatureMin;
     double mKnownTemperatureMax;
 };
+
+/**
+ * Класс для вызова диалога построения кривой. Сохраняет/восстанавливает лимиты.
+ */
+class CurvePlotDialogSpawner : public QObject
+{
+    Q_OBJECT
+public:
+    CurvePlotDialogSpawner(QWidget *parent);
+
+    CurvePlotDialog *execDialog(Block *block, Qt::Orientation orientation);
+
+private slots:
+    void saveMinMaxCoord(double min, double max);
+    void saveMinMaxTemperature(double min, double max);
+
+private:
+    bool mSavedMinMaxCoord;
+    double mMinCoord;
+    double mMaxCoord;
+
+    bool mSavedMinMaxTemperature;
+    double mMinTemperature;
+    double mMaxTemperature;
+};
+
 }
 
 #endif // QFGUI_CURVEPLOTDIALOG_H

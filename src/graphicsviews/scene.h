@@ -48,6 +48,7 @@ QT_FORWARD_DECLARE_CLASS(View)
 QT_FORWARD_DECLARE_CLASS(ToolSettings)
 QT_FORWARD_DECLARE_CLASS(PointOnBoundaryPolygon)
 QT_FORWARD_DECLARE_CLASS(ComputationSettings)
+QT_FORWARD_DECLARE_CLASS(CurvePlotDialogSpawner)
 
 class Scene: public QGraphicsScene
 {
@@ -504,6 +505,9 @@ private:
 
     /// Графическая подложка (может быть равно 0).
     QGraphicsPixmapItem *mBackgroundItem;
+
+    /// Открывалка диалогов построения кривых.
+    CurvePlotDialogSpawner *mCurvePlotDialogSpawner;
 
     friend class ChangeBoundaryPolygonsCommand;
     friend class ReadFromComputationDataCommand;
