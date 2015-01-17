@@ -64,8 +64,14 @@ public:
     double forcedMinimum() const;
     double forcedMaximum() const;
 
-    /// Создаёт и возвращает редактор значения координаты сцены (в метрах).
-    static QDoubleSpinBox *createSceneCoordinateSpinBox(QWidget *parent = NULL);
+    /**
+     * Создаёт и возвращает редактор значения координаты сцены (в метрах).
+     * @param parent родительский виджет для создаваемого редактора.
+     * @param isPositive ограничить не для координат, а для размера инструмента,
+     *        т.е. [0, 2*r] вместо [-r, r] (r = QFrost::sceneHalfSizeInMeters).
+     */
+    static QDoubleSpinBox *createSceneCoordinateSpinBox(QWidget *parent = NULL,
+                                                        bool isPositive = false);
 
     /// Создаёт и возвращает редактор величины размера блока (в метрах).
     static QDoubleSpinBox *createBlockSizeSpinBox(QWidget *parent = NULL);

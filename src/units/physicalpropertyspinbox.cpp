@@ -225,14 +225,21 @@ double PhysicalPropertySpinBox::forcedMinimum() const
     }
 }
 
-QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox(QWidget *parent)
+QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox(QWidget *parent,
+                                                                      bool isPositive)
 {
     QDoubleSpinBox *result = new SmartDoubleSpinBox(parent);
 
     result->setSuffix(Units::meterSuffix());
 
     result->setDecimals(QFrost::meterDecimals);
-    result->setRange(-QFrost::sceneHalfSizeInMeters, QFrost::sceneHalfSizeInMeters);
+
+    if (isPositive) {
+        result->setRange(0, 2.0 * QFrost::sceneHalfSizeInMeters);
+    } else {
+        result->setRange(-QFrost::sceneHalfSizeInMeters, QFrost::sceneHalfSizeInMeters);
+    }
+
     result->setSingleStep(1);
 
     return result;

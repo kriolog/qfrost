@@ -35,17 +35,12 @@ RectangularToolPanel::RectangularToolPanel(QWidget *parent, bool showHeader,
     : SettingsBox(showHeader ? tr("Geometry") : "" , parent)
     , mRectX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mRectY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
-    , mRectWidth(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
-    , mRectHeight(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    , mRectWidth(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this, true))
+    , mRectHeight(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this, true))
     , mBasepoints(new QButtonGroup(this))
     , mMustEmitRectChanges(true)
     , mSettings(settings == NULL ? new RectangularToolSettings(this) : settings)
 {
-    mRectWidth->setMinimum(0);
-    mRectWidth->setMaximum(2 * QFrost::sceneHalfSizeInMeters);
-    Q_ASSERT(qobject_cast<SmartDoubleSpinBox*>(mRectHeight));
-    static_cast<SmartDoubleSpinBox*>(mRectHeight)->readProperties(static_cast<SmartDoubleSpinBox*>(mRectWidth));
-
     addRow(tr("&X-Pos:"), mRectX);
     addRow(tr("&Y-Pos:"), mRectY);
     addSpacing();
