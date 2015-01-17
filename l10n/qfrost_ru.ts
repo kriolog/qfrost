@@ -522,68 +522,71 @@ It will be loaded when you open this image again.</source>
 <context>
     <name>qfgui::BlockCreatorPanel</name>
     <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="62"/>
-        <source>Width of first block</source>
-        <translation>Ширина первого блока</translation>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="67"/>
+        <source>The first term of width progression (i.e., initial block&apos;s width).
+Zero out (%1) to occupy whole tool width (1D vertical model).</source>
+        <translation>Первый член геометрической прогрессии для ширины — т.е. ширина первого блока.
+Обнуление (%1) растянет блоки по ширине инструмента (нужно для верт. 1D моделей).</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="65"/>
-        <source>Height of first block</source>
-        <translation>Высота первого блока</translation>
-    </message>
-    <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="71"/>
-        <source>Geometric ratio for x</source>
-        <translation>Коэффициент прогрессии по X</translation>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="70"/>
+        <source>The first term of height progression (i.e., initial block&apos;s height).
+Zero out (%1) to occupy whole tool height (1D horizontal model).</source>
+        <translation>Первый член геометрической прогрессии для высоты — т.е. высота первого блока.
+Обнуление (%1) растянет блоки по высоте инструента (нужно для гориз. 1D моделей).</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="74"/>
-        <source>Geometric ratio for y</source>
-        <translation>Коэффициент прогрессии по Y</translation>
+        <source>Common ratio of width progression.
+For fixed width use unity (minumum).</source>
+        <translation>Знаменатель геометрической прогрессии для ширины.
+Единица (минимум) соответствует неизменной ширине.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="76"/>
-        <source>Hor. Progression</source>
-        <translation>Гориз. прогрессия</translation>
-    </message>
-    <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="77"/>
-        <source>Vert. Progression</source>
-        <translation>Верт. прогрессия</translation>
-    </message>
-    <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="91"/>
-        <source>Change
-&amp;polygons</source>
-        <translation>Изменять
-&amp;полигоны</translation>
+        <source>Common ratio of height progression.
+For fixed height use unity (minimum).</source>
+        <translation>Знаменатель геометрической прогрессии для высоты.
+Единица (минимум) соответствует неизменной высоте.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="79"/>
+        <source>Width Progression</source>
+        <translation>Прогрессия ширины</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="80"/>
+        <source>Height Progression</source>
+        <translation>Прогрессия высоты</translation>
+    </message>
+    <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="82"/>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="85"/>
         <source>&amp;b&lt;sub&gt;1&lt;/sub&gt;</source>
         <translation>&amp;b&lt;sub&gt;1&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="61"/>
-        <source>∞</source>
-        <translation>∞</translation>
-    </message>
-    <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="80"/>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="83"/>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="86"/>
         <source>&amp;q</source>
         <translation>&amp;q</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="90"/>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="93"/>
         <source>Miscellaneous</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="93"/>
-        <source>If checked, applying tool will append rectangular boundary polygon.&lt;br&gt; Else will not change any polygons.</source>
-        <translation>Если отмечено, применение инструмента будет добавлять прямоугольный полигон.&lt;br&gt;Иначе не будет изменять полигоны.</translation>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="94"/>
+        <source>Append &amp;polygon</source>
+        <translation>Добавить &amp;полигон</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="96"/>
+        <source>If enabled, will append rectangular boundary polygon when applying tool.
+Else will create blocks without modifying (or creating) any polygons at all.</source>
+        <translation>Если отмечено, при применении инструмент прибавит прямоугольный полигон.
+Иначе блоки будут созданы без изменения (или создания) граничных полигонов.</translation>
     </message>
 </context>
 <context>
@@ -1151,13 +1154,13 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::ItemsModel</name>
     <message>
-        <location filename="../src/itemviews/itemsmodel.cpp" line="442"/>
+        <location filename="../src/itemviews/itemsmodel.cpp" line="444"/>
         <source>%1 — copy</source>
         <extracomment>Name for the first item duplicate. Example: &quot;Sand — copy&quot;.</extracomment>
         <translation>%1 — копия</translation>
     </message>
     <message>
-        <location filename="../src/itemviews/itemsmodel.cpp" line="447"/>
+        <location filename="../src/itemviews/itemsmodel.cpp" line="449"/>
         <source>%1 — copy %2</source>
         <extracomment>Name for item duplicate. Example: &quot;Sand — copy 1&quot;.</extracomment>
         <translation>%1 — копия %2</translation>
@@ -1887,72 +1890,72 @@ Do you want to save your changes or discard them?</source>
         <translation>Геометрия</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="49"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="44"/>
         <source>&amp;X-Pos:</source>
         <translation>&amp;X:</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="50"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="45"/>
         <source>&amp;Y-Pos:</source>
         <translation>&amp;Y:</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="52"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="47"/>
         <source>Horizontal position of current basepoint</source>
         <translation>Горизонтальная позиция опорной точки</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="53"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="48"/>
         <source>Vertical position of current basepoint</source>
         <translation>Вертикальная позиция опорной точки</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="55"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="50"/>
         <source>&amp;Width:</source>
         <translation>&amp;Ширина:</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="56"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="51"/>
         <source>&amp;Height:</source>
         <translation>&amp;Высота:</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="59"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="54"/>
         <source>Width of tool</source>
         <translation>Ширина инструмента</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="60"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="55"/>
         <source>Height of tool</source>
         <translation>Высота инструмента</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="67"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="62"/>
         <source>Top left</source>
         <translation>Верх-лево</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="68"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="63"/>
         <source>Top right</source>
         <translation>Верх-право</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="69"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="64"/>
         <source>Bottom left</source>
         <translation>Низ-лево</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="70"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="65"/>
         <source>Bottom right</source>
         <translation>Низ-право</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="88"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="83"/>
         <source>Basepoint:</source>
         <translation>Опора:</translation>
     </message>
     <message>
-        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="93"/>
+        <location filename="../src/tools_panel/rectangulartoolpanel.cpp" line="88"/>
         <source>Corner which from tool starts.&lt;br&gt;Tool measurments are referenced from it.</source>
         <translation>Опорная точка — угол, из которого «начинается» инструмент.</translation>
     </message>
@@ -2475,81 +2478,81 @@ Water Curve</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="257"/>
+        <location filename="../src/units/units.cpp" line="258"/>
         <source>W</source>
         <extracomment>watt</extracomment>
         <translation>Вт</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="259"/>
+        <location filename="../src/units/units.cpp" line="260"/>
         <source>J</source>
         <extracomment>joule</extracomment>
         <translation>Дж</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="261"/>
+        <location filename="../src/units/units.cpp" line="262"/>
         <source>g</source>
         <extracomment>gram</extracomment>
         <translation>г</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="263"/>
+        <location filename="../src/units/units.cpp" line="264"/>
         <source>cal</source>
         <extracomment>calory</extracomment>
         <translation>кал</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="265"/>
+        <location filename="../src/units/units.cpp" line="266"/>
         <source>h</source>
         <extracomment>hour</extracomment>
         <translation>ч</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="267"/>
+        <location filename="../src/units/units.cpp" line="268"/>
         <source>s</source>
         <extracomment>second</extracomment>
         <translation>с</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="271"/>
+        <location filename="../src/units/units.cpp" line="272"/>
         <source>k</source>
         <extracomment>kilo</extracomment>
         <translation>к</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="273"/>
+        <location filename="../src/units/units.cpp" line="274"/>
         <source>M</source>
         <extracomment>mega</extracomment>
         <translation>М</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="276"/>
+        <location filename="../src/units/units.cpp" line="277"/>
         <source>·</source>
         <extracomment>multiplication mark</extracomment>
         <translation>·</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="357"/>
+        <location filename="../src/units/units.cpp" line="358"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="448"/>
+        <location filename="../src/units/units.cpp" line="449"/>
         <source>&amp;SI</source>
         <translation>&amp;СИ</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="450"/>
+        <location filename="../src/units/units.cpp" line="451"/>
         <source>&amp;Default</source>
         <translation>&amp;По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="452"/>
+        <location filename="../src/units/units.cpp" line="453"/>
         <source>&amp;Heat</source>
         <translation>&amp;Heat</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="454"/>
+        <location filename="../src/units/units.cpp" line="455"/>
         <source>&amp;Warm</source>
         <translation>&amp;Warm</translation>
     </message>
