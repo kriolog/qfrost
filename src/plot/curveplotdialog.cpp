@@ -55,8 +55,12 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mShowModelDateText(new QCheckBox(tr("Show &model date in title")))
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
+    //: text from button that automatically set coordinate limits
+    , mAutoMinMaxTemperature(new QPushButton(tr("&Auto"), this))
     , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    //: text from button that automatically sets temperature limits
+    , mAutoMinMaxCoord(new QPushButton(tr("A&uto"), this))
     , mSlice(block->slice(orientation))
     , mTemperatures()
     , mThawedParts()
@@ -117,33 +121,25 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     updateKnownTemperatureLimits();
 
-    connect(mMinCoord, SIGNAL(valueChanged(double)),
-            SLOT(updateAdditionalLimits()));
-    connect(mMaxCoord, SIGNAL(valueChanged(double)),
-            SLOT(updateAdditionalLimits()));
-    connect(mMinCoord, SIGNAL(valueChanged(double)),
-            SLOT(setPlotRangeCoords()));
-    connect(mMaxCoord, SIGNAL(valueChanged(double)),
-            SLOT(setPlotRangeCoords()));
+    connect(mMinCoord, SIGNAL(valueChanged(double)), SLOT(updateAdditionalLimits()));
+    connect(mMaxCoord, SIGNAL(valueChanged(double)), SLOT(updateAdditionalLimits()));
+    connect(mMinCoord, SIGNAL(valueChanged(double)), SLOT(setPlotRangeCoords()));
+    connect(mMaxCoord, SIGNAL(valueChanged(double)), SLOT(setPlotRangeCoords()));
+    connect(mMinCoord, SIGNAL(valueChanged(double)), SLOT(updateAutoMinMaxCoordButton()));
+    connect(mMaxCoord, SIGNAL(valueChanged(double)), SLOT(updateAutoMinMaxCoordButton()));
 
-    connect(mMinTemperature, SIGNAL(valueChanged(double)),
-            SLOT(updateAdditionalLimits()));
-    connect(mMaxTemperature, SIGNAL(valueChanged(double)),
-            SLOT(updateAdditionalLimits()));
-    connect(mMinTemperature, SIGNAL(valueChanged(double)),
-            SLOT(setPlotRangeTemperature()));
-    connect(mMaxTemperature, SIGNAL(valueChanged(double)),
-            SLOT(setPlotRangeTemperature()));
+    connect(mMinTemperature, SIGNAL(valueChanged(double)), SLOT(updateAdditionalLimits()));
+    connect(mMaxTemperature, SIGNAL(valueChanged(double)), SLOT(updateAdditionalLimits()));
+    connect(mMinTemperature, SIGNAL(valueChanged(double)), SLOT(setPlotRangeTemperature()));
+    connect(mMaxTemperature, SIGNAL(valueChanged(double)), SLOT(setPlotRangeTemperature()));
+    connect(mMinTemperature, SIGNAL(valueChanged(double)), SLOT(updateAutoMinMaxTemperatureButton()));
+    connect(mMaxTemperature, SIGNAL(valueChanged(double)), SLOT(updateAutoMinMaxTemperatureButton()));
 
-    //: automatically set slice coordinate limits
-    QPushButton *autoLimitCoord = new QPushButton(tr("&Auto"));
-    connect(autoLimitCoord, SIGNAL(clicked()), SLOT(autoMinMaxCoord()));
-    autoMinMaxTemperature();
+    connect(mAutoMinMaxCoord, SIGNAL(clicked()), SLOT(autoMinMaxCoord()));
+    connect(mAutoMinMaxTemperature, SIGNAL(clicked()), SLOT(autoMinMaxTemperature()));
 
-    //: automatically set t limits
-    QPushButton *autoLimitTemperature = new QPushButton(tr("A&uto"));
-    connect(autoLimitTemperature, SIGNAL(clicked()), SLOT(autoMinMaxTemperature()));
     autoMinMaxCoord();
+    autoMinMaxTemperature();
 
     connect(mSavePNGButton, SIGNAL(clicked()), SLOT(savePNG()));
     connect(mSavePDFButton, SIGNAL(clicked()), SLOT(savePDF()));
@@ -166,13 +162,13 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     QFormLayout *coordLimits = new QFormLayout(coordLimitBox);
     coordLimits->addRow(tr("Minimum:"), mMinCoord);
     coordLimits->addRow(tr("Maximum:"), mMaxCoord);
-    coordLimits->addRow(autoLimitCoord);
+    coordLimits->addRow(mAutoMinMaxCoord);
  
     QGroupBox *temperatureLimitBox = new QGroupBox(tr("Temperature Range"), this);
     QFormLayout *temperatureLimits = new QFormLayout(temperatureLimitBox);
     temperatureLimits->addRow(tr("Minimum:"), mMinTemperature);
     temperatureLimits->addRow(tr("Maximum:"), mMaxTemperature);
-    temperatureLimits->addRow(autoLimitTemperature);
+    temperatureLimits->addRow(mAutoMinMaxTemperature);
 
     QGroupBox *saveBox = new QGroupBox(tr("Save Graph or Data"), this);
     QVBoxLayout *saveLayout = new QVBoxLayout(saveBox);
@@ -283,6 +279,20 @@ void CurvePlotDialog::updateAdditionalLimits()
     mMaxCoord->setMinimum(minCoord + minCoordDiff);
 
     mIsUpdatingAdditionalLimits = false;
+}
+
+void CurvePlotDialog::updateAutoMinMaxCoordButton()
+{
+    const bool isAuto = qFuzzyCompare(mMinCoord->value(), mKnownCoordMin) &&
+                        qFuzzyCompare(mMaxCoord->value(), mKnownCoordMax);
+    mAutoMinMaxCoord->setEnabled(!isAuto);
+}
+
+void CurvePlotDialog::updateAutoMinMaxTemperatureButton()
+{
+    const bool isAuto = qFuzzyCompare(mMinTemperature->value(), mKnownTemperatureMin) &&
+                        qFuzzyCompare(mMaxTemperature->value(), mKnownTemperatureMax);
+    mAutoMinMaxTemperature->setEnabled(!isAuto);
 }
 
 void CurvePlotDialog::setPlotRangeCoords()

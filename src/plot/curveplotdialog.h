@@ -54,6 +54,14 @@ private slots:
     /// mMaxTemperature/mMaxCoord исходя из введённых в них значениях.
     void updateAdditionalLimits();
 
+    /// Устанавливает доступность кнопки автоподбора пределов координаты исходя
+    /// из введённых значений (кнопка доступна, если они не автоподобраны).
+    void updateAutoMinMaxCoordButton();
+
+    /// Устанавливает доступность кнопки автоподбора пределов температуры исходя
+    /// из введённых значений (кнопка доступна, если они не автоподобраны).
+    void updateAutoMinMaxTemperatureButton();
+
     /// Устанавливает диапазон оси координат у mPlot в соответствие 
     /// со значениями mMinCoord и mMaxCoord.
     void setPlotRangeCoords();
@@ -88,8 +96,11 @@ private:
 
     PhysicalPropertySpinBox *mMinTemperature;
     PhysicalPropertySpinBox *mMaxTemperature;
+    QPushButton *mAutoMinMaxTemperature;
+
     QDoubleSpinBox *mMinCoord;
     QDoubleSpinBox *mMaxCoord;
+    QPushButton *mAutoMinMaxCoord;
 
     QList<Block*> mSlice;
     QVector<double> mTemperatures;
