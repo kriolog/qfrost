@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -21,8 +21,6 @@
 #define QFGUI_BLOCKCREATORSETTINGS_H
 
 #include <tools_panel/rectangulartoolsettings.h>
-
-#include <limits>
 
 namespace qfgui
 {
