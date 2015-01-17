@@ -30,9 +30,10 @@ using namespace qfgui;
 // Т.е. оно должно быть хотя бы в 10 раз быть больше минимального размера блока.
 const double QFrost::metersInUnit = qPow(10.0, -QFrost::meterDecimals);
 
-const double QFrost::minBlockSize = 0.01 / metersInUnit * unitsInGridStep;
-
 const double QFrost::k = metersInUnit / unitsInGridStep;
+
+const double QFrost::minBlockSizeMeters = qPow(10.0, -meterDecimalsBlockSize);
+const double QFrost::minBlockSizeScene = minBlockSizeMeters / k;
 
 const double QFrost::sceneHalfSizeInMeters = 1000;
 

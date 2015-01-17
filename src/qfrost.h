@@ -89,14 +89,17 @@ public:
      */
     static const qreal accuracy;
 
+    /// Количество знаков после запятой для значений координат сцены (в метрах).
+    static const int meterDecimals = 3;
     /// Сколько метров в одной единице чертежа. Равняется 10^-metersDecimal.
     static const double metersInUnit;
 
-    /// Количество знаков после запятой для значений координат сцены (в метрах).
-    static const int meterDecimals = 3;
-
-    /// Минимальный размер блоков
-    static const double minBlockSize;
+    /// Количество знаков после запятой для размеров блока (в метрах).
+    static const int meterDecimalsBlockSize = 2;
+    /// Минимальный размер блока (в метрах). Равен 10^-meterDecimalsBlockSize.
+    static const double minBlockSizeMeters;
+    /// Минимальный размер блока (в координатах сцены).
+    static const double minBlockSizeScene;
 
     /**
      * Сцена ограничена этим числом со всех четырёх сторон.

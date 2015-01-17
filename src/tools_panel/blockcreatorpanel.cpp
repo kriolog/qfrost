@@ -54,7 +54,7 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
             this, SLOT(slotSetBlocksQ()));
 
     mWidthSpinBox->setRange(0, 10);
-    mWidthSpinBox->setDecimals(-std::log10(QFrost::meters(QFrost::minBlockSize)));
+    mWidthSpinBox->setDecimals(QFrost::meterDecimalsBlockSize);
     mWidthSpinBox->setValue(0.1);
     mWidthSpinBox->setSingleStep(0.01);
     mWidthSpinBox->setSuffix(Units::meterSuffix());

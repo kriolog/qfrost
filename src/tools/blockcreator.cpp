@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -192,7 +192,7 @@ void BlockCreator::recalculate()
                                         ? 0.0 : mRows.last()));
 
     QRectF r = rectInScene();
-    if (r.width() < QFrost::minBlockSize || r.height() < QFrost::minBlockSize) {
+    if (r.width() < QFrost::minBlockSizeScene || r.height() < QFrost::minBlockSizeScene) {
         // Если один из размеров инструмента меньше минимального размера
         // блока, то мы ничего не собираемся создавать
         mTetrisInComplementary = true;
