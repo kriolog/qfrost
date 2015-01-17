@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * Copyright (C) 2014-2015  Denis Pesotsky
  * 
  * This file is part of QFrost.
  * 
@@ -31,6 +31,7 @@ namespace qfgui {
 
 QT_FORWARD_DECLARE_CLASS(Block)
 QT_FORWARD_DECLARE_CLASS(CurvePlot)
+QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 
 class CurvePlotDialog : public QDialog
 {
@@ -74,6 +75,9 @@ private:
     /// Текущее время модели.
     QDate modelDate() const;
 
+    /// Обновляет mMinTemperatureLimit и mMaxTemperatureLimit по вбитым данным.
+    void updateKnownTemperatureLimits();
+
     CurvePlot *mPlot;
 
     QCheckBox *mPlotTemperature;
@@ -82,8 +86,8 @@ private:
 
     QCheckBox *mShowModelDateText;
 
-    QDoubleSpinBox *mMinTemperature;
-    QDoubleSpinBox *mMaxTemperature;
+    PhysicalPropertySpinBox *mMinTemperature;
+    PhysicalPropertySpinBox *mMaxTemperature;
     QDoubleSpinBox *mMinCoord;
     QDoubleSpinBox *mMaxCoord;
 
@@ -104,6 +108,12 @@ private:
 
     /// Название (полный путь минус расширение) сохраняемых файлов.
     const QString mSavedFileBaseName;
+
+    double mKnownCoordMin;
+    double mKnownCoordMax;
+
+    double mKnownTemperatureMin;
+    double mKnownTemperatureMax;
 };
 }
 

@@ -75,6 +75,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
                                          ? block->metersCenter().y()
                                          : block->metersCenter().x(),
                                          'f', mMaxCoord->decimals()))
+    , mKnownTemperatureMin()
+    , mKnownTemperatureMax()
 {
     Q_ASSERT(!mSlice.isEmpty());
 
@@ -100,15 +102,20 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
         block->setMarkered(true);
     }
 
-    mMinCoord->setMinimum(mCoordsMain.first() -
-                          (orientation == Qt::Horizontal
-                           ? mSlice.first()->metersRect().width()
-                           : mSlice.first()->metersRect().height()) / 2.0);
+    mKnownCoordMin = mCoordsMain.first() -
+                     (orientation == Qt::Horizontal
+                      ? mSlice.first()->metersRect().width()
+                      : mSlice.first()->metersRect().height()) / 2.0;
 
-    mMaxCoord->setMaximum(mCoordsMain.last() +
-                          (orientation == Qt::Horizontal
-                           ? mSlice.last()->metersRect().width()
-                           : mSlice.last()->metersRect().height()) / 2.0);
+    mKnownCoordMax = mCoordsMain.last() +
+                     (orientation == Qt::Horizontal
+                      ? mSlice.last()->metersRect().width()
+                      : mSlice.last()->metersRect().height()) / 2.0;
+
+    mMinCoord->setMinimum(mKnownCoordMin);
+    mMaxCoord->setMaximum(mKnownCoordMax);
+
+    updateKnownTemperatureLimits();
 
     connect(mMinCoord, SIGNAL(valueChanged(double)),
             SLOT(updateAdditionalLimits()));
@@ -130,14 +137,12 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
 
     //: automatically set slice coordinate limits
     QPushButton *autoLimitCoord = new QPushButton(tr("&Auto"));
-    connect(autoLimitCoord, SIGNAL(clicked()),
-            SLOT(autoMinMaxCoord()));
+    connect(autoLimitCoord, SIGNAL(clicked()), SLOT(autoMinMaxCoord()));
     autoMinMaxTemperature();
 
     //: automatically set t limits
     QPushButton *autoLimitTemperature = new QPushButton(tr("A&uto"));
-    connect(autoLimitTemperature, SIGNAL(clicked()),
-            SLOT(autoMinMaxTemperature()));
+    connect(autoLimitTemperature, SIGNAL(clicked()), SLOT(autoMinMaxTemperature()));
     autoMinMaxCoord();
 
     connect(mSavePNGButton, SIGNAL(clicked()), SLOT(savePNG()));
@@ -229,36 +234,32 @@ CurvePlotDialog::~CurvePlotDialog()
 
 void CurvePlotDialog::autoMinMaxCoord()
 {
-    mMinCoord->setValue(mMinCoord->minimum());
-    mMaxCoord->setValue(mMaxCoord->maximum());
+    mIsUpdatingAdditionalLimits = true;
+
+    mMinCoord->setMinimum(mKnownCoordMin);
+    mMinCoord->setMaximum(mKnownCoordMax);
+    mMaxCoord->setMinimum(mKnownCoordMin);
+    mMaxCoord->setMaximum(mKnownCoordMax);
+
+    mMinCoord->setValue(mKnownCoordMin);
+    mMaxCoord->setValue(mKnownCoordMax);
+
+    mIsUpdatingAdditionalLimits = false;
+    updateAdditionalLimits();
 }
 
 void CurvePlotDialog::autoMinMaxTemperature()
 {
-    double minT = std::numeric_limits<double>::infinity();
-    double maxT = -std::numeric_limits<double>::infinity();
+    mIsUpdatingAdditionalLimits = true;
 
-    foreach (double t, mTemperatures) {
-        if (t < minT) {
-            minT = t;
-        }
-        if (t > maxT) {
-            maxT = t;
-        }
-    }
+    mMinTemperature->resetForcedMaximum();
+    mMaxTemperature->resetForcedMinimum();
 
-    mMinTemperature->setValue(qFloor(minT));
-    mMaxTemperature->setValue(qCeil(maxT));
+    mMinTemperature->setValue(mKnownTemperatureMin);
+    mMaxTemperature->setValue(mKnownTemperatureMax);
 
-    // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
-    static const double minTemperatureRange = 5.0;
-    if (mMaxTemperature->value() - mMinTemperature->value() < 5.0) {
-        const double avgT = (maxT - minT)/2.0;
-        static const double deltaT = minTemperatureRange / 2.0;
-
-        mMinTemperature->setValue(qFloor(avgT - deltaT));
-        mMaxTemperature->setValue(qCeil(avgT + deltaT));
-    }
+    mIsUpdatingAdditionalLimits = false;
+    updateAdditionalLimits();
 }
 
 void CurvePlotDialog::updateAdditionalLimits()
@@ -271,15 +272,15 @@ void CurvePlotDialog::updateAdditionalLimits()
 
     const double minT = mMinTemperature->value();
     const double maxT = mMaxTemperature->value();
-
-    mMinTemperature->setMaximum(maxT);
-    mMaxTemperature->setMinimum(minT);
+    static const double minTemperatureDiff = 1.0;
+    mMinTemperature->setForcedMaximum(maxT - minTemperatureDiff);
+    mMaxTemperature->setForcedMinimum(minT + minTemperatureDiff);
 
     const double minCoord = mMinCoord->value();
     const double maxCoord = mMaxCoord->value();
-
-    mMinCoord->setMaximum(maxCoord);
-    mMaxCoord->setMinimum(minCoord);
+    static const double minCoordDiff = 0.2;
+    mMinCoord->setMaximum(maxCoord - minCoordDiff);
+    mMaxCoord->setMinimum(minCoord + minCoordDiff);
 
     mIsUpdatingAdditionalLimits = false;
 }
@@ -391,4 +392,34 @@ QDate CurvePlotDialog::modelDate() const
     MainWindow *m = Application::findMainWindow(this);
     Q_ASSERT(m);
     return m->controlPanel()->computationControl()->currentDate();
+}
+
+void CurvePlotDialog::updateKnownTemperatureLimits()
+{
+    mKnownTemperatureMin = std::numeric_limits<double>::infinity();
+    mKnownTemperatureMax = -std::numeric_limits<double>::infinity();
+
+    foreach (double t, mTemperatures) {
+        if (t < mKnownTemperatureMin) {
+            mKnownTemperatureMin = t;
+        }
+        if (t > mKnownTemperatureMax) {
+            mKnownTemperatureMax = t;
+        }
+    }
+
+    mKnownTemperatureMin = qFloor(mKnownTemperatureMin);
+    mKnownTemperatureMax = qCeil(mKnownTemperatureMax);
+
+    const double temperatureRange = mKnownTemperatureMax - mKnownTemperatureMin;
+
+    // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
+    static const double minTemperatureRange = 5.0;
+    if (temperatureRange < minTemperatureRange) {
+        const double avgT = (mKnownTemperatureMax - mKnownTemperatureMin) / 2.0;
+        static const double deltaT = minTemperatureRange / 2.0;
+
+        mKnownTemperatureMin = qFloor(avgT - deltaT);
+        mKnownTemperatureMax = qCeil(avgT + deltaT);
+    }
 }
