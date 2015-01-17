@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -57,7 +57,7 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     mWidthSpinBox->setDecimals(-std::log10(QFrost::meters(QFrost::minBlockSize)));
     mWidthSpinBox->setValue(0.1);
     mWidthSpinBox->setSingleStep(0.01);
-    mWidthSpinBox->setSuffix(" " + Units::meterText());
+    mWidthSpinBox->setSuffix(Units::meterSuffix());
     mWidthSpinBox->setSpecialValueText(tr("\342\210\236"));
     mWidthSpinBox->setToolTip(tr("Width of first block"));
 

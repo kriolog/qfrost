@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -70,7 +70,7 @@ QString PositionLabel::metersString(double v) const
 {
     QString number = locale().toString(QFrost::meters(v), 'f', 2);
     number.replace("-", "\342\210\222");
-    return number + " " + Units::meterText();
+    return number + Units::meterSuffix();
 }
 
 void PositionLabel::updateText(const QPointF &point)

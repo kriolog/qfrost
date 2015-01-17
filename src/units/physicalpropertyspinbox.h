@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *

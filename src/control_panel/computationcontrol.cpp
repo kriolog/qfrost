@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -149,7 +149,7 @@ ComputationControl::ComputationControl(QWidget *parent)
     mSaveDataMaxY->setMinimum(-QFrost::sceneHalfSizeInMeters);
     mSaveDataMaxY->setMaximum(QFrost::sceneHalfSizeInMeters);
     mSaveDataMaxY->setValue(5);
-    mSaveDataMaxY->setSuffix(" " + Units::meterText());
+    mSaveDataMaxY->setSuffix(Units::meterSuffix());
     ////////////////////////////////////////////////////////////////////////////
     QGroupBox *stylesBox = new QGroupBox(tr("Blocks Style"), this);
 

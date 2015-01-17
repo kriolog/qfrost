@@ -175,8 +175,8 @@ public:
     /// энергии и мощности в скобках.
     static QString systemText(System system);
 
-    /// Аббревиатура метра (для суффиксов в спинбоксах и пр.).
-    static QString meterText();
+    /// Суффикс метра (с пробелом) - для спинбоксов или дописывания к числам.
+    static QString meterSuffix() { return " " + meterText(); }
 
     /// С точностью до этого знака изменяются значения величины.
     static int decimals(PhysicalProperty property);
@@ -188,6 +188,9 @@ signals:
     void changed();
 
 private:
+    /// Аббревиатура метра.
+    static QString meterText();
+
     /// Минимальное и максимальное значения величины @p property в СИ
     static QPair<double, double> minMaxSI(PhysicalProperty property);
 

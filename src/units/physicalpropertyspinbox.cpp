@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -233,7 +233,7 @@ QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
     static const int decimals = -std::log10(QFrost::metersInUnit);
 
     result->setDecimals(decimals);
-    result->setSuffix(" " + Units::meterText());
+    result->setSuffix(Units::meterSuffix());
 
     result->setMinimum(-QFrost::sceneHalfSizeInMeters);
     result->setMaximum(QFrost::sceneHalfSizeInMeters);
