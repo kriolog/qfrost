@@ -225,9 +225,9 @@ double PhysicalPropertySpinBox::forcedMinimum() const
     }
 }
 
-QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
+QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox(QWidget *parent)
 {
-    QDoubleSpinBox *result = new SmartDoubleSpinBox();
+    QDoubleSpinBox *result = new SmartDoubleSpinBox(parent);
 
     result->setSuffix(Units::meterSuffix());
 
@@ -238,11 +238,11 @@ QDoubleSpinBox *PhysicalPropertySpinBox::createSceneCoordinateSpinBox()
     return result;
 }
 
-QDoubleSpinBox *PhysicalPropertySpinBox::createBlockSizeSpinBox()
+QDoubleSpinBox *PhysicalPropertySpinBox::createBlockSizeSpinBox(QWidget *parent)
 {
     Q_ASSERT(QFrost::meterDecimalsBlockSize <= QFrost::meterDecimals);
 
-    QDoubleSpinBox *result = new SmartDoubleSpinBox();
+    QDoubleSpinBox *result = new SmartDoubleSpinBox(parent);
 
     result->setSuffix(Units::meterSuffix());
 

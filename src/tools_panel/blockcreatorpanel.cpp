@@ -34,9 +34,9 @@ using namespace qfgui;
 
 BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     : QWidget(parent)
-    , mWidthSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox())
+    , mWidthSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox(this))
     , mWidthQSpinBox(new SmartDoubleSpinBox(this))
-    , mHeightSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox())
+    , mHeightSpinBox(PhysicalPropertySpinBox::createBlockSizeSpinBox(this))
     , mHeightQSpinBox(new SmartDoubleSpinBox(this))
     , mSettings(new BlockCreatorSettings(this))
     , mRectangularToolPanel(new RectangularToolPanel(this, true, mSettings))

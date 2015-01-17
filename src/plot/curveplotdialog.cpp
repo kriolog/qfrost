@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * Copyright (C) 2014-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -55,8 +55,8 @@ CurvePlotDialog::CurvePlotDialog(Block *block,
     , mShowModelDateText(new QCheckBox(tr("Show &model date in title")))
     , mMinTemperature(new PhysicalPropertySpinBox(Temperature, this))
     , mMaxTemperature(new PhysicalPropertySpinBox(Temperature, this))
-    , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
-    , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mMinCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    , mMaxCoord(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mSlice(block->slice(orientation))
     , mTemperatures()
     , mThawedParts()

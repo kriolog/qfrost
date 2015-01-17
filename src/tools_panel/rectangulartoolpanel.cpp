@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -33,10 +33,10 @@ using namespace qfgui;
 RectangularToolPanel::RectangularToolPanel(QWidget *parent, bool showHeader,
         RectangularToolSettings *settings)
     : SettingsBox(showHeader ? tr("Geometry") : "" , parent)
-    , mRectX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
-    , mRectY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
-    , mRectWidth(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
-    , mRectHeight(PhysicalPropertySpinBox::createSceneCoordinateSpinBox())
+    , mRectX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    , mRectY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    , mRectWidth(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
+    , mRectHeight(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this))
     , mBasepoints(new QButtonGroup(this))
     , mMustEmitRectChanges(true)
     , mSettings(settings == NULL ? new RectangularToolSettings(this) : settings)

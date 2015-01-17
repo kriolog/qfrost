@@ -64,8 +64,11 @@ public:
     double forcedMinimum() const;
     double forcedMaximum() const;
 
-    static QDoubleSpinBox *createSceneCoordinateSpinBox();
-    static QDoubleSpinBox *createBlockSizeSpinBox();
+    /// Создаёт и возвращает редактор значения координаты сцены (в метрах).
+    static QDoubleSpinBox *createSceneCoordinateSpinBox(QWidget *parent = NULL);
+
+    /// Создаёт и возвращает редактор величины размера блока (в метрах).
+    static QDoubleSpinBox *createBlockSizeSpinBox(QWidget *parent = NULL);
 
 public slots:
     void setPhysicalProperty(int p);

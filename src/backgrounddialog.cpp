@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * Copyright (C) 2014-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -60,10 +60,10 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mCross1PixmapY(new QSpinBox(this)),
     mCross2PixmapX(new QSpinBox(this)),
     mCross2PixmapY(new QSpinBox(this)),
-    mCross1SceneX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
-    mCross1SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
-    mCross2SceneX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
-    mCross2SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox()),
+    mCross1SceneX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this)),
+    mCross1SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this)),
+    mCross2SceneX(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this)),
+    mCross2SceneY(PhysicalPropertySpinBox::createSceneCoordinateSpinBox(this)),
     mPlaceCross1Button(new QPushButton()),
     mPlaceCross2Button(new QPushButton()),
     mIsPlacingCross1(false),
