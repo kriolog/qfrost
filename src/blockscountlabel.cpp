@@ -31,6 +31,8 @@ BlocksCountLabel::BlocksCountLabel(Scene *scene, QWidget *parent)
     : QFrame(parent)
     , mMainLabel(new QLabel(this))
 {
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(0);
     layout->setMargin(0);
@@ -49,11 +51,11 @@ BlocksCountLabel::BlocksCountLabel(Scene *scene, QWidget *parent)
 
     setBlocksCount(0);
     connect(scene, SIGNAL(blocksCountChanged(int)), SLOT(setBlocksCount(int)));
-
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void BlocksCountLabel::setBlocksCount(int blocksCount)
 {
-    mMainLabel->setText(tr("%n blocks", "", blocksCount));
+    mMainLabel->setText(blocksCount == 0
+                        ? tr("No blocks")
+                        : tr("%n blocks", "", blocksCount));
 }

@@ -50,19 +50,23 @@ PositionLabel::PositionLabel(const QIcon &icon, QWidget *parent)
 {
     const int iconDimension = 16;
     mTitleLabel->setPixmap(icon.pixmap(iconDimension, iconDimension));
-    //mTitleLabel->setStyleSheet("QLabel { padding : 1px 0px }");
+
     init();
 }
 
 void PositionLabel::init()
 {
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+
     mXLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     mYLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     QLabel *noPointLabel = new QLabel("\342\200\224", this);
     noPointLabel->setAlignment(Qt::AlignCenter);
 
-    mTitleLabel->setAlignment(Qt::AlignCenter);
+    mTitleLabel->setAlignment(mTitleLabel->pixmap()->isNull()
+                              ? Qt::AlignCenter
+                              : Qt::AlignBottom); // лучше для выбранных иконок
 
     QWidget *coordsWidget = new QWidget(this);
     QHBoxLayout *coordsLayout = new QHBoxLayout(coordsWidget);
@@ -85,7 +89,6 @@ void PositionLabel::init()
 
     mPositionText->addWidget(noPointLabel);
     mPositionText->addWidget(coordsWidget);
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 QString PositionLabel::metersString(double v) const

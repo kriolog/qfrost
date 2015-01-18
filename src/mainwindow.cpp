@@ -875,6 +875,9 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage(tr("Welcome to %1!")
                              .arg(QCoreApplication::applicationName()), 5000);
 
+    statusBar()->setStyleSheet("QStatusBar::item { background: palette(base); "
+                                          "border: 1px inset palette(dark); }");
+
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
     connect(mScene, SIGNAL(oneDimensionalityChanged(bool)),
@@ -890,26 +893,23 @@ void MainWindow::createStatusBar()
     connect(mScene, SIGNAL(griddityChanged(bool)),
             indicatorGrid, SLOT(setEnabled(bool)));
 
-    QFrame *indicators = new QFrame();
-    QHBoxLayout *indicatorsLayout = new QHBoxLayout(indicators);
-    indicatorsLayout->setContentsMargins(QMargins());
-    indicatorsLayout->addWidget(indicator1D);
-    indicatorsLayout->addWidget(indicatorGrid);
-
     BlocksCountLabel *blocksCount = new BlocksCountLabel(mScene, this);
+    blocksCount->setToolTip(tr("Blocks counter. More blocks require more computations."));
 
     // Сюда ещё годится иконка input-mouse, но edit-select, кажись, встаёт лучше
     PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("edit-select"), this);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
+    cursorLabel->setToolTip(tr("Cursor coordinates. Blank if cursor is outside of domain."));
 
     PositionLabel *anchorLabel = new PositionLabel(QIcon::fromTheme("snap-orthogonal"), this);
-
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
+    anchorLabel->setToolTip(tr("Anchor coordinates. Blank if can not be found or is not needed."));
 
     QFrame *scaleWidget = new QFrame(this);
-    scaleWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::QSizePolicy::Fixed);
+    scaleWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::QSizePolicy::MinimumExpanding);
+    scaleWidget->setToolTip("Scale slider to zoom in/out. You can also zoom using mouse wheel.");
     QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
     scaleLayout->setContentsMargins(QMargins());
     QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
@@ -925,15 +925,11 @@ void MainWindow::createStatusBar()
     statusBar()->addWidget(mPermanentStatusText);
     mPermanentStatusText->hide();
 
-    addPermanentStatusBarSeparator();
-    statusBar()->addPermanentWidget(indicators);
-    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(indicator1D);
+    statusBar()->addPermanentWidget(indicatorGrid);
     statusBar()->addPermanentWidget(blocksCount);
-    addPermanentStatusBarSeparator();
     statusBar()->addPermanentWidget(cursorLabel);
-    addPermanentStatusBarSeparator();
     statusBar()->addPermanentWidget(anchorLabel);
-    addPermanentStatusBarSeparator();
     statusBar()->addPermanentWidget(scaleWidget);
 }
 
@@ -1403,11 +1399,4 @@ void MainWindow::setPermanentStatusText(const QString &text)
         mPermanentStatusText->setText(text);
         mPermanentStatusText->show();
     }
-}
-
-void MainWindow::addPermanentStatusBarSeparator()
-{
-    QFrame *sep = new QFrame(this);
-    sep->setFrameStyle(QFrame::VLine | QFrame::Plain);
-    statusBar()->addPermanentWidget(sep);
 }

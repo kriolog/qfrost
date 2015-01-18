@@ -158,9 +158,6 @@ private:
 
     void setPermanentStatusText(const QString &text);
 
-    /// Добавляет к статусбару (пустой) QFrame с вертикальной полоской.
-    void addPermanentStatusBarSeparator();
- 
     View *mView;
     Scene *mScene;
 
