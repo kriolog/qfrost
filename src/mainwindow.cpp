@@ -908,9 +908,17 @@ void MainWindow::createStatusBar()
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
 
+    QFrame *scaleWidget = new QFrame(this);
+    scaleWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::QSizePolicy::Fixed);
+    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
+    scaleLayout->setContentsMargins(QMargins());
     QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
-    slider->setMaximumWidth(150);
+    slider->setFixedWidth(150);
     slider->setValue(qRound(double(slider->maximum() + slider->minimum()) / 2.0 * 1.2));
+    QLabel *scaleIconLabel = new QLabel(this);
+    scaleIconLabel->setPixmap(QIcon::fromTheme("zoom-draw").pixmap(16, 16));
+    scaleLayout->addWidget(scaleIconLabel);
+    scaleLayout->addWidget(slider);
 
     mPermanentStatusText = new QLabel(this);
     statusBar()->addWidget(mPermanentStatusText);
@@ -925,7 +933,7 @@ void MainWindow::createStatusBar()
     addPermanentStatusBarSeparator();
     statusBar()->addPermanentWidget(anchorLabel);
     addPermanentStatusBarSeparator();
-    statusBar()->addPermanentWidget(slider);
+    statusBar()->addPermanentWidget(scaleWidget);
 }
 
 void MainWindow::readSettings()
