@@ -21,7 +21,6 @@
 
 #include <graphicsviews/scene.h>
 
-#include <QtGui/QIcon>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
 
@@ -31,22 +30,14 @@ BlocksCountLabel::BlocksCountLabel(Scene *scene, QWidget *parent)
     : QFrame(parent)
     , mMainLabel(new QLabel(this))
 {
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->setContentsMargins(QMargins());
 
-    const int iconDimension = 16;
-    QLabel *iconLabel = new QLabel(this);
-    iconLabel->setPixmap(QIcon::fromTheme("view-grid").pixmap(iconDimension,
-                                                              iconDimension));
-    layout->addWidget(iconLabel);
-    layout->addSpacing(2);
     layout->addWidget(mMainLabel);
-
-    iconLabel->setAlignment(Qt::AlignCenter);
     mMainLabel->setAlignment(Qt::AlignCenter);
 
     setBlocksCount(0);

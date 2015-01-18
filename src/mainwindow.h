@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -157,6 +157,8 @@ private:
     void forceStopComputation();
 
     void setPermanentStatusText(const QString &text);
+
+    QWidget *createWidgetForStatusBar(const QIcon &icon, QWidget *widget);
 
     View *mView;
     Scene *mScene;

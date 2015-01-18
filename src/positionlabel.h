@@ -32,8 +32,7 @@ class PositionLabel : public QFrame
 {
     Q_OBJECT
 public:
-    PositionLabel(const QString &title, QWidget *parent);
-    PositionLabel(const QIcon &icon, QWidget *parent);
+    PositionLabel(QWidget *parent = NULL);
 
 public slots:
     void updateText(const QPointF &point);
@@ -42,10 +41,6 @@ protected:
     void showEvent(QShowEvent *event);
 
 private:
-    void init();
-
-    QLabel *mTitleLabel;
-
     QLabel *mXLabel;
     QLabel *mYLabel;
     QStackedWidget *mPositionText;

@@ -882,7 +882,8 @@ void MainWindow::createStatusBar()
     #endif
 
     statusBar()->setStyleSheet("QStatusBar::item {background: palette(base); "
-                                                 "border: 1px inset palette(dark);}");
+                                                 "border: 1px inset palette(dark); "
+                                                 "margin: 0; padding: 0; }");
 
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
@@ -903,14 +904,13 @@ void MainWindow::createStatusBar()
     blocksCount->setToolTip(tr("Blocks counter. Exceeding 20\342\200\22330 thousands may\n"
                                "slow interface and therefore is not recommended."));
 
-    // Лучше бы подошла edit-select, но увы, она будто не центрованная по высоте
-    PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("input-mouse"), this);
+    PositionLabel *cursorLabel = new PositionLabel(this);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
     cursorLabel->setToolTip(tr("Cursor coordinates.\n"
                                "Blank if outside of work area."));
 
-    PositionLabel *anchorLabel = new PositionLabel(QIcon::fromTheme("snap-orthogonal"), this);
+    PositionLabel *anchorLabel = new PositionLabel(this);
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
     anchorLabel->setToolTip(tr("Anchor coordinates.\n"
@@ -922,21 +922,36 @@ void MainWindow::createStatusBar()
                                        zoomSlider->slider()->maximum())
                          / 2.0 * 1.2));
     foreach (QToolButton *button, zoomSlider->findChildren<QToolButton*>()) {
-        // 18px увеличивает статусбар всего на 1px и не перемасштабирует иконки.
+        // 18px увеличивает высоту статусбара на 1px (до 23), 19px на 2 (до 24).
+        // Изменение на чётное число корректнее, ибо иконки красивей центруются.
         // При использовании 17px статусбар уже не увеличивается, но иконки зума
         // замыливаются, плюс как-то некрасиво съезжают все три соседние иконки.
         // Если не делать ограничение, получается увеличение статусбара до 26px.
         // Дли ширины выставлено значение на 2 пиксела больше - удобней кликать.
-        button->setFixedSize(21, 19);
+        button->setFixedHeight(19);
+        button->setFixedWidth(button->height() + 2);
     }
 
     mPermanentStatusText = new QLabel(this);
     statusBar()->addWidget(mPermanentStatusText);
     mPermanentStatusText->hide();
 
-    statusBar()->addPermanentWidget(cursorLabel);
-    statusBar()->addPermanentWidget(anchorLabel);
-    statusBar()->addPermanentWidget(blocksCount);
+    QWidget *cursorSB = createWidgetForStatusBar(QIcon::fromTheme("edit-select"),
+                                                 cursorLabel);
+    QWidget *anchorSB = createWidgetForStatusBar(QIcon::fromTheme("snap-orthogonal"),
+                                                 anchorLabel);
+    QWidget *blocksSB = createWidgetForStatusBar(QIcon::fromTheme("view-grid"),
+                                                 blocksCount);
+
+    if (QIcon::themeName() == "oxygen" || QIcon::themeName() == "/") {
+        // Используемые иконки слегка ассиметричны. А так встанут точно в центр.
+        anchorSB->setStyleSheet("QLabel#iconSB { padding-top: 1px; padding-left: 1px }");
+        cursorSB->setStyleSheet("QLabel#iconSB { padding-top: 1px; }");
+    }
+
+    statusBar()->addPermanentWidget(cursorSB);
+    statusBar()->addPermanentWidget(anchorSB);
+    statusBar()->addPermanentWidget(blocksSB);
     statusBar()->addPermanentWidget(indicator1D);
     statusBar()->addPermanentWidget(indicatorGrid);
     statusBar()->addPermanentWidget(zoomSlider);
@@ -1417,4 +1432,37 @@ void MainWindow::setPermanentStatusText(const QString &text)
         mPermanentStatusText->setText(text);
         mPermanentStatusText->show();
     }
+}
+
+QWidget *MainWindow::createWidgetForStatusBar(const QIcon &icon, QWidget *widget)
+{
+    // Макс размер иконки подобран так, чтобы влезать в статусбар высотой 22 px.
+    static const int maxIconDimension = 20;
+
+    // При использовании темы иконок Oxygen (дефолт) тут получится размер 16x16.
+    const QSize iconSize = QFrost::upperBoundIconSize(icon, maxIconDimension);
+
+    if (!iconSize.isValid()) {
+        qWarning("%s: invalid icon size. Maybe icon is empty?", Q_FUNC_INFO);
+        return widget;
+    }
+
+    QWidget *result = new QWidget(this);
+    result->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+    QHBoxLayout *layout = new QHBoxLayout(result);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(QMargins());
+
+    QLabel *iconLabel = new QLabel(result);
+    iconLabel->setObjectName("iconSB"); // на случай, если понадобится QSS
+    iconLabel->setPixmap(icon.pixmap(iconSize));
+    iconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    iconLabel->setAlignment(Qt::AlignCenter);
+
+    layout->addWidget(iconLabel);
+    layout->addSpacing(2); // статусбар пропускает по 3px; нам надо чуть меньше.
+    layout->addWidget(widget);
+
+    return result;
 }

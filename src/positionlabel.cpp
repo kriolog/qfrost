@@ -27,34 +27,14 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QStackedWidget>
-#include <QtGui/QIcon>
 
 using namespace qfgui;
 
-PositionLabel::PositionLabel(const QString &title, QWidget *parent)
+PositionLabel::PositionLabel(QWidget *parent)
     : QFrame(parent)
-    , mTitleLabel(new QLabel(title + ":", this))
     , mXLabel(new QLabel(this))
     , mYLabel(new QLabel(this))
     , mPositionText(new QStackedWidget(this))
-{
-    init();
-}
-
-PositionLabel::PositionLabel(const QIcon &icon, QWidget *parent)
-    : QFrame(parent)
-    , mTitleLabel(new QLabel(this))
-    , mXLabel(new QLabel(this))
-    , mYLabel(new QLabel(this))
-    , mPositionText(new QStackedWidget(this))
-{
-    const int iconDimension = 16;
-    mTitleLabel->setPixmap(icon.pixmap(iconDimension, iconDimension));
-
-    init();
-}
-
-void PositionLabel::init()
 {
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
 
@@ -63,8 +43,6 @@ void PositionLabel::init()
 
     QLabel *noPointLabel = new QLabel("\342\200\224", this);
     noPointLabel->setAlignment(Qt::AlignCenter);
-
-    mTitleLabel->setAlignment(Qt::AlignCenter);
 
     QWidget *coordsWidget = new QWidget(this);
     QHBoxLayout *coordsLayout = new QHBoxLayout(coordsWidget);
@@ -79,11 +57,9 @@ void PositionLabel::init()
     mainLayout->setSpacing(0);
     mainLayout->setMargin(0);
     mainLayout->setContentsMargins(QMargins());
-    mainLayout->addWidget(mTitleLabel);
-    mainLayout->addSpacing(2);
-    mainLayout->addStretch();
+    //mainLayout->addStretch();
     mainLayout->addWidget(mPositionText);
-    mainLayout->addStretch();
+    //mainLayout->addStretch();
 
     mPositionText->addWidget(noPointLabel);
     mPositionText->addWidget(coordsWidget);
