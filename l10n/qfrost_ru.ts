@@ -345,106 +345,106 @@
 <context>
     <name>qfgui::BackgroundDialog</name>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="74"/>
+        <location filename="../src/backgrounddialog.cpp" line="75"/>
         <source>&amp;Save input data to reference file %1</source>
         <translation>&amp;Сохранить введённые данные в привязочный файл %1</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="78"/>
+        <location filename="../src/backgrounddialog.cpp" line="79"/>
         <source>Background Reference</source>
         <translation>Привязка графической подложки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="199"/>
+        <location filename="../src/backgrounddialog.cpp" line="207"/>
         <source>Anchor Points on Image (Coordinates in Pixels)</source>
         <translation>Опорные точки на изображении (координаты в пикселах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="204"/>
+        <location filename="../src/backgrounddialog.cpp" line="212"/>
         <source>Anchor Points on Domain (Coordinates in Meters)</source>
         <translation>Опорные точки в расчётной области (координаты в метрах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="229"/>
+        <location filename="../src/backgrounddialog.cpp" line="237"/>
         <source>Save input data to reference file (*.%1) in the same folder with image.
 It will be automatically loaded when you open this image again.</source>
         <translation>Сохранить введённые данные в файл привязки (*.%1) в папке с изображением.
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="521"/>
+        <location filename="../src/backgrounddialog.cpp" line="529"/>
         <source>(replace old one)</source>
         <translation>(заменить старый)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="587"/>
+        <location filename="../src/backgrounddialog.cpp" line="595"/>
         <source>Loaded corresponding reference file from image directory.
 It is recommended to check coordinates before proceeding.</source>
         <translation>Загружен соответствующий изображению файл привязки.
 Проверьте значения координат до установки подложки.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="396"/>
+        <location filename="../src/backgrounddialog.cpp" line="404"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="118"/>
+        <location filename="../src/backgrounddialog.cpp" line="127"/>
         <source>Set both coordinates for cross by placing cursor over image.
 Cross will follow mouse in image area. Left click to finish.</source>
         <translation>Установка координат отметки на изображении мышью.
 Крест следует за курсором до нажатия левой кнопки.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="129"/>
+        <location filename="../src/backgrounddialog.cpp" line="138"/>
         <source>Set this coordinate automatically for uniform image scaling.
 All the rest coordinates (4 pixmap &amp; 3 domain) must be set.</source>
         <translation>Установка значения для сохранения исходного соотношения сторон изображения.
 Прочие координаты (пиксельные и в расчётной области) должны быть установлены.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="146"/>
+        <location filename="../src/backgrounddialog.cpp" line="155"/>
         <source>Image Position 1</source>
         <translation>Позиция 1 на изображении</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="149"/>
         <location filename="../src/backgrounddialog.cpp" line="158"/>
-        <location filename="../src/backgrounddialog.cpp" line="190"/>
-        <location filename="../src/backgrounddialog.cpp" line="196"/>
+        <location filename="../src/backgrounddialog.cpp" line="167"/>
+        <location filename="../src/backgrounddialog.cpp" line="198"/>
+        <location filename="../src/backgrounddialog.cpp" line="204"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="150"/>
         <location filename="../src/backgrounddialog.cpp" line="159"/>
-        <location filename="../src/backgrounddialog.cpp" line="191"/>
-        <location filename="../src/backgrounddialog.cpp" line="197"/>
+        <location filename="../src/backgrounddialog.cpp" line="168"/>
+        <location filename="../src/backgrounddialog.cpp" line="199"/>
+        <location filename="../src/backgrounddialog.cpp" line="205"/>
         <source>Y:</source>
         <translation>Y:</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="155"/>
+        <location filename="../src/backgrounddialog.cpp" line="164"/>
         <source>Image Position 2</source>
         <translation>Позиция 2 на изображении</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="187"/>
+        <location filename="../src/backgrounddialog.cpp" line="195"/>
         <source>Domain Position 1</source>
         <translation>Позиция 1 в рассчётной области</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="193"/>
+        <location filename="../src/backgrounddialog.cpp" line="201"/>
         <source>Domain Position 2</source>
         <translation>Позиция 2 в рассчётной области</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="258"/>
+        <location filename="../src/backgrounddialog.cpp" line="266"/>
         <source>Non-Uniform Scale</source>
         <translation>Неравномерное масштабирование</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="259"/>
+        <location filename="../src/backgrounddialog.cpp" line="267"/>
         <source>Background aspect ratio (as it&apos;s shown in domain) will differ from original. For uniform scaling use any of four buttons next to domain pos input fields.
 
 Are you sure to continue and show non-uniformly scaled background?</source>
@@ -453,51 +453,51 @@ Are you sure to continue and show non-uniformly scaled background?</source>
 Продолжить установку подложки с неравномерным масштабированием?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="397"/>
+        <location filename="../src/backgrounddialog.cpp" line="405"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="406"/>
+        <location filename="../src/backgrounddialog.cpp" line="414"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="407"/>
+        <location filename="../src/backgrounddialog.cpp" line="415"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="420"/>
+        <location filename="../src/backgrounddialog.cpp" line="428"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="421"/>
+        <location filename="../src/backgrounddialog.cpp" line="429"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="438"/>
+        <location filename="../src/backgrounddialog.cpp" line="446"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="441"/>
+        <location filename="../src/backgrounddialog.cpp" line="449"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="457"/>
+        <location filename="../src/backgrounddialog.cpp" line="465"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="586"/>
+        <location filename="../src/backgrounddialog.cpp" line="594"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
     </message>
@@ -591,8 +591,13 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
 </context>
 <context>
     <name>qfgui::BlocksCountLabel</name>
+    <message>
+        <location filename="../src/blockscountlabel.cpp" line="59"/>
+        <source>No blocks</source>
+        <translation>Нет блоков</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/blockscountlabel.cpp" line="35"/>
+        <location filename="../src/blockscountlabel.cpp" line="60"/>
         <source>%n blocks</source>
         <translation>
             <numerusform>%n блок</numerusform>
@@ -972,154 +977,144 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::CurvePlotDialog</name>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="77"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="76"/>
         <source>&amp;Temperature</source>
         <translation>&amp;Температура</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="80"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="79"/>
         <source>Show &amp;model date in title</source>
         <translation>&amp;Модельное время (в заголовке)</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="97"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="96"/>
         <source>Save &amp;Raster Image...</source>
         <translation>Сохранить &amp;растровое изображение...</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="99"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="98"/>
         <source>&amp;Save Primary Data...</source>
         <translation>Сохранить первичные &amp;данные...</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="116"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="115"/>
         <source>Curve Plot</source>
         <translation>Построение кривых</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="89"/>
-        <source>&amp;Auto</source>
-        <translation>&amp;Авто</translation>
-    </message>
-    <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="78"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="77"/>
         <source>Thawed &amp;volume fraction</source>
         <translation>Отн. &amp;объём талой фазы</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="79"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="78"/>
         <source>Transition t&amp;emperature</source>
         <translation>Температура &amp;фазового перехода</translation>
     </message>
     <message>
         <location filename="../src/plot/curveplotdialog.cpp" line="84"/>
-        <source>A&amp;uto</source>
-        <translation>А&amp;вто</translation>
-    </message>
-    <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="85"/>
         <source>Restore this ra&amp;nge for next plot</source>
         <translation>&amp;Запомнить для след. построения</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="90"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="89"/>
         <source>Rest&amp;ore this range for next plot</source>
         <translation>За&amp;помнить для след. построения</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="98"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="97"/>
         <source>Save Vector &amp;Image...</source>
         <translation>Сохранить &amp;векторное изображение...</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="165"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="164"/>
         <source>Save plots to PNG file with specified size and scale.</source>
         <translation>Сохранить построения в PNG файл с указанием его размера и масштаба.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="166"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="165"/>
         <source>Save plots to (vector) PDF file with specified size.</source>
         <translation>Сохранить построения в (векторный) PDF файл с указанием его размера.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="167"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="166"/>
         <source>Save plot primary data to simple text file.</source>
         <translation>Сохранить первичные данные по срезу в виде простого текстового файла.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="171"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="170"/>
         <source>Plot Elements</source>
         <translation>Элементы построения</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="178"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="177"/>
         <source>Coordinate Range</source>
         <translation>Диапазон пространственных координат</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="55"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="54"/>
         <source>Minimum:</source>
         <translation>Минимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="56"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="55"/>
         <source>Maximum:</source>
         <translation>Максимум:</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="184"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="183"/>
         <source>Temperature Range</source>
         <translation>Диапазон температур</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="190"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="189"/>
         <source>Save Graph or Data</source>
         <translation>Сохранение изображения или данных</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="326"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="343"/>
         <source>Save PDF</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="328"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="352"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="345"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="369"/>
         <source>PDF files</source>
         <translation>Файлы PDF</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="336"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="360"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="386"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="353"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="377"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="403"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="337"/>
-        <location filename="../src/plot/curveplotdialog.cpp" line="361"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="354"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="378"/>
         <source>Can not save file %1.</source>
         <translation>Не удалось сохранить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="350"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="367"/>
         <source>Save PNG</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить PNG</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="374"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="391"/>
         <source>Save Primary Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить первичные данные</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="376"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="393"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/plot/curveplotdialog.cpp" line="387"/>
+        <location filename="../src/plot/curveplotdialog.cpp" line="404"/>
         <source>Can not write to file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
@@ -1208,386 +1203,386 @@ At least %n steps per day is needed.</source>
 <context>
     <name>qfgui::MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Open File</source>
         <comment>Dialog Title</comment>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="201"/>
+        <location filename="../src/mainwindow.cpp" line="203"/>
         <source>QFrost files</source>
         <translation>Файлы QFrost</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="208"/>
+        <location filename="../src/mainwindow.cpp" line="210"/>
         <source>Save</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="220"/>
-        <location filename="../src/mainwindow.cpp" line="254"/>
-        <location filename="../src/mainwindow.cpp" line="331"/>
+        <location filename="../src/mainwindow.cpp" line="222"/>
+        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="333"/>
         <source>Export Failed</source>
         <translation>Экспорт не удался</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="223"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
         <source>Export Data</source>
         <comment>Dialog Title</comment>
         <translation>Экспорт данных</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="225"/>
-        <location filename="../src/mainwindow.cpp" line="259"/>
+        <location filename="../src/mainwindow.cpp" line="227"/>
+        <location filename="../src/mainwindow.cpp" line="261"/>
         <source>Text files</source>
         <translation>Текстовые файлы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="248"/>
-        <location filename="../src/mainwindow.cpp" line="282"/>
-        <location filename="../src/mainwindow.cpp" line="336"/>
+        <location filename="../src/mainwindow.cpp" line="250"/>
+        <location filename="../src/mainwindow.cpp" line="284"/>
+        <location filename="../src/mainwindow.cpp" line="338"/>
         <source>Current data exported</source>
         <translation>Данные экспотированы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="257"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
         <source>Export Data for Plot</source>
         <comment>Dialog Title</comment>
         <translation>Экспорт данных для построения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="288"/>
+        <location filename="../src/mainwindow.cpp" line="290"/>
         <source>Saving Image Failed</source>
         <translation>Сохранение изображения не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="291"/>
+        <location filename="../src/mainwindow.cpp" line="293"/>
         <source>Save Image</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="293"/>
+        <location filename="../src/mainwindow.cpp" line="295"/>
         <source>PNG files</source>
         <translation>Файлы PNG</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="342"/>
+        <location filename="../src/mainwindow.cpp" line="344"/>
         <source>Save Logger Data Failed</source>
         <translation>Сохранение данных журналирования не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="344"/>
+        <location filename="../src/mainwindow.cpp" line="346"/>
         <source>Comma-separated monthly temperature tables</source>
         <translation>Таблица помесячных значений температуры</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="345"/>
+        <location filename="../src/mainwindow.cpp" line="347"/>
         <source>Text files with bottom block data</source>
         <translation>Температура нижнего блока</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="346"/>
+        <location filename="../src/mainwindow.cpp" line="348"/>
         <source>Text files for isopleth plotter script</source>
         <translation>Текстовый файл для построителя изоплет</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="350"/>
+        <location filename="../src/mainwindow.cpp" line="352"/>
         <source>Save Logger Data</source>
         <comment>Dialog Title</comment>
         <translation>Сохранить данные журналирования</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="381"/>
+        <location filename="../src/mainwindow.cpp" line="383"/>
         <source>Logger data exported</source>
         <translation>Данные журналирования экспортированы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="392"/>
+        <location filename="../src/mainwindow.cpp" line="394"/>
         <source>Denis Pesotsky</source>
         <translation>Денис Песоцкий</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="393"/>
+        <location filename="../src/mainwindow.cpp" line="395"/>
         <source>Maxim Torgonsky</source>
         <translation>Максим Торгонский</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="394"/>
+        <location filename="../src/mainwindow.cpp" line="396"/>
         <source>Temperature fields modeling and visualization</source>
         <translation>Моделирование и визуализация температурных полей</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="397"/>
+        <location filename="../src/mainwindow.cpp" line="399"/>
         <source>Main developer</source>
         <translation>Основной разработчик</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="399"/>
+        <location filename="../src/mainwindow.cpp" line="401"/>
         <source>Developer, many ideas and algorythms</source>
         <translation>Разработчик, генератор идей и алгоритмов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="402"/>
+        <location filename="../src/mainwindow.cpp" line="404"/>
         <source>L. N. Chrustalev</source>
         <translation>Л. Н. Хрусталёв</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="403"/>
+        <location filename="../src/mainwindow.cpp" line="405"/>
         <source>Initial computation algorythm</source>
         <translation>Первоначальный алгоритм расчётов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="405"/>
+        <location filename="../src/mainwindow.cpp" line="407"/>
         <source>G. P. Pustovoyt</source>
         <translation>Г. П. Пустовойт</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="406"/>
+        <location filename="../src/mainwindow.cpp" line="408"/>
         <source>Explanation of theory and inspiration</source>
         <translation>Разъяснения по теории и вдохновение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="408"/>
+        <location filename="../src/mainwindow.cpp" line="410"/>
         <source>S. N. Buldovich</source>
         <translation>С. Н. Булдович</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="409"/>
+        <location filename="../src/mainwindow.cpp" line="411"/>
         <source>Help with designing user interface and more</source>
         <translation>Помощь с дизайном пользовательского интерфейса и прочим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="411"/>
+        <location filename="../src/mainwindow.cpp" line="413"/>
         <source>L. V. Emelyanova</source>
         <translation>Л. В. Емельянова</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="412"/>
+        <location filename="../src/mainwindow.cpp" line="414"/>
         <source>Motivation and overall help</source>
         <translation>Толчок к созданию проекта и консультации</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="415"/>
+        <location filename="../src/mainwindow.cpp" line="417"/>
         <source>Help with C++ and Qt</source>
         <translation>Помощь с Qt и C++</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="419"/>
+        <location filename="../src/mainwindow.cpp" line="421"/>
         <source>Help with Qt</source>
         <translation>Помощь с Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="432"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Remove Background</source>
         <comment>Dialog Title</comment>
         <translation>Удаление подложки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="433"/>
+        <location filename="../src/mainwindow.cpp" line="435"/>
         <source>Do you really want to remove background?</source>
         <translation>Вы действительно хотите удалить графическую подложку?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="444"/>
+        <location filename="../src/mainwindow.cpp" line="446"/>
         <source>Open Background</source>
         <comment>Dialog Title</comment>
         <translation>Открытие подложки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="446"/>
+        <location filename="../src/mainwindow.cpp" line="448"/>
         <source>Images</source>
         <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="456"/>
+        <location filename="../src/mainwindow.cpp" line="458"/>
         <source>Open Background Failed</source>
         <translation>Не удалось загрузить подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="475"/>
+        <location filename="../src/mainwindow.cpp" line="477"/>
         <source>Hide &amp;Background</source>
         <translation>Спрятать &amp;подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="476"/>
+        <location filename="../src/mainwindow.cpp" line="478"/>
         <source>Show &amp;Background</source>
         <translation>Показать &amp;подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="567"/>
+        <location filename="../src/mainwindow.cpp" line="569"/>
         <source>&amp;New</source>
         <translation>Соз&amp;дать</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="569"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
         <source>Create a new file</source>
         <translation>Создать новый файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="574"/>
+        <location filename="../src/mainwindow.cpp" line="576"/>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="576"/>
+        <location filename="../src/mainwindow.cpp" line="578"/>
         <source>Open an existing file</source>
         <translation>Открыть существующий файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="581"/>
+        <location filename="../src/mainwindow.cpp" line="583"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="583"/>
+        <location filename="../src/mainwindow.cpp" line="585"/>
         <source>Save the document to disk</source>
         <translation>Сохранить документ на диск</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="587"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <source>Save &amp;As...</source>
         <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="589"/>
+        <location filename="../src/mainwindow.cpp" line="591"/>
         <source>Save the document under a new name</source>
         <translation>Сохранить документ под новым именем</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="593"/>
+        <location filename="../src/mainwindow.cpp" line="595"/>
         <source>&amp;Export...</source>
         <translation>&amp;Экспорт...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="608"/>
         <source>Export workspace to image</source>
         <translation>Сохранение содержимого рабочей области в виде изображения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="612"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="611"/>
+        <location filename="../src/mainwindow.cpp" line="613"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="612"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Close this window</source>
         <translation>Закрыть это окно</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="618"/>
         <source>E&amp;xit</source>
         <translation>В&amp;ыход</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="618"/>
+        <location filename="../src/mainwindow.cpp" line="620"/>
         <source>Exit the application</source>
         <translation>Выйти из программы (закрыть все окна)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="623"/>
+        <location filename="../src/mainwindow.cpp" line="625"/>
         <source>&amp;About</source>
         <translation>&amp;О программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="624"/>
+        <location filename="../src/mainwindow.cpp" line="626"/>
         <source>Show the application&apos;s About box</source>
         <translation>Показать окно с информацией о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="629"/>
+        <location filename="../src/mainwindow.cpp" line="631"/>
         <source>About &amp;Qt</source>
         <translation>О &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="630"/>
+        <location filename="../src/mainwindow.cpp" line="632"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Показать окно с информацией о библиотеке Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="637"/>
+        <location filename="../src/mainwindow.cpp" line="639"/>
         <source>Remove blocks outside domain</source>
         <translation>Удалить блоки вне расчётной области</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="638"/>
+        <location filename="../src/mainwindow.cpp" line="640"/>
         <source>Removes blocks that will not be included into domain</source>
         <translation>Удаление блоков, которые не попадают в расчётную область (лежат вне полигонов граничных условий)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="655"/>
+        <location filename="../src/mainwindow.cpp" line="657"/>
         <source>Switch full screen mode</source>
         <translation>Переключить полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="661"/>
+        <location filename="../src/mainwindow.cpp" line="663"/>
         <source>&amp;Light Background</source>
         <translation>&amp;Светлый фон</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="663"/>
+        <location filename="../src/mainwindow.cpp" line="665"/>
         <source>Switch color scheme</source>
         <translation>Переключение цветовой схемы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="673"/>
+        <location filename="../src/mainwindow.cpp" line="675"/>
         <source>&amp;Discretize Colors</source>
         <translation>&amp;Дискретные цвета</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="676"/>
+        <location filename="../src/mainwindow.cpp" line="678"/>
         <source>Discretize (sharpen) color of blocks</source>
         <translation>Дискретизировать цвета блоков</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="681"/>
+        <location filename="../src/mainwindow.cpp" line="683"/>
         <source>Op&amp;en Background...</source>
         <translation>Открыть &amp;графическую подложку...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="682"/>
+        <location filename="../src/mainwindow.cpp" line="684"/>
         <source>Open background crosscut file</source>
         <translation>Открыть графический файл подложки (разрез)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="707"/>
+        <location filename="../src/mainwindow.cpp" line="709"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="729"/>
+        <location filename="../src/mainwindow.cpp" line="731"/>
         <source>&amp;Edit</source>
         <translation>&amp;Правка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="737"/>
-        <location filename="../src/mainwindow.cpp" line="1363"/>
+        <location filename="../src/mainwindow.cpp" line="739"/>
+        <location filename="../src/mainwindow.cpp" line="1388"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="740"/>
+        <location filename="../src/mainwindow.cpp" line="742"/>
         <source>&amp;Toolbars Shown</source>
         <translation>&amp;Видимые панели инструментов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="757"/>
+        <location filename="../src/mainwindow.cpp" line="759"/>
         <source>Main Toolbar</source>
         <translation>Основная панель инструментов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="847"/>
+        <location filename="../src/mainwindow.cpp" line="849"/>
         <source>Tool Options</source>
         <translation>Параметры инструмента</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="889"/>
+        <location filename="../src/mainwindow.cpp" line="894"/>
         <source>Are blocks gridded?
 Blocks are gridded if each
 has not more than one neighbor
@@ -1601,188 +1596,199 @@ each contact fits it&apos;s dimension.</source>
 соответсвует его размерам.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="909"/>
-        <source>Cursor</source>
-        <translation>Курсор</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="915"/>
-        <source>Anchor</source>
-        <translation>Привязка</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="959"/>
+        <location filename="../src/mainwindow.cpp" line="984"/>
         <source>The document %1 has been modified.
 Do you want to save your changes or discard them?</source>
         <translation>Документ %1 был изменён.
 Сохранить изменения или отклонить их?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1373"/>
+        <location filename="../src/mainwindow.cpp" line="1398"/>
         <source>Filling with soil %1...</source>
         <translation>Идёт заливка грунтом %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="332"/>
-        <location filename="../src/mainwindow.cpp" line="1157"/>
-        <location filename="../src/mainwindow.cpp" line="1185"/>
+        <location filename="../src/mainwindow.cpp" line="334"/>
+        <location filename="../src/mainwindow.cpp" line="1182"/>
+        <location filename="../src/mainwindow.cpp" line="1210"/>
         <source>Cannot write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="993"/>
+        <location filename="../src/mainwindow.cpp" line="1018"/>
         <source>Cannot load file %1.</source>
         <translation>Не удалось загрузить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1183"/>
+        <location filename="../src/mainwindow.cpp" line="1208"/>
         <source>Cannot read file %1.</source>
         <translation>Не удалось прочитать файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="457"/>
-        <location filename="../src/mainwindow.cpp" line="1187"/>
+        <location filename="../src/mainwindow.cpp" line="459"/>
+        <location filename="../src/mainwindow.cpp" line="1212"/>
         <source>Cannot open file %1.</source>
         <translation>Не удалось открыть файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="598"/>
+        <location filename="../src/mainwindow.cpp" line="600"/>
         <source>Export for &amp;Plot...</source>
         <translation>Экспорт &amp;для построения...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1071"/>
+        <location filename="../src/mainwindow.cpp" line="1096"/>
         <source>Provided version ID: %1. Wanted version ID: %2.</source>
         <translation>ID версии в файле: %1. Требуемый ID версии: %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1163"/>
+        <location filename="../src/mainwindow.cpp" line="1188"/>
         <source>Unfinished file has been removed.</source>
         <translation>Незавершённый файл был удалён.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1165"/>
+        <location filename="../src/mainwindow.cpp" line="1190"/>
         <source>Unfinished file removal failed, please remove it manually.</source>
         <translation>Незавершённый файл не был удалён, удалите его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1352"/>
+        <location filename="../src/mainwindow.cpp" line="1377"/>
         <source>Exit &amp;Full Screen Mode</source>
         <translation>Выйти из &amp;полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1356"/>
+        <location filename="../src/mainwindow.cpp" line="1381"/>
         <source>&amp;Full Screen Mode</source>
         <translation>&amp;Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="750"/>
+        <location filename="../src/mainwindow.cpp" line="752"/>
         <source>&amp;Help</source>
         <translation>&amp;Справка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="414"/>
+        <location filename="../src/mainwindow.cpp" line="416"/>
         <source>L.O.R community</source>
         <translation>Сообщество L.O.R</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="418"/>
+        <location filename="../src/mainwindow.cpp" line="420"/>
         <source>CrossPlatfrom.RU community</source>
         <translation>Сообщество CrossPlatfrom.RU</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="594"/>
+        <location filename="../src/mainwindow.cpp" line="596"/>
         <source>Export blocks data as text</source>
         <translation>Экспортировать информацию о блоках в текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="599"/>
+        <location filename="../src/mainwindow.cpp" line="601"/>
         <source>Export blocks data, polygons and additional bound points as text for contour plot</source>
         <translation>Экспортировать данные о блоках, полигонах и мнимых граничных точках для 2D постороения</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="607"/>
         <source>Export &amp;Image...</source>
         <translation>Экспорт &amp;изображения...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="635"/>
+        <location filename="../src/mainwindow.cpp" line="637"/>
         <source>&amp;Remove Excess Blocks</source>
         <translation>&amp;Удалить лишние блоки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="686"/>
+        <location filename="../src/mainwindow.cpp" line="688"/>
         <source>Re&amp;move Background</source>
         <translation>&amp;Удалить подложку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="784"/>
+        <location filename="../src/mainwindow.cpp" line="786"/>
         <source>Command List</source>
         <translation>Список команд</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="875"/>
+        <location filename="../src/mainwindow.cpp" line="877"/>
         <source>Welcome to %1!</source>
         <translation>Добро пожаловать в %1!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="882"/>
+        <location filename="../src/mainwindow.cpp" line="887"/>
         <source>[1D]</source>
         <translation>[1D]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="883"/>
+        <location filename="../src/mainwindow.cpp" line="888"/>
         <source>Are blocks placed one-dimensional (and vertically)?</source>
         <translation>Является ли задача одномерной (и вертикальной)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="887"/>
-        <location filename="../src/mainwindow.cpp" line="888"/>
+        <location filename="../src/mainwindow.cpp" line="892"/>
+        <location filename="../src/mainwindow.cpp" line="893"/>
         <source>[Grid]</source>
         <translation>[Сетка]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="958"/>
+        <location filename="../src/mainwindow.cpp" line="903"/>
+        <source>Blocks counter. Exceeding 20–30 thousands may
+slow interface and therefore is not recommended.</source>
+        <translation>Количество блоков. Использование более 20–30 тысяч может
+значительно замедлить работу интерфейса и не рекомендуется.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="910"/>
+        <source>Cursor coordinates.
+Blank if outside of work area.</source>
+        <translation>Координаты курсора.
+Прочерк, если он вне рабочей области.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="916"/>
+        <source>Anchor coordinates.
+Blank if not found or disabled.</source>
+        <translation>Коодинаты привязки.
+Прочерк, если не найдена или не требуется.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="983"/>
         <source>Close Document</source>
         <translation>Закрыть документ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="975"/>
+        <location filename="../src/mainwindow.cpp" line="1000"/>
         <source>Load Failed</source>
         <translation>Загрузка не удалась</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="999"/>
+        <location filename="../src/mainwindow.cpp" line="1024"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1017"/>
+        <location filename="../src/mainwindow.cpp" line="1042"/>
         <source>File is corrupted or is in bad format.</source>
         <translation>Файл повреждён или имеет неправильный формат.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1065"/>
+        <location filename="../src/mainwindow.cpp" line="1090"/>
         <source>File is for older version of %1.</source>
         <translation>Файл предназначен для устаревшей версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1068"/>
+        <location filename="../src/mainwindow.cpp" line="1093"/>
         <source>File is for newer version of %1.</source>
         <translation>Файл предназначен для более новой версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1108"/>
+        <location filename="../src/mainwindow.cpp" line="1133"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1147"/>
+        <location filename="../src/mainwindow.cpp" line="1172"/>
         <source>File saved</source>
         <translation>Файл сохранён</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1201"/>
+        <location filename="../src/mainwindow.cpp" line="1226"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
     </message>
