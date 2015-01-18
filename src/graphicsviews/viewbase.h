@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * Copyright (C) 2014-2015  Denis Pesotsky
  * 
  * This file is part of QFrost.
  * 
@@ -21,11 +21,11 @@
 #ifndef QFGUI_VIEWBASE_H
 #define QFGUI_VIEWBASE_H
 
-#include <QGraphicsView>
-
-QT_FORWARD_DECLARE_CLASS(QSlider)
+#include <QtWidgets/QGraphicsView>
 
 namespace qfgui {
+
+QT_FORWARD_DECLARE_CLASS(ZoomSlider)
 
 class ViewBase : public QGraphicsView
 {
@@ -34,8 +34,7 @@ public:
     ViewBase(QGraphicsScene *scene, QWidget* parent = NULL,
              double minScale = 0.1, double maxScale = 10.0);
 
-    QSlider *createScaleSlider(Qt::Orientation orientation, 
-                               QWidget * parent = NULL);
+    ZoomSlider *createZoomSlider(QWidget * parent = NULL);
 
 signals:
     /**
@@ -53,7 +52,7 @@ signals:
     void mouseJumped(const QPointF &newPosition);
 
     /**
-     * Сигнал о том, что масштаб изменилась.
+     * Сигнал о том, что масштаб изменился.
      * @param newScale новый масштаб.
      */
     void scaleChanged(qreal newScale);
@@ -168,10 +167,10 @@ private:
     
     static const double kScaleStep;
     
-    const int mMinimumScaleSliderValue;
-    const int mMaximumScaleSliderValue;
+    const int mMinimumZoomSliderValue;
+    const int mMaximumZoomSliderValue;
     
-    int mScaleSliderValue;
+    int mZoomSliderValue;
 };
 }
 

@@ -23,6 +23,7 @@
 #include <graphicsviews/cross.h>
 #include <graphicsviews/viewbase.h>
 #include <units/physicalpropertyspinbox.h>
+#include <graphicsviews/zoomslider.h>
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
@@ -76,26 +77,26 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mNeedReferenceFileNotification(false)
 {
     setWindowTitle(tr("Background Reference"));
-    
+
     mViewPressTimer.start();
-    
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    
+
     mCross1PixmapX->setMinimum(0);
     mCross1PixmapX->setMaximum(pixmap.width());
     mCross2PixmapX->setMinimum(0);
     mCross2PixmapX->setMaximum(pixmap.width());
-    
+
     mCross1PixmapY->setMinimum(0);
     mCross1PixmapY->setMaximum(pixmap.height());
     mCross2PixmapY->setMinimum(0);
     mCross2PixmapY->setMaximum(pixmap.height());
-    
+
     connect(mCross1PixmapX, SIGNAL(valueChanged(int)), SLOT(updateCross1Pos()));
     connect(mCross1PixmapY, SIGNAL(valueChanged(int)), SLOT(updateCross1Pos()));
     connect(mCross2PixmapX, SIGNAL(valueChanged(int)), SLOT(updateCross2Pos()));
     connect(mCross2PixmapY, SIGNAL(valueChanged(int)), SLOT(updateCross2Pos()));
-    
+
     connect(mCross1PixmapX, SIGNAL(valueChanged(int)), SLOT(checkCrossesPos()));
     connect(mCross1PixmapY, SIGNAL(valueChanged(int)), SLOT(checkCrossesPos()));
     connect(mCross2PixmapX, SIGNAL(valueChanged(int)), SLOT(checkCrossesPos()));
@@ -104,17 +105,17 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     connect(mCross1SceneY, SIGNAL(valueChanged(double)), SLOT(checkCrossesPos()));
     connect(mCross2SceneX, SIGNAL(valueChanged(double)), SLOT(checkCrossesPos()));
     connect(mCross2SceneY, SIGNAL(valueChanged(double)), SLOT(checkCrossesPos()));
-    
+
     connect(mPlaceCross1Button, SIGNAL(clicked()), SLOT(startPlacingCross1()));
     connect(mPlaceCross2Button, SIGNAL(clicked()), SLOT(startPlacingCross2()));
-    
+
     mCross2PixmapX->setValue(pixmap.width());
     mCross2PixmapY->setValue(pixmap.height());
-    
+
     const QIcon setWithMouseIcon = QIcon::fromTheme("transform-move");
     mPlaceCross1Button->setIcon(setWithMouseIcon);
     mPlaceCross2Button->setIcon(setWithMouseIcon);
-    
+
     // HACK Пришлось отнимать число > 12, чтобы не вышла слишком большая кнопка,
     //      превышающая по высоте соответствующую ей форму (с парой спинбоксов).
     //      Вероятно, это связано с CSS padding/margin кнопки, но как их узнать?
@@ -122,35 +123,35 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     const QSize setWithMouseIconSize = QFrost::upperBoundIconSize(setWithMouseIcon, maxSetWithMouseHeight);
     mPlaceCross1Button->setIconSize(setWithMouseIconSize);
     mPlaceCross2Button->setIconSize(setWithMouseIconSize);
-    
+
     const QString setWithMouseTip = tr("Set both coordinates for cross by placing cursor over image.\n"
                                        "Cross will follow mouse in image area. Left click to finish.");
     mPlaceCross1Button->setToolTip(setWithMouseTip);
     mPlaceCross2Button->setToolTip(setWithMouseTip);
-    
+
     const QIcon setAutoCoordIcon = QIcon::fromTheme("transform-scale");
     QPushButton *autoSetCross1SceneX = new QPushButton(setAutoCoordIcon, "");
     QPushButton *autoSetCross1SceneY = new QPushButton(setAutoCoordIcon, "");
     QPushButton *autoSetCross2SceneX = new QPushButton(setAutoCoordIcon, "");
     QPushButton *autoSetCross2SceneY = new QPushButton(setAutoCoordIcon, "");
-    
+
     const QString setAutoSceneCoordTip = tr("Set this coordinate automatically for uniform image scaling.\n"
                                             "All the rest coordinates (4 pixmap & 3 domain) must be set.");
     autoSetCross1SceneX->setToolTip(setAutoSceneCoordTip);
     autoSetCross1SceneY->setToolTip(setAutoSceneCoordTip);
     autoSetCross2SceneX->setToolTip(setAutoSceneCoordTip);
     autoSetCross2SceneY->setToolTip(setAutoSceneCoordTip);
-    
+
     autoSetCross1SceneX->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     autoSetCross1SceneY->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     autoSetCross2SceneX->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     autoSetCross2SceneY->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    
+
     connect(autoSetCross1SceneX, SIGNAL(clicked()), SLOT(autoSetCross1SceneX()));
     connect(autoSetCross1SceneY, SIGNAL(clicked()), SLOT(autoSetCross1SceneY()));
     connect(autoSetCross2SceneX, SIGNAL(clicked()), SLOT(autoSetCross2SceneX()));
     connect(autoSetCross2SceneY, SIGNAL(clicked()), SLOT(autoSetCross2SceneY()));
-    
+
     QGroupBox *imagePos1Box = new QGroupBox(tr("Image Position 1"));
     imagePos1Box->setFlat(true);
     QFormLayout *imagePos1CoordsLayout = new QFormLayout();
@@ -159,7 +160,7 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     QHBoxLayout *imagePos1Layout = new QHBoxLayout(imagePos1Box);
     imagePos1Layout->addLayout(imagePos1CoordsLayout, 1);
     imagePos1Layout->addWidget(mPlaceCross1Button);
-    
+
     QGroupBox *imagePos2Box = new QGroupBox(tr("Image Position 2"));
     imagePos2Box->setFlat(true);
     QFormLayout *imagePos2CoordsLayout = new QFormLayout();
@@ -170,64 +171,64 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     imagePos2Layout->addWidget(mPlaceCross2Button);
     mPlaceCross1Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     mPlaceCross2Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    
+
     QHBoxLayout *scenePos1XLayout = new QHBoxLayout();
     scenePos1XLayout->setMargin(0);
     scenePos1XLayout->addWidget(mCross1SceneX, 1);
     scenePos1XLayout->addWidget(autoSetCross1SceneX);
-    
+
     QHBoxLayout *scenePos1YLayout = new QHBoxLayout();
     scenePos1YLayout->setMargin(0);
     scenePos1YLayout->addWidget(mCross1SceneY, 1);
     scenePos1YLayout->addWidget(autoSetCross1SceneY);
-    
+
     QHBoxLayout *scenePos2XLayout = new QHBoxLayout();
     scenePos2XLayout->setMargin(0);
     scenePos2XLayout->addWidget(mCross2SceneX, 1);
     scenePos2XLayout->addWidget(autoSetCross2SceneX);
-    
+
     QHBoxLayout *scenePos2YLayout = new QHBoxLayout();
     scenePos2YLayout->setMargin(0);
     scenePos2YLayout->addWidget(mCross2SceneY, 1);
     scenePos2YLayout->addWidget(autoSetCross2SceneY);
-    
+
     QGroupBox *scenePos1Box = new QGroupBox(tr("Domain Position 1"));
     scenePos1Box->setFlat(true);
     QFormLayout *scenePos1Layout = new QFormLayout(scenePos1Box);
     scenePos1Layout->addRow(tr("X:"), scenePos1XLayout);
     scenePos1Layout->addRow(tr("Y:"), scenePos1YLayout);
-    
+
     QGroupBox *scenePos2Box = new QGroupBox(tr("Domain Position 2"));
     scenePos2Box->setFlat(true);
     QFormLayout *scenePos2Layout = new QFormLayout(scenePos2Box);
     scenePos2Layout->addRow(tr("X:"), scenePos2XLayout);
     scenePos2Layout->addRow(tr("Y:"), scenePos2YLayout);
-    
+
     QGroupBox *imagePosBox = new QGroupBox(tr("Anchor Points on Image (Coordinates in Pixels)"));
     QHBoxLayout *imagePosLayout = new QHBoxLayout(imagePosBox);
     imagePosLayout->addWidget(imagePos1Box);
     imagePosLayout->addWidget(imagePos2Box);
-    
+
     QGroupBox *scenePosBox = new QGroupBox(tr("Anchor Points on Domain (Coordinates in Meters)"));
     QHBoxLayout *scenePosLayout = new QHBoxLayout(scenePosBox);
     scenePosLayout->addWidget(scenePos1Box);
     scenePosLayout->addWidget(scenePos2Box);
-    
+
     mView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mView->setBackgroundBrush(Qt::lightGray);
-    
+
     mView->viewport()->installEventFilter(this);
     mView->viewport()->setMouseTracking(true);
-    
+
     mCross2->setPos(pixmap.width(), pixmap.height());
-    
+
     mPixmapItem->setTransformationMode(Qt::SmoothTransformation);
     mView->scene()->addItem(mPixmapItem);
-    
-    QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
-    Q_ASSERT(slider->minimum() == -slider->maximum());
-    
+
+    ZoomSlider *slider = mView->createZoomSlider(this);
+    Q_ASSERT(slider->slider()->minimum() == -slider->slider()->maximum());
+
     QHBoxLayout *posLayout = new QHBoxLayout();
     posLayout->addWidget(imagePosBox, 1);
     posLayout->addWidget(scenePosBox, 1);
@@ -236,19 +237,19 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mSaveReferenceFile->setToolTip(tr("Save input data to reference file (*.%1) in the same folder with image.\n"
                                       "It will be automatically loaded when you open this image again.")
                                    .arg(kReferenceFileExtension));
-    
+
     mainLayout->addLayout(posLayout);
     mainLayout->addWidget(mSaveReferenceFile);
     mainLayout->addWidget(mView);
     mainLayout->addWidget(slider);
     mainLayout->addWidget(mButtons);
-    
+
     connect(mButtons, SIGNAL(accepted()), SLOT(acceptAndSendResult()));
     connect(mButtons, SIGNAL(rejected()), SLOT(reject()));
-    
+
     mCross1->setCursor(Qt::OpenHandCursor);
     mCross2->setCursor(Qt::OpenHandCursor);
-    
+
     tryLoadReferenceFile();
 }
 
@@ -365,7 +366,7 @@ void BackgroundDialog::finishPlacingCross()
         mIsPlacingCross2 = false;
     }
     mView->viewport()->unsetCursor();
-    
+
     mPlaceCross1Button->setEnabled(true);
     mPlaceCross2Button->setEnabled(true);
 }

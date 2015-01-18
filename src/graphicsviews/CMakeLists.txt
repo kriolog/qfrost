@@ -12,6 +12,7 @@ set(qfrost_graphicsviews_SRCS
 	scene.cpp
 	view.cpp
 	viewbase.cpp
+	zoomslider.cpp
 )
 
 add_library(qfrost_graphicsviews

@@ -30,6 +30,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QUndoView>
@@ -56,6 +57,7 @@
 #include <computations/blockslogger.h>
 #include <graphicsviews/colorgenerator.h>
 #include <graphicsviews/colorbar.h>
+#include <graphicsviews/zoomslider.h>
 #include <units/unitsmenu.h>
 #include <units/units.h>
 #include <positionlabel.h>
@@ -875,8 +877,12 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage(tr("Welcome to %1!")
                              .arg(QCoreApplication::applicationName()), 5000);
 
-    statusBar()->setStyleSheet("QStatusBar::item { background: palette(base); "
-                                          "border: 1px inset palette(dark); }");
+    #ifndef QT_NO_DEBUG_OUTPUT
+    const int emptyStatusBarHeight = statusBar()->sizeHint().height();
+    #endif
+
+    statusBar()->setStyleSheet("QStatusBar::item {background: palette(base); "
+                                                 "border: 1px inset palette(dark);}");
 
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
@@ -894,32 +900,35 @@ void MainWindow::createStatusBar()
             indicatorGrid, SLOT(setEnabled(bool)));
 
     BlocksCountLabel *blocksCount = new BlocksCountLabel(mScene, this);
-    blocksCount->setToolTip(tr("Blocks counter. More blocks require more computations."));
+    blocksCount->setToolTip(tr("Blocks counter. Exceeding 20\342\200\22330 thousands may\n"
+                               "slow interface and therefore is not recommended."));
 
-    // Сюда ещё годится иконка input-mouse, но edit-select, кажись, встаёт лучше
-    PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("edit-select"), this);
+    // Лучше бы подошла edit-select, но увы, она будто не центрованная по высоте
+    PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("input-mouse"), this);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
-    cursorLabel->setToolTip(tr("Cursor coordinates. Blank if cursor is outside of domain."));
+    cursorLabel->setToolTip(tr("Cursor coordinates.\n"
+                               "Blank if outside of work area."));
 
     PositionLabel *anchorLabel = new PositionLabel(QIcon::fromTheme("snap-orthogonal"), this);
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
-    anchorLabel->setToolTip(tr("Anchor coordinates. Blank if can not be found or is not needed."));
+    anchorLabel->setToolTip(tr("Anchor coordinates.\n"
+                               "Blank if not found or disabled."));
 
-    QFrame *scaleWidget = new QFrame(this);
-    scaleWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::QSizePolicy::MinimumExpanding);
-    scaleWidget->setToolTip("Scale slider to zoom in/out. You can also zoom using mouse wheel.");
-    QHBoxLayout *scaleLayout = new QHBoxLayout(scaleWidget);
-    scaleLayout->setContentsMargins(QMargins());
-    QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
-    slider->setFixedWidth(150);
-    slider->setValue(qRound(double(slider->maximum() + slider->minimum()) / 2.0 * 1.2));
-    QLabel *scaleIconLabel = new QLabel(this);
-    scaleIconLabel->setAlignment(Qt::AlignCenter);
-    scaleIconLabel->setPixmap(QIcon::fromTheme("zoom-draw").pixmap(16, 16));
-    scaleLayout->addWidget(scaleIconLabel);
-    scaleLayout->addWidget(slider);
+    ZoomSlider *zoomSlider = mView->createZoomSlider(this);
+    zoomSlider->setFixedWidth(150);
+    zoomSlider->setValue(qRound(double(zoomSlider->slider()->minimum() +
+                                       zoomSlider->slider()->maximum())
+                         / 2.0 * 1.2));
+    foreach (QToolButton *button, zoomSlider->findChildren<QToolButton*>()) {
+        // 18px увеличивает статусбар всего на 1px и не перемасштабирует иконки.
+        // При использовании 17px статусбар уже не увеличивается, но иконки зума
+        // замыливаются, плюс как-то некрасиво съезжают все три соседние иконки.
+        // Если не делать ограничение, получается увеличение статусбара до 26px.
+        // Дли ширины выставлено значение на 2 пиксела больше - удобней кликать.
+        button->setFixedSize(20, 18);
+    }
 
     mPermanentStatusText = new QLabel(this);
     statusBar()->addWidget(mPermanentStatusText);
@@ -930,7 +939,15 @@ void MainWindow::createStatusBar()
     statusBar()->addPermanentWidget(blocksCount);
     statusBar()->addPermanentWidget(cursorLabel);
     statusBar()->addPermanentWidget(anchorLabel);
-    statusBar()->addPermanentWidget(scaleWidget);
+    statusBar()->addPermanentWidget(zoomSlider);
+
+    #ifndef QT_NO_DEBUG_OUTPUT
+    const int fullStatusBarHeight = statusBar()->sizeHint().height();
+    if (fullStatusBarHeight != emptyStatusBarHeight) {
+        qWarning("%s: statusbar height hint changed from %d to %d after filling",
+                 Q_FUNC_INFO, emptyStatusBarHeight, fullStatusBarHeight);
+    }
+    #endif
 }
 
 void MainWindow::readSettings()
