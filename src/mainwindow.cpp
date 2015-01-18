@@ -895,24 +895,27 @@ void MainWindow::createStatusBar()
             indicatorGrid, SLOT(setEnabled(bool)));
 
     static const int statusWidgetsFrameStyle = QFrame::Panel | QFrame::Sunken;
-
+    
     QFrame *indicators = new QFrame();
     QHBoxLayout *indicatorsLayout = new QHBoxLayout(indicators);
-    indicatorsLayout->setContentsMargins(0, 0, 0, 0);
-    indicatorsLayout->addWidget(new BlocksCountLabel(mScene, this));
+    indicatorsLayout->setContentsMargins(QMargins());
     indicatorsLayout->addWidget(indicator1D);
     indicatorsLayout->addWidget(indicatorGrid);
-    indicatorsLayout->addSpacing(3);
     statusBar()->addPermanentWidget(indicators);
     indicators->setFrameStyle(statusWidgetsFrameStyle);
 
-    PositionLabel *cursorLabel = new PositionLabel(tr("Cursor"), this);
+    BlocksCountLabel *blocksCount = new BlocksCountLabel(mScene, this);
+    statusBar()->addPermanentWidget(blocksCount);
+    blocksCount->setFrameStyle(statusWidgetsFrameStyle);
+
+    // Сюда ещё подходит иконка input-mouse, но edit-select из Oxygen - лучше
+    PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("edit-select"), this);
     statusBar()->addPermanentWidget(cursorLabel);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
     cursorLabel->setFrameStyle(statusWidgetsFrameStyle);
 
-    PositionLabel *anchorLabel = new PositionLabel(tr("Anchor"), this);
+    PositionLabel *anchorLabel = new PositionLabel(QIcon::fromTheme("snap-orthogonal"), this);
     statusBar()->addPermanentWidget(anchorLabel);
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));

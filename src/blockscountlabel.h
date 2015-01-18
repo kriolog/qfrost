@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -20,14 +20,16 @@
 #ifndef QFGUI_BLOCKSCOUNTLABEL_H
 #define QFGUI_BLOCKSCOUNTLABEL_H
 
-#include <QtWidgets/QLabel>
+#include <QtWidgets/QFrame>
+
+QT_FORWARD_DECLARE_CLASS(QLabel)
 
 namespace qfgui
 {
 
 QT_FORWARD_DECLARE_CLASS(Scene)
 
-class BlocksCountLabel: public QLabel
+class BlocksCountLabel: public QFrame
 {
     Q_OBJECT
 public:
@@ -35,6 +37,9 @@ public:
 
 private slots:
     void setBlocksCount(int blocksCount);
+
+private:
+    QLabel *mMainLabel;
 };
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -32,8 +32,8 @@ class PositionLabel : public QFrame
 {
     Q_OBJECT
 public:
-    PositionLabel(const QString &title,
-                  QWidget *parent);
+    PositionLabel(const QString &title, QWidget *parent);
+    PositionLabel(const QIcon &icon, QWidget *parent);
 
 public slots:
     void updateText(const QPointF &point);
@@ -42,6 +42,10 @@ protected:
     void showEvent(QShowEvent *event);
 
 private:
+    void init();
+
+    QLabel *mTitleLabel;
+
     QLabel *mXLabel;
     QLabel *mYLabel;
     QStackedWidget *mPositionText;

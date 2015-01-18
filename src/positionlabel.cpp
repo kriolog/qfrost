@@ -27,29 +27,48 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QStackedWidget>
+#include <QtGui/QIcon>
 
 using namespace qfgui;
 
-PositionLabel::PositionLabel(const QString &title,
-                             QWidget *parent)
+PositionLabel::PositionLabel(const QString &title, QWidget *parent)
     : QFrame(parent)
+    , mTitleLabel(new QLabel(title + ":", this))
     , mXLabel(new QLabel(this))
     , mYLabel(new QLabel(this))
     , mPositionText(new QStackedWidget(this))
 {
-    mXLabel->setAlignment(Qt::AlignRight);
-    mYLabel->setAlignment(Qt::AlignLeft);
+    init();
+}
+
+PositionLabel::PositionLabel(const QIcon &icon, QWidget *parent)
+    : QFrame(parent)
+    , mTitleLabel(new QLabel(this))
+    , mXLabel(new QLabel(this))
+    , mYLabel(new QLabel(this))
+    , mPositionText(new QStackedWidget(this))
+{
+    const int iconDimension = 16;
+    mTitleLabel->setPixmap(icon.pixmap(iconDimension, iconDimension));
+    //mTitleLabel->setStyleSheet("QLabel { padding : 1px 0px }");
+    init();
+}
+
+void PositionLabel::init()
+{
+    mXLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    mYLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     QLabel *noPointLabel = new QLabel("\342\200\224", this);
     noPointLabel->setAlignment(Qt::AlignCenter);
 
-    QLabel *titleLabel = new QLabel(title + ":", this);
-    titleLabel->setAlignment(Qt::AlignRight);
+    mTitleLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     QWidget *coordsWidget = new QWidget(this);
     QHBoxLayout *coordsLayout = new QHBoxLayout(coordsWidget);
     coordsLayout->setSpacing(0);
     coordsLayout->setMargin(0);
+    coordsLayout->setContentsMargins(QMargins());
     coordsLayout->addWidget(mXLabel);
     coordsLayout->addWidget(new QLabel("; ", this));
     coordsLayout->addWidget(mYLabel);
@@ -57,9 +76,11 @@ PositionLabel::PositionLabel(const QString &title,
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setSpacing(0);
     mainLayout->setMargin(0);
-    mainLayout->addWidget(titleLabel);
+    mainLayout->setContentsMargins(QMargins());
+    mainLayout->addWidget(mTitleLabel);
     mainLayout->addStretch();
     mainLayout->addWidget(mPositionText);
+    mainLayout->addStretch();
 
     mPositionText->addWidget(noPointLabel);
     mPositionText->addWidget(coordsWidget);

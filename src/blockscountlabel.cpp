@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -21,16 +21,39 @@
 
 #include <graphicsviews/scene.h>
 
+#include <QtGui/QIcon>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
+
 using namespace qfgui;
 
 BlocksCountLabel::BlocksCountLabel(Scene *scene, QWidget *parent)
-    : QLabel(parent)
+    : QFrame(parent)
+    , mMainLabel(new QLabel(this))
 {
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(QMargins());
+
+    const int iconDimension = 16;
+    QLabel *iconLabel = new QLabel(this);
+    iconLabel->setPixmap(QIcon::fromTheme("view-grid").pixmap(iconDimension,
+                                                              iconDimension));
+    layout->addWidget(iconLabel);
+    layout->addSpacing(2);
+    layout->addWidget(mMainLabel);
+
+    iconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    mMainLabel->setAlignment(Qt::AlignCenter);
+
     setBlocksCount(0);
     connect(scene, SIGNAL(blocksCountChanged(int)), SLOT(setBlocksCount(int)));
+
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void BlocksCountLabel::setBlocksCount(int blocksCount)
 {
-    setText(tr("%n blocks", "", blocksCount));
+    mMainLabel->setText(tr("%n blocks", "", blocksCount));
 }
