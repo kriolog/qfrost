@@ -927,18 +927,18 @@ void MainWindow::createStatusBar()
         // замыливаются, плюс как-то некрасиво съезжают все три соседние иконки.
         // Если не делать ограничение, получается увеличение статусбара до 26px.
         // Дли ширины выставлено значение на 2 пиксела больше - удобней кликать.
-        button->setFixedSize(20, 18);
+        button->setFixedSize(21, 19);
     }
 
     mPermanentStatusText = new QLabel(this);
     statusBar()->addWidget(mPermanentStatusText);
     mPermanentStatusText->hide();
 
-    statusBar()->addPermanentWidget(indicator1D);
-    statusBar()->addPermanentWidget(indicatorGrid);
-    statusBar()->addPermanentWidget(blocksCount);
     statusBar()->addPermanentWidget(cursorLabel);
     statusBar()->addPermanentWidget(anchorLabel);
+    statusBar()->addPermanentWidget(blocksCount);
+    statusBar()->addPermanentWidget(indicator1D);
+    statusBar()->addPermanentWidget(indicatorGrid);
     statusBar()->addPermanentWidget(zoomSlider);
 
     #ifndef QT_NO_DEBUG_OUTPUT
@@ -1264,6 +1264,7 @@ void MainWindow::showEvent(QShowEvent *event)
         QTimer::singleShot(500, mDialogToExecOnShow, SLOT(show()));
         mDialogToExecOnShow = NULL;
     }
+    qDebug("Status bar height after show event: %d px.", statusBar()->height());
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
