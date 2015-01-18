@@ -44,7 +44,7 @@ BlocksCountLabel::BlocksCountLabel(Scene *scene, QWidget *parent)
     layout->addSpacing(2);
     layout->addWidget(mMainLabel);
 
-    iconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    iconLabel->setAlignment(Qt::AlignCenter);
     mMainLabel->setAlignment(Qt::AlignCenter);
 
     setBlocksCount(0);

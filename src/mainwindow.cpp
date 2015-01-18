@@ -916,6 +916,7 @@ void MainWindow::createStatusBar()
     slider->setFixedWidth(150);
     slider->setValue(qRound(double(slider->maximum() + slider->minimum()) / 2.0 * 1.2));
     QLabel *scaleIconLabel = new QLabel(this);
+    scaleIconLabel->setAlignment(Qt::AlignCenter);
     scaleIconLabel->setPixmap(QIcon::fromTheme("zoom-draw").pixmap(16, 16));
     scaleLayout->addWidget(scaleIconLabel);
     scaleLayout->addWidget(slider);

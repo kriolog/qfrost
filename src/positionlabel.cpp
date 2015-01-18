@@ -62,7 +62,7 @@ void PositionLabel::init()
     QLabel *noPointLabel = new QLabel("\342\200\224", this);
     noPointLabel->setAlignment(Qt::AlignCenter);
 
-    mTitleLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    mTitleLabel->setAlignment(Qt::AlignCenter);
 
     QWidget *coordsWidget = new QWidget(this);
     QHBoxLayout *coordsLayout = new QHBoxLayout(coordsWidget);
