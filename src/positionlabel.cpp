@@ -78,6 +78,7 @@ void PositionLabel::init()
     mainLayout->setMargin(0);
     mainLayout->setContentsMargins(QMargins());
     mainLayout->addWidget(mTitleLabel);
+    mainLayout->addSpacing(2);
     mainLayout->addStretch();
     mainLayout->addWidget(mPositionText);
     mainLayout->addStretch();
@@ -107,7 +108,8 @@ void PositionLabel::updateText(const QPointF &point)
 void PositionLabel::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
-    updateText(QPointF(-QFrost::sceneHalfSize * 2, -QFrost::sceneHalfSize * 2));
+    const double sceneUnits = QFrost::sceneUnits(420);
+    updateText(QPointF(-sceneUnits, -sceneUnits));
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents
                                 | QEventLoop::ExcludeSocketNotifiers);
     mXLabel->setMinimumWidth(mXLabel->sizeHint().width());
