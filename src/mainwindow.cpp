@@ -875,10 +875,6 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage(tr("Welcome to %1!")
                              .arg(QCoreApplication::applicationName()), 5000);
 
-    mPermanentStatusText = new QLabel(this);
-    statusBar()->addWidget(mPermanentStatusText);
-    mPermanentStatusText->hide();
-
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
     connect(mScene, SIGNAL(oneDimensionalityChanged(bool)),
@@ -894,38 +890,42 @@ void MainWindow::createStatusBar()
     connect(mScene, SIGNAL(griddityChanged(bool)),
             indicatorGrid, SLOT(setEnabled(bool)));
 
-    static const int statusWidgetsFrameStyle = QFrame::Panel | QFrame::Sunken;
-    
     QFrame *indicators = new QFrame();
     QHBoxLayout *indicatorsLayout = new QHBoxLayout(indicators);
     indicatorsLayout->setContentsMargins(QMargins());
     indicatorsLayout->addWidget(indicator1D);
     indicatorsLayout->addWidget(indicatorGrid);
-    statusBar()->addPermanentWidget(indicators);
-    indicators->setFrameStyle(statusWidgetsFrameStyle);
 
     BlocksCountLabel *blocksCount = new BlocksCountLabel(mScene, this);
-    statusBar()->addPermanentWidget(blocksCount);
-    blocksCount->setFrameStyle(statusWidgetsFrameStyle);
 
-    // Сюда ещё подходит иконка input-mouse, но edit-select из Oxygen - лучше
+    // Сюда ещё годится иконка input-mouse, но edit-select, кажись, встаёт лучше
     PositionLabel *cursorLabel = new PositionLabel(QIcon::fromTheme("edit-select"), this);
-    statusBar()->addPermanentWidget(cursorLabel);
     connect(mView, SIGNAL(mouseMoved(QPointF)),
             cursorLabel, SLOT(updateText(QPointF)));
-    cursorLabel->setFrameStyle(statusWidgetsFrameStyle);
 
     PositionLabel *anchorLabel = new PositionLabel(QIcon::fromTheme("snap-orthogonal"), this);
-    statusBar()->addPermanentWidget(anchorLabel);
+
     connect(mScene->anchor(), SIGNAL(signalPositionChanged(QPointF)),
             anchorLabel, SLOT(updateText(QPointF)));
-    anchorLabel->setFrameStyle(statusWidgetsFrameStyle);
-    
+
     QSlider *slider = mView->createScaleSlider(Qt::Horizontal, this);
     slider->setMaximumWidth(150);
-    statusBar()->addPermanentWidget(slider);
-    
     slider->setValue(qRound(double(slider->maximum() + slider->minimum()) / 2.0 * 1.2));
+
+    mPermanentStatusText = new QLabel(this);
+    statusBar()->addWidget(mPermanentStatusText);
+    mPermanentStatusText->hide();
+
+    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(indicators);
+    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(blocksCount);
+    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(cursorLabel);
+    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(anchorLabel);
+    addPermanentStatusBarSeparator();
+    statusBar()->addPermanentWidget(slider);
 }
 
 void MainWindow::readSettings()
@@ -1394,4 +1394,11 @@ void MainWindow::setPermanentStatusText(const QString &text)
         mPermanentStatusText->setText(text);
         mPermanentStatusText->show();
     }
+}
+
+void MainWindow::addPermanentStatusBarSeparator()
+{
+    QFrame *sep = new QFrame(this);
+    sep->setFrameStyle(QFrame::VLine | QFrame::Plain);
+    statusBar()->addPermanentWidget(sep);
 }
