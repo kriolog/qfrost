@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -65,7 +65,7 @@ public:
         return mPolygon.boundingRect();
     }
 
-    QPolygonF polygon() const {
+    const QPolygonF &polygon() const {
         return mPolygon;
     }
 
