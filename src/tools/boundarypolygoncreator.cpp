@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -83,4 +83,13 @@ void BoundaryPolygonCreator::addPoint(const PointOnBoundaryPolygon &point)
 void BoundaryPolygonCreator::cancelLastChange()
 {
     mGrowingPolygon->deleteLastPoint();
+}
+
+QPointF BoundaryPolygonCreator::visualCenter() const
+{
+    const QPolygonF &polygon = mGrowingPolygon->polygon();
+
+    return polygon.isEmpty()
+           ? QFrost::noPoint
+           : polygon.boundingRect().center();
 }

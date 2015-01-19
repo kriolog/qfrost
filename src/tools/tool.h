@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -72,6 +72,15 @@ public:
      */
     virtual void cancelLastChange() {
 
+    }
+
+    /**
+     * Текущая точка визуального центра (в координатах сцены).
+     * Если визуальный центр отсутствует, QFrost::noPoint.
+     * По умолчанию возвращается центр sceneBoundingRect().
+     */
+    virtual QPointF visualCenter() const {
+        return sceneBoundingRect().center();
     }
 
 protected:

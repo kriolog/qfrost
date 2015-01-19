@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -60,6 +60,10 @@ public:
         Q_UNUSED(alt)
         /* Метод apply привязан к нажатию на энтер, этот инструмент будет
          * применяться по левому клику мыши. */
+    }
+
+    QPointF visualCenter() const {
+        return mOriginPoint.toPoint(); // если не привязаны, оно вернёт noPoint
     }
 
 protected:

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2011-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -47,6 +47,8 @@ public:
     void apply(bool alt);
 
     void cancelLastChange();
+
+    QPointF visualCenter() const;
 
 protected:
     void onSceneHasChanged();

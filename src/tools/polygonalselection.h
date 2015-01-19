@@ -71,6 +71,10 @@ public:
 
     void cancelLastChange();
 
+    QPointF visualCenter() const {
+        return mPolygon.isEmpty() ? QFrost::noPoint : Tool::visualCenter();
+    }
+
 public slots:
     void addPoint(const QPointF &point);
     void addPoint(const PointOnBoundaryPolygon &point);

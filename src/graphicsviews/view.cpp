@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -26,6 +26,7 @@
 
 #include <qfrost.h>
 #include <graphicsviews/scene.h>
+#include <tools/tool.h>
 #include <tools/anchor.h>
 #include <mainwindow.h>
 
@@ -106,9 +107,16 @@ QPointF View::visibleTopLeft() const
 void View::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton) {
-        centerOn(qfScene()->blocksBoundingRect().center());
         event->accept();
-        return;
+        Tool *tool = qfScene()->activeTool();
+        if (tool) {
+            const QPointF toolVisualCenter = tool->visualCenter();
+            if (toolVisualCenter != QFrost::noPoint) {
+                centerOn(toolVisualCenter);
+                return;
+            }
+        }
+        centerOn(qfScene()->blocksBoundingRect().center());
     }
 }
 
