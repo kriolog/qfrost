@@ -69,9 +69,9 @@ ComputationControl::ComputationControl(QWidget *parent)
     , mProblemType(new QComboBox(this))
     , mControlButtons(new QStackedLayout)
     , mStartButton(new QPushButton(QIcon::fromTheme("media-playback-start"),
-                                   tr("&Start"), this))
+                                   tr("Start"), this))
     , mStopButton(new QPushButton(QIcon::fromTheme("media-playback-stop"),
-                                  tr("&Stop"), this))
+                                  tr("Stop"), this))
     , mNeedToRedrawBlocks(new QCheckBox(tr("&Redraw blocks"), this))
     , mHasBlocks(false)
     , mDatesAreOk(true)
@@ -110,7 +110,7 @@ ComputationControl::ComputationControl(QWidget *parent)
     formLayout->addRow(tr("&Initial date:"), mInitialDateEdit);
     formLayout->addRow(tr("Fina&l date:"), mFinalDateEdit);
     formLayout->addRow(mProblemType);
-    formLayout->addRow(tr("S&teps per day:"), mNumOfStepsSpinBox);
+    formLayout->addRow(tr("Steps per &day:"), mNumOfStepsSpinBox);
     formLayout->addRow(mStatus);
     formLayout->addRow(mLoggingMode);
     //: Log and save data...
@@ -155,9 +155,9 @@ ComputationControl::ComputationControl(QWidget *parent)
 
     QButtonGroup *styles = new QButtonGroup(this);
     QAbstractButton *styleTemp = new QRadioButton(tr("&Temperature"), stylesBox);
-    QAbstractButton *styleTempDiff = new QRadioButton(tr("Temperature &minus Tbf"), stylesBox);
+    QAbstractButton *styleTempDiff = new QRadioButton(tr("Tem&perature minus Tbf"), stylesBox);
     QAbstractButton *styleMixed = new QRadioButton(tr("&Mixed"), stylesBox);
-    QAbstractButton *styleWater = new QRadioButton(tr("T&hawed volume fraction"), stylesBox);
+    QAbstractButton *styleWater = new QRadioButton(tr("Thawed &volume fraction"), stylesBox);
 
     styles->addButton(styleTemp, QFrost::blockShowsTemperatureField);
     styles->addButton(styleTempDiff, QFrost::blockShowsTemperatureDiffField);

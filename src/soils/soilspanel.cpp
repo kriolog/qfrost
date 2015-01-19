@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -34,7 +34,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mAnyClearBlockIsSelected(false),
     mApplySoil(new QPushButton(tr("Apply to selected blocks"))),
     mApplySoilToClear(new QPushButton(tr("Apply to selected clear blocks"))),
-    mApplySoilFill(new QPushButton(tr("&Apply using fill")))
+    mApplySoilFill(new QPushButton(tr("&Apply as fill")))
 {
     mSoilsWidget = new SoilsWidget(this);
 

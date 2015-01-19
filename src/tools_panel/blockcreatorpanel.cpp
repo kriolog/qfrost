@@ -91,7 +91,7 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     mainLayout->addWidget(mRectangularToolPanel);
 
     SettingsBox *miscBox = new SettingsBox(tr("Miscellaneous"), this);
-    QCheckBox *mustChangePolygons = new QCheckBox(tr("Append &polygon"), miscBox);
+    QCheckBox *mustChangePolygons = new QCheckBox(tr("&Append polygon"), miscBox);
     QString s;
     s = tr("If enabled, will append rectangular boundary polygon when applying tool.\n"
            "Else will create blocks without modifying (or creating) any polygons at all.");
