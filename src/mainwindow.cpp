@@ -881,8 +881,7 @@ void MainWindow::createStatusBar()
     const int emptyStatusBarHeight = statusBar()->sizeHint().height();
     #endif
 
-    statusBar()->setStyleSheet("QStatusBar::item {background: palette(base); "
-                                                 "border: 1px inset palette(dark); "
+    statusBar()->setStyleSheet("QStatusBar::item {border: 1px inset palette(dark); "
                                                  "margin: 0; padding: 0; }");
 
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
