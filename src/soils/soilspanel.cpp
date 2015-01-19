@@ -44,7 +44,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mainLayout->addWidget(mApplySoil);
     mainLayout->addWidget(mApplySoilToClear);
     mainLayout->addWidget(mApplySoilFill);
-    mainLayout->addSpacing(qMax(6, mainLayout->spacing() / 2));
+    mainLayout->addSpacing(qMin(6, mainLayout->spacing() / 2));
 
     QPushButton *openTableEditor = new QPushButton(tr("&Table Editor"), this);
     mainLayout->addWidget(openTableEditor);
@@ -58,7 +58,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     connect(mSoilsWidget, SIGNAL(selectionChanged()),
             SLOT(updateApplyButtons()));
     updateApplyButtons();
-    
+
     const QString shortcutText = tr("Use <b>%1</b> as shortcut.");
 
     mApplySoil->setShortcut(QKeySequence::InsertParagraphSeparator);
