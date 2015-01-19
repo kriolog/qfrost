@@ -51,10 +51,10 @@ public:
     bool discretizesColors() const {
         return mDiscretizeColors;
     }
-    void drawTemperatureLegend(QPainter *painter,
-                               const QRect &rect,
-                               bool useDarkPen,
-                               const QString &zeroLabel = "0") const;
+    int drawTemperatureLegend(QPainter *painter,
+                              const QRect &rect,
+                              bool useDarkPen,
+                              const QString &zeroLabel = "0") const;
     void drawThawedPartLegend(QPainter *painter,
                               const QRectF &rect,
                               bool useDarkPen) const;

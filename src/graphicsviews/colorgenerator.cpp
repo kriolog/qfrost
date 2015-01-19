@@ -141,7 +141,8 @@ void ColorGenerator::setDiscretizeColors(bool discretizeColors)
     }
 }
 
-void ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect, bool useDarkPen, const QString &zeroLabel) const
+int ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect,
+                                          bool useDarkPen, const QString &zeroLabel) const
 {
     static const int penWidth = 3;
     QRectF scaleRect = rect;
@@ -229,7 +230,10 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect,
     painter->setRenderHint(QPainter::Antialiasing, false);
     bool zeroIsDrawn = false;
 
-    const int textX = barRect.right() + penWidth + 1;
+    static const int textOffset = penWidth + 1;
+
+    const int textX = barRect.right() + textOffset;
+    int resultingTextWidth = 0; // получившаяся ширина для самой широкой подписи
     foreach(const QGradientStop & s, stops) {
         qreal y;
         QString t;
@@ -254,10 +258,17 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect,
 
         const QStaticText staticText(t);
 
-        const double textYDelta = double(mustUseStaticText
-                                         ? staticText.size().height()
-                                         : painter->fontMetrics().tightBoundingRect(t).height())
-                                  / 2.0;
+        // Прямоугольник, в который влезает в текст.
+        // Верхняя левая точка может быть или (0,0), или слегка левее/правее.
+        const QRectF textRect = mustUseStaticText
+                                ? QRectF(QPointF(), staticText.size())
+                                : painter->fontMetrics().tightBoundingRect(t);
+
+        if (textRect.right() > resultingTextWidth) {
+            resultingTextWidth = textRect.right();
+        }
+
+        const double textYDelta = textRect.height() / 2.0;
 
         const int textY = qRound(y + (mustUseStaticText ? -textYDelta : textYDelta));
         if (!useDarkPen) {
@@ -289,6 +300,10 @@ void ColorGenerator::drawTemperatureLegend(QPainter *painter, const QRect &rect,
     }
 
     painter->restore();
+
+    QRect resultRect = rect;
+    resultRect.setRight(textX + textOffset + resultingTextWidth);
+    return resultRect.width();
 }
 
 void ColorGenerator::drawThawedPartLegend(QPainter *painter,

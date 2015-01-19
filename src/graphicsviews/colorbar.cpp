@@ -165,8 +165,19 @@ void ColorBar::paintEvent(QPaintEvent *event)
     QPainter p(this);
     //p.fillRect(rect(), Qt::yellow);
     if (mShowsTemperature) {
-        mColorGenerator->drawTemperatureLegend(&p, rect(), view->isLight(),
-                                               mTemperatureZeroTick);
+        const int w = mColorGenerator->drawTemperatureLegend(&p, rect(),
+                                                             view->isLight(),
+                                                             mTemperatureZeroTick);
+
+        if (width() != w) {
+            qDebug("Temperature scale width autoset from %d to %d", width(), w);
+            resize(w, height());
+
+            View *const view = qobject_cast<View * >(parent());
+            Q_ASSERT(view);
+            QWidget *const viewport = view->viewport();
+            updatePos(viewport->size());
+        }
     } else {
         mColorGenerator->drawThawedPartLegend(&p, rect(), view->isLight());
     }
