@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -71,7 +71,6 @@ BlockWithOldTemperature::BlockWithOldTemperature(Block *block)
 
 void BlockWithOldTemperature::setTemperature(double newT)
 {
-    qDebug("olololo");
     if (newT != block()->mSoilBlock.temperature()) {
         block()->mSoilBlock.setTemperature(newT);
         block()->updateFromTemperature();
