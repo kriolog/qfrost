@@ -39,7 +39,7 @@ SoilsPanel::SoilsPanel(ControlPanel *parent): QWidget(parent),
     mSoilsWidget = new SoilsWidget(this);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(QMargins());
+    mainLayout->setContentsMargins(QMargins(0,0,0,1));
     mainLayout->addWidget(mSoilsWidget);
     mainLayout->addWidget(mApplySoil);
     mainLayout->addWidget(mApplySoilToClear);
