@@ -2220,7 +2220,7 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/soils/soilspanel.cpp" line="37"/>
-        <source>&amp;Apply as fill</source>
+        <source>&amp;Apply using fill</source>
         <translation>&amp;Залить</translation>
     </message>
     <message>
