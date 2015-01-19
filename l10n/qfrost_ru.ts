@@ -578,8 +578,8 @@ For fixed height use unity (minimum).</source>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="94"/>
-        <source>Append &amp;polygon</source>
-        <translation>Добавить &amp;полигон</translation>
+        <source>&amp;Append polygon</source>
+        <translation>&amp;Добавить полигон</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="96"/>
@@ -738,16 +738,6 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
 <context>
     <name>qfgui::ComputationControl</name>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="72"/>
-        <source>&amp;Start</source>
-        <translation>&amp;Старт</translation>
-    </message>
-    <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="74"/>
-        <source>&amp;Stop</source>
-        <translation>&amp;Стоп</translation>
-    </message>
-    <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="105"/>
         <source>Computations Control</source>
         <translation>Управление расчётами</translation>
@@ -755,17 +745,12 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="110"/>
         <source>&amp;Initial date:</source>
-        <translation>&amp;Начало:</translation>
+        <translation>Н&amp;ачало:</translation>
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="111"/>
         <source>Fina&amp;l date:</source>
-        <translation>&amp;Окончание:</translation>
-    </message>
-    <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="113"/>
-        <source>S&amp;teps per day:</source>
-        <translation>&amp;Шагов в сутки:</translation>
+        <translation>О&amp;кончание:</translation>
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="75"/>
@@ -783,14 +768,14 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>&amp;Температура</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="158"/>
-        <source>Temperature &amp;minus Tbf</source>
-        <translation>Температура &amp;минус Tbf</translation>
-    </message>
-    <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="159"/>
         <source>&amp;Mixed</source>
         <translation>С&amp;мешанный</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="160"/>
+        <source>Thawed &amp;volume fraction</source>
+        <translation>Отн. &amp;объём талой фазы</translation>
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="167"/>
@@ -812,6 +797,21 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <location filename="../src/control_panel/computationcontrol.cpp" line="169"/>
         <source>If block is at phase transition,&lt;br/&gt;it&apos;s color repesents thawed volume fraction;&lt;br/&gt;else it represents temperature</source>
         <translation>Если в блоке идёт фазовый переход, его цвет&lt;br/&gt;показывает степень его протаивания;&lt;br/&gt;иначе — температуру</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="72"/>
+        <source>Start</source>
+        <translation>Старт</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="74"/>
+        <source>Stop</source>
+        <translation>Стоп</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="113"/>
+        <source>Steps per &amp;day:</source>
+        <translation>&amp;Шагов в сутки:</translation>
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="117"/>
@@ -846,9 +846,9 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>Осесимметр. задача</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/computationcontrol.cpp" line="160"/>
-        <source>T&amp;hawed volume fraction</source>
-        <translation>&amp;Отн. объём талой фазы</translation>
+        <location filename="../src/control_panel/computationcontrol.cpp" line="158"/>
+        <source>Tem&amp;perature minus Tbf</source>
+        <translation>Т&amp;емпература минус Tbf</translation>
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="168"/>
@@ -1987,7 +1987,7 @@ Blank if not found or disabled.</source>
     <message>
         <location filename="../src/graphicsviews/scene.cpp" line="372"/>
         <source>Computations Start Unsuccessful</source>
-        <translation>Старт расчётов не удался</translation>
+        <translation>Запуск расчётов не удался</translation>
     </message>
 </context>
 <context>
@@ -2220,7 +2220,7 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/soils/soilspanel.cpp" line="37"/>
-        <source>&amp;Apply using fill</source>
+        <source>&amp;Apply as fill</source>
         <translation>&amp;Залить</translation>
     </message>
     <message>
