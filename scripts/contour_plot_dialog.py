@@ -54,7 +54,10 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
     __canvas = None
     __filename = ""
 
+    __contourRedrawTimer = None
+
     __STATUSBAR_MESSAGE_TIMEOUT = 2000
+    __CONTOUR_REDRAW_DELAY = 420
 
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
@@ -129,11 +132,7 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         iso_uses_v_act = QtWidgets.QAction(uses_v_act_text, iso_uses_act_group)
         iso_uses_v_act.setCheckable(True)
 
-        iso_replot_act = QtWidgets.QAction('Replot Contours', self)
-        iso_replot_act.setStatusTip('Replot contours - use to polish labels after resizing image')
-        iso_replot_act.triggered.connect(self.__plot.replot_iso)
-
-        # Дополнительнып элементы построения
+        # Дополнительные элементы построения
         act_visibility_act = VisibilityAction('&Phase Transition Zone', self, False)
         act_visibility_act.triggered.connect(self.__plot.set_act_visibility)
 
@@ -151,14 +150,22 @@ class AreaPlotDialog(QtWidgets.QMainWindow):
         view.addAction(iso_separator_act)
         view.addAction(iso_visibility_act)
         view.addActions(iso_uses_act_group.actions())
-        view.addAction(iso_replot_act)
         view.addSeparator()
         view.addAction(act_visibility_act)
+
+        self.__contourRedrawTimer = QtCore.QTimer()
+        self.__contourRedrawTimer.setInterval(self.__CONTOUR_REDRAW_DELAY)
+        self.__contourRedrawTimer.setSingleShot(True)
+        self.__contourRedrawTimer.timeout.connect(self.__plot.replot_iso)
 
         self.__updateTitle()
 
         self.statusBar().showMessage('Welcome to QFrost 2D Plot!',
                                      self.__STATUSBAR_MESSAGE_TIMEOUT)
+
+
+    def resizeEvent(self, evt=None):
+        self.__contourRedrawTimer.start();
 
 
     def __updateTitle(self):
