@@ -479,7 +479,7 @@ void CurvePlotDialog::updateKnownTemperatureLimits()
     // Если полученный диапазон слишком мал, выставим его по average(minT, maxT)
     static const double minTemperatureRange = 5.0;
     if (temperatureRange < minTemperatureRange) {
-        const double avgT = temperatureRange / 2.0;
+        const double avgT = (mKnownTemperatureMin + mKnownTemperatureMax) / 2.0;
         static const double deltaT = minTemperatureRange / 2.0;
 
         mKnownTemperatureMin = qFloor(avgT - deltaT);
