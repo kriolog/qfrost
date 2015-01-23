@@ -201,6 +201,7 @@ void CurvePlot::setTemperatureVisible(bool visible)
 void CurvePlot::setThawedPartVisible(bool visible)
 {
     mThawedPart->setVisible(visible);
+    mThawedPart->valueAxis()->setVisible(visible);
     mPlot->replot();
 }
 
