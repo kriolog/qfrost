@@ -43,6 +43,8 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QCoreApplication>
+#include <qmath.h>
+#include <QLabel>
 
 using namespace qfgui;
 
@@ -135,7 +137,7 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     QPushButton *autoSetCross2SceneX = new QPushButton(setAutoCoordIcon, "");
     QPushButton *autoSetCross2SceneY = new QPushButton(setAutoCoordIcon, "");
 
-    const QString setAutoSceneCoordTip = tr("Set this coordinate automatically for uniform image scaling.\n"
+    const QString setAutoSceneCoordTip = tr("Set this coordinate automatically for scaling with given factor ratio.\n"
                                             "All the rest coordinates (4 pixmap & 3 domain) must be set.");
     autoSetCross1SceneX->setToolTip(setAutoSceneCoordTip);
     autoSetCross1SceneY->setToolTip(setAutoSceneCoordTip);
@@ -261,12 +263,15 @@ void BackgroundDialog::acceptAndSendResult()
     const double dxImage = mCross1PixmapX->value() - mCross2PixmapX->value();
     const double dyImage = mCross1PixmapY->value() - mCross2PixmapY->value();
 
-    if (qAbs(dxScene/dyScene - dxImage/dyImage) > 0.01) {
+    if (qAbs(qLn((dxScene/dyScene)/(dxImage/dyImage))) > qLn(100.5)) {
+        // соотношение сторон изменяется более чем в 100.5...
         if (QMessageBox::question(this,
-                                  tr("Non-Uniform Scale"),
-                                  tr("Background aspect ratio (as it's shown in domain) will differ from original. "
-                                     "For uniform scaling use any of four buttons next to domain pos input fields.\n\n"
-                                     "Are you sure to continue and show non-uniformly scaled background?"))
+                                  tr("Scale Factor Ratio Changes too Much"),
+                                  tr("Background aspect factor ratio (X:Y) will too much differ from original. "
+                                     "It can lead to fuzzy lines on it.\n\nIf you have vector version of image, it is recommended "
+                                     "to export bitmap with uniform scaling (1:1) before loading it in %1.\n\n"
+                                     "Are you sure to continue and use flattened background?")
+                                  .arg(QCoreApplication::applicationName()))
             != QMessageBox::Yes) {
             return;
         }
@@ -537,42 +542,119 @@ bool BackgroundDialog::tryLoadReferenceFile()
     return true;
 }
 
+/// Открывает диалог выбора соотношения сторон x:y и возвращает результат.
+/// Соотношение задаётся двумя целыми числами. 
+/// Если диалог был отменён, возвращается отрицательное число.
+static double getAxesScaleFactorRatio(int crossNum, Qt::Orientation axeOrientation, QWidget *parent = 0)
+{
+    const QChar axeLetter = axeOrientation == Qt::Horizontal ? 'x' : 'y';
+
+    QDialog *dialog = new QDialog(parent);
+    QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dialog);
+    QObject::connect(buttons, SIGNAL(accepted()), dialog, SLOT(accept()));
+
+    QSpinBox *xVal = new QSpinBox(dialog);
+    QSpinBox *yVal = new QSpinBox(dialog);
+    xVal->setMinimum(1);
+    yVal->setMinimum(1);
+    static const int maxVal = 99999;
+    xVal->setMaximum(maxVal);
+    yVal->setMaximum(maxVal);
+
+    QHBoxLayout *valLayout = new QHBoxLayout();
+    valLayout->addWidget(xVal, 1);
+    valLayout->addWidget(new QLabel(":"));
+    valLayout->addWidget(yVal, 1);
+    valLayout->setContentsMargins(QMargins());
+
+    QLabel *l = new QLabel(QObject::tr("You requested auto setting %1 coordinate (meters) value for cross %2."
+                                       "Please input background scale factor ratio (X:Y). It will be used besides "
+                                       "all other coordinates you've entered in main dialog window.<br><br>"
+                                       "<b>Warning!</b> If you have vector version of background, it is recommended "
+                                       "to export it with uniform scaling (and input 1:1 here).")
+                           .arg(axeLetter).arg(crossNum));
+    l->setWordWrap(true);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(dialog);
+    mainLayout->addWidget(l);
+    mainLayout->addLayout(valLayout);
+    mainLayout->addWidget(buttons);
+
+    if (dialog->exec() == QDialog::Accepted) {
+        return double(xVal->value())/double(yVal->value());
+    } else {
+        return -420;
+    }
+}
+
 void BackgroundDialog::autoSetCross1SceneX()
 {
-    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
-                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
-
-    const double dx = r * (mCross1SceneY->value() - mCross2SceneY->value());
-
-    mCross1SceneX->setValue(mCross2SceneX->value() + dx);
+    const double d = getAxesScaleFactorRatio(1, Qt::Horizontal);
+    if (d > 0.0) {
+        autoSetCross1SceneX(d);
+    }
 }
 
 void BackgroundDialog::autoSetCross1SceneY()
 {
-    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
-                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
-
-    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r;
-
-    mCross1SceneY->setValue(mCross2SceneY->value() + dy);
+    const double d = getAxesScaleFactorRatio(1, Qt::Vertical);
+    if (d > 0.0) {
+        autoSetCross1SceneY(d);
+    }
 }
 
 void BackgroundDialog::autoSetCross2SceneX()
 {
-    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
-                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
-
-    const double dx = r * (mCross1SceneY->value() - mCross2SceneY->value());
-
-    mCross2SceneX->setValue(mCross1SceneX->value() - dx);
+    const double d = getAxesScaleFactorRatio(2, Qt::Horizontal);
+    if (d > 0.0) {
+        autoSetCross2SceneX(d);
+    }
 }
 
 void BackgroundDialog::autoSetCross2SceneY()
 {
+    const double d = getAxesScaleFactorRatio(2, Qt::Vertical);
+    if (d > 0.0) {
+        autoSetCross2SceneY(d);
+    }
+}
+
+void BackgroundDialog::autoSetCross1SceneX(double d)
+{
     const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
                      double(mCross1PixmapY->value() - mCross2PixmapY->value());
 
-    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r;
+    const double dx = r * d * (mCross1SceneY->value() - mCross2SceneY->value());
+
+    mCross1SceneX->setValue(mCross2SceneX->value() + dx);
+}
+
+void BackgroundDialog::autoSetCross1SceneY(double d)
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r / d;
+
+    mCross1SceneY->setValue(mCross2SceneY->value() + dy);
+}
+
+void BackgroundDialog::autoSetCross2SceneX(double d)
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dx = r * d * (mCross1SceneY->value() - mCross2SceneY->value());
+
+    mCross2SceneX->setValue(mCross1SceneX->value() - dx);
+}
+
+void BackgroundDialog::autoSetCross2SceneY(double d)
+{
+    const double r = double(mCross1PixmapX->value() - mCross2PixmapX->value()) /
+                     double(mCross1PixmapY->value() - mCross2PixmapY->value());
+
+    const double dy = (mCross1SceneX->value() - mCross2SceneX->value()) / r / d;
 
     mCross2SceneY->setValue(mCross1SceneY->value() - dy);
 }
