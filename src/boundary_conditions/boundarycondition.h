@@ -156,6 +156,9 @@ signals:
     void temperatureTrendChanged();
     void temperatureTrendStartYearChanged();
 
+protected:
+    int propertiesLackCount(int version);
+
 private:
     /// Тип граничного условия.
     qfcore::BoundaryCondition::Type mType;

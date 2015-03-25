@@ -1098,7 +1098,7 @@ QString MainWindow::tryLoad(QFile &file)
         qWarning("Load failed: cannot read version!");
         return badFormatError;
     }
-    if (version != kFilesVersion) {
+    if (version != kFilesVersion && version != 7) {
         QString error;
         if (version < kFilesVersion) {
             qWarning("Load failed: version of file is too low: %d!", version);
@@ -1117,11 +1117,12 @@ QString MainWindow::tryLoad(QFile &file)
     try {
         /****************************** грунты ********************************/
         QList<const Soil *> soils;
-        soils = castedList<Soil>(mControlPanel->soilsPanel()->model()->load(in));
+        soils = castedList<Soil>(mControlPanel->soilsPanel()
+                ->model()->load(in, version));
         /************************* граничные условия **************************/
         QList<const BoundaryCondition *> boundaryConditions;
         boundaryConditions = castedList<BoundaryCondition>(mControlPanel->boundaryConditionsPanel()
-                             ->model()->load(in));
+                             ->model()->load(in, version));
         /****************************** даты **********************************/
         mControlPanel->computationControl()->load(in);
         /***************************** сцену **********************************/

@@ -304,3 +304,10 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return Item::shortPropertyNameGenetive(propertyName);
     }
 }
+
+int BoundaryCondition::propertiesLackCount(int version)
+{
+    Q_ASSERT(version >= 7);
+    return version == 7 ? 3 : 0;
+}
+

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -104,7 +104,7 @@ public:
     /// Нумерует наши итемы и сохраняет их в @p out
     void save(QDataStream &out) const;
 
-    QList<const Item *> load(QDataStream &in);
+    QList<const Item *> load(QDataStream &in, int version);
 
 protected:
     void childEvent(QChildEvent *event);

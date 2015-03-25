@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -89,7 +89,7 @@ public:
     /// Сохраняет в @p out все наши properties
     void save(QDataStream &out) const;
     /// Загружает из @p in все наши properties
-    void load(QDataStream &in);
+    void load(QDataStream &in, int version);
 
     /**
      * Увеличивает счётик кол-во ссылающихся на этот элемент undo-команд.
@@ -117,6 +117,12 @@ protected:
     virtual QList<QString> priorityProperties() {
         return QList<QString>();
     }
+
+    /// Количество свойств, не хватающих в версии файла .qfrost @p version, по
+    /// сравнению с текущей версией.
+    /// Нужно для обратной совместимости (которая будет работать, если свойства
+    /// только ДОБАВЛЯЛИСЬ - иначе обратную совместимость не сохранить).
+    virtual int propertiesLackCount(int version) { return 0; }
 
 public slots:
     void setName(const QString &name);

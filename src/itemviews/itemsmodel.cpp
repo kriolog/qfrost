@@ -590,29 +590,22 @@ void ItemsModel::save(QDataStream &out) const
     }
 }
 
-QList<const Item *> ItemsModel::load(QDataStream &in)
+QList<const Item *> ItemsModel::load(QDataStream &in, int version)
 {
     Q_ASSERT(mFixedItem == NULL || mFixedItem->id() < 0);
     qint32 itemsNum;
     in >> itemsNum;
 
-    qDebug("begin");
     QList<const Item *> result;
     for (int i = 0; i < itemsNum; ++i) {
-        qDebug("%i", i);
         QObject *object = mItemsMetaObject.newInstance();
         Q_ASSERT(object != NULL);
         Item *item = qobject_cast<Item *>(object);
         Q_ASSERT(item != NULL);
-        qDebug("%i 2", i);
-        item->load(in);
-        qDebug("%i 2.5", i);
+        item->load(in, version);
         item->setParent(this);
-
         result << item;
         Q_ASSERT(result.last() != NULL);
-        qDebug("%i 3", i);
     }
-    qDebug("end");
     return result;
 }

@@ -175,10 +175,10 @@ void Item::save(QDataStream &out) const
     qDebug("done saving item!");
 }
 
-void Item::load(QDataStream &in)
+void Item::load(QDataStream &in, int version)
 {
-    for (int i = Item::staticMetaObject.propertyOffset();
-            i < metaObject()->propertyCount(); ++i) {
+    const int propertyCount = metaObject()->propertyCount() - propertiesLackCount(version);
+    for (int i = Item::staticMetaObject.propertyOffset(); i < propertyCount; ++i) {
         QVariant v;
         in >> v;
         if (v.type() == QVariant::Int) {
