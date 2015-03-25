@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -25,6 +25,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDataWidgetMapper>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QSpinBox>
 #include <QtCore/QStringListModel>
 #include <QtWidgets/QStackedWidget>
 
@@ -33,6 +34,7 @@
 #include <itemviews/item.h>
 #include <qfrost.h>
 #include <mainwindow.h>
+#include <smartdoublespinbox.h>
 
 using namespace qfgui;
 
@@ -40,6 +42,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
         const QStringList &forbiddenNames,
         bool isNewItem, QWidget *parent)
     : ItemEditDialog(model, forbiddenNames, parent)
+    , mTrendGroupBox(new QGroupBox(tr("Temperature trend"), this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
 
@@ -79,8 +82,28 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     valuesWidget->addWidget(values3);
     mainLayout->addWidget(valuesWidget);
 
+    QFormLayout *trendLayout = new QFormLayout(mTrendGroupBox);
+    mTrendGroupBox->setCheckable(true);
+    QSpinBox *trendStartYear = new QSpinBox(this);
+    // FIXME ограничения года в панели моделирования сейчас не выставляются и
+    //       сюда вписаны дефолтные ограничения QDateEdit. А лучше устанавливать
+    //       ограничения там самостоятельно (и использовать то же самое здесь).
+    trendStartYear->setMinimum(1773);
+    trendStartYear->setMaximum(7999);
+    SmartDoubleSpinBox *trendValue = new SmartDoubleSpinBox(this);
+    trendValue->setDecimals(3);
+    trendValue->setSingleStep(0.001);
+    trendValue->setMinimum(-1.0);
+    trendValue->setMaximum(1.0);
+    trendValue->setSuffix(tr(" \302\260C/decade"));
+    trendLayout->addRow(tr("Trend value:"), trendValue);
+    trendLayout->addRow(tr("Reference year:"), trendStartYear);
+    mainLayout->addWidget(mTrendGroupBox);
+
     connect(typeBox, SIGNAL(currentIndexChanged(int)),
             valuesWidget, SLOT(setCurrentIndex(int)));
+    connect(typeBox, SIGNAL(currentIndexChanged(int)),
+            SLOT(updateTrendWidgetVisibility(int)));
     /**************************************************************************/
 
     mapper()->addMapping(typeBox, BC_Type, "currentIndex");
@@ -88,9 +111,18 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     mapper()->addMapping(values2, BC_HeatFlowDensities);
     mapper()->addMapping(temperatures3, BC_Temperatures3);
     mapper()->addMapping(heatTranferFactors, BC_HeatTransferFactors);
+    mapper()->addMapping(mTrendGroupBox, BC_HasTemperatureTrend, "checked");
+    mapper()->addMapping(trendValue, BC_TemperatureTrend);
+    mapper()->addMapping(trendStartYear, BC_TemperatureTrendStartYear);
 
     mapper()->revert();
 
     // Примем минимальный размер
     resize(QSize(0, 0));
+}
+
+void BoundaryConditionEditDialog::updateTrendWidgetVisibility(int type)
+{
+    const bool canHaveTrend = (type != 1);
+    mTrendGroupBox->setVisible(canHaveTrend);
 }
