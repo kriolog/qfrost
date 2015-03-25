@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -32,7 +32,11 @@ enum BoundaryConditionsModelColumn {
     BC_Temperatures1,
     BC_HeatFlowDensities,
     BC_Temperatures3,
-    BC_HeatTransferFactors
+    BC_HeatTransferFactors,
+    BC_HasTemperatureTrend,
+    BC_TemperatureTrend,
+    BC_TemperatureTrendStartYear,
+    BC_TemperatureTrendMonths
 };
 
 QT_FORWARD_DECLARE_CLASS(MainWindow)
