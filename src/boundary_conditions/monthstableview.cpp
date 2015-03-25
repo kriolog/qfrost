@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -30,13 +30,13 @@ MonthsTableView::MonthsTableView(QWidget *parent)
     : QTableView(parent)
 {
     horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     horizontalHeader()->setHighlightSections(false);
 
     setAlternatingRowColors(true);
 
-    setItemDelegateForColumn(1,  new PhysicalPropertyDelegate(this, true));
+    setItemDelegateForColumn(1, new PhysicalPropertyDelegate(this, true));
 }
 
 void MonthsTableView::setModel(QAbstractItemModel *model)
