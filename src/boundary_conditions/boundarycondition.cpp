@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -40,6 +40,10 @@ BoundaryCondition::BoundaryCondition(const QString &name,
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mHasTemperatureTrend(false)
+    , mTemperatureTrend(0.1)
+    // TODO лучше вынести начальную дату в qfrost.h и брать год оттуда
+    , mTemperatureTrendStartYear(2000)
     , mNumInDomain()
 {
     fillTemperaturesList(mTemperatures1);
@@ -60,6 +64,9 @@ BoundaryCondition::BoundaryCondition(const Item *other,
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
+    , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
+    , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
     , mNumInDomain()
 {
 }
@@ -71,6 +78,9 @@ BoundaryCondition::BoundaryCondition(const Item *other)
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
+    , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
+    , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
     , mNumInDomain()
 {
 
@@ -83,6 +93,9 @@ BoundaryCondition::BoundaryCondition()
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mHasTemperatureTrend()
+    , mTemperatureTrend()
+    , mTemperatureTrendStartYear()
     , mNumInDomain()
 {
 
@@ -150,13 +163,19 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
     switch (mType) {
     case qfcore::BoundaryCondition::FirstType:
         return qfcore::BoundaryCondition(mType,
-                                         stdVector(mTemperatures1));
+                                         stdVector(mTemperatures1),
+                                         mHasTemperatureTrend,
+                                         mTemperatureTrend,
+                                         mTemperatureTrendStartYear);
     case qfcore::BoundaryCondition::SecondType:
         return qfcore::BoundaryCondition(mType,
                                          stdVector(mHeatFlowDensities));
     case qfcore::BoundaryCondition::ThirdType:
         return qfcore::BoundaryCondition(stdVector(mTemperatures3),
-                                         stdVector(resistivities()));
+                                         stdVector(resistivities()),
+                                         mHasTemperatureTrend,
+                                         mTemperatureTrend,
+                                         mTemperatureTrendStartYear);
     default:
         Q_ASSERT(false);
         return qfcore::BoundaryCondition(std::vector<double>(), std::vector<double>());
@@ -235,6 +254,33 @@ void BoundaryCondition::setHeatTransferFactors(const QList<double> &v)
     emit heatTransferFactorsChanged();
 }
 
+void BoundaryCondition::setHasTemperatureTrend(bool v)
+{
+    if (hasTemperatureTrend() == v) {
+        return;
+    }
+    mHasTemperatureTrend = v;
+    emit hasTemperatureTrendChanged();
+}
+
+void BoundaryCondition::setTemperatureTrend(double v)
+{
+    if (temperatureTrend() == v) {
+        return;
+    }
+    mTemperatureTrend = v;
+    emit temperatureTrendChanged();
+}
+
+void BoundaryCondition::setTemperatureTrendStartYear(double v)
+{
+    if (temperatureTrendStartYear() == v) {
+        return;
+    }
+    mTemperatureTrendStartYear = v;
+    emit temperatureTrendStartYearChanged();
+}
+
 QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName)
 {
     if (propertyName == "type") {
@@ -248,6 +294,12 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return tr("T(III)");
     } else if (propertyName == "heatTransferFactors") {
         return tr("\316\261");
+    } else if (propertyName == "hasTemperatureTrend") {
+        return tr("trend usage");
+    } else if (propertyName == "temperatureTrend") {
+        return tr("trend value");
+    } else if (propertyName == "temperatureTrendStartYear") {
+        return tr("trend ref. year");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }

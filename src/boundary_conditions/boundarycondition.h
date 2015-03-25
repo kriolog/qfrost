@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -38,10 +38,12 @@ namespace qfgui
 class BoundaryCondition: public Item
 {
     Q_OBJECT
+
     Q_PROPERTY(int type
                READ type
                WRITE setType
                NOTIFY typeChanged)
+
     Q_PROPERTY(QList<double> temperatures1
                READ temperatures1
                WRITE setTemperatures1
@@ -58,6 +60,19 @@ class BoundaryCondition: public Item
                READ heatTransferFactors
                WRITE setHeatTransferFactors
                NOTIFY heatTransferFactorsChanged)
+
+    Q_PROPERTY(bool hasTemperatureTrend
+               READ hasTemperatureTrend
+               WRITE setHasTemperatureTrend
+               NOTIFY hasTemperatureTrendChanged)
+    Q_PROPERTY(double temperatureTrend
+               READ temperatureTrend
+               WRITE setTemperatureTrend
+               NOTIFY temperatureTrendChanged)
+    Q_PROPERTY(int temperatureTrendStartYear
+               READ temperatureTrendStartYear
+               WRITE setTemperatureTrendStartYear
+               NOTIFY temperatureTrendStartYearChanged)
 public:
     Q_INVOKABLE BoundaryCondition(const QString &name,
                                   const QColor &color);
@@ -84,6 +99,16 @@ public:
     }
     const QList<double> &heatTransferFactors() const {
         return mHeatTransferFactors;
+    }
+
+    bool hasTemperatureTrend() const {
+        return mHasTemperatureTrend;
+    }
+    double temperatureTrend() const {
+        return mTemperatureTrend;
+    }
+    int temperatureTrendStartYear() const {
+        return mTemperatureTrendStartYear;
     }
 
     static const BoundaryCondition *voidCondition() {
@@ -116,12 +141,20 @@ public slots:
     void setTemperatures3(const QList<double> &v);
     void setHeatTransferFactors(const QList<double> &v);
 
+    void setHasTemperatureTrend(bool v);
+    void setTemperatureTrend(double v);
+    void setTemperatureTrendStartYear(double v);
+
 signals:
     void typeChanged();
     void temperatures1Changed();
     void heatFlowDensitiesChanged();
     void temperatures3Changed();
     void heatTransferFactorsChanged();
+
+    void hasTemperatureTrendChanged();
+    void temperatureTrendChanged();
+    void temperatureTrendStartYearChanged();
 
 private:
     /// Тип граничного условия.
@@ -135,6 +168,13 @@ private:
     QList<double> mTemperatures3;
     /// Коэффициенты теплоотдачи (для 3го рода)
     QList<double> mHeatTransferFactors;
+
+    /// Включен ли тренд температуры
+    bool mHasTemperatureTrend;
+    /// Тренд температуры (градусов за год)
+    double mTemperatureTrend;
+    /// Год, от которого начинается тренд (для него вклад считается нулевым)
+    int mTemperatureTrendStartYear;
 
     /// Заполняет @p list двенадцатью @p value
     static void fillList(QList<double> &list, double value = 0);

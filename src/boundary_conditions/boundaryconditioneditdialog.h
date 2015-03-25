@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -24,6 +24,7 @@
 
 QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 QT_FORWARD_DECLARE_CLASS(QLineEdit)
+QT_FORWARD_DECLARE_CLASS(QGroupBox)
 
 namespace qfgui
 {
@@ -38,6 +39,12 @@ public:
                                             const QStringList &forbiddenNames,
                                             bool isNewItem,
                                             QWidget *parent);
+
+public slots:
+    void updateTrendWidgetVisibility(int type);
+
+private:
+    QGroupBox *mTrendGroupBox;
 };
 
 }

@@ -71,7 +71,6 @@ void ComputationThread::run()
     mDomain.setTimeStep(86400.0 / mStepsInDay);
 
     qDebug("ComputationThread::run(): starting computations");
-    mDomain.setMonth(mInitialDate.month());
 
     BlocksLogger logger(mUsedBlocks, mLoggerMaxY, mScene->mainWindow());
 
@@ -80,8 +79,8 @@ void ComputationThread::run()
     /// день, данные о котором были в сцене перед отправлением очередных данных
     QDate dateOfPreviousData = mInitialDate;
 
-    // идём от начальной даты до конечной минус день
-    for (date = mInitialDate; date != mFinalDate.addDays(-1); date = date.addDays(1)) {
+    // идём от начальной даты до предпоследней => переходим в начало последней
+    for (date = mInitialDate; date != mFinalDate; date = date.addDays(1)) {
         if (mLoggingMode == ComputationSettings::DailyLogging) {
             // запоминаем все дни с первого по предпоследний...
             logger.addData(ComputationData(mDomain, date, dateOfPreviousData));
@@ -91,25 +90,20 @@ void ComputationThread::run()
                 logger.addData(ComputationData(mDomain, date, dateOfPreviousData));
             }
             // Каждый месяц пробуем выслать сцене новые данные...
-            if (mNeedBlocksRedrawing) {
-                if (mSceneWantsNewData) {
-                    if (mSceneIsReadyForRedraw) {
-                        mSceneIsReadyForRedraw = false;
-                        mSceneWantsNewData = false;
-                        mComputationData = ComputationData(mDomain,
-                                                           date,
-                                                           dateOfPreviousData);
-                        emit signalNewDataIsReady(mComputationData);
-                        dateOfPreviousData = date;
-                    }
-                }
+            if (mNeedBlocksRedrawing && mSceneWantsNewData && mSceneIsReadyForRedraw) {
+                mSceneIsReadyForRedraw = false;
+                mSceneWantsNewData = false;
+                mComputationData = ComputationData(mDomain,
+                                                   date,
+                                                   dateOfPreviousData);
+                emit signalNewDataIsReady(mComputationData);
+                dateOfPreviousData = date;
             }
-            // ... и переводим граничные условия на новый месяц
-            mDomain.setMonth(date.month());
         }
+        mDomain.setDate(date.year(), date.month(), date.day());
         emit dateChanged(date);
 
-        // только теперь делаем шаги, что переведёт нас на завтрашний день
+        // Только теперь делаем шаги, что переведёт нас к началу завтрашнего дня
         mDomain.doSteps(mStepsInDay);
 
         if (mMustStop) {
@@ -117,25 +111,14 @@ void ComputationThread::run()
         }
     }
 
-    if (mLoggingMode == ComputationSettings::DailyLogging
-            || (mLoggingMode == ComputationSettings::MonthlyLogging && date.day() == 1)) {
-        // и запоминаем состояние предпоследнего дня
-        logger.addData(ComputationData(ComputationData(mDomain,
-                                       date,
-                                       dateOfPreviousData)));
-    }
+    // Последняя итерация цикла перевела нас на начало последнего дня
+    Q_ASSERT(date == mFinalDate);
+    // (конечный результат не идёт в журнал - он пойдёт в начало следующего)
 
     if (mLoggingMode != ComputationSettings::NoLogging) {
         // и сохраняем всё
         emit loggerDataIsReady(logger);
     }
-
-    // и считаем последний день
-    date = date.addDays(1);
-    if (date.day() == 1) {
-        mDomain.setMonth(date.month());
-    }
-    mDomain.doSteps(mStepsInDay);
 
     while (!mSceneIsReadyForRedraw) {
         // ждём...

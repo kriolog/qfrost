@@ -126,11 +126,11 @@ void Domain::doSteps(unsigned int inNumSteps)
     }
 }
 
-void Domain::setMonth(int month)
+void Domain::setDate(int y, int m, int d)
 {
     for (std::vector<BoundaryCondition>::iterator it = mBoundaryConditions.begin();
             it != mBoundaryConditions.end(); ++it) {
-        it->setMonth(month);
+        it->setDate(y, m, d);
     }
 }
 
