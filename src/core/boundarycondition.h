@@ -44,25 +44,45 @@ public:
      * @param type тип граничного условия
      * @param params 12 значений характеристики условия, т.е. температур для
      *               условия I рода и плотностей теплопотока для условия II рода
+     * @param hasTemperatureTrend используется ли температурный тренд
+     * @param temperatureTrend величина температурного тренда
+     * @param yearsAfterReference сколько лет прошло от точки отсчёта тренда
      */
-    BoundaryCondition(Type type, const std::vector<double> &params)
+    BoundaryCondition(Type type,
+                      const std::vector<double> &params,
+                      bool hasTemperatureTrend = false,
+                      double temperatureTrend = 0,
+                      int yearsAfterReference = 0)
         : mType(type)
         , mParams1(params)
-        , mResistivities()  {
+        , mResistivities()
+        , mHasTemperatureTrend(hasTemperatureTrend)
+        , mTemperatureTrend(temperatureTrend)
+        , mTemperatureTrendSummary(temperatureTrend*double(yearsAfterReference)) {
         assert(mParams1.size() == 12);
         assert(mType != ThirdType);
+        assert(mType != SecondType || !hasTemperatureTrend);
     }
 
     /**
-     * Конструктор для условий II рода.
+     * Конструктор для условий III рода.
      * @param temperatures 12 значений температур
      * @param resistivities 12 значений термического сопротивления
+     * @param hasTemperatureTrend используется ли температурный тренд
+     * @param temperatureTrend величина температурного тренда
+     * @param yearsAfterReference сколько лет прошло от точки отсчёта тренда
      */
     BoundaryCondition(const std::vector<double> &temperatures,
-                      const std::vector<double> &resistivities)
+                      const std::vector<double> &resistivities,
+                      bool hasTemperatureTrend = false,
+                      double temperatureTrend = 0,
+                      int yearsAfterReference = 0)
         : mType(ThirdType)
         , mParams1(temperatures)
-        , mResistivities(resistivities) {
+        , mResistivities(resistivities)
+        , mHasTemperatureTrend(hasTemperatureTrend)
+        , mTemperatureTrend(temperatureTrend)
+        , mTemperatureTrendSummary(temperatureTrend*double(yearsAfterReference)) {
         assert(mParams1.size() == 12);
         assert(mResistivities.size() == 12);
     }

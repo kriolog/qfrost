@@ -144,7 +144,7 @@ void BoundaryCondition::fillHeatTransferFactorsList(QList< double > &list)
 }
 
 
-void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain)
+void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain, int year)
 {
     Q_ASSERT(mHeatFlowDensities.size() == 12);
     Q_ASSERT(mTemperatures1.size() == 12);
@@ -154,21 +154,27 @@ void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain)
     if (isVoid()) {
         return;
     }
-    mNumInDomain = domain->addBoundaryCondition(boundaryCondition());
+    mNumInDomain = domain->addBoundaryCondition(boundaryCondition(year));
 }
 
-qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
+qfcore::BoundaryCondition BoundaryCondition::boundaryCondition(int year) const
 {
     switch (mType) {
     case qfcore::BoundaryCondition::FirstType:
         return qfcore::BoundaryCondition(mType,
-                                         stdVector(mTemperatures1));
+                                         stdVector(mTemperatures1),
+                                         mHasTemperatureTrend,
+                                         mTemperatureTrend,
+                                         year - mTemperatureTrendStartYear);
     case qfcore::BoundaryCondition::SecondType:
         return qfcore::BoundaryCondition(mType,
                                          stdVector(mHeatFlowDensities));
     case qfcore::BoundaryCondition::ThirdType:
         return qfcore::BoundaryCondition(stdVector(mTemperatures3),
-                                         stdVector(resistivities()));
+                                         stdVector(resistivities()),
+                                         mHasTemperatureTrend,
+                                         mTemperatureTrend,
+                                         year - mTemperatureTrendStartYear);
     default:
         Q_ASSERT(false);
         return qfcore::BoundaryCondition(std::vector<double>(), std::vector<double>());

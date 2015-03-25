@@ -123,7 +123,7 @@ public:
      * Создание в рассчётной области граничного условия.
      * Также запоминает наш номер в ней.
      */
-    void moveDataToDomain(qfcore::Domain *domain);
+    void moveDataToDomain(qfcore::Domain *domain, int year);
 
     std::size_t numInDomain() const {
         return mNumInDomain;
@@ -197,7 +197,7 @@ private:
     QList<double> resistivities() const;
 
     /// Граничное условие в понятии рассчётной области
-    qfcore::BoundaryCondition boundaryCondition() const;
+    qfcore::BoundaryCondition boundaryCondition(int year) const;
 
     friend class ChangeBoundaryConditionPropertyCommand;
 };

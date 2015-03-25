@@ -266,7 +266,7 @@ QString ComputationThread::setDataInDomain(QList<Block *> blocks,
         }
     }
     foreach(BoundaryCondition * condition, boundaryConditions) {
-        condition->moveDataToDomain(&mDomain);
+        condition->moveDataToDomain(&mDomain, mInitialDate.year());
 
         if (mMustStop) {
             return QString("");
