@@ -40,6 +40,9 @@ BoundaryCondition::BoundaryCondition(const QString &name,
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mHasTemperatureTrend(false)
+    , mTemperatureTrend(0.1)
+    , mTemperatureTrendStartYear(2000)
     , mNumInDomain()
 {
     fillTemperaturesList(mTemperatures1);
@@ -60,6 +63,9 @@ BoundaryCondition::BoundaryCondition(const Item *other,
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
+    , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
+    , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
     , mNumInDomain()
 {
 }
@@ -71,6 +77,9 @@ BoundaryCondition::BoundaryCondition(const Item *other)
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
+    , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
+    , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
     , mNumInDomain()
 {
 
@@ -83,6 +92,9 @@ BoundaryCondition::BoundaryCondition()
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mHasTemperatureTrend()
+    , mTemperatureTrend()
+    , mTemperatureTrendStartYear()
     , mNumInDomain()
 {
 
