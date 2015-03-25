@@ -123,7 +123,7 @@ public:
      * Создание в рассчётной области граничного условия.
      * Также запоминает наш номер в ней.
      */
-    void moveDataToDomain(qfcore::Domain *domain, int year);
+    void moveDataToDomain(qfcore::Domain *domain);
 
     std::size_t numInDomain() const {
         return mNumInDomain;
@@ -173,7 +173,7 @@ private:
     bool mHasTemperatureTrend;
     /// Тренд температуры (градусов за год)
     double mTemperatureTrend;
-    /// Год, от которого начинается тренд (для которого вклад считается нулевым)
+    /// Год, от которого начинается тренд (для него вклад считается нулевым)
     int mTemperatureTrendStartYear;
 
     /// Заполняет @p list двенадцатью @p value
@@ -197,7 +197,7 @@ private:
     QList<double> resistivities() const;
 
     /// Граничное условие в понятии рассчётной области
-    qfcore::BoundaryCondition boundaryCondition(int year) const;
+    qfcore::BoundaryCondition boundaryCondition() const;
 
     friend class ChangeBoundaryConditionPropertyCommand;
 };

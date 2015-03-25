@@ -46,19 +46,20 @@ public:
      *               условия I рода и плотностей теплопотока для условия II рода
      * @param hasTemperatureTrend используется ли температурный тренд
      * @param temperatureTrend величина температурного тренда
-     * @param yearsAfterReference сколько лет прошло от точки отсчёта тренда
+     * @param temperatureTrendStartYear год, являющейся точкой отсчёта тренда
      */
     BoundaryCondition(Type type,
                       const std::vector<double> &params,
                       bool hasTemperatureTrend = false,
                       double temperatureTrend = 0,
-                      int yearsAfterReference = 0)
+                      int temperatureTrendStartYear = 0)
         : mType(type)
         , mParams1(params)
         , mResistivities()
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
-        , mTemperatureTrendSummary(temperatureTrend*double(yearsAfterReference)) {
+        , mTemperatureTrendStartYear(temperatureTrendStartYear)
+        , mCurrentMonth(-1) {
         assert(mParams1.size() == 12);
         assert(mType != ThirdType);
         assert(mType != SecondType || !hasTemperatureTrend);
@@ -70,28 +71,33 @@ public:
      * @param resistivities 12 значений термического сопротивления
      * @param hasTemperatureTrend используется ли температурный тренд
      * @param temperatureTrend величина температурного тренда
-     * @param yearsAfterReference сколько лет прошло от точки отсчёта тренда
+     * @param temperatureTrendStartYear год, являющейся точкой отсчёта тренда
      */
     BoundaryCondition(const std::vector<double> &temperatures,
                       const std::vector<double> &resistivities,
                       bool hasTemperatureTrend = false,
                       double temperatureTrend = 0,
-                      int yearsAfterReference = 0)
+                      int temperatureTrendStartYear = 0)
         : mType(ThirdType)
         , mParams1(temperatures)
         , mResistivities(resistivities)
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
-        , mTemperatureTrendSummary(temperatureTrend*double(yearsAfterReference)) {
+        , mTemperatureTrendStartYear(temperatureTrendStartYear)
+        , mCurrentMonth(-1) {
         assert(mParams1.size() == 12);
         assert(mResistivities.size() == 12);
     }
 
     /**
-     * Изменение параметров при переходе в новый месяц @p month (от 1 до 12).
+     * Изменение параметров при переходе в новую дату.
      * @see SoilBlock::moveInTime(), HeatSurface::moveInTime().
      */
-    inline void setMonth(int month) {
+    inline void setDate(int year, int month, int day) {
+        if (mCurrentMonth == month) {
+            return;
+        }
+        mCurrentMonth = month;
         --month;
         mCurrentParam1 = mParams1.at(month);
         if (mType == ThirdType) {
@@ -99,11 +105,7 @@ public:
         }
         if (mHasTemperatureTrend) {
             assert(mType != SecondType);
-            if (month == 11) {
-                // перешли на следующий год, вклад тренда увеличивается
-                mTemperatureTrendSummary += mTemperatureTrend;
-            }
-            mCurrentParam1 += mTemperatureTrendSummary;
+            mCurrentParam1 += mTemperatureTrend * double(year - mTemperatureTrendStartYear);
         }
     }
 
@@ -145,9 +147,11 @@ private:
     bool mHasTemperatureTrend;
     /// Тренд температуры (градусов за год)
     double mTemperatureTrend;
+    /// Год, являющейся точкой отсчёта для тренда (на его протяжении вклад = 0)
+    double mTemperatureTrendStartYear;
 
-    /// Суммарный вклад тренда - ежегодно увеличивается на mTemperatureTrend
-    double mTemperatureTrendSummary;
+    /// Текущий месяц (от 1 до 12) или -1, если setDate() не вызывался
+    int mCurrentMonth;
 };
 
 }

@@ -42,6 +42,7 @@ BoundaryCondition::BoundaryCondition(const QString &name,
     , mHeatTransferFactors()
     , mHasTemperatureTrend(false)
     , mTemperatureTrend(0.1)
+    // TODO лучше вынести начальную дату в qfrost.h и брать год оттуда
     , mTemperatureTrendStartYear(2000)
     , mNumInDomain()
 {
@@ -144,7 +145,7 @@ void BoundaryCondition::fillHeatTransferFactorsList(QList< double > &list)
 }
 
 
-void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain, int year)
+void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain)
 {
     Q_ASSERT(mHeatFlowDensities.size() == 12);
     Q_ASSERT(mTemperatures1.size() == 12);
@@ -154,10 +155,10 @@ void BoundaryCondition::moveDataToDomain(qfcore::Domain *domain, int year)
     if (isVoid()) {
         return;
     }
-    mNumInDomain = domain->addBoundaryCondition(boundaryCondition(year));
+    mNumInDomain = domain->addBoundaryCondition(boundaryCondition());
 }
 
-qfcore::BoundaryCondition BoundaryCondition::boundaryCondition(int year) const
+qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
 {
     switch (mType) {
     case qfcore::BoundaryCondition::FirstType:
@@ -165,7 +166,7 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition(int year) const
                                          stdVector(mTemperatures1),
                                          mHasTemperatureTrend,
                                          mTemperatureTrend,
-                                         year - mTemperatureTrendStartYear);
+                                         mTemperatureTrendStartYear);
     case qfcore::BoundaryCondition::SecondType:
         return qfcore::BoundaryCondition(mType,
                                          stdVector(mHeatFlowDensities));
@@ -174,7 +175,7 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition(int year) const
                                          stdVector(resistivities()),
                                          mHasTemperatureTrend,
                                          mTemperatureTrend,
-                                         year - mTemperatureTrendStartYear);
+                                         mTemperatureTrendStartYear);
     default:
         Q_ASSERT(false);
         return qfcore::BoundaryCondition(std::vector<double>(), std::vector<double>());

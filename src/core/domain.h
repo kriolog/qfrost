@@ -103,8 +103,8 @@ public:
         return mSoilBlocks;
     }
 
-    /// Делает месяц всех граничных условий равным month
-    void setMonth(int month);
+    /// Обновляет все граничные условия в соответствие с указанной датой.
+    void setDate(int y, int m, int d);
 
     /// Максимальный шаг (в секундах), при котором регуляризация не нужна
     double maximalStep() const;

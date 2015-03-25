@@ -71,7 +71,6 @@ void ComputationThread::run()
     mDomain.setTimeStep(86400.0 / mStepsInDay);
 
     qDebug("ComputationThread::run(): starting computations");
-    mDomain.setMonth(mInitialDate.month());
 
     BlocksLogger logger(mUsedBlocks, mLoggerMaxY, mScene->mainWindow());
 
@@ -104,12 +103,11 @@ void ComputationThread::run()
                     }
                 }
             }
-            // ... и переводим граничные условия на новый месяц
-            mDomain.setMonth(date.month());
         }
+        mDomain.setDate(date.year(), date.month(), date.day());
         emit dateChanged(date);
 
-        // только теперь делаем шаги, что переведёт нас на завтрашний день
+        // Только теперь делаем шаги, что переведёт нас к началу завтрашнего дня
         mDomain.doSteps(mStepsInDay);
 
         if (mMustStop) {
@@ -130,11 +128,10 @@ void ComputationThread::run()
         emit loggerDataIsReady(logger);
     }
 
-    // и считаем последний день
+    // и считаем последний день - в журнал не идёт, ибо должно войти в следующий
     date = date.addDays(1);
-    if (date.day() == 1) {
-        mDomain.setMonth(date.month());
-    }
+    Q_ASSERT(date == mFinalDate);
+    mDomain.setDate(date.year(), date.month(), date.day());
     mDomain.doSteps(mStepsInDay);
 
     while (!mSceneIsReadyForRedraw) {
@@ -266,7 +263,7 @@ QString ComputationThread::setDataInDomain(QList<Block *> blocks,
         }
     }
     foreach(BoundaryCondition * condition, boundaryConditions) {
-        condition->moveDataToDomain(&mDomain, mInitialDate.year());
+        condition->moveDataToDomain(&mDomain);
 
         if (mMustStop) {
             return QString("");
