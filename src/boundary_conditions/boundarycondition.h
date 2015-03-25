@@ -73,10 +73,6 @@ class BoundaryCondition: public Item
                READ temperatureTrendStartYear
                WRITE setTemperatureTrendStartYear
                NOTIFY temperatureTrendStartYearChanged)
-    Q_PROPERTY(QList<bool> temperatureTrendMonths
-               READ temperatureTrendMonths
-               WRITE setTemperatureTrendMonths
-               NOTIFY temperatureTrendMonthsChanged)
 public:
     Q_INVOKABLE BoundaryCondition(const QString &name,
                                   const QColor &color);
@@ -114,9 +110,6 @@ public:
     int temperatureTrendStartYear() const {
         return mTemperatureTrendStartYear;
     }
-    const QList<bool> &temperatureTrendMonths() const {
-        return mTemperatureTrendMonths;
-    }
 
     static const BoundaryCondition *voidCondition() {
         return kmVoidCondition;
@@ -151,7 +144,6 @@ public slots:
     void setHasTemperatureTrend(bool v);
     void setTemperatureTrend(double v);
     void setTemperatureTrendStartYear(double v);
-    void setTemperatureTrendMonths(const QList<bool> &v);
 
 signals:
     void typeChanged();
@@ -163,7 +155,6 @@ signals:
     void hasTemperatureTrendChanged();
     void temperatureTrendChanged();
     void temperatureTrendStartYearChanged();
-    void temperatureTrendMonthsChanged();
 
 private:
     /// Тип граничного условия.
@@ -184,8 +175,6 @@ private:
     double mTemperatureTrend;
     /// Год, от которого начинается тренд (для которого вклад считается нулевым)
     int mTemperatureTrendStartYear;
-    /// Булёвы по месяцам, обозначающие, применяется ли для каждого из них тренд
-    QList<bool> mTemperatureTrendMonths;
 
     /// Заполняет @p list двенадцатью @p value
     static void fillList(QList<double> &list, double value = 0);

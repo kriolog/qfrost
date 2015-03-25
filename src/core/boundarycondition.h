@@ -83,9 +83,7 @@ public:
                 // перешли на следующий год, вклад тренда увеличивается
                 mTemperatureTrendSummary += mTemperatureTrend;
             }
-            if (mTemperatureTrendMonths.at(month)) {
-                mCurrentParam1 += mTemperatureTrendSummary;
-            }
+            mCurrentParam1 += mTemperatureTrendSummary;
         }
     }
 
@@ -130,9 +128,6 @@ private:
 
     /// Суммарный вклад тренда - ежегодно увеличивается на mTemperatureTrend
     double mTemperatureTrendSummary;
-
-    /// Булёвы по месяцам, обозначающие, применяется ли для каждого из них тренд
-    std::vector<bool> mTemperatureTrendMonths;
 };
 
 }

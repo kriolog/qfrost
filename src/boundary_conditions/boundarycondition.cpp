@@ -262,15 +262,6 @@ void BoundaryCondition::setTemperatureTrendStartYear(double v)
     emit temperatureTrendStartYearChanged();
 }
 
-void BoundaryCondition::setTemperatureTrendMonths(const QList<bool> &v)
-{
-    if (temperatureTrendMonths() == v) {
-        return;
-    }
-    mTemperatureTrendMonths = v;
-    emit temperatureTrendMonthsChanged();
-}
-
 QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName)
 {
     if (propertyName == "type") {
@@ -290,8 +281,6 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return tr("trend value");
     } else if (propertyName == "temperatureTrendStartYear") {
         return tr("trend start year");
-    } else if (propertyName == "temperatureTrendMonths") {
-        return tr("trend months");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }
