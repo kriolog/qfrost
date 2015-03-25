@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -68,14 +68,24 @@ public:
     }
 
     /**
-     * Изменение собственных параметров при переходе в новый месяц.
-     * @see SoilBlock::moveInTime(), HeatSurface::moveInTime()
+     * Изменение параметров при переходе в новый месяц @p month (от 1 до 12).
+     * @see SoilBlock::moveInTime(), HeatSurface::moveInTime().
      */
     inline void setMonth(int month) {
         --month;
         mCurrentParam1 = mParams1.at(month);
         if (mType == ThirdType) {
             mCurrentResistivity = mResistivities.at(month);
+        }
+        if (mHasTemperatureTrend) {
+            assert(mType != SecondType);
+            if (month == 11) {
+                // перешли на следующий год, вклад тренда увеличивается
+                mTemperatureTrendSummary += mTemperatureTrend;
+            }
+            if (mTemperatureTrendMonths.at(month)) {
+                mCurrentParam1 += mTemperatureTrendSummary;
+            }
         }
     }
 
@@ -100,14 +110,29 @@ public:
     }
 
 private:
+    /// Род граничного условия
     Type mType;
-    /// Температуры (для I рода) или плотности теплопотока (для II рода).
+
+    /// Температуры (для I и III рода) или плотности теплопотока (для II рода)
     std::vector<double> mParams1;
     /// Термические сопротивления (для III рода)
     std::vector<double> mResistivities;
 
+    /// Текущее термическое сопротивление
     double mCurrentResistivity;
+    /// Текущая температура или плотность теплопотока (@sa mParams1)
     double mCurrentParam1;
+
+    /// Включен ли тренд температуры
+    bool mHasTemperatureTrend;
+    /// Тренд температуры (градусов за год)
+    double mTemperatureTrend;
+
+    /// Суммарный вклад тренда - ежегодно увеличивается на mTemperatureTrend
+    double mTemperatureTrendSummary;
+
+    /// Булёвы по месяцам, обозначающие, применяется ли для каждого из них тренд
+    std::vector<bool> mTemperatureTrendMonths;
 };
 
 }
