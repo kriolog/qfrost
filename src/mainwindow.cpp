@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -83,9 +83,10 @@ static const quint32 kFilesMagicNumber = 0xD3ADB00B;
  * 5. переделана система сохранения грунтов и граничных условий (в связи с их
  *    переводом на qfgui::Item) + теперь сохраняется галочка осесимметричности
  * 6. в конец теперь дописываются системы измерения (qint32)
- * 7. QDataStream версии 4.8 вместо 5.0
+ * 7. QDataStream версии 5.0 вместо 4.8
+ * 8. Добавлен тренд потепления + вероятно, что-то ещё будет добавлено до релиза
  */
-static const quint32 kFilesVersion = 7;
+static const quint32 kFilesVersion = 8;
 /// Версия настроек (QSettings)
 static const int kSettingsVersion = 2;
 
