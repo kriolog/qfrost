@@ -292,7 +292,7 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
     } else if (propertyName == "temperatureTrend") {
         return tr("trend value");
     } else if (propertyName == "temperatureTrendStartYear") {
-        return tr("trend start year");
+        return tr("trend ref. year");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }
