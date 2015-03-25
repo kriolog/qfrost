@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -235,6 +235,42 @@ void BoundaryCondition::setHeatTransferFactors(const QList<double> &v)
     emit heatTransferFactorsChanged();
 }
 
+void BoundaryCondition::setHasTemperatureTrend(bool v)
+{
+    if (hasTemperatureTrend() == v) {
+        return;
+    }
+    mHasTemperatureTrend = v;
+    emit hasTemperatureTrendChanged();
+}
+
+void BoundaryCondition::setTemperatureTrend(double v)
+{
+    if (temperatureTrend() == v) {
+        return;
+    }
+    mTemperatureTrend = v;
+    emit temperatureTrendChanged();
+}
+
+void BoundaryCondition::setTemperatureTrendStartYear(double v)
+{
+    if (temperatureTrendStartYear() == v) {
+        return;
+    }
+    mTemperatureTrendStartYear = v;
+    emit temperatureTrendStartYearChanged();
+}
+
+void BoundaryCondition::setTemperatureTrendMonths(const QList<bool> &v)
+{
+    if (temperatureTrendMonths() == v) {
+        return;
+    }
+    mTemperatureTrendMonths = v;
+    emit temperatureTrendMonthsChanged();
+}
+
 QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName)
 {
     if (propertyName == "type") {
@@ -248,6 +284,14 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return tr("T(III)");
     } else if (propertyName == "heatTransferFactors") {
         return tr("\316\261");
+    } else if (propertyName == "hasTemperatureTrend") {
+        return tr("trend usage");
+    } else if (propertyName == "temperatureTrend") {
+        return tr("trend value");
+    } else if (propertyName == "temperatureTrendStartYear") {
+        return tr("trend start year");
+    } else if (propertyName == "temperatureTrendMonths") {
+        return tr("trend months");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }
