@@ -6,7 +6,11 @@ set(qfrost_boundary_conditions_SRCS
 	boundaryconditioneditdialog.cpp
 	boundaryconditionsmodel.cpp
 	boundaryconditionspanel.cpp
-	boundaryconditionswidget.cpp)
+	boundaryconditionswidget.cpp
+	annualspline.cpp)
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 add_library(qfrost_boundary_conditions
 	STATIC
