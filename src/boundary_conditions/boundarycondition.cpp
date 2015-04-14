@@ -44,8 +44,11 @@ BoundaryCondition::BoundaryCondition(const QString &name,
     , mTemperatureTrend(0.1)
     // TODO лучше вынести начальную дату в qfrost.h и брать год оттуда
     , mTemperatureTrendStartYear(2000)
+    , mUsesTemperatureSpline(true)
     , mNumInDomain()
 {
+    // Этот конструктор используется при создании нового г.у. (кнопкой)
+
     fillTemperaturesList(mTemperatures1);
     fillTemperaturesList(mTemperatures3);
     fillList(mHeatFlowDensities);
@@ -67,6 +70,7 @@ BoundaryCondition::BoundaryCondition(const Item *other,
     , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
     , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
     , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
+    , mUsesTemperatureSpline(static_cast<const BoundaryCondition *>(other)->mUsesTemperatureSpline)
     , mNumInDomain()
 {
 }
@@ -81,6 +85,7 @@ BoundaryCondition::BoundaryCondition(const Item *other)
     , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
     , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
     , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
+    , mUsesTemperatureSpline(static_cast<const BoundaryCondition *>(other)->mUsesTemperatureSpline)
     , mNumInDomain()
 {
 
@@ -96,9 +101,10 @@ BoundaryCondition::BoundaryCondition()
     , mHasTemperatureTrend()
     , mTemperatureTrend()
     , mTemperatureTrendStartYear()
+    , mUsesTemperatureSpline()
     , mNumInDomain()
 {
-
+    // По ходу, этот конструктор используется при загрузке из файла
 }
 
 void BoundaryCondition::fillList(QList<double> &list, double value)
@@ -281,6 +287,15 @@ void BoundaryCondition::setTemperatureTrendStartYear(double v)
     emit temperatureTrendStartYearChanged();
 }
 
+void BoundaryCondition::setUsesTemperatureSpline(bool b)
+{
+    if (usesTemperatureSpline() == b) {
+        return;
+    }
+    mUsesTemperatureSpline = b;
+    emit usesTemperatureSplineChanged();
+}
+
 QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName)
 {
     if (propertyName == "type") {
@@ -300,6 +315,8 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return tr("trend value");
     } else if (propertyName == "temperatureTrendStartYear") {
         return tr("trend ref. year");
+    } else if (propertyName == "usesTemperatureSpline") {
+        return tr("T spline");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }
@@ -308,6 +325,6 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
 int BoundaryCondition::propertiesLackCount(int version)
 {
     Q_ASSERT(version >= 7);
-    return version == 7 ? 3 : 0;
+    return version == 7 ? 4 : 0;
 }
 

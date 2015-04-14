@@ -58,6 +58,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     , mExp2(mTable2->addExpander(tr("q")))
     , mExp3t(mTable3->addExpander(tr("T")))
     , mExp3a(mTable3->addExpander(tr("\316\261")))
+    , mUsesTemperatureSpline(new QCheckBox(tr("Use spline interpolation for temperatures (recommended)"), this))
     , mPlot(new QCustomPlot(this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
@@ -99,11 +100,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     plotFrameLayout->setContentsMargins(QMargins());
     plotFrameLayout->addWidget(mPlot);
 
-    /*QPushButton *showPlotButton = new QPushButton(QIcon::fromTheme("office-chart-line"),
-                                                  tr("Show Graphs"),
-                                                  this);
-    connect(showPlotButton, SIGNAL(clicked()), SLOT(showGraphs()));
-    mainLayout->addWidget(showPlotButton);*/
+    mainLayout->addWidget(mUsesTemperatureSpline);
     mainLayout->addWidget(plotFrame, 1);
 
     /**************************************************************************/
@@ -131,7 +128,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     connect(mTypeBox, SIGNAL(currentIndexChanged(int)),
             valuesWidget, SLOT(setCurrentIndex(int)));
     connect(mTypeBox, SIGNAL(currentIndexChanged(int)),
-            SLOT(updateTrendWidgetVisibility(int)));
+            SLOT(updateTemperatureWidgets(int)));
 
     /**************************************************************************/
 
@@ -143,6 +140,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     mapper()->addMapping(mTrendGroupBox, BC_HasTemperatureTrend, "checked");
     mapper()->addMapping(trendValue, BC_TemperatureTrend);
     mapper()->addMapping(trendStartYear, BC_TemperatureTrendStartYear);
+    mapper()->addMapping(mUsesTemperatureSpline, BC_UsesTemperatureSpline);
 
     mapper()->revert();
 
@@ -160,6 +158,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     connect(mExp2, SIGNAL(valuesChanged()), SLOT(updatePlot()));
     connect(mExp3t, SIGNAL(valuesChanged()), SLOT(updatePlot()));
     connect(mExp3a, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mUsesTemperatureSpline, SIGNAL(stateChanged(int)), SLOT(updatePlot()));
     updatePlot();
 
     /**************************************************************************/
@@ -168,10 +167,11 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     resize(QSize(0, 0));
 }
 
-void BoundaryConditionEditDialog::updateTrendWidgetVisibility(int type)
+void BoundaryConditionEditDialog::updateTemperatureWidgets(int type)
 {
-    const bool canHaveTrend = (type != 1);
-    mTrendGroupBox->setEnabled(canHaveTrend);
+    const bool hasTemps = (type != 1);
+    mTrendGroupBox->setEnabled(hasTemps);
+    mUsesTemperatureSpline->setEnabled(hasTemps);
 }
 
 static QCPGraph *createStepsGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
@@ -219,9 +219,9 @@ static void enlargeAxisRange(QCPAxis *axis)
 
 void BoundaryConditionEditDialog::updatePlot()
 {
-    static const int firstGraphPenWidth = 2;
-    static const int secondGraphPenWidth = 1;
-    static const int stepsGraphWidth = 0;
+    static const int firstGraphPenWidth = 3;
+    static const int secondGraphPenWidth = 2;
+    static const int stepsGraphWidth = 1;
 
     mPlot->clearGraphs();
 
@@ -250,9 +250,13 @@ void BoundaryConditionEditDialog::updatePlot()
                         Units::unit(this, tempsExp->physicalProperty()).headerSuffixOneLine());
         const QVector<double> monthlyTemps = tempsExp->values().toVector();
         QCPGraph *tSteps = createStepsGraph(dateAxis, tAxis, monthlyTemps);
-        tSteps->setPen(QPen(Qt::blue, stepsGraphWidth, Qt::DashLine));
-        QCPGraph *tSpline = createSplineGraph(dateAxis, tAxis, monthlyTemps);
-        tSpline->setPen(QPen(Qt::blue, firstGraphPenWidth));
+        if (!mUsesTemperatureSpline->isChecked()) {
+            tSteps->setPen(QPen(Qt::blue, firstGraphPenWidth));
+        } else {
+            tSteps->setPen(QPen(Qt::blue, stepsGraphWidth, Qt::DashLine));
+            QCPGraph *tSpline = createSplineGraph(dateAxis, tAxis, monthlyTemps);
+            tSpline->setPen(QPen(Qt::blue, firstGraphPenWidth));
+        }
     } else {
         // Плотности теплопотока (2 род)
         QCPAxis *const qAxis = mPlot->yAxis;

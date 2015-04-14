@@ -35,7 +35,8 @@ enum BoundaryConditionsModelColumn {
     BC_HeatTransferFactors,
     BC_HasTemperatureTrend,
     BC_TemperatureTrend,
-    BC_TemperatureTrendStartYear
+    BC_TemperatureTrendStartYear,
+    BC_UsesTemperatureSpline
 };
 
 QT_FORWARD_DECLARE_CLASS(MainWindow)

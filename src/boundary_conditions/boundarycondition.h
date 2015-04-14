@@ -73,6 +73,12 @@ class BoundaryCondition: public Item
                READ temperatureTrendStartYear
                WRITE setTemperatureTrendStartYear
                NOTIFY temperatureTrendStartYearChanged)
+
+    Q_PROPERTY(bool usesTemperatureSpline
+               READ usesTemperatureSpline
+               WRITE setUsesTemperatureSpline
+               NOTIFY usesTemperatureSplineChanged)
+
 public:
     Q_INVOKABLE BoundaryCondition(const QString &name,
                                   const QColor &color);
@@ -111,6 +117,10 @@ public:
         return mTemperatureTrendStartYear;
     }
 
+    bool usesTemperatureSpline() const {
+        return mUsesTemperatureSpline;
+    }
+
     static const BoundaryCondition *voidCondition() {
         return kmVoidCondition;
     }
@@ -145,6 +155,8 @@ public slots:
     void setTemperatureTrend(double v);
     void setTemperatureTrendStartYear(double v);
 
+    void setUsesTemperatureSpline(bool b);
+
 signals:
     void typeChanged();
     void temperatures1Changed();
@@ -156,6 +168,8 @@ signals:
     void temperatureTrendChanged();
     void temperatureTrendStartYearChanged();
 
+    void usesTemperatureSplineChanged();
+
 protected:
     int propertiesLackCount(int version);
 
@@ -163,13 +177,13 @@ private:
     /// Тип граничного условия.
     qfcore::BoundaryCondition::Type mType;
 
-    /// Температуры (для 1го рода)
+    /// Среднемесячные температуры (для 1го рода)
     QList<double> mTemperatures1;
-    /// Плотности теплопотока (для 2го рода)
+    /// Среднемесячные плотности теплопотока (для 2го рода)
     QList<double> mHeatFlowDensities;
-    /// Температуры (для 3го рода)
+    /// Среднемесячные температуры (для 3го рода)
     QList<double> mTemperatures3;
-    /// Коэффициенты теплоотдачи (для 3го рода)
+    /// Среднемесячные коэффициенты теплоотдачи (для 3го рода)
     QList<double> mHeatTransferFactors;
 
     /// Включен ли тренд температуры
@@ -178,6 +192,9 @@ private:
     double mTemperatureTrend;
     /// Год, от которого начинается тренд (для него вклад считается нулевым)
     int mTemperatureTrendStartYear;
+
+    /// Используется ли сглаживание температур (сплайн по среднемесячным)
+    bool mUsesTemperatureSpline;
 
     /// Заполняет @p list двенадцатью @p value
     static void fillList(QList<double> &list, double value = 0);

@@ -26,6 +26,7 @@ QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 QT_FORWARD_DECLARE_CLASS(QLineEdit)
 QT_FORWARD_DECLARE_CLASS(QGroupBox)
 QT_FORWARD_DECLARE_CLASS(QComboBox)
+QT_FORWARD_DECLARE_CLASS(QCheckBox)
 QT_FORWARD_DECLARE_CLASS(QCustomPlot)
 
 namespace qfgui
@@ -45,7 +46,11 @@ public:
                                             QWidget *parent);
 
 private slots:
-    void updateTrendWidgetVisibility(int type);
+    /// Обновляет виджеты, касающиеся температуры (mTrendGroupBox + содержимое и
+    /// mUsesTemperatureSpline), чтобы учесть, есть ли для @p type температуры.
+    void updateTemperatureWidgets(int type);
+
+    /// Перестраивает графики
     void updatePlot();
 
 private:
@@ -61,6 +66,8 @@ private:
     MonthsTableExpander *mExp2;
     MonthsTableExpander *mExp3t;
     MonthsTableExpander *mExp3a;
+
+    QCheckBox *mUsesTemperatureSpline;
 
     QCustomPlot *mPlot;
 };
