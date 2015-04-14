@@ -59,6 +59,8 @@ public:
         return mData.at(monthNum);
     }
 
+    const QString &valueName() const { return mValueName; }
+
     const QList<double> &values() const { return mData; }
     const QString &headerText() const { return mValueNameWithSuffix; }
     int physicalProperty() const { return mPhysicalProperty; }
@@ -70,7 +72,7 @@ public:
 signals:
     void valuesChanged(); ///< Изменение хотя бы одного значения
     void headerTextChanged(); ///< Изменение текста для заголовка
-    void physicalPropertyChanged(); ///< Изменение физ. свойства
+    void physicalPropertyChanged(int p); ///< Изменение физ. свойства
 
     void valueChanged(int monthNum); ///< Изменение одного значения
     void valuesReplaced(); ///< Изменение ВСЕХ значений

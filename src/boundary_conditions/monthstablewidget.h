@@ -25,16 +25,11 @@
 
 #include <qfrost.h>
 
-QT_FORWARD_DECLARE_CLASS(QPushButton)
-QT_FORWARD_DECLARE_CLASS(QTableView)
-QT_FORWARD_DECLARE_CLASS(QModelIndex)
-
 namespace qfgui
 {
 QT_FORWARD_DECLARE_CLASS(MonthsTableModel)
 QT_FORWARD_DECLARE_CLASS(MonthsTableView)
 QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
-QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 
 class MonthsTableWidget : public QWidget
 {
@@ -54,29 +49,7 @@ private:
 
     MonthsTableView *mView;
 
-    /// Спинбокс, с помощью которого пользователь задаёт значения на выделение
-    PhysicalPropertySpinBox *mDataSetterSpinbox;
-
-    /// Кнопка, открывающая диалог с вышеупомянутым спинбоксом
-    QPushButton *mOpenDataSetter;
-
     Qt::Orientation mOrientation;
-
-    /// Индесы, которые будут изменены при использовании batchSetData()
-    QList <QModelIndex> indexesToBatchSet() const;
-
-private slots:
-    /// Делает @a mOpenDataSetter активной, только если есть выделение
-    void updateDataSetterButton();
-
-    /// Применяет значение, записанное в @a mDataSetterSpinbox к выделению
-    void batchSetData();
-
-    /**
-     * Если значения всех выбранных ячеек одинаковы, устанавливает значение
-     * в @a mDataSetter равным этому значению. Иначе -- равным нулю
-     */
-    void setDataSetterValue();
 };
 
 }

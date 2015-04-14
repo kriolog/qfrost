@@ -83,7 +83,7 @@ bool MonthsTableExpander::setPhysicalProperty(int p)
     }
     mPhysicalProperty = static_cast<PhysicalProperty>(p);
     Q_ASSERT(int(mPhysicalProperty) == p);
-    emit physicalPropertyChanged();
+    emit physicalPropertyChanged(p);
     updateHeaderText();
     return true;
 }

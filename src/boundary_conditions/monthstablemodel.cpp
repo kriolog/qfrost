@@ -195,7 +195,7 @@ int MonthsTableModel::addExpander(MonthsTableExpander *expander)
     connect(expander, SIGNAL(headerTextChanged()),
             SLOT(onExpanderHeaderTextChanged()));
 
-    connect(expander, SIGNAL(physicalPropertyChanged()),
+    connect(expander, SIGNAL(physicalPropertyChanged(int)),
             SLOT(onExpanderPhysicalPropertyChanged()));
 
     connect(expander, SIGNAL(valueChanged(int)),
@@ -203,6 +203,8 @@ int MonthsTableModel::addExpander(MonthsTableExpander *expander)
 
     connect(expander, SIGNAL(valuesReplaced()),
             SLOT(onExpanderValuesReplaced()));
+
+    emit addedExpander(newSector, expander);
 
     return newSector;
 }

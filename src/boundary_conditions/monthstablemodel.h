@@ -54,8 +54,13 @@ public:
         return mIsHorizontal ? index.row() : index.column();
     }
 
-    /// Добавление обрабатываемого @p expander нового сектора с данными
-    int addExpander(qfgui::MonthsTableExpander* expander);
+    /// Добавление обрабатываемого @p expander нового сектора с данными.
+    /// @warning на момент срабатывания сигнала, сектор ещё не записан в него!
+    int addExpander(MonthsTableExpander* expander);
+
+signals:
+    /// Сигнал о том, что только что был добавлен @p expander
+    void addedExpander(int sector, MonthsTableExpander* expander);
 
 private:
     int sectorNum(QObject *expanderObj) const;
