@@ -49,6 +49,8 @@ MonthsTableSetter::MonthsTableSetter(QItemSelectionModel *selectionModel,
 
     mSetAllButtonsLayout->setContentsMargins(QMargins());
     mSetAllButtonsLayout->addWidget(mSetSelectedButton);
+
+    mSetSelectedButton->setVisible(false);
 }
 
 
