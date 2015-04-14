@@ -35,13 +35,15 @@
 using namespace qfgui;
 
 MonthsTableWidget::MonthsTableWidget(const QString &valueName,
+                                     Qt::Orientation orientation,
                                      QWidget *parent)
     : QWidget(parent)
-    , mView(new MonthsTableView(this))
+    , mView(new MonthsTableView(orientation, this))
     , mDataSetterSpinbox(new PhysicalPropertySpinBox(this))
     , mOpenDataSetter(new QPushButton(this))
+    , mOrientation(orientation)
 {
-    MonthsTableModel *model = new MonthsTableModel(valueName, this);
+    MonthsTableModel *model = new MonthsTableModel(valueName, orientation, this);
     mView->setModel(model);
 
     QDialogButtonBox *dialogButtons;
@@ -69,6 +71,7 @@ MonthsTableWidget::MonthsTableWidget(const QString &valueName,
     connect(dataSetterDialog, SIGNAL(accepted()), SLOT(batchSetData()));
 
     QVBoxLayout *dialogLayout = new QVBoxLayout(dataSetterDialog);
+
     dialogLayout->addStretch();
     dialogLayout->addLayout(dialogFormLayout);
     dialogLayout->addStretch();
@@ -119,11 +122,11 @@ const MonthsTableModel *MonthsTableWidget::qfModel() const
 
 void MonthsTableWidget::updateDataSetterButton()
 {
-    QSet<int> selectedRows;
-    foreach(const QModelIndex & index, mView->selectionModel()->selectedIndexes()) {
-        selectedRows << index.row();
+    QSet<int> selectedMonths;
+    foreach(const QModelIndex &index, mView->selectionModel()->selectedIndexes()) {
+        selectedMonths << qfModel()->monthNum(index);
     }
-    mOpenDataSetter->setText(selectedRows.size() > 1
+    mOpenDataSetter->setText(selectedMonths.size() > 1
                              ? tr("Set Selected")
                              : tr("Set All"));
 }
@@ -184,4 +187,5 @@ void MonthsTableWidget::setPhysicalProperty(int p)
 {
     mDataSetterSpinbox->setPhysicalProperty(p);
     qfModel()->setPhysicalProperty(static_cast<PhysicalProperty>(p));
+    mView->updateSizeLimits(); // теперь суффикс (единицы измерения) влезут
 }

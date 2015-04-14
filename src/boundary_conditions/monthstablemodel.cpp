@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -28,8 +28,12 @@
 
 using namespace qfgui;
 
-MonthsTableModel::MonthsTableModel(const QString &valueName, QObject *parent)
+MonthsTableModel::MonthsTableModel(const QString &valueName,
+                                   Qt::Orientation orientation,
+                                   QObject *parent)
     : QAbstractTableModel(parent)
+    , mOrientation(orientation)
+    , mIsHorizontal(orientation == Qt::Horizontal)
     , mData()
     , mValueName(valueName)
     , mPhysicalProperty(NoProperty)
@@ -46,7 +50,7 @@ Qt::ItemFlags MonthsTableModel::flags(const QModelIndex &index) const
     Qt::ItemFlags result;
     if (index.isValid()) {
         result = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-        if (index.column() == 1) {
+        if (dataTypeNum(index) == 1) {
             result |= Qt::ItemIsEditable;
         }
     }
@@ -59,7 +63,7 @@ QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, 
         return QVariant();
     }
 
-    if (orientation == Qt::Horizontal) {
+    if (orientation != mOrientation) {
         return (section == 0) ? tr("Month") : mValueNameWithSuffix;
     } else {
         return section + 1;
@@ -72,7 +76,8 @@ void MonthsTableModel::updateHeaderData()
     if (mPhysicalProperty != NoProperty) {
         mValueNameWithSuffix += Units::unit(this, mPhysicalProperty).headerSuffixOneLine();
     }
-    emit headerDataChanged(Qt::Horizontal, 1, 1);
+    emit headerDataChanged(mIsHorizontal ? Qt::Vertical : Qt::Horizontal,
+                           1, 1);
 }
 
 bool MonthsTableModel::setData(const QModelIndex &index,
@@ -80,10 +85,8 @@ bool MonthsTableModel::setData(const QModelIndex &index,
                                int role)
 {
     if (index.isValid() && role == Qt::EditRole) {
-        if (index.column() != 1) {
+        if (dataTypeNum(index) == 0) {
             // первую колонку менять нельзя (там месяца перечислены)
-            // как и отличные от второй колонки (там нет данных)
-            Q_ASSERT(false);
             return false;
         }
 
@@ -99,31 +102,11 @@ bool MonthsTableModel::setData(const QModelIndex &index,
 
         Q_ASSERT(mData.size() == 12);
         // ещё здесь? запишем новое значение и просигналим об изменении данных
-        mData[index.row()] = value.toDouble();
+        mData[monthNum(index)] = value.toDouble();
         emit dataChanged(index, index);
         return true;
     }
     return false;
-}
-
-QString MonthsTableModel::standaloneMonthName(int month)
-{
-    Q_ASSERT(month >= 1 && month <= 12);
-    switch (month) {
-    case 1: return tr("January");
-    case 2: return tr("February");
-    case 3: return tr("March");
-    case 4: return tr("April");
-    case 5: return tr("May");
-    case 6: return tr("June");
-    case 7: return tr("July");
-    case 8: return tr("August");
-    case 9: return tr("September");
-    case 10: return tr("October");
-    case 11: return tr("November");
-    case 12: return tr("December");
-    default: return "";
-    }
 }
 
 QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
@@ -138,7 +121,7 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    bool isMonthsColumn = (index.column() == 0);
+    const bool isMonthsColumn = (dataTypeNum(index) == 0);
 
     if (role == QFrost::PhysicalPropertyRole) {
         return isMonthsColumn
@@ -147,23 +130,31 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
     }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
+        const int month = monthNum(index);
         if (isMonthsColumn) {
-            return standaloneMonthName(index.row() + 1);
+            const QLocale locale;
+            return locale.standaloneMonthName(month + 1,
+                                              mIsHorizontal
+                                                ? QLocale::ShortFormat
+                                                : QLocale::LongFormat);
         } else {
-            return mData.at(index.row());
+            Q_ASSERT(month < mData.size());
+            return mData.at(month);
         }
     }
 
     if (role == Qt::TextAlignmentRole) {
-        return Qt::AlignVCenter
-               + (isMonthsColumn
-                  ? Qt::AlignRight
-                  : Qt::AlignHCenter);
+        if (mIsHorizontal) {
+            return Qt::AlignCenter;
+        } else {
+            return Qt::AlignVCenter
+                + (isMonthsColumn ? Qt::AlignRight : Qt::AlignHCenter);
+        }
     }
 
     // летние месяцы выделяем
     if (isMonthsColumn && role == Qt::FontRole
-            && index.row() >= 5 && index.row() <= 7) {
+            && monthNum(index) >= 5 && monthNum(index) <= 7) {
         QFont font;
         font.setBold(true);
         return font;
@@ -175,20 +166,24 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
 int MonthsTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 2;
+    return mIsHorizontal ? 12 : 2;
 }
 
 int MonthsTableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 12;
+    return mIsHorizontal ? 2 : 12;
 }
 
 void MonthsTableModel::setValues(const QList<double> &data)
 {
     Q_ASSERT(data.size() == 12);
     mData = data;
-    emit dataChanged(index(1, 0), index(1, 11));
+    if (mIsHorizontal) {
+        emit dataChanged(index(0, 1), index(11, 1));
+    } else {
+        emit dataChanged(index(1, 0), index(1, 11));
+    }
 }
 
 const QList<double> &MonthsTableModel::values() const
@@ -200,8 +195,8 @@ const QList<double> &MonthsTableModel::values() const
 QModelIndexList MonthsTableModel::allData() const
 {
     QModelIndexList result;
-    for (int row = 0; row < rowCount(); ++row) {
-        result << createIndex(row, 1);
+    for (int monthNum = 0; monthNum < 11; ++monthNum) {
+        result.append(mIsHorizontal ? index(1, monthNum) : index(monthNum, 1));
     }
     return result;
 }
@@ -212,5 +207,9 @@ void MonthsTableModel::setPhysicalProperty(PhysicalProperty property)
         mPhysicalProperty = property;
     }
     updateHeaderData();
-    emit dataChanged(index(1, 0), index(1, 11));
+    if (mIsHorizontal) {
+        emit dataChanged(index(0, 1), index(11, 1));
+    } else {
+        emit dataChanged(index(1, 0), index(1, 11));
+    }
 }

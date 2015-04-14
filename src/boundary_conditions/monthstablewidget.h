@@ -33,6 +33,7 @@ namespace qfgui
 {
 QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 QT_FORWARD_DECLARE_CLASS(MonthsTableModel)
+QT_FORWARD_DECLARE_CLASS(MonthsTableView)
 
 class MonthsTableWidget : public QWidget
 {
@@ -46,7 +47,10 @@ class MonthsTableWidget : public QWidget
                READ physicalProperty
                WRITE setPhysicalProperty)
 public:
-    MonthsTableWidget(const QString &valueName, QWidget *parent);
+    MonthsTableWidget(const QString &valueName,
+                      Qt::Orientation orientation,
+                      QWidget *parent);
+
     QList<double> values() const;
     void setValues(const QList<double> &data);
 
@@ -62,13 +66,15 @@ private:
     MonthsTableModel *qfModel();
     const MonthsTableModel *qfModel() const;
 
-    QTableView *mView;
+    MonthsTableView *mView;
 
     /// Спинбокс, с помощью которого пользователь задаёт значения на выделение
     PhysicalPropertySpinBox *mDataSetterSpinbox;
 
     /// Кнопка, открывающая диалог с вышеупомянутым спинбоксом
     QPushButton *mOpenDataSetter;
+
+    Qt::Orientation mOrientation;
 
     /// Индесы, которые будут изменены при использовании batchSetData()
     QList <QModelIndex> indexesToBatchSet() const;

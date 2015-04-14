@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -31,7 +31,10 @@ class MonthsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    MonthsTableModel(const QString &valueName, QObject *parent);
+    MonthsTableModel(const QString &valueName,
+                     Qt::Orientation orientation,
+                     QObject *parent);
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -49,10 +52,23 @@ public:
         return mPhysicalProperty;
     }
 
+    /// Месяц (от 0 до 11) для @p index
+    int monthNum(const QModelIndex &index) const {
+        return mIsHorizontal ? index.column() : index.row();
+    }
+
+    /// Номер типа данных для @p index (0 - название месяца, 1 - сами данные)
+    int dataTypeNum(const QModelIndex &index) const {
+        return mIsHorizontal ? index.row() : index.column();
+    }
+
 public slots:
     void setPhysicalProperty(PhysicalProperty property);
 
 private:
+    const Qt::Orientation mOrientation;
+    const bool mIsHorizontal;
+
     QList<double> mData;
     const QString mValueName;
     QString mValueNameWithSuffix;

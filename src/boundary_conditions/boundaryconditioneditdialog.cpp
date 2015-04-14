@@ -42,16 +42,18 @@
 
 using namespace qfgui;
 
+static const Qt::Orientation TablesOrienation = Qt::Horizontal;
+
 BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
         const QStringList &forbiddenNames,
         bool isNewItem, QWidget *parent)
     : ItemEditDialog(model, forbiddenNames, parent)
     , mTrendGroupBox(new QGroupBox(tr("Temperature trend"), this))
     , mTypeBox(new QComboBox(this))
-    , mTable1(new MonthsTableWidget(tr("T"), this))
-    , mTable2(new MonthsTableWidget(tr("q"), this))
-    , mTable3Temps(new MonthsTableWidget(tr("T"), this))
-    , mTable3Factors(new MonthsTableWidget(tr("\316\261"), this))
+    , mTable1(new MonthsTableWidget(tr("T"), TablesOrienation, this))
+    , mTable2(new MonthsTableWidget(tr("q"), TablesOrienation, this))
+    , mTable3Temps(new MonthsTableWidget(tr("T"), TablesOrienation, this))
+    , mTable3Factors(new MonthsTableWidget(tr("\316\261"), TablesOrienation, this))
     , mPlot(new QCustomPlot(this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
@@ -77,7 +79,12 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
 
     QWidget *values3 = new QWidget(this);
-    QHBoxLayout *thirdTypeParametersLayout = new QHBoxLayout(values3);
+    QBoxLayout *thirdTypeParametersLayout;
+    if (TablesOrienation == Qt::Vertical) {
+        thirdTypeParametersLayout = new QHBoxLayout(values3);
+    } else {
+        thirdTypeParametersLayout = new QVBoxLayout(values3);
+    }
     thirdTypeParametersLayout->setContentsMargins(QMargins());
 
     thirdTypeParametersLayout->addWidget(mTable3Temps);
@@ -92,7 +99,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
     mPlot->axisRect()->setupFullAxesBox(false);
     mPlot->xAxis->setLabel(tr("Days since year start"));
-    mPlot->setMinimumSize(200, 80);
+    mPlot->setMinimumSize(300, 180);
 
     QFrame *plotFrame = new QFrame(this);
     plotFrame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -167,10 +174,6 @@ void BoundaryConditionEditDialog::updateTrendWidgetVisibility(int type)
     const bool canHaveTrend = (type != 1);
     mTrendGroupBox->setVisible(canHaveTrend);
 }
-
-static const int MainYear = 2001;
-static const QDate MainYearFirstDate = QDate(MainYear, 1, 1);
-static const int MainYearDaysNum = MainYearFirstDate.daysTo(MainYearFirstDate.addYears(1));
 
 static QCPGraph *createStepsGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
                                   const QVector<double> &monthlyVals)

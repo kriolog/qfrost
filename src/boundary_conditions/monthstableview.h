@@ -30,11 +30,18 @@ class MonthsTableView : public QTableView
 {
     Q_OBJECT
 public:
-    MonthsTableView(QWidget *parent);
+    MonthsTableView(Qt::Orientation orientation, QWidget *parent);
     void setModel(QAbstractItemModel *model);
+    void updateSizeLimits();
 
 protected:
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+
+private:
+    const Qt::Orientation mOrientation;
+
+    QHeaderView *monthsHeader() const;
+    QHeaderView *dataTypesHeader() const;
 };
 
 }

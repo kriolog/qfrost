@@ -26,39 +26,94 @@
 
 using namespace qfgui;
 
-MonthsTableView::MonthsTableView(QWidget *parent)
+MonthsTableView::MonthsTableView(Qt::Orientation orientation, QWidget *parent)
     : QTableView(parent)
+    , mOrientation(orientation)
 {
-    horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    const double isVertical = (orientation == Qt::Vertical);
+    dataTypesHeader()->setSectionResizeMode(isVertical
+                                            ? QHeaderView::ResizeToContents
+                                            : QHeaderView::Fixed);
+    monthsHeader()->setSectionResizeMode(isVertical
+                                         ? QHeaderView::Fixed
+                                         : QHeaderView::Stretch);
 
-    horizontalHeader()->setHighlightSections(false);
+    dataTypesHeader()->setHighlightSections(false);
 
-    setAlternatingRowColors(true);
+    if (isVertical) {
+        setAlternatingRowColors(true);
+        setItemDelegateForColumn(1, new PhysicalPropertyDelegate(this, true));
+    } else {
+        QFont monthNamesFont = monthsHeader()->font();
+        monthNamesFont.setBold(true);
+        QFontMetrics metrics(monthNamesFont);
+        const QLocale locale = this->locale();
+        int maxMonthWidth = 0;
+        for (int month = 1; month <= 12; ++month) {
+            const QString text = locale.standaloneMonthName(month,
+                                                            QLocale::ShortFormat);
+            const int w = metrics.width(" " + text + " ");
+            if (w > maxMonthWidth) {
+                maxMonthWidth = w;
+            }
+        }
+        monthsHeader()->setMinimumSectionSize(maxMonthWidth);
+        setItemDelegateForRow(1, new PhysicalPropertyDelegate(this, true));
+    }
+}
 
-    setItemDelegateForColumn(1, new PhysicalPropertyDelegate(this, true));
+QHeaderView *MonthsTableView::monthsHeader() const
+{
+    return (mOrientation == Qt::Vertical)
+           ? verticalHeader()
+           : horizontalHeader();
+}
+
+QHeaderView *MonthsTableView::dataTypesHeader() const
+{
+    return (mOrientation == Qt::Horizontal)
+           ? verticalHeader()
+           : horizontalHeader();
 }
 
 void MonthsTableView::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
+    updateSizeLimits();
+}
+
+void MonthsTableView::updateSizeLimits()
+{
     // Делаем так, чтобы минималный размер соответствовал содержимому
     static const int minViewWidth = 180;
 
-    horizontalHeader()->setStretchLastSection(false);
+    const bool needStretchLastSection = (mOrientation == Qt::Vertical);
+    if (needStretchLastSection) {
+        dataTypesHeader()->setStretchLastSection(false);
+    }
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents
                                 | QEventLoop::ExcludeSocketNotifiers);
 
-    setMinimumHeight(verticalHeader()->length()
-                     + horizontalHeader()->height()
-                     + 2 * frameWidth());
+    verticalHeader()->updateGeometry();
+    const int heightHint = verticalHeader()->length()
+                           + horizontalHeader()->sizeHint().height()
+                           + 2 * frameWidth();
+    const int widthHint = horizontalHeader()->length()
+                          + verticalHeader()->sizeHint().width()
+                          + 2 * frameWidth();
 
-    setMinimumWidth(qMax(minViewWidth,
-                         horizontalHeader()->length()
-                         + verticalHeader()->width()
-                         + 2 * frameWidth()));
+    setMinimumHeight(heightHint);
 
-    horizontalHeader()->setStretchLastSection(true);
+    if (mOrientation == Qt::Vertical) {
+        setMinimumWidth(qMax(minViewWidth, widthHint));
+    } else {
+        setMinimumWidth(widthHint);
+        setMaximumHeight(heightHint);
+    }
+
+    if (needStretchLastSection) {
+        dataTypesHeader()->setStretchLastSection(true);
+    }
 }
 
 void MonthsTableView::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
@@ -66,12 +121,14 @@ void MonthsTableView::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEdi
     QAbstractItemView::closeEditor(editor, QAbstractItemDelegate::NoHint);
     if (hint == QAbstractItemDelegate::EditNextItem
             || hint == QAbstractItemDelegate::EditPreviousItem) {
-        const int newRow = currentIndex().row()
-                           + ((hint == QAbstractItemDelegate::EditNextItem) ? 1 : -1);
-        if (newRow == model()->rowCount() || newRow == -1) {
+        const bool isVertical = (mOrientation == Qt::Vertical);
+        const int newMonthNum = (isVertical ? currentIndex().row() : currentIndex().column())
+                                + ((hint == QAbstractItemDelegate::EditNextItem) ? 1 : -1);
+        if (newMonthNum == 12 || newMonthNum == -1) {
             return;
         }
-        QModelIndex newIndex = model()->index(newRow, 1);
+        QModelIndex newIndex = isVertical ? model()->index(newMonthNum, 1)
+                                          : model()->index(1, newMonthNum);
         setCurrentIndex(newIndex);
         edit(newIndex);
     }
