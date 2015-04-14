@@ -88,7 +88,12 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     valuesWidget->addWidget(mTable1);
     valuesWidget->addWidget(mTable2);
     valuesWidget->addWidget(mTable3);
-    mainLayout->addWidget(valuesWidget);
+
+    QGroupBox *tablesGroupBox = new QGroupBox(this);
+    QVBoxLayout *tablesGroupBoxLayout = new QVBoxLayout(tablesGroupBox);
+    tablesGroupBoxLayout->addWidget(valuesWidget);
+
+    mainLayout->addWidget(tablesGroupBox);
 
     /**************************************************************************/
     mPlot->axisRect()->setupFullAxesBox(false);
@@ -101,12 +106,16 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     plotFrameLayout->setContentsMargins(QMargins());
     plotFrameLayout->addWidget(mPlot);
 
-    QFrame *separator = new QFrame(this);
-    separator->setFrameStyle(QFrame::HLine | QFrame::Plain);
+    QGroupBox *plotGroupBox = new QGroupBox(this);
+    QVBoxLayout *plotLayout = new QVBoxLayout(plotGroupBox);
+    plotLayout->addWidget(plotFrame, 1);
+    plotLayout->addWidget(mUsesTemperatureSpline);
 
-    mainLayout->addWidget(separator);
-    mainLayout->addWidget(mUsesTemperatureSpline);
-    mainLayout->addWidget(plotFrame, 1);
+    QHBoxLayout *secondLayout = new QHBoxLayout();
+    secondLayout->addWidget(plotGroupBox, 1);
+    secondLayout->addWidget(mTrendGroupBox);
+
+    mainLayout->addLayout(secondLayout, 1);
 
     /**************************************************************************/
 
@@ -126,7 +135,6 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     trendValue->setSuffix(tr(" \302\260C/decade"));
     trendLayout->addRow(tr("Trend value:"), trendValue);
     trendLayout->addRow(tr("Reference year:"), trendStartYear);
-    mainLayout->addWidget(mTrendGroupBox);
 
     /**************************************************************************/
 
