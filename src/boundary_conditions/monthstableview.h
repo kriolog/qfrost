@@ -31,8 +31,7 @@ class MonthsTableView : public QTableView
     Q_OBJECT
 public:
     MonthsTableView(Qt::Orientation orientation, QWidget *parent);
-    void setModel(QAbstractItemModel *model);
-    void updateSizeLimits();
+    void updateSizeLimits(bool withMaxHeight);
 
 protected:
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);

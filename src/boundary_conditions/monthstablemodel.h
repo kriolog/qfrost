@@ -26,14 +26,13 @@
 
 namespace qfgui
 {
+QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
 
 class MonthsTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    MonthsTableModel(const QString &valueName,
-                     Qt::Orientation orientation,
-                     QObject *parent);
+    MonthsTableModel(Qt::Orientation orientation, QObject* parent);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -42,15 +41,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    const QList<double> &values() const;
-    void setValues(const QList<double> &data);
-
     /// Список индексов всех хранящихся в модели значений (не дат!)
     QModelIndexList allData() const;
-
-    PhysicalProperty physicalProperty() const {
-        return mPhysicalProperty;
-    }
 
     /// Месяц (от 0 до 11) для @p index
     int monthNum(const QModelIndex &index) const {
@@ -62,26 +54,22 @@ public:
         return mIsHorizontal ? index.row() : index.column();
     }
 
-public slots:
-    void setPhysicalProperty(PhysicalProperty property);
+    /// Добавление обрабатываемого @p expander нового сектора с данными
+    int addExpander(qfgui::MonthsTableExpander* expander);
 
 private:
+    int sectorNum(QObject *expanderObj) const;
+
     const Qt::Orientation mOrientation;
     const bool mIsHorizontal;
 
-    QList<double> mData;
-    const QString mValueName;
-    QString mValueNameWithSuffix;
-
-    PhysicalProperty mPhysicalProperty;
-
-    /** Имя месяца (в именительном падеже).
-     * QLocale::standaloneMonthName не подходит, т.к. в Linux возвращает имя
-     * месяца в родительном падеже. */
-    static QString standaloneMonthName(int month);
+    QList<MonthsTableExpander*> mExpanders;
 
 private slots:
-    void updateHeaderData();
+    void onExpanderHeaderTextChanged();
+    void onExpanderPhysicalPropertyChanged();
+    void onExpanderValueChanged(int monthNum);
+    void onExpanderValuesReplaced();
 };
 
 }

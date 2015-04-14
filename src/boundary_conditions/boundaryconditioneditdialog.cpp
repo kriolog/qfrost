@@ -31,6 +31,7 @@
 
 #include <boundary_conditions/boundaryconditionsmodel.h>
 #include <boundary_conditions/monthstablewidget.h>
+#include <boundary_conditions/monthstableexpander.h>
 #include <itemviews/item.h>
 #include <qfrost.h>
 #include <mainwindow.h>
@@ -50,10 +51,13 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     : ItemEditDialog(model, forbiddenNames, parent)
     , mTrendGroupBox(new QGroupBox(tr("Temperature trend"), this))
     , mTypeBox(new QComboBox(this))
-    , mTable1(new MonthsTableWidget(tr("T"), TablesOrienation, this))
-    , mTable2(new MonthsTableWidget(tr("q"), TablesOrienation, this))
-    , mTable3Temps(new MonthsTableWidget(tr("T"), TablesOrienation, this))
-    , mTable3Factors(new MonthsTableWidget(tr("\316\261"), TablesOrienation, this))
+    , mTable1(new MonthsTableWidget(TablesOrienation, this))
+    , mTable2(new MonthsTableWidget(TablesOrienation, this))
+    , mTable3(new MonthsTableWidget(TablesOrienation, this))
+    , mExp1(mTable1->addExpander(tr("T")))
+    , mExp2(mTable2->addExpander(tr("q")))
+    , mExp3t(mTable3->addExpander(tr("T")))
+    , mExp3a(mTable3->addExpander(tr("\316\261")))
     , mPlot(new QCustomPlot(this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
@@ -78,27 +82,15 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
 
     /**************************************************************************/
 
-    QWidget *values3 = new QWidget(this);
-    QBoxLayout *thirdTypeParametersLayout;
-    if (TablesOrienation == Qt::Vertical) {
-        thirdTypeParametersLayout = new QHBoxLayout(values3);
-    } else {
-        thirdTypeParametersLayout = new QVBoxLayout(values3);
-    }
-    thirdTypeParametersLayout->setContentsMargins(QMargins());
-
-    thirdTypeParametersLayout->addWidget(mTable3Temps);
-    thirdTypeParametersLayout->addWidget(mTable3Factors);
-
     QStackedWidget *valuesWidget = new QStackedWidget(this);
     valuesWidget->addWidget(mTable1);
     valuesWidget->addWidget(mTable2);
-    valuesWidget->addWidget(values3);
+    valuesWidget->addWidget(mTable3);
     mainLayout->addWidget(valuesWidget);
 
     /**************************************************************************/
     mPlot->axisRect()->setupFullAxesBox(false);
-    mPlot->xAxis->setLabel(tr("Days since year start"));
+    //mPlot->xAxis->setLabel(tr("Days since year start"));
     mPlot->setMinimumSize(300, 180);
 
     QFrame *plotFrame = new QFrame(this);
@@ -144,10 +136,10 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
 
     mapper()->addMapping(mTypeBox, BC_Type, "currentIndex");
-    mapper()->addMapping(mTable1, BC_Temperatures1);
-    mapper()->addMapping(mTable2, BC_HeatFlowDensities);
-    mapper()->addMapping(mTable3Temps, BC_Temperatures3);
-    mapper()->addMapping(mTable3Factors, BC_HeatTransferFactors);
+    mapper()->addMapping(mExp1, BC_Temperatures1);
+    mapper()->addMapping(mExp2, BC_HeatFlowDensities);
+    mapper()->addMapping(mExp3t, BC_Temperatures3);
+    mapper()->addMapping(mExp3a, BC_HeatTransferFactors);
     mapper()->addMapping(mTrendGroupBox, BC_HasTemperatureTrend, "checked");
     mapper()->addMapping(trendValue, BC_TemperatureTrend);
     mapper()->addMapping(trendStartYear, BC_TemperatureTrendStartYear);
@@ -156,11 +148,18 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
 
     /**************************************************************************/
 
+    // Теперь все данные (в т.ч. хедеры таблиц) заполнены, установим авторазмеры
+    mTable1->updateSizeLimits();
+    mTable2->updateSizeLimits();
+    mTable3->updateSizeLimits(true);
+
+    /**************************************************************************/
+
     connect(mTypeBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
-    connect(mTable1, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mTable2, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mTable3Temps, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mTable3Factors, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mExp1, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mExp2, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mExp3t, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mExp3a, SIGNAL(valuesChanged()), SLOT(updatePlot()));
     updatePlot();
 
     /**************************************************************************/
@@ -172,7 +171,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
 void BoundaryConditionEditDialog::updateTrendWidgetVisibility(int type)
 {
     const bool canHaveTrend = (type != 1);
-    mTrendGroupBox->setVisible(canHaveTrend);
+    mTrendGroupBox->setEnabled(canHaveTrend);
 }
 
 static QCPGraph *createStepsGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
@@ -229,6 +228,9 @@ void BoundaryConditionEditDialog::updatePlot()
     QCPAxis *const dateAxis = mPlot->xAxis;
     const int type = mTypeBox->currentIndex();
     const bool hasSecondGraph = (type == 2);
+    if (!hasSecondGraph) {
+        mPlot->yAxis2->setLabel(QString());
+    }
     if (type != 1) {
         // Температуры (1 и 3 род)
         QCPAxis *const tAxis = mPlot->yAxis;
@@ -237,16 +239,16 @@ void BoundaryConditionEditDialog::updatePlot()
             QCPAxis *const aAxis = mPlot->yAxis2;
             Q_ASSERT(aAxis != tAxis);
             aAxis->setTickLabels(true);
-            aAxis->setLabel(tr("Heat transfer factor \316\261") +
-            Units::unit(this, mTable3Factors->physicalProperty()).headerSuffixOneLine());
+            aAxis->setLabel(tr("Heat transfer factor\n\316\261") +
+            Units::unit(this, mExp3a->physicalProperty()).headerSuffixOneLine());
             QCPGraph *aSteps = createStepsGraph(dateAxis, aAxis,
-                                                mTable3Factors->values().toVector());
+                                                mExp3a->values().toVector());
             aSteps->setPen(QPen(Qt::green, secondGraphPenWidth));
         }
-        MonthsTableWidget *tempsWidget = (type == 2) ? mTable3Temps : mTable1;
+        MonthsTableExpander *tempsExp = (type == 2) ? mExp3t : mExp1;
         tAxis->setLabel(tr("Temperature T") +
-                        Units::unit(this, tempsWidget->physicalProperty()).headerSuffixOneLine());
-        const QVector<double> monthlyTemps = tempsWidget->values().toVector();
+                        Units::unit(this, tempsExp->physicalProperty()).headerSuffixOneLine());
+        const QVector<double> monthlyTemps = tempsExp->values().toVector();
         QCPGraph *tSteps = createStepsGraph(dateAxis, tAxis, monthlyTemps);
         tSteps->setPen(QPen(Qt::blue, stepsGraphWidth, Qt::DashLine));
         QCPGraph *tSpline = createSplineGraph(dateAxis, tAxis, monthlyTemps);
@@ -255,9 +257,9 @@ void BoundaryConditionEditDialog::updatePlot()
         // Плотности теплопотока (2 род)
         QCPAxis *const qAxis = mPlot->yAxis;
         qAxis->setLabel(tr("Heat flow density q") +
-                        Units::unit(this, mTable2->physicalProperty()).headerSuffixOneLine());
+                        Units::unit(this, mExp2->physicalProperty()).headerSuffixOneLine());
         QCPGraph *qSteps = createStepsGraph(dateAxis, qAxis,
-                                            mTable2->values().toVector());
+                                            mExp2->values().toVector());
         qSteps->setPen(QPen(Qt::red, firstGraphPenWidth));
     }
 

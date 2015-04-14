@@ -31,36 +31,22 @@ QT_FORWARD_DECLARE_CLASS(QModelIndex)
 
 namespace qfgui
 {
-QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 QT_FORWARD_DECLARE_CLASS(MonthsTableModel)
 QT_FORWARD_DECLARE_CLASS(MonthsTableView)
+QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
+QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 
 class MonthsTableWidget : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(QList<double> values
-               READ values
-               WRITE setValues
-               NOTIFY valuesChanged
-               USER true)
-    Q_PROPERTY(int physicalProperty
-               READ physicalProperty
-               WRITE setPhysicalProperty)
+
 public:
-    MonthsTableWidget(const QString &valueName,
-                      Qt::Orientation orientation,
+    MonthsTableWidget(Qt::Orientation orientation,
                       QWidget *parent);
 
-    QList<double> values() const;
-    void setValues(const QList<double> &data);
+    MonthsTableExpander *addExpander(const QString &valueName);
 
-    int physicalProperty();
-
-public slots:
-    void setPhysicalProperty(int p);
-
-signals:
-    void valuesChanged();
+    void updateSizeLimits(bool withMaxHeight = false);
 
 private:
     MonthsTableModel *qfModel();

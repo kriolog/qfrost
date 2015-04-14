@@ -38,7 +38,7 @@ MonthsTableView::MonthsTableView(Qt::Orientation orientation, QWidget *parent)
                                          ? QHeaderView::Fixed
                                          : QHeaderView::Stretch);
 
-    dataTypesHeader()->setHighlightSections(false);
+    //dataTypesHeader()->setHighlightSections(false);
 
     if (isVertical) {
         setAlternatingRowColors(true);
@@ -76,13 +76,7 @@ QHeaderView *MonthsTableView::dataTypesHeader() const
            : horizontalHeader();
 }
 
-void MonthsTableView::setModel(QAbstractItemModel *model)
-{
-    QTableView::setModel(model);
-    updateSizeLimits();
-}
-
-void MonthsTableView::updateSizeLimits()
+void MonthsTableView::updateSizeLimits(bool withMaxHeight)
 {
     // Делаем так, чтобы минималный размер соответствовал содержимому
     static const int minViewWidth = 180;
@@ -108,7 +102,9 @@ void MonthsTableView::updateSizeLimits()
         setMinimumWidth(qMax(minViewWidth, widthHint));
     } else {
         setMinimumWidth(widthHint);
-        setMaximumHeight(heightHint);
+        if (withMaxHeight) {
+            setMaximumHeight(heightHint);
+        }
     }
 
     if (needStretchLastSection) {

@@ -29,21 +29,20 @@
 
 #include <boundary_conditions/monthstablemodel.h>
 #include <boundary_conditions/monthstableview.h>
+#include <boundary_conditions/monthstableexpander.h>
 #include <units/physicalpropertyspinbox.h>
 #include <mainwindow.h>
 
 using namespace qfgui;
 
-MonthsTableWidget::MonthsTableWidget(const QString &valueName,
-                                     Qt::Orientation orientation,
-                                     QWidget *parent)
+MonthsTableWidget::MonthsTableWidget(Qt::Orientation orientation, QWidget *parent)
     : QWidget(parent)
     , mView(new MonthsTableView(orientation, this))
     , mDataSetterSpinbox(new PhysicalPropertySpinBox(this))
     , mOpenDataSetter(new QPushButton(this))
     , mOrientation(orientation)
 {
-    MonthsTableModel *model = new MonthsTableModel(valueName, orientation, this);
+    MonthsTableModel *model = new MonthsTableModel(orientation, this);
     mView->setModel(model);
 
     QDialogButtonBox *dialogButtons;
@@ -57,7 +56,7 @@ MonthsTableWidget::MonthsTableWidget(const QString &valueName,
     dialogFormLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
     // FIXME: надпись можно бы и получше придумать
     dialogFormLayout->addRow(tr("Batch set %1:")
-                             .arg(valueName),
+                             .arg("WTF???"),
                              mDataSetterSpinbox);
 
     //: Batch set dialog title
@@ -94,20 +93,16 @@ MonthsTableWidget::MonthsTableWidget(const QString &valueName,
             this, SLOT(updateDataSetterButton()));
 
     updateDataSetterButton();
-
-    connect(model,
-            SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
-            SIGNAL(valuesChanged()));
 }
 
-void MonthsTableWidget::setValues(const QList<double> &data)
+MonthsTableExpander *MonthsTableWidget::addExpander(const QString &valueName)
 {
-    qfModel()->setValues(data);
+    return new MonthsTableExpander(qfModel(), valueName, this);
 }
 
-QList< double > MonthsTableWidget::values() const
+void MonthsTableWidget::updateSizeLimits(bool withMaxHeight)
 {
-    return qfModel()->values();
+    mView->updateSizeLimits(withMaxHeight);
 }
 
 MonthsTableModel *MonthsTableWidget::qfModel()
@@ -175,17 +170,4 @@ void MonthsTableWidget::setDataSetterValue()
     } else {
         mDataSetterSpinbox->setValue(0.0);
     }
-}
-
-int MonthsTableWidget::physicalProperty()
-{
-    Q_ASSERT(mDataSetterSpinbox->physicalProperty() == qfModel()->physicalProperty());
-    return mDataSetterSpinbox->physicalProperty();
-}
-
-void MonthsTableWidget::setPhysicalProperty(int p)
-{
-    mDataSetterSpinbox->setPhysicalProperty(p);
-    qfModel()->setPhysicalProperty(static_cast<PhysicalProperty>(p));
-    mView->updateSizeLimits(); // теперь суффикс (единицы измерения) влезут
 }

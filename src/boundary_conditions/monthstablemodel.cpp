@@ -19,30 +19,23 @@
 
 #include "monthstablemodel.h"
 
-#include <units/units.h>
-
 #include <QtCore/QDate>
 #include <QtCore/QSize>
 #include <QtCore/QLocale>
 #include <QtGui/QFont>
 
+#include "monthstableexpander.h"
+
 using namespace qfgui;
 
-MonthsTableModel::MonthsTableModel(const QString &valueName,
-                                   Qt::Orientation orientation,
+MonthsTableModel::MonthsTableModel(Qt::Orientation orientation,
                                    QObject *parent)
     : QAbstractTableModel(parent)
     , mOrientation(orientation)
     , mIsHorizontal(orientation == Qt::Horizontal)
-    , mData()
-    , mValueName(valueName)
-    , mPhysicalProperty(NoProperty)
+    , mExpanders()
 {
-    for (int i = 0; i != 12; ++i) {
-        mData.append(0);
-    }
-    updateHeaderData();
-    connect(Units::units(this), SIGNAL(changed()), SLOT(updateHeaderData()));
+
 }
 
 Qt::ItemFlags MonthsTableModel::flags(const QModelIndex &index) const
@@ -50,7 +43,7 @@ Qt::ItemFlags MonthsTableModel::flags(const QModelIndex &index) const
     Qt::ItemFlags result;
     if (index.isValid()) {
         result = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-        if (dataTypeNum(index) == 1) {
+        if (dataTypeNum(index) >= 1) {
             result |= Qt::ItemIsEditable;
         }
     }
@@ -64,28 +57,23 @@ QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, 
     }
 
     if (orientation != mOrientation) {
-        return (section == 0) ? tr("Month") : mValueNameWithSuffix;
+        if (section == 0) {
+            return tr("Month");
+        } else {
+            return mExpanders.at(section - 1)->headerText();
+        }
     } else {
         return section + 1;
     }
-}
-
-void MonthsTableModel::updateHeaderData()
-{
-    mValueNameWithSuffix = mValueName;
-    if (mPhysicalProperty != NoProperty) {
-        mValueNameWithSuffix += Units::unit(this, mPhysicalProperty).headerSuffixOneLine();
-    }
-    emit headerDataChanged(mIsHorizontal ? Qt::Vertical : Qt::Horizontal,
-                           1, 1);
 }
 
 bool MonthsTableModel::setData(const QModelIndex &index,
                                const QVariant &value,
                                int role)
 {
+    const int sectorNum = dataTypeNum(index);
     if (index.isValid() && role == Qt::EditRole) {
-        if (dataTypeNum(index) == 0) {
+        if (sectorNum == 0) {
             // первую колонку менять нельзя (там месяца перечислены)
             return false;
         }
@@ -100,11 +88,10 @@ bool MonthsTableModel::setData(const QModelIndex &index,
             return false;
         }
 
-        Q_ASSERT(mData.size() == 12);
-        // ещё здесь? запишем новое значение и просигналим об изменении данных
-        mData[monthNum(index)] = value.toDouble();
-        emit dataChanged(index, index);
-        return true;
+        // ещё здесь? запишем новое значение в соответствующий expander
+        Q_ASSERT(mExpanders.size() > sectorNum - 1);
+        MonthsTableExpander *expander = mExpanders[sectorNum - 1];
+        return expander->setValue(monthNum(index), value.toDouble());
     }
     return false;
 }
@@ -121,12 +108,15 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    const bool isMonthsColumn = (dataTypeNum(index) == 0);
+    const int sectorNum = dataTypeNum(index);
+    const bool isMonthsColumn = (sectorNum == 0);
+    MonthsTableExpander *expander = isMonthsColumn ? 0 : mExpanders[sectorNum - 1];
+    Q_ASSERT(isMonthsColumn || expander->modelSector() == sectorNum);
 
     if (role == QFrost::PhysicalPropertyRole) {
         return isMonthsColumn
                ? QVariant()
-               : mPhysicalProperty;
+               : expander->physicalProperty();
     }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
@@ -138,8 +128,8 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
                                                 ? QLocale::ShortFormat
                                                 : QLocale::LongFormat);
         } else {
-            Q_ASSERT(month < mData.size());
-            return mData.at(month);
+            Q_ASSERT(expander);
+            return expander->value(month);
         }
     }
 
@@ -166,30 +156,13 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
 int MonthsTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mIsHorizontal ? 12 : 2;
+    return mIsHorizontal ? 12 : (1 + mExpanders.size());
 }
 
 int MonthsTableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mIsHorizontal ? 2 : 12;
-}
-
-void MonthsTableModel::setValues(const QList<double> &data)
-{
-    Q_ASSERT(data.size() == 12);
-    mData = data;
-    if (mIsHorizontal) {
-        emit dataChanged(index(0, 1), index(11, 1));
-    } else {
-        emit dataChanged(index(1, 0), index(1, 11));
-    }
-}
-
-const QList<double> &MonthsTableModel::values() const
-{
-    Q_ASSERT(mData.size() == 12);
-    return mData;
+    return mIsHorizontal ? (1 + mExpanders.size()) : 12;
 }
 
 QModelIndexList MonthsTableModel::allData() const
@@ -201,15 +174,84 @@ QModelIndexList MonthsTableModel::allData() const
     return result;
 }
 
-void MonthsTableModel::setPhysicalProperty(PhysicalProperty property)
+int MonthsTableModel::addExpander(MonthsTableExpander *expander)
 {
-    if (mPhysicalProperty != property) {
-        mPhysicalProperty = property;
-    }
-    updateHeaderData();
+    const int newSector = mExpanders.size() + 1;
+
     if (mIsHorizontal) {
-        emit dataChanged(index(0, 1), index(11, 1));
+        beginInsertRows(QModelIndex(), newSector, newSector);
     } else {
-        emit dataChanged(index(1, 0), index(1, 11));
+        beginInsertColumns(QModelIndex(), newSector, newSector);
+    }
+
+    mExpanders.append(expander);
+
+    if (mIsHorizontal) {
+        endInsertRows();
+    } else {
+        endInsertColumns();
+    }
+
+    connect(expander, SIGNAL(headerTextChanged()),
+            SLOT(onExpanderHeaderTextChanged()));
+
+    connect(expander, SIGNAL(physicalPropertyChanged()),
+            SLOT(onExpanderPhysicalPropertyChanged()));
+
+    connect(expander, SIGNAL(valueChanged(int)),
+            SLOT(onExpanderValueChanged(int)));
+
+    connect(expander, SIGNAL(valuesReplaced()),
+            SLOT(onExpanderValuesReplaced()));
+
+    return newSector;
+}
+
+int MonthsTableModel::sectorNum(QObject *expanderObj) const
+{
+    Q_ASSERT(expanderObj);
+    MonthsTableExpander *expander = qobject_cast<MonthsTableExpander* >(expanderObj);
+    Q_ASSERT(expander);
+    return expander->modelSector();
+}
+
+void MonthsTableModel::onExpanderHeaderTextChanged()
+{
+    Q_ASSERT(sender());
+    const int section = sectorNum(sender());
+    emit headerDataChanged(mIsHorizontal ? Qt::Vertical : Qt::Horizontal,
+                           section,
+                           section);
+}
+
+void MonthsTableModel::onExpanderPhysicalPropertyChanged()
+{
+    Q_ASSERT(sender());
+    const int section = sectorNum(sender());
+    if (mIsHorizontal) {
+        emit dataChanged(index(0, section), index(11, section));
+    } else {
+        emit dataChanged(index(section, 0), index(section, 11));
+    }
+}
+
+void MonthsTableModel::onExpanderValueChanged(int monthNum)
+{
+    Q_ASSERT(sender());
+    const int section = sectorNum(sender());
+    const QModelIndex changedModelIndex = mIsHorizontal
+                                            ? index(monthNum, section)
+                                            : index(section, monthNum);
+    emit dataChanged(changedModelIndex, changedModelIndex);
+}
+
+void MonthsTableModel::onExpanderValuesReplaced()
+{
+    Q_ASSERT(sender());
+    const int section = sectorNum(sender());
+    if (mIsHorizontal) {
+        emit dataChanged(index(0, section), index(11, section));
+    } else {
+        emit dataChanged(index(section, 0), index(section, 11));
     }
 }

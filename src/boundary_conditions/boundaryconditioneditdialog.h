@@ -33,6 +33,7 @@ namespace qfgui
 
  QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
  QT_FORWARD_DECLARE_CLASS(MonthsTableWidget)
+ QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
 
 class BoundaryConditionEditDialog : public ItemEditDialog
 {
@@ -54,8 +55,12 @@ private:
 
     MonthsTableWidget *mTable1;
     MonthsTableWidget *mTable2;
-    MonthsTableWidget *mTable3Temps;
-    MonthsTableWidget *mTable3Factors;
+    MonthsTableWidget *mTable3;
+
+    MonthsTableExpander *mExp1;
+    MonthsTableExpander *mExp2;
+    MonthsTableExpander *mExp3t;
+    MonthsTableExpander *mExp3a;
 
     QCustomPlot *mPlot;
 };
