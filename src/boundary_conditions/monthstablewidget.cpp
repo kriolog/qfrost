@@ -44,16 +44,12 @@ MonthsTableWidget::MonthsTableWidget(Qt::Orientation orientation, QWidget *paren
     mainLayout->setContentsMargins(QMargins());
     mainLayout->addWidget(mView);
     mainLayout->addWidget(new MonthsTableSetter(mView->selectionModel(), this));
+    mainLayout->addStretch();
 }
 
 MonthsTableExpander *MonthsTableWidget::addExpander(const QString &valueName)
 {
     return new MonthsTableExpander(qfModel(), valueName, this);
-}
-
-void MonthsTableWidget::updateSizeLimits(bool withMaxHeight)
-{
-    mView->updateSizeLimits(withMaxHeight);
 }
 
 MonthsTableModel *MonthsTableWidget::qfModel()

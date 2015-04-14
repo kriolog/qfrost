@@ -76,7 +76,7 @@ QHeaderView *MonthsTableView::dataTypesHeader() const
            : horizontalHeader();
 }
 
-void MonthsTableView::updateSizeLimits(bool withMaxHeight)
+int MonthsTableView::updateSizeLimits()
 {
     // Делаем так, чтобы минималный размер соответствовал содержимому
     static const int minViewWidth = 180;
@@ -89,6 +89,7 @@ void MonthsTableView::updateSizeLimits(bool withMaxHeight)
                                 | QEventLoop::ExcludeSocketNotifiers);
 
     verticalHeader()->updateGeometry();
+
     const int heightHint = verticalHeader()->length()
                            + horizontalHeader()->sizeHint().height()
                            + 2 * frameWidth();
@@ -102,14 +103,13 @@ void MonthsTableView::updateSizeLimits(bool withMaxHeight)
         setMinimumWidth(qMax(minViewWidth, widthHint));
     } else {
         setMinimumWidth(widthHint);
-        if (withMaxHeight) {
-            setMaximumHeight(heightHint);
-        }
     }
 
     if (needStretchLastSection) {
         dataTypesHeader()->setStretchLastSection(true);
     }
+
+    return heightHint;
 }
 
 void MonthsTableView::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)

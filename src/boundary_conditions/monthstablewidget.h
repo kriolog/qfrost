@@ -41,7 +41,7 @@ public:
 
     MonthsTableExpander *addExpander(const QString &valueName);
 
-    void updateSizeLimits(bool withMaxHeight = false);
+    MonthsTableView *view() const { return mView; }
 
 private:
     MonthsTableModel *qfModel();

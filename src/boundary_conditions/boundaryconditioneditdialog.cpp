@@ -37,6 +37,7 @@
 #include <mainwindow.h>
 #include <smartdoublespinbox.h>
 #include <annualspline.h>
+#include "monthstableview.h"
 #include <units/units.h>
 
 #include <qcustomplot.h>
@@ -100,6 +101,10 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     plotFrameLayout->setContentsMargins(QMargins());
     plotFrameLayout->addWidget(mPlot);
 
+    QFrame *separator = new QFrame(this);
+    separator->setFrameStyle(QFrame::HLine | QFrame::Plain);
+
+    mainLayout->addWidget(separator);
     mainLayout->addWidget(mUsesTemperatureSpline);
     mainLayout->addWidget(plotFrame, 1);
 
@@ -147,9 +152,15 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
 
     // Теперь все данные (в т.ч. хедеры таблиц) заполнены, установим авторазмеры
-    mTable1->updateSizeLimits();
-    mTable2->updateSizeLimits();
-    mTable3->updateSizeLimits(true);
+    const int h1 = mTable1->view()->updateSizeLimits();
+    const int h2 = mTable2->view()->updateSizeLimits();
+    const int h3 = mTable3->view()->updateSizeLimits();
+
+    const int maxHeight = qMax(h1, qMax(h2, h3));
+
+    mTable1->view()->setMaximumHeight(maxHeight);
+    mTable2->view()->setMaximumHeight(maxHeight);
+    mTable3->view()->setMaximumHeight(maxHeight);
 
     /**************************************************************************/
 
