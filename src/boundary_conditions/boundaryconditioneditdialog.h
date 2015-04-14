@@ -25,11 +25,14 @@
 QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 QT_FORWARD_DECLARE_CLASS(QLineEdit)
 QT_FORWARD_DECLARE_CLASS(QGroupBox)
+QT_FORWARD_DECLARE_CLASS(QComboBox)
+QT_FORWARD_DECLARE_CLASS(QCustomPlot)
 
 namespace qfgui
 {
 
-QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
+ QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
+ QT_FORWARD_DECLARE_CLASS(MonthsTableWidget)
 
 class BoundaryConditionEditDialog : public ItemEditDialog
 {
@@ -40,11 +43,21 @@ public:
                                             bool isNewItem,
                                             QWidget *parent);
 
-public slots:
+private slots:
     void updateTrendWidgetVisibility(int type);
+    void updatePlot();
 
 private:
     QGroupBox *mTrendGroupBox;
+
+    QComboBox *mTypeBox;
+
+    MonthsTableWidget *mTable1;
+    MonthsTableWidget *mTable2;
+    MonthsTableWidget *mTable3Temps;
+    MonthsTableWidget *mTable3Factors;
+
+    QCustomPlot *mPlot;
 };
 
 }

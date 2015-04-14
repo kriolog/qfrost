@@ -15,5 +15,5 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 add_library(qfrost_boundary_conditions
 	STATIC
 	${qfrost_boundary_conditions_SRCS})
-qt5_use_modules(qfrost_boundary_conditions Widgets)
+qt5_use_modules(qfrost_boundary_conditions Widgets PrintSupport)
 target_link_libraries(qfrost_boundary_conditions)

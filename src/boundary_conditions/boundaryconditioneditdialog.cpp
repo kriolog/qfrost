@@ -24,8 +24,8 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QDataWidgetMapper>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QDialogButtonBox>
 #include <QtCore/QStringListModel>
 #include <QtWidgets/QStackedWidget>
 
@@ -35,6 +35,10 @@
 #include <qfrost.h>
 #include <mainwindow.h>
 #include <smartdoublespinbox.h>
+#include <annualspline.h>
+#include <units/units.h>
+
+#include <qcustomplot.h>
 
 using namespace qfgui;
 
@@ -43,6 +47,12 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
         bool isNewItem, QWidget *parent)
     : ItemEditDialog(model, forbiddenNames, parent)
     , mTrendGroupBox(new QGroupBox(tr("Temperature trend"), this))
+    , mTypeBox(new QComboBox(this))
+    , mTable1(new MonthsTableWidget(tr("T"), this))
+    , mTable2(new MonthsTableWidget(tr("q"), this))
+    , mTable3Temps(new MonthsTableWidget(tr("T"), this))
+    , mTable3Factors(new MonthsTableWidget(tr("\316\261"), this))
+    , mPlot(new QCustomPlot(this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
 
@@ -54,33 +64,50 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     QVBoxLayout *mainLayout = new QVBoxLayout;
     addLayout(mainLayout);
 
+    /**************************************************************************/
+
     QStringList items;
     items << tr("First") << tr("Second") << tr("Third");
-    QComboBox *typeBox = new QComboBox(this);
     QStringListModel *typeModel = new QStringListModel(items, this);
-    typeBox->setModel(typeModel);
+    mTypeBox->setModel(typeModel);
     QFormLayout *typeLayout = new QFormLayout;
-    typeLayout->addRow(tr("&Type"), typeBox);
+    typeLayout->addRow(tr("&Type"), mTypeBox);
     mainLayout->addLayout(typeLayout);
 
-    MonthsTableWidget *values1 = new MonthsTableWidget(tr("T"), this);
-
-    MonthsTableWidget *values2 = new MonthsTableWidget(tr("q"), this);
+    /**************************************************************************/
 
     QWidget *values3 = new QWidget(this);
     QHBoxLayout *thirdTypeParametersLayout = new QHBoxLayout(values3);
     thirdTypeParametersLayout->setContentsMargins(QMargins());
-    MonthsTableWidget *temperatures3 = new MonthsTableWidget(tr("T"), this);
 
-    MonthsTableWidget *heatTranferFactors = new MonthsTableWidget(tr("\316\261"), this);
-    thirdTypeParametersLayout->addWidget(temperatures3);
-    thirdTypeParametersLayout->addWidget(heatTranferFactors);
+    thirdTypeParametersLayout->addWidget(mTable3Temps);
+    thirdTypeParametersLayout->addWidget(mTable3Factors);
 
     QStackedWidget *valuesWidget = new QStackedWidget(this);
-    valuesWidget->addWidget(values1);
-    valuesWidget->addWidget(values2);
+    valuesWidget->addWidget(mTable1);
+    valuesWidget->addWidget(mTable2);
     valuesWidget->addWidget(values3);
     mainLayout->addWidget(valuesWidget);
+
+    /**************************************************************************/
+    mPlot->axisRect()->setupFullAxesBox(false);
+    mPlot->xAxis->setLabel(tr("Days since year start"));
+    mPlot->setMinimumSize(200, 80);
+
+    QFrame *plotFrame = new QFrame(this);
+    plotFrame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    QVBoxLayout *plotFrameLayout = new QVBoxLayout(plotFrame);
+    plotFrameLayout->setContentsMargins(QMargins());
+    plotFrameLayout->addWidget(mPlot);
+
+    /*QPushButton *showPlotButton = new QPushButton(QIcon::fromTheme("office-chart-line"),
+                                                  tr("Show Graphs"),
+                                                  this);
+    connect(showPlotButton, SIGNAL(clicked()), SLOT(showGraphs()));
+    mainLayout->addWidget(showPlotButton);*/
+    mainLayout->addWidget(plotFrame, 1);
+
+    /**************************************************************************/
 
     QFormLayout *trendLayout = new QFormLayout(mTrendGroupBox);
     mTrendGroupBox->setCheckable(true);
@@ -100,22 +127,36 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     trendLayout->addRow(tr("Reference year:"), trendStartYear);
     mainLayout->addWidget(mTrendGroupBox);
 
-    connect(typeBox, SIGNAL(currentIndexChanged(int)),
-            valuesWidget, SLOT(setCurrentIndex(int)));
-    connect(typeBox, SIGNAL(currentIndexChanged(int)),
-            SLOT(updateTrendWidgetVisibility(int)));
     /**************************************************************************/
 
-    mapper()->addMapping(typeBox, BC_Type, "currentIndex");
-    mapper()->addMapping(values1, BC_Temperatures1);
-    mapper()->addMapping(values2, BC_HeatFlowDensities);
-    mapper()->addMapping(temperatures3, BC_Temperatures3);
-    mapper()->addMapping(heatTranferFactors, BC_HeatTransferFactors);
+    connect(mTypeBox, SIGNAL(currentIndexChanged(int)),
+            valuesWidget, SLOT(setCurrentIndex(int)));
+    connect(mTypeBox, SIGNAL(currentIndexChanged(int)),
+            SLOT(updateTrendWidgetVisibility(int)));
+
+    /**************************************************************************/
+
+    mapper()->addMapping(mTypeBox, BC_Type, "currentIndex");
+    mapper()->addMapping(mTable1, BC_Temperatures1);
+    mapper()->addMapping(mTable2, BC_HeatFlowDensities);
+    mapper()->addMapping(mTable3Temps, BC_Temperatures3);
+    mapper()->addMapping(mTable3Factors, BC_HeatTransferFactors);
     mapper()->addMapping(mTrendGroupBox, BC_HasTemperatureTrend, "checked");
     mapper()->addMapping(trendValue, BC_TemperatureTrend);
     mapper()->addMapping(trendStartYear, BC_TemperatureTrendStartYear);
 
     mapper()->revert();
+
+    /**************************************************************************/
+
+    connect(mTypeBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
+    connect(mTable1, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mTable2, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mTable3Temps, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    connect(mTable3Factors, SIGNAL(valuesChanged()), SLOT(updatePlot()));
+    updatePlot();
+
+    /**************************************************************************/
 
     // Примем минимальный размер
     resize(QSize(0, 0));
@@ -125,4 +166,107 @@ void BoundaryConditionEditDialog::updateTrendWidgetVisibility(int type)
 {
     const bool canHaveTrend = (type != 1);
     mTrendGroupBox->setVisible(canHaveTrend);
+}
+
+static const int MainYear = 2001;
+static const QDate MainYearFirstDate = QDate(MainYear, 1, 1);
+static const int MainYearDaysNum = MainYearFirstDate.daysTo(MainYearFirstDate.addYears(1));
+
+static QCPGraph *createStepsGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
+                                  const QVector<double> &monthlyVals)
+{
+    QCPGraph *result = keyAxis->parentPlot()->addGraph(keyAxis, valAxis);
+    result->setAntialiased(false);
+    result->setLineStyle(QCPGraph::lsStepLeft);
+
+    QVector<double> additionalVal;
+    additionalVal << monthlyVals.first();
+
+    result->setData(AnnualSpline::MonthlyKeys, monthlyVals + additionalVal);
+
+    return result;
+}
+
+static QCPGraph *createSplineGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
+                                   const QVector<double> &monthlyVals)
+{
+    QCPGraph *result = keyAxis->parentPlot()->addGraph(keyAxis, valAxis);
+
+    AnnualSpline spline(monthlyVals.toList());
+
+    const QVector<double> valsDaily = spline.dailyValues();
+    QVector<double> daysDaily;
+    daysDaily.reserve(valsDaily.size());
+    for (int i = 0; i < valsDaily.size(); ++i) {
+        daysDaily << i;
+    }
+
+    Q_ASSERT(daysDaily.size() == valsDaily.size());
+    result->setData(daysDaily, valsDaily);
+
+    return result;
+}
+
+/// Слегка расширает границы @p axis (до ближайших соседних целых)
+static void enlargeAxisRange(QCPAxis *axis)
+{
+    static const double delta = 0.2;
+    axis->setRange(qFloor(axis->range().lower - delta),
+                   qCeil(axis->range().upper + delta));
+}
+
+void BoundaryConditionEditDialog::updatePlot()
+{
+    static const int firstGraphPenWidth = 2;
+    static const int secondGraphPenWidth = 1;
+    static const int stepsGraphWidth = 0;
+
+    mPlot->clearGraphs();
+
+    QCPAxis *const dateAxis = mPlot->xAxis;
+    const int type = mTypeBox->currentIndex();
+    const bool hasSecondGraph = (type == 2);
+    if (type != 1) {
+        // Температуры (1 и 3 род)
+        QCPAxis *const tAxis = mPlot->yAxis;
+        if (hasSecondGraph) {
+            // + коэффициенты теплообмена (3 род)
+            QCPAxis *const aAxis = mPlot->yAxis2;
+            Q_ASSERT(aAxis != tAxis);
+            aAxis->setTickLabels(true);
+            aAxis->setLabel(tr("Heat transfer factor \316\261") +
+            Units::unit(this, mTable3Factors->physicalProperty()).headerSuffixOneLine());
+            QCPGraph *aSteps = createStepsGraph(dateAxis, aAxis,
+                                                mTable3Factors->values().toVector());
+            aSteps->setPen(QPen(Qt::green, secondGraphPenWidth));
+        }
+        MonthsTableWidget *tempsWidget = (type == 2) ? mTable3Temps : mTable1;
+        tAxis->setLabel(tr("Temperature T") +
+                        Units::unit(this, tempsWidget->physicalProperty()).headerSuffixOneLine());
+        const QVector<double> monthlyTemps = tempsWidget->values().toVector();
+        QCPGraph *tSteps = createStepsGraph(dateAxis, tAxis, monthlyTemps);
+        tSteps->setPen(QPen(Qt::blue, stepsGraphWidth, Qt::DashLine));
+        QCPGraph *tSpline = createSplineGraph(dateAxis, tAxis, monthlyTemps);
+        tSpline->setPen(QPen(Qt::blue, firstGraphPenWidth));
+    } else {
+        // Плотности теплопотока (2 род)
+        QCPAxis *const qAxis = mPlot->yAxis;
+        qAxis->setLabel(tr("Heat flow density q") +
+                        Units::unit(this, mTable2->physicalProperty()).headerSuffixOneLine());
+        QCPGraph *qSteps = createStepsGraph(dateAxis, qAxis,
+                                            mTable2->values().toVector());
+        qSteps->setPen(QPen(Qt::red, firstGraphPenWidth));
+    }
+
+    mPlot->rescaleAxes();
+    enlargeAxisRange(mPlot->yAxis);
+
+    mPlot->yAxis2->setTickLabels(hasSecondGraph);
+    if (hasSecondGraph) {
+        enlargeAxisRange(mPlot->yAxis2);
+    } else {
+        mPlot->yAxis2->setRange(mPlot->yAxis->range());
+    }
+
+    mPlot->replot();
 }

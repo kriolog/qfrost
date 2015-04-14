@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2012  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -40,6 +40,7 @@ class MonthsTableWidget : public QWidget
     Q_PROPERTY(QList<double> values
                READ values
                WRITE setValues
+               NOTIFY valuesChanged
                USER true)
     Q_PROPERTY(int physicalProperty
                READ physicalProperty
@@ -53,6 +54,9 @@ public:
 
 public slots:
     void setPhysicalProperty(int p);
+
+signals:
+    void valuesChanged();
 
 private:
     MonthsTableModel *qfModel();

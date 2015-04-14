@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2014  Denis Pesotsky
+ * Copyright (C) 2011-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -91,6 +91,10 @@ MonthsTableWidget::MonthsTableWidget(const QString &valueName,
             this, SLOT(updateDataSetterButton()));
 
     updateDataSetterButton();
+
+    connect(model,
+            SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+            SIGNAL(valuesChanged()));
 }
 
 void MonthsTableWidget::setValues(const QList<double> &data)
