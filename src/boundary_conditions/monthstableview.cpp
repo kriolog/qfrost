@@ -38,7 +38,9 @@ MonthsTableView::MonthsTableView(Qt::Orientation orientation, QWidget *parent)
                                          ? QHeaderView::Fixed
                                          : QHeaderView::Stretch);
 
-    //dataTypesHeader()->setHighlightSections(false);
+    setSelectionBehavior(isVertical ? QAbstractItemView::SelectRows
+                                    : QAbstractItemView::SelectColumns);
+    dataTypesHeader()->setHighlightSections(false);
 
     if (isVertical) {
         setAlternatingRowColors(true);
