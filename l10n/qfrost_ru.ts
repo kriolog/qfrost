@@ -674,91 +674,73 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
 <context>
     <name>qfgui::BoundaryConditionEditDialog</name>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="62"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="60"/>
         <source>Use spline interpolation for temperatures (recommended)</source>
         <translation>Интерполировать температуру сплайном (рекомендовано)</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="68"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="66"/>
         <source>New Boundary Condition</source>
         <translation>Новое граничное условие</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="69"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="67"/>
         <source>Edit Boundary Condition %1</source>
         <translation>Правка граничного условия %1</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="78"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="76"/>
         <source>First</source>
         <translation>Первый</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="78"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="76"/>
         <source>Second</source>
         <translation>Второй</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="78"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="76"/>
         <source>Third</source>
         <translation>Третий</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="82"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="80"/>
         <source>&amp;Type</source>
         <translation>&amp;Род</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="135"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="130"/>
         <source> °C/decade</source>
         <translation> °C/год</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="136"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="131"/>
         <source>Trend value:</source>
         <translation>Значение тренда:</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="137"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="132"/>
         <source>Reference year:</source>
         <translation>Исходный год:</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="261"/>
-        <source>Heat transfer factor
-α</source>
-        <translation>Коэф. теплообмена
-α</translation>
-    </message>
-    <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="268"/>
-        <source>Temperature T</source>
-        <translation>Температура T</translation>
-    </message>
-    <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="282"/>
-        <source>Heat flow density q</source>
-        <translation>Плотн. теплопотока
-q</translation>
-    </message>
-    <message>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="56"/>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="58"/>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="60"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="53"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="51"/>
         <source>Temperature trend</source>
         <translation>Тренд потепления</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="59"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="57"/>
         <source>q</source>
         <translation>q</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="61"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="59"/>
         <source>α</source>
         <translation>α</translation>
     </message>
@@ -1876,24 +1858,54 @@ Blank if not found or disabled.</source>
     </message>
 </context>
 <context>
-    <name>qfgui::MonthsTableSetter</name>
+    <name>qfgui::MonthsTablePlot</name>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="40"/>
-        <source>Set selected...</source>
-        <translation>Установить выбранные...</translation>
+        <location filename="../src/boundary_conditions/monthstableplot.cpp" line="322"/>
+        <source>Heat transfer factor
+α</source>
+        <translation>Коэф. теплообмена
+α</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="63"/>
+        <location filename="../src/boundary_conditions/monthstableplot.cpp" line="331"/>
+        <source>Temperature T</source>
+        <translation>Температура T</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/monthstableplot.cpp" line="334"/>
+        <source>Heat flow density q</source>
+        <translation>Плотн. теплопотока
+q</translation>
+    </message>
+</context>
+<context>
+    <name>qfgui::MonthsTableSetter</name>
+    <message>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="83"/>
         <source>Set all %1...</source>
         <translation>Установить все %1...</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="108"/>
-        <source>Batch set %1:</source>
-        <translation>Установить значения %1:</translation>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="89"/>
+        <source>Set selected %1...</source>
+        <translation>Установить выбранные %1...</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="181"/>
+        <source>Set %n values</source>
+        <translation>
+            <numerusform>Установить %n значение</numerusform>
+            <numerusform>Установить %n значения</numerusform>
+            <numerusform>Установить %n значений</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="111"/>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="188"/>
+        <source>New value for %1:</source>
+        <translation>Величина %1:</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="191"/>
         <source>Batch Set</source>
         <extracomment>Batch set dialog title</extracomment>
         <translation>Установка значений</translation>
