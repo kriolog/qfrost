@@ -60,7 +60,7 @@ bool MonthsTableExpander::setValue(int monthNum, double d)
     }
     valRef = d;
     emit valueChanged(monthNum);
-    emit valuesChanged();
+    emit valuesChanged(mData);
     return true;
 }
 
@@ -71,7 +71,7 @@ bool MonthsTableExpander::setValues(const QList<double> &data)
         return false;
     }
     mData = data;
-    emit valuesChanged();
+    emit valuesChanged(mData);
     emit valuesReplaced();
     return true;
 }

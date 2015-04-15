@@ -70,7 +70,7 @@ public:
     bool setPhysicalProperty(int p);
 
 signals:
-    void valuesChanged(); ///< Изменение хотя бы одного значения
+    void valuesChanged(const QList<double> &data); ///< Изменение хотя бы одного значения
     void headerTextChanged(); ///< Изменение текста для заголовка
     void physicalPropertyChanged(int p); ///< Изменение физ. свойства
 

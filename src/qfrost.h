@@ -258,6 +258,9 @@ public:
     /// В отличие от actualSize, этот размер всегда содержится в availableSizes.
     static QSize upperBoundIconSize(const QIcon &icon, int maxHeight);
 
+    /// Строка с римской записью числа @p number
+    static QString romanNumeral(int number, int markCount = 0);
+
 private:
     /**
      * Коэффициент для получения метров из единиц сцены.

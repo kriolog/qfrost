@@ -98,3 +98,32 @@ QSize QFrost::upperBoundIconSize(const QIcon &icon, int maxHeight)
     }
     return result;
 }
+
+QString QFrost::romanNumeral(int number, int markCount)
+{
+    typedef QPair<int, QString> valueMapping;
+    static QVector<valueMapping> importantNumbers = {
+        {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+        {100,  "C"}, { 90, "XC"}, { 50, "L"}, { 40, "XL"},
+        {10,   "X"}, {  9, "IX"}, {  5, "V"}, {  4, "IV"},
+        {1,    "I"},
+    };
+
+    QString result;
+    bool needMark = false;
+    QString marks(markCount, '\'');
+    for (auto mapping : importantNumbers) {
+        int value = mapping.first;
+        const QString &digits = mapping.second;
+        while (number >= value) {
+            result += digits;
+            number -= value;
+            needMark = true;
+        }
+        if ((value == 1000 || value == 100 || value == 10 || value == 1) && needMark) {
+            result += marks;
+            needMark = false;
+        }
+    }
+    return result;
+}

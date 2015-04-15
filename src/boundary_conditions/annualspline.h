@@ -43,7 +43,8 @@ public:
 
     QVector<double> dailyValues();
 
-    static const QVector<double> MonthlyKeys; ///< Дни-границы (0 .. 365)
+    static const QVector<double> DailyKeys; ///< 365 дней [0 .. 365) формата QCP
+    static const QVector<double> MonthlyKeys; ///< 13 дней-границ меж месяцев
 
 private:
     const QVector<SplineCoeffs> mCoeffs;

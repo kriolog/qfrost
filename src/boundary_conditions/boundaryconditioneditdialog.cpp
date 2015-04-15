@@ -38,9 +38,7 @@
 #include <smartdoublespinbox.h>
 #include <annualspline.h>
 #include "monthstableview.h"
-#include <units/units.h>
-
-#include <qcustomplot.h>
+#include "monthstableplot.h"
 
 using namespace qfgui;
 
@@ -60,7 +58,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     , mExp3t(mTable3->addExpander(tr("T")))
     , mExp3a(mTable3->addExpander(tr("\316\261")))
     , mUsesTemperatureSpline(new QCheckBox(tr("Use spline interpolation for temperatures (recommended)"), this))
-    , mPlot(new QCustomPlot(this))
+    , mPlot(new MonthsTablePlot(mExp1, mExp2, mExp3t, mExp3a, this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
 
@@ -96,19 +94,16 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     mainLayout->addWidget(tablesGroupBox);
 
     /**************************************************************************/
-    mPlot->axisRect()->setupFullAxesBox(false);
-    //mPlot->xAxis->setLabel(tr("Days since year start"));
     mPlot->setMinimumSize(300, 180);
-
-    QFrame *plotFrame = new QFrame(this);
-    plotFrame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    QVBoxLayout *plotFrameLayout = new QVBoxLayout(plotFrame);
-    plotFrameLayout->setContentsMargins(QMargins());
-    plotFrameLayout->addWidget(mPlot);
+    connect(mTypeBox, SIGNAL(currentIndexChanged(int)),
+            mPlot, SLOT(setConditionType(int)));
+    connect(mUsesTemperatureSpline, SIGNAL(toggled(bool)),
+            mPlot, SLOT(setSplineEnabled(bool)));
+    /**************************************************************************/
 
     QGroupBox *plotGroupBox = new QGroupBox(this);
     QVBoxLayout *plotLayout = new QVBoxLayout(plotGroupBox);
-    plotLayout->addWidget(plotFrame, 1);
+    plotLayout->addWidget(mPlot, 1);
     plotLayout->addWidget(mUsesTemperatureSpline);
 
     QHBoxLayout *secondLayout = new QHBoxLayout();
@@ -170,18 +165,6 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     mTable2->view()->setMaximumHeight(maxHeight);
     mTable3->view()->setMaximumHeight(maxHeight);
 
-    /**************************************************************************/
-
-    connect(mTypeBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePlot()));
-    connect(mExp1, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mExp2, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mExp3t, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mExp3a, SIGNAL(valuesChanged()), SLOT(updatePlot()));
-    connect(mUsesTemperatureSpline, SIGNAL(stateChanged(int)), SLOT(updatePlot()));
-    updatePlot();
-
-    /**************************************************************************/
-
     // Примем минимальный размер
     resize(QSize(0, 0));
 }
@@ -191,110 +174,4 @@ void BoundaryConditionEditDialog::updateTemperatureWidgets(int type)
     const bool hasTemps = (type != 1);
     mTrendGroupBox->setEnabled(hasTemps);
     mUsesTemperatureSpline->setEnabled(hasTemps);
-}
-
-static QCPGraph *createStepsGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
-                                  const QVector<double> &monthlyVals)
-{
-    QCPGraph *result = keyAxis->parentPlot()->addGraph(keyAxis, valAxis);
-    result->setAntialiased(false);
-    result->setLineStyle(QCPGraph::lsStepLeft);
-
-    QVector<double> additionalVal;
-    additionalVal << monthlyVals.first();
-
-    result->setData(AnnualSpline::MonthlyKeys, monthlyVals + additionalVal);
-
-    return result;
-}
-
-static QCPGraph *createSplineGraph(QCPAxis *keyAxis, QCPAxis *valAxis,
-                                   const QVector<double> &monthlyVals)
-{
-    QCPGraph *result = keyAxis->parentPlot()->addGraph(keyAxis, valAxis);
-
-    AnnualSpline spline(monthlyVals.toList());
-
-    const QVector<double> valsDaily = spline.dailyValues();
-    QVector<double> daysDaily;
-    daysDaily.reserve(valsDaily.size());
-    for (int i = 0; i < valsDaily.size(); ++i) {
-        daysDaily << i;
-    }
-
-    Q_ASSERT(daysDaily.size() == valsDaily.size());
-    result->setData(daysDaily, valsDaily);
-
-    return result;
-}
-
-/// Слегка расширает границы @p axis (до ближайших соседних целых)
-static void enlargeAxisRange(QCPAxis *axis)
-{
-    static const double delta = 0.2;
-    axis->setRange(qFloor(axis->range().lower - delta),
-                   qCeil(axis->range().upper + delta));
-}
-
-void BoundaryConditionEditDialog::updatePlot()
-{
-    static const int firstGraphPenWidth = 3;
-    static const int secondGraphPenWidth = 2;
-    static const int stepsGraphWidth = 1;
-
-    mPlot->clearGraphs();
-
-    QCPAxis *const dateAxis = mPlot->xAxis;
-    const int type = mTypeBox->currentIndex();
-    const bool hasSecondGraph = (type == 2);
-    if (!hasSecondGraph) {
-        mPlot->yAxis2->setLabel(QString());
-    }
-    if (type != 1) {
-        // Температуры (1 и 3 род)
-        QCPAxis *const tAxis = mPlot->yAxis;
-        if (hasSecondGraph) {
-            // + коэффициенты теплообмена (3 род)
-            QCPAxis *const aAxis = mPlot->yAxis2;
-            Q_ASSERT(aAxis != tAxis);
-            aAxis->setTickLabels(true);
-            aAxis->setLabel(tr("Heat transfer factor\n\316\261") +
-            Units::unit(this, mExp3a->physicalProperty()).headerSuffixOneLine());
-            QCPGraph *aSteps = createStepsGraph(dateAxis, aAxis,
-                                                mExp3a->values().toVector());
-            aSteps->setPen(QPen(Qt::green, secondGraphPenWidth));
-        }
-        MonthsTableExpander *tempsExp = (type == 2) ? mExp3t : mExp1;
-        tAxis->setLabel(tr("Temperature T") +
-                        Units::unit(this, tempsExp->physicalProperty()).headerSuffixOneLine());
-        const QVector<double> monthlyTemps = tempsExp->values().toVector();
-        QCPGraph *tSteps = createStepsGraph(dateAxis, tAxis, monthlyTemps);
-        if (!mUsesTemperatureSpline->isChecked()) {
-            tSteps->setPen(QPen(Qt::blue, firstGraphPenWidth));
-        } else {
-            tSteps->setPen(QPen(Qt::blue, stepsGraphWidth, Qt::DashLine));
-            QCPGraph *tSpline = createSplineGraph(dateAxis, tAxis, monthlyTemps);
-            tSpline->setPen(QPen(Qt::blue, firstGraphPenWidth));
-        }
-    } else {
-        // Плотности теплопотока (2 род)
-        QCPAxis *const qAxis = mPlot->yAxis;
-        qAxis->setLabel(tr("Heat flow density q") +
-                        Units::unit(this, mExp2->physicalProperty()).headerSuffixOneLine());
-        QCPGraph *qSteps = createStepsGraph(dateAxis, qAxis,
-                                            mExp2->values().toVector());
-        qSteps->setPen(QPen(Qt::red, firstGraphPenWidth));
-    }
-
-    mPlot->rescaleAxes();
-    enlargeAxisRange(mPlot->yAxis);
-
-    mPlot->yAxis2->setTickLabels(hasSecondGraph);
-    if (hasSecondGraph) {
-        enlargeAxisRange(mPlot->yAxis2);
-    } else {
-        mPlot->yAxis2->setRange(mPlot->yAxis->range());
-    }
-
-    mPlot->replot();
 }

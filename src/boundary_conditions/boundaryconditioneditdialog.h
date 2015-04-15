@@ -32,9 +32,10 @@ QT_FORWARD_DECLARE_CLASS(QCustomPlot)
 namespace qfgui
 {
 
- QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
- QT_FORWARD_DECLARE_CLASS(MonthsTableWidget)
- QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
+QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
+QT_FORWARD_DECLARE_CLASS(MonthsTableWidget)
+QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
+QT_FORWARD_DECLARE_CLASS(MonthsTablePlot)
 
 class BoundaryConditionEditDialog : public ItemEditDialog
 {
@@ -49,9 +50,6 @@ private slots:
     /// Обновляет виджеты, касающиеся температуры (mTrendGroupBox + содержимое и
     /// mUsesTemperatureSpline), чтобы учесть, есть ли для @p type температуры.
     void updateTemperatureWidgets(int type);
-
-    /// Перестраивает графики
-    void updatePlot();
 
 private:
     QGroupBox *mTrendGroupBox;
@@ -69,7 +67,7 @@ private:
 
     QCheckBox *mUsesTemperatureSpline;
 
-    QCustomPlot *mPlot;
+    MonthsTablePlot *mPlot;
 };
 
 }

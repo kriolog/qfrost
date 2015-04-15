@@ -4,6 +4,7 @@ set(qfrost_boundary_conditions_SRCS
 	monthstablemodel.cpp
     monthstableexpander.cpp
     monthstablesetter.cpp
+    monthstableplot.cpp
 	boundarycondition.cpp
 	boundaryconditioneditdialog.cpp
 	boundaryconditionsmodel.cpp

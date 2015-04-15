@@ -60,13 +60,11 @@ public:
     /// Видимое значение знаков после запятой
     int decimalsVisible() const;
 
-    inline double toSI(double value) const {
-        return value * mK;
-    }
+    inline double toSI(double value) const { return value * mK; }
+    inline QList<double> toSI(const QList<double> &orig) const;
 
-    inline double fromSI(double value) const {
-        return value / mK;
-    }
+    inline double fromSI(double value) const { return value / mK; }
+    inline QList<double> fromSI(const QList<double> &orig) const;
 
     QString textFromSI(double value) const;
 
@@ -205,6 +203,27 @@ private:
 
     friend class Unit;
 };
+
+QList<double> Unit::toSI(const QList<double> &orig) const
+{
+    QList<double> result;
+    result.reserve(orig.size());
+    foreach (const double val, orig) {
+        result.append(toSI(val));
+    }
+    return result;
+}
+
+QList<double> Unit::fromSI(const QList<double> &orig) const
+{
+    QList<double> result;
+    result.reserve(orig.size());
+    foreach(const double val, orig) {
+        result.append(fromSI(val));
+    }
+    return result;
+}
+
 
 class UnitsSystemActionGroup: public QActionGroup
 {

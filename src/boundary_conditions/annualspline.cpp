@@ -30,6 +30,23 @@ static const int MainYear = 2001;
 static const QDate MainYearFirstDate = QDate(MainYear, 1, 1);
 static const int MainYearDaysNum = MainYearFirstDate.daysTo(MainYearFirstDate.addYears(1));
 
+static QVector<double> dailyKeys()
+{
+    QVector<double> x;
+    x.reserve(MainYearDaysNum);
+
+    int secsNum = 0;
+    x.append(secsNum);
+    for (int i = 1; i < MainYearDaysNum; ++i) {
+        secsNum += 24 * 60 * 60;
+        x.append(secsNum);
+    }
+
+    Q_ASSERT(x.size() == MainYearDaysNum);
+
+    return x;
+}
+
 static QVector<double> monthlyKeys()
 {
     QVector<double> x;
@@ -38,15 +55,16 @@ static QVector<double> monthlyKeys()
     x.append(0);
     for (int month = 2; month <= 12; ++month) {
         const QDate curDate(MainYear, month, 1);
-        x.append(MainYearFirstDate.daysTo(curDate));
+        x.append(MainYearFirstDate.daysTo(curDate) * 24 * 60 * 60);
     }
-    x.append(MainYearDaysNum);
+    x.append(MainYearDaysNum * 24 * 60 * 60);
 
     Q_ASSERT(x.size() == 13);
 
     return x;
 }
 
+const QVector<double> AnnualSpline::DailyKeys = dailyKeys();
 const QVector<double> AnnualSpline::MonthlyKeys = monthlyKeys();
 
 /***
@@ -185,7 +203,7 @@ QVector< double > AnnualSpline::dailyValues()
 
     QDate date = MainYearFirstDate;
     while (date.year() == MainYear) {
-        result << coeffIt->value(daysSinceMonthStart);
+        result << coeffIt->value(daysSinceMonthStart * 24 * 60 * 60);
         ++daysSinceMonthStart;
         date = date.addDays(1);
         if (date.day() == 1) {
