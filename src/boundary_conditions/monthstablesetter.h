@@ -23,11 +23,15 @@
 
 #include <QtWidgets/QWidget>
 
+#include <QtCore/QSet>
+
 QT_FORWARD_DECLARE_CLASS(QSignalMapper)
 QT_FORWARD_DECLARE_CLASS(QHBoxLayout)
 QT_FORWARD_DECLARE_CLASS(QItemSelection)
 QT_FORWARD_DECLARE_CLASS(QItemSelectionModel)
 QT_FORWARD_DECLARE_CLASS(QPushButton)
+QT_FORWARD_DECLARE_CLASS(QStackedLayout)
+QT_FORWARD_DECLARE_CLASS(QItemSelectionModel)
 
 namespace qfgui {
 QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
@@ -47,37 +51,53 @@ class MonthsTableSetter : public QWidget
 
 public:
     MonthsTableSetter(QItemSelectionModel *selectionModel,
+                      Qt::Orientation orientation,
                       QWidget *parent);
 
 private slots:
-    /// Открывает и обрабатывает диалог изменения всех значений для @p sector
+    /// Пусеает и обрабатывает диалог изменения всех значений для @p sector
     void doSetAll(int sector);
+
+    /// Пускает и обрабатывает диалог изменения @p sector по выделенным месяцам
+    void doSetMonthly(int sector);
 
     /// Обработчик добавления дополнительного сектора данных через @p expander
     void onExpanderAdded(int sector, MonthsTableExpander* expander);
 
     /// Обработчик изменения активного выделения
-    void onSelectionChanged(const QItemSelection &selected);
+    void onSelectionChanged();
 
 private:
+    QItemSelectionModel *const mSelectionModel;
+
     /// Вызывает диалог выбора значений для @p sector.
     /// Возвращает пару значений: был ли диалог принят + что было введено в нём.
-    QPair<bool, double> execEditor(int sector);
+    QPair<bool, double> execEditor(int sector, bool allMonths);
 
-    /// Кнопка установки значений для выбранного.
-    /// Видна при выделении. Доступна, если выделены значения одного сектора.
-    QPushButton *mSetSelectedButton;
-
-    /// Кнопки установки всех значений (посекторно).
-    QHash<int, QPushButton *> mSetAllButtons;
+    const Qt::Orientation mOrientation;
 
     /// Все наши источники данных
     QHash<int, MonthsTableExpander *> mExpanders;
 
-    /// Маппер, разделяющий сигналы от кнопок по значению сектора модели
+    /// Лэйоут из (1) кнопок установки всего и (2) кнопок установки по месяцам
+    QStackedLayout *mLayout;
+
+    /// Кнопки установки всех значений (посекторно).
+    QHash<int, QPushButton *> mSetAllButtons;
+    /// Кнопки установки значений в выделенных месяцах (посекторно).
+    QHash<int, QPushButton *> mSetMonthlyButtons;
+
     QSignalMapper *mSetAllMapper;
+    QSignalMapper *mSetMonthlyMapper;
 
     QHBoxLayout *mSetAllButtonsLayout;
+    QHBoxLayout *mSetMonthlyButtonsLayout;
+
+    int mSetAllButtonsIndex;
+    int mSetMonthlyButtonsIndex;
+
+    /// Выделенные месяцы (0 .. 11)
+    QSet<int> mSelectedMonths;
 };
 
 }

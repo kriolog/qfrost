@@ -43,7 +43,8 @@ MonthsTableWidget::MonthsTableWidget(Qt::Orientation orientation, QWidget *paren
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(QMargins());
     mainLayout->addWidget(mView);
-    mainLayout->addWidget(new MonthsTableSetter(mView->selectionModel(), this));
+    mainLayout->addWidget(new MonthsTableSetter(mView->selectionModel(),
+                                                orientation, this));
     mainLayout->addStretch();
 }
 
