@@ -59,7 +59,7 @@ QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, 
             // летние месяцы выделяем
             if (section >= 5 && section <= 7) {
                 QFont font;
-                font.setBold(true);
+                font.setItalic(true);
                 return font;
             } else {
                 return QVariant();
