@@ -52,19 +52,38 @@ Qt::ItemFlags MonthsTableModel::flags(const QModelIndex &index) const
 
 QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role != Qt::DisplayRole) {
-        return QVariant();
-    }
+    const bool isMonth = (orientation == mOrientation);
 
-    if (orientation != mOrientation) {
-        if (section == 0) {
-            return tr("Month");
-        } else {
-            return mExpanders.at(section - 1)->headerText();
+    if (isMonth) {
+        if (role == Qt::FontRole) {
+            // летние месяцы выделяем
+            if (section >= 5 && section <= 7) {
+                QFont font;
+                font.setBold(true);
+                return font;
+            } else {
+                return QVariant();
+            }
+        }
+
+        if (role == Qt::ToolTipRole) {
+            return section + 1;
+        }
+
+        if (role == Qt::DisplayRole) {
+            const QLocale locale;
+            return locale.standaloneMonthName(section + 1,
+                                              mIsHorizontal
+                                              ? QLocale::ShortFormat
+                                              : QLocale::LongFormat);
         }
     } else {
-        return section + 1;
+        if (role == Qt::DisplayRole) {
+                return mExpanders.at(section)->headerText();
+        }
     }
+
+    return QVariant();
 }
 
 bool MonthsTableModel::setData(const QModelIndex &index,
@@ -89,8 +108,8 @@ bool MonthsTableModel::setData(const QModelIndex &index,
         }
 
         // ещё здесь? запишем новое значение в соответствующий expander
-        Q_ASSERT(mExpanders.size() > sectorNum - 1);
-        MonthsTableExpander *expander = mExpanders[sectorNum - 1];
+        Q_ASSERT(mExpanders.size() > sectorNum);
+        MonthsTableExpander *expander = mExpanders[sectorNum];
         return expander->setValue(monthNum(index), value.toDouble());
     }
     return false;
@@ -109,51 +128,21 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
     }
 
     const int sectorNum = dataTypeNum(index);
-    const bool isMonthsColumn = (sectorNum == 0);
-
-    if (isMonthsColumn) {
-        if (role == Qt::BackgroundRole) {
-            return QPalette().alternateBase();
-        }
-
-        // летние месяцы выделяем
-        if (role == Qt::FontRole && monthNum(index) >= 5 && monthNum(index) <= 7) {
-            QFont font;
-            font.setBold(true);
-            return font;
-        }
-    }
 
     if (role == Qt::TextAlignmentRole) {
-        if (mIsHorizontal) {
-            return Qt::AlignCenter;
-        } else {
-            return Qt::AlignVCenter
-            + (isMonthsColumn ? Qt::AlignRight : Qt::AlignHCenter);
-        }
+        return Qt::AlignCenter;
     }
 
-    MonthsTableExpander *expander = isMonthsColumn ? 0 : mExpanders[sectorNum - 1];
-    Q_ASSERT(isMonthsColumn || expander->modelSector() == sectorNum);
+    MonthsTableExpander *expander = mExpanders[sectorNum];
+    Q_ASSERT(expander->modelSector() == sectorNum);
 
     if (role == QFrost::PhysicalPropertyRole) {
-        return isMonthsColumn
-               ? QVariant()
-               : expander->physicalProperty();
+        return expander->physicalProperty();
     }
 
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         const int month = monthNum(index);
-        if (isMonthsColumn) {
-            const QLocale locale;
-            return locale.standaloneMonthName(month + 1,
-                                              mIsHorizontal
-                                                ? QLocale::ShortFormat
-                                                : QLocale::LongFormat);
-        } else {
-            Q_ASSERT(expander);
-            return expander->value(month);
-        }
+        return expander->value(month);
     }
 
     return QVariant();
@@ -162,13 +151,13 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
 int MonthsTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mIsHorizontal ? 12 : (1 + mExpanders.size());
+    return mIsHorizontal ? 12 : mExpanders.size();
 }
 
 int MonthsTableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return mIsHorizontal ? (1 + mExpanders.size()) : 12;
+    return mIsHorizontal ? mExpanders.size() : 12;
 }
 
 QModelIndexList MonthsTableModel::allData() const
@@ -182,7 +171,7 @@ QModelIndexList MonthsTableModel::allData() const
 
 int MonthsTableModel::addExpander(MonthsTableExpander *expander)
 {
-    const int newSector = mExpanders.size() + 1;
+    const int newSector = mExpanders.size();
 
     if (mIsHorizontal) {
         beginInsertRows(QModelIndex(), newSector, newSector);

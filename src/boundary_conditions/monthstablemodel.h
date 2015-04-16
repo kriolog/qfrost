@@ -49,7 +49,7 @@ public:
         return mIsHorizontal ? index.column() : index.row();
     }
 
-    /// Номер типа данных для @p index (0 - название месяца, 1 - сами данные)
+    /// Номер типа данных для @p index
     int dataTypeNum(const QModelIndex &index) const {
         return mIsHorizontal ? index.row() : index.column();
     }
