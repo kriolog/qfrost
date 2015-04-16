@@ -674,9 +674,14 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
 <context>
     <name>qfgui::BoundaryConditionEditDialog</name>
     <message>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="51"/>
+        <source>Te&amp;mperature trend</source>
+        <translation>Тренд &amp;потепления</translation>
+    </message>
+    <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="60"/>
-        <source>Use spline interpolation for temperatures (recommended)</source>
-        <translation>Интерполировать температуру сплайном (рекомендовано)</translation>
+        <source>&amp;Interpolate temperatures (using spline)</source>
+        <translation>И&amp;нтерполировать температуры (при помощи сплайна)</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="66"/>
@@ -709,30 +714,30 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
         <translation>&amp;Род</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="130"/>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="104"/>
+        <source>If checked (recommended), daily temperature values are calculated using monthly temperatures interpolation.</source>
+        <translation>Если отмечено (рекомендуется!), температура будет посуточно проинтерполирована по среднемесячным (при помощи сплайна).</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="133"/>
         <source> °C/decade</source>
         <translation> °C/год</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="131"/>
-        <source>Trend value:</source>
-        <translation>Значение тренда:</translation>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="134"/>
+        <source>Trend &amp;value:</source>
+        <translation>&amp;Значение тренда:</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="132"/>
-        <source>Reference year:</source>
-        <translation>Исходный год:</translation>
+        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="135"/>
+        <source>&amp;Reference year:</source>
+        <translation>Исходный &amp;год:</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="56"/>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="58"/>
         <source>T</source>
         <translation>T</translation>
-    </message>
-    <message>
-        <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="51"/>
-        <source>Temperature trend</source>
-        <translation>Тренд потепления</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="57"/>
