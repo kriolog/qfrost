@@ -50,16 +50,16 @@ MonthsTableView::MonthsTableView(Qt::Orientation orientation, QWidget *parent)
         monthNamesFont.setBold(true);
         QFontMetrics metrics(monthNamesFont);
         const QLocale locale = this->locale();
-        int maxMonthWidth = 0;
+        int maxTextWidth = metrics.width(" -99.99 ");
         for (int month = 1; month <= 12; ++month) {
             const QString text = locale.standaloneMonthName(month,
                                                             QLocale::ShortFormat);
             const int w = metrics.width(" " + text + " ");
-            if (w > maxMonthWidth) {
-                maxMonthWidth = w;
+            if (w > maxTextWidth) {
+                maxTextWidth = w;
             }
         }
-        monthsHeader()->setMinimumSectionSize(maxMonthWidth);
+        monthsHeader()->setMinimumSectionSize(maxTextWidth);
         setItemDelegateForRow(1, new PhysicalPropertyDelegate(this, true));
     }
 }
