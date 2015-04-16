@@ -110,6 +110,29 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
 
     const int sectorNum = dataTypeNum(index);
     const bool isMonthsColumn = (sectorNum == 0);
+
+    if (isMonthsColumn) {
+        if (role == Qt::BackgroundRole) {
+            return QPalette().alternateBase();
+        }
+
+        // летние месяцы выделяем
+        if (role == Qt::FontRole && monthNum(index) >= 5 && monthNum(index) <= 7) {
+            QFont font;
+            font.setBold(true);
+            return font;
+        }
+    }
+
+    if (role == Qt::TextAlignmentRole) {
+        if (mIsHorizontal) {
+            return Qt::AlignCenter;
+        } else {
+            return Qt::AlignVCenter
+            + (isMonthsColumn ? Qt::AlignRight : Qt::AlignHCenter);
+        }
+    }
+
     MonthsTableExpander *expander = isMonthsColumn ? 0 : mExpanders[sectorNum - 1];
     Q_ASSERT(isMonthsColumn || expander->modelSector() == sectorNum);
 
@@ -131,23 +154,6 @@ QVariant MonthsTableModel::data(const QModelIndex &index, int role) const
             Q_ASSERT(expander);
             return expander->value(month);
         }
-    }
-
-    if (role == Qt::TextAlignmentRole) {
-        if (mIsHorizontal) {
-            return Qt::AlignCenter;
-        } else {
-            return Qt::AlignVCenter
-                + (isMonthsColumn ? Qt::AlignRight : Qt::AlignHCenter);
-        }
-    }
-
-    // летние месяцы выделяем
-    if (isMonthsColumn && role == Qt::FontRole
-            && monthNum(index) >= 5 && monthNum(index) <= 7) {
-        QFont font;
-        font.setBold(true);
-        return font;
     }
 
     return QVariant();
