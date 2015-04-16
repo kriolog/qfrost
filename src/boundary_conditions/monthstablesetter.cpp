@@ -191,7 +191,8 @@ QPair<bool, double> MonthsTableSetter::execEditor(int sector, bool setAll)
                        .arg(expander->valueName()), spinBox);
 
     //: Batch set dialog title
-    dialog->setWindowTitle(tr("Batch Set"));
+    dialog->setWindowTitle(tr("Batch Set %1").arg(expander->valueName()));
+    dialog->setWindowFlags(dialog->windowFlags() ^ Qt::WindowContextHelpButtonHint);
 
     connect(buttons, SIGNAL(accepted()), dialog, SLOT(accept()));
     connect(buttons, SIGNAL(rejected()), dialog, SLOT(reject()));

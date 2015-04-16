@@ -1908,9 +1908,9 @@ q</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="194"/>
-        <source>Batch Set</source>
+        <source>Batch Set %1</source>
         <extracomment>Batch set dialog title</extracomment>
-        <translation>Установка значений</translation>
+        <translation>Установка значений %1</translation>
     </message>
 </context>
 <context>
