@@ -87,7 +87,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     mToolBeforeBlocking(mPickNoTool),
     mToolsPanels(new QStackedWidget(this)),
     mToolTitle(new QLabel(this)),
-    mHelpAction(new QAction("?", this)),
+    mHelpAction(new QAction(QIcon::fromTheme("help-hint"), "", this)),
     mHelpButton(new QToolButton(this)),
     mToolSettingsLayout(new QVBoxLayout())
 {
