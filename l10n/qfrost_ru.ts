@@ -680,8 +680,8 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="60"/>
-        <source>&amp;Interpolate temperatures (using spline)</source>
-        <translation>И&amp;нтерполировать температуры (при помощи сплайна)</translation>
+        <source>&amp;Interpolate temperatures</source>
+        <translation>И&amp;нтерполяция температуры</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="66"/>
@@ -715,8 +715,8 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="104"/>
-        <source>If checked (recommended), daily temperature values are calculated using monthly temperatures interpolation.</source>
-        <translation>Если отмечено (рекомендуется!), температура будет посуточно проинтерполирована по среднемесячным (при помощи сплайна).</translation>
+        <source>If checked &lt;b&gt;(recommended)&lt;/b&gt;, spline interpolation is used to estimate daily temperatures for model.</source>
+        <translation>Если отмечено &lt;b&gt;(рекомендуется)&lt;/b&gt;, в модели будет использована интерполяция по месячным температурам для получения посуточных значений.</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="133"/>
@@ -1852,14 +1852,6 @@ Blank if not found or disabled.</source>
         <location filename="../src/mainwindow.cpp" line="1242"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
-    </message>
-</context>
-<context>
-    <name>qfgui::MonthsTableModel</name>
-    <message>
-        <location filename="../src/boundary_conditions/monthstablemodel.cpp" line="61"/>
-        <source>Month</source>
-        <translation>Месяц</translation>
     </message>
 </context>
 <context>

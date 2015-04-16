@@ -57,7 +57,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     , mExp2(mTable2->addExpander(tr("q")))
     , mExp3t(mTable3->addExpander(tr("T")))
     , mExp3a(mTable3->addExpander(tr("\316\261")))
-    , mUsesTemperatureSpline(new QCheckBox(tr("&Interpolate temperatures (using spline)"), this))
+    , mUsesTemperatureSpline(new QCheckBox(tr("&Interpolate temperatures"), this))
     , mPlot(new MonthsTablePlot(mExp1, mExp2, mExp3t, mExp3a, this))
 {
     Q_ASSERT(qobject_cast< BoundaryConditionsModel * >(model) != NULL);
@@ -101,8 +101,8 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
             mPlot, SLOT(setSplineEnabled(bool)));
     /**************************************************************************/
 
-    mUsesTemperatureSpline->setToolTip(tr("If checked (recommended), daily temperature values are "
-                                          "calculated using monthly temperatures interpolation."));
+    mUsesTemperatureSpline->setToolTip(tr("If checked <b>(recommended)</b>, spline interpolation "
+                                          "is used to estimate daily temperatures for model."));
 
     QGroupBox *plotGroupBox = new QGroupBox(this);
     QVBoxLayout *plotLayout = new QVBoxLayout(plotGroupBox);
