@@ -136,7 +136,7 @@ void MonthsTableSetter::onSelectionChanged()
         mSelectedMonths.insert(month);
     }
 
-    mLayout->setCurrentIndex((mSelectedMonths.size() < 2)
+    mLayout->setCurrentIndex((mSelectedMonths.size() < 2 || mSelectedMonths.size() == 12)
                              ? mSetAllButtonsIndex
                              : mSetMonthlyButtonsIndex);
 }
