@@ -1900,12 +1900,17 @@ q</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="188"/>
-        <source>New value for %1:</source>
-        <translation>Величина %1:</translation>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="189"/>
+        <source>New value for all %1:</source>
+        <translation>Новая величина для всех %1:</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="191"/>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="190"/>
+        <source>New value for selected %1:</source>
+        <translation>Новая величина для выбранных %1:</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/monthstablesetter.cpp" line="194"/>
         <source>Batch Set</source>
         <extracomment>Batch set dialog title</extracomment>
         <translation>Установка значений</translation>

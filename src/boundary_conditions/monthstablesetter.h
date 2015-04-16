@@ -72,7 +72,7 @@ private:
 
     /// Вызывает диалог выбора значений для @p sector.
     /// Возвращает пару значений: был ли диалог принят + что было введено в нём.
-    QPair<bool, double> execEditor(int sector, bool allMonths);
+    QPair<bool, double> execEditor(int sector, bool setAll);
 
     const Qt::Orientation mOrientation;
 

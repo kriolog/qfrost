@@ -185,7 +185,10 @@ QPair<bool, double> MonthsTableSetter::execEditor(int sector, bool setAll)
     formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
     formLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
     // FIXME: надпись можно бы и получше придумать
-    formLayout->addRow(tr("New value for %1:").arg(expander->valueName()), spinBox);
+    formLayout->addRow((setAll
+                        ? tr("New value for all %1:")
+                        : tr("New value for selected %1:"))
+                       .arg(expander->valueName()), spinBox);
 
     //: Batch set dialog title
     dialog->setWindowTitle(tr("Batch Set"));
