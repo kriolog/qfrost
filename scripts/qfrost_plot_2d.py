@@ -302,7 +302,7 @@ for collection in cs.collections:
 #plt.tricontour(tri_refi, z_test_refi)
 #plt.title('tricontourf, tricontour (refine->mask)')
 print('Saving')
-filename = 'plot.pdf'
+filename = args.FILE.name + '.pdf'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
@@ -328,7 +328,7 @@ for collection in cs.collections:
     collection.set_zorder(5)
 
 print('Saving')
-filename = 'plot_with_contours.pdf'
+filename = args.FILE.name + '.with_contours.pdf'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
