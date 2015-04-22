@@ -40,14 +40,7 @@ MonthsTableModel::MonthsTableModel(Qt::Orientation orientation,
 
 Qt::ItemFlags MonthsTableModel::flags(const QModelIndex &index) const
 {
-    Qt::ItemFlags result;
-    if (index.isValid()) {
-        result = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-        if (dataTypeNum(index) >= 1) {
-            result |= Qt::ItemIsEditable;
-        }
-    }
-    return result;
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -92,11 +85,6 @@ bool MonthsTableModel::setData(const QModelIndex &index,
 {
     const int sectorNum = dataTypeNum(index);
     if (index.isValid() && role == Qt::EditRole) {
-        if (sectorNum == 0) {
-            // первую колонку менять нельзя (там месяца перечислены)
-            return false;
-        }
-
         if (index.data(role) == value) {
             // менять поле на то же самое значение незачем
             return false;
