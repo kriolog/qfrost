@@ -1,13 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from matplotlib import rc
-rc('font', **{'family': 'serif'})
-rc('text', usetex=True)
-rc('text.latex', unicode=True)
-rc('text.latex', preamble=r"\usepackage[utf8]{inputenc}")
-rc('text.latex', preamble=r"\usepackage[russian]{babel}")
+rc('font', **{'family' : 'Droid Sans'})
 
+from os.path import splitext
 from math import floor, ceil
 from pylab import datestr2num
 from numpy import arange, reshape
@@ -69,7 +66,7 @@ def readpart(f, arg_converter):
 
 
 def formatPercent(x, i):
-    return str(int(round(x*100.0, 0))) + "\,\%"
+    return str(int(round(x*100.0, 0))) + "\%"
 
 percentformatter = FuncFormatter(formatPercent)
 
@@ -152,7 +149,7 @@ def plotstuff(x, y, z, is_thawed_parts_plot, filename,
     plt.close()
 
 
-def createanimation(t, v, tbf, y, dates, max_depth):
+def createanimation(t, v, tbf, y, dates, max_depth, filename):
     formatter = DateFormatter("%d.%m")
     plt.axes().set_axisbelow(True)  # сетка позади графиков
     plt.grid(True, ls=':', c='#a0a0a0')
@@ -179,7 +176,7 @@ def createanimation(t, v, tbf, y, dates, max_depth):
 
     plt.legend((p_t, p_tbf, p_v),
                ('$T$', '$T_{bf}$', '$V_{th}$'),
-               'lower left')
+               loc='lower left')
     fig = plt.gcf()
     fig.set_size_inches(4.8, 7.2)
     plt.ylim((max(y), min(y)))
@@ -212,7 +209,7 @@ def createanimation(t, v, tbf, y, dates, max_depth):
                         interval=40,  blit=True, init_func=init)
 
     #plt.show()
-    ani.save('plot.mp4', extra_args=['-vcodec', 'libx264'],
+    ani.save(filename, extra_args=['-vcodec', 'libx264'],
              # при битрейте 3000 нет артефактов для 480x720, при 6500 - 600x900
              # но можно выставлять с запасом, ибо размер получается куда меньше
              bitrate=10000, dpi=125)
@@ -221,30 +218,38 @@ def createanimation(t, v, tbf, y, dates, max_depth):
 print("*** Parsing '%s' ***" % args.FILE.name)
 dates = readpart(args.FILE, datestr2num)
 depths = readpart(args.FILE, float)
+print("Got {0} dates and {1} depths".format(len(dates), len(depths)))
 t = readpart(args.FILE, float)
 v = readpart(args.FILE, float)
 tbf = readpart(args.FILE, float)
 args.FILE.close()
 
+if len(t) != len(v) or len(tbf) != len(depths) or len(t) != len(dates) * len(depths):
+    raise ValueError('bad input: {0} dates, {1} depths, {2} tbf, {3} t & {4} v'
+                     .format(len(dates), len(depths), len(tbf), len(t), len(v)))
+
 t = reshape(t, (len(dates), len(depths)))
 v = reshape(v, (len(dates), len(depths)))
 
+out_basename = splitext(args.FILE.name)[0]
+
 if args.anim:
     print('*** Creating T animation ***')
-    createanimation(t, v, tbf, depths, dates, args.depth)
+    createanimation(t, v, tbf, depths, dates, args.depth, out_basename + '.mp4')
 else:
     t = t.swapaxes(0, 1)
     v = v.swapaxes(0, 1)
+
     stuff_extension = '.pdf' if args.scalable else '.png'
     scale_factor = 1.0 if args.scalable else args.factor
     print('*** Plotting T ***')
     plotstuff(dates, depths, t, False,
-              'temperatures' + stuff_extension, scale_factor, args.depth, t)
+              out_basename + '_t' + stuff_extension, scale_factor, args.depth, t)
 
     print('*** Plotting V ***')
     plotstuff(dates, depths, v, True,
-              'thawedparts' + stuff_extension, scale_factor, args.depth)
+              out_basename + '_v' + stuff_extension, scale_factor, args.depth)
 
     print('*** Plotting V and T ***')
     plotstuff(dates, depths, v, True,
-              'both' + stuff_extension, scale_factor, args.depth, t)
+              out_basename + '_tv' + stuff_extension, scale_factor, args.depth, t)
