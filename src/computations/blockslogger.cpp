@@ -73,13 +73,35 @@ void BlocksLogger::exportData(QTextStream &out, BlocksLogger::ExportFormat forma
     Q_ASSERT(!mData.first().isEmpty());
 
     if (format == LastBlockTXT) {
-        out << "date\tyears_passed\tT\tV\n";
-        const QDate firstDate = mData.first().date();
-        for (QList<ComputationData>::ConstIterator it = mData.constBegin(); it != mData.constEnd(); ++it) {
-            const BlockData &bdata = it->soilBlockDataAt(mCentersAndNums.last().second);
-            out << it->date().toString("yyyy-MM-dd\t")
-                << yearsPassed(firstDate, it->date()) << "\t"
-                << bdata.temperature() << "\t" << bdata.thawedPart() << "\n";
+        QList<ComputationData>::ConstIterator it;
+        for (it = mData.constBegin(); it != mData.constEnd(); ++it) {
+            out << it->date().toString("yyyyMMdd") << "\n";
+        }
+        out << "\n";
+
+        QList<QPair<QPointF, std::size_t> >::ConstIterator j;
+        for (j = mCentersAndNums.constBegin(); j != mCentersAndNums.constEnd(); ++j) {
+            out << j->first.y() << "\n";
+        }
+        out << "\n";
+
+        for (it = mData.constBegin(); it != mData.constEnd(); ++it) {
+            for (j = mCentersAndNums.constBegin(); j != mCentersAndNums.constEnd(); ++j) {
+                out << it->soilBlockDataAt(j->second).temperature() << "\n";
+            }
+        }
+        out << "\n";
+
+        for (it = mData.constBegin(); it != mData.constEnd(); ++it) {
+            for (j = mCentersAndNums.constBegin(); j != mCentersAndNums.constEnd(); ++j) {
+                out << it->soilBlockDataAt(j->second).thawedPart() << "\n";
+            }
+        }
+        out << "\n";
+
+        QList<double>::ConstIterator k;
+        for (k = mThawedParts.constBegin(); k != mThawedParts.constEnd(); ++k) {
+            out << *k << "\n";
         }
     } else if (format == CSV) {
         out << "x,y";
