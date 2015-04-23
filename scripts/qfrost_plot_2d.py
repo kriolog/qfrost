@@ -2,13 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from matplotlib import rc
-
-rc('font', **{'family': 'serif'})
-rc('text', usetex=True)
-rc('text.latex', unicode=True)
-rc('text.latex', preamble=r"\usepackage[utf8]{inputenc}")
-rc('text.latex', preamble=r"\usepackage[russian]{babel}")
-
 from scipy import interpolate
 from math import floor, ceil
 from pylab import datestr2num
@@ -28,6 +21,8 @@ import argparse
 from matplotlib.patches import PathPatch
 from matplotlib.tri import UniformTriRefiner, TriAnalyzer
 import itertools
+
+from qfrost_plot_basics import QFrostPlot
 
 parser = argparse.ArgumentParser(prog='qfrost_plot',
                                  description='Does plots of QFrost 2D export files.')
@@ -238,46 +233,16 @@ mainPatch = PathPatch(mainPath, facecolor='none', lw=1)
 mainPatch.set_zorder(7)
 plt.gca().add_patch(mainPatch)
 
-plt.grid(True, ls='-', c='#e0e0e0')
+QFrostPlot.SetupGridFor2D(plt.gca())
 #[line.set_zorder(15) for line in plt.axes().lines]
 
 #addThawingMask(fullTriang, fullV)
 
-ctdictT = {'red':   [(0.0,  0.0, 0.0),
-                     (0.45, 0.0, 0.0),
-                     (0.5,  1.0, 1.0),
-                     (0.55, 1.0, 1.0),
-                     (1.0,  0.5, 0.5)],
+cmapT = QFrostPlot.ColormapTemperature()
+cmapV = QFrostPlot.ColormapFront()
 
-           'green': [(0.0,  0.0, 0.0),
-                     (0.25, 0.0, 0.0),
-                     (0.45, 1.0, 1.0),
-                     (0.55, 1.0, 1.0),
-                     (0.75, 0.0, 0.0),
-                     (1.0,  0.0, 0.0)],
-
-           'blue':  [(0.0,  0.5, 0.5),
-                     (0.45, 1.0, 1.0),
-                     (0.5,  1.0, 1.0),
-                     (0.55, 0.0, 0.0),
-                     (1.0,  0.0, 0.0)]}
-
-cmapT = col.LinearSegmentedColormap('QFrostT', ctdictT)
-
-startcolor = (0.0, 0.3, 0.0, 0.0)
-midcolor = (0.0, 0.3, 0.0, 1.0)
-endcolor = startcolor
-cmapV = col.LinearSegmentedColormap.from_list('QFrostV', 
-                                              [startcolor, startcolor, startcolor,
-                                               midcolor,
-                                               endcolor, endcolor, endcolor])
-
-
-Vv = [i/20.0 for i in range(0, 21)]
-Vv[0] = 1e-15
-Vv[-1] = 1.0 - Vv[0]
-
-Vt = [i/2.0 for i in range(-20, 21)]
+Vt = QFrostPlot.LevelsTemperature()
+Vv = QFrostPlot.LevelsThawedPart()
 
 print("tricontourf T")
 cs = plt.tricontourf(fullTriang, fullT,
@@ -287,8 +252,7 @@ cs = plt.tricontourf(fullTriang, fullT,
 for collection in cs.collections:
     collection.set_clip_path(mainPatch)
 
-colorbar = plt.colorbar(ticks=MultipleLocator(base=1.0))
-colorbar.set_label(u"Температура $T$, $^\circ$C")
+colorbarT = QFrostPlot.ColorbarTemperature(cs, plt.gcf())
 
 print("tricontourf Vth")
 cs = plt.tricontourf(knownTriang, v,
@@ -316,12 +280,10 @@ print("tricontour T")
 cs = plt.tricontour(knownTriang,
                     t,
                     Vt,
-                    colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
-                    linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
+                    colors=QFrostPlot.ContourBasicColors(),
+                    linewidths=QFrostPlot.ContourBasicLineWidths())
 
-plt.clabel(cs,
-           fontsize=6, inline=True, fmt=r'$%1.1f$',
-           use_clabeltext=True)
+QFrostPlot.LabelContourTemperatures(cs)
 
 for collection in cs.collections:
     collection.set_clip_path(mainPatch)
