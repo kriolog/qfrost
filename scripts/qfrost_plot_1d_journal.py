@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from matplotlib import rc
-rc('font', **{'family' : 'Droid Sans'})
-
 from os.path import splitext
 from math import floor, ceil
 from pylab import datestr2num
 from numpy import arange, reshape
 from matplotlib import pyplot as plt
-from matplotlib.ticker import FuncFormatter
-from matplotlib.ticker import MultipleLocator
-from matplotlib.dates import MonthLocator
-from matplotlib.dates import DateFormatter
-import matplotlib.colors as col
-from progressbar import ProgressBar
 from matplotlib.animation import FuncAnimation
+from progressbar import ProgressBar
+from matplotlib.dates import DateFormatter
 import argparse
+
+from qfrost_plot_basics import QFrostPlot
 
 parser = argparse.ArgumentParser(prog='qfrost_plot',
                                  description='Does plots of QFrost 1D journal files. '
@@ -65,78 +60,33 @@ def readpart(f, arg_converter):
         result.append(arg_converter(s))
 
 
-def formatPercent(x, i):
-    return str(int(round(x*100.0, 0))) + "\%"
-
-percentformatter = FuncFormatter(formatPercent)
-
-
-def setDepthAxesSettings(axe):
-    axe.set_major_locator(MultipleLocator())
-    axe.set_minor_locator(MultipleLocator(base=0.2))
-
-
 def plotstuff(x, y, z, is_thawed_parts_plot, filename,
               scale_factor, max_depth, z_cont=[]):
+    print("Setting up plot...")
+    cmap = QFrostPlot.Colormap(is_thawed_parts_plot)
+    contourf_levels = QFrostPlot.Levels(is_thawed_parts_plot)
 
-    cmap = plt.cm.jet if not is_thawed_parts_plot else plt.cm.gist_ncar
-    """
-    if is_thawed_parts_plot:
-        cmap = plt.cm.gist_ncar
-    else:
-        cmap = col.ListedColormap(["#00007F",
-                                   "#0000C0",
-                                   "#0000FF",
-                                   "#007FFF",
-                                   "#00FFFF",
-                                   "#FFFF00",
-                                   "#FF7F00",
-                                   "#FF0000",
-                                   "#C00000",
-                                   "#7F0000"])
-    """
+    QFrostPlot.SetupGridFor2D(plt.axes())
 
-    if is_thawed_parts_plot:
-        V = [i/20.0 for i in range(0, 21)]
-        V[0] = 1e-15
-        V[-1] = 1.0 - V[0]
-    else:
-        #V = [-20, -10, -5, -2, 0, 2, 5, 10, 20]
-        V = [i/2.0 for i in range(-20, 21)]
-
-    plt.ylabel('Глубина, м')
-    plt.xlabel('Месяц')
-
-    plt.ylim(plt.ylim()[::-1])
-
-    setDepthAxesSettings(plt.axes().yaxis)
-    plt.axes().xaxis.set_major_locator(MonthLocator())
-    plt.axes().xaxis.set_major_formatter(DateFormatter('%m'))
-
-    plt.grid(True, ls='-', c='#a0a0a0')
+    QFrostPlot.SetupAxisMonth(plt.axes().xaxis)
+    QFrostPlot.SetupAxisDepth(plt.axes().yaxis)
 
     print("Plotting contourf...")
-    plt.contourf(x, y, z, V, cmap=cmap, extend='both')
+    csetf = plt.contourf(x, y, z, contourf_levels, cmap=cmap, extend='both')
 
-    if not is_thawed_parts_plot:
-        colorbar = plt.colorbar(ticks=MultipleLocator(base=1.0))
-        #colorbar = plt.colorbar(ticks=[-20, -10, -5, -2, 0, 2, 5, 10, 20])
-        colorbar.set_label(u"Температура $T$, $^\circ$C")
-    else:
-        colorbar = plt.colorbar(ticks=V, format=percentformatter)
-        colorbar.set_label("Относительный объём талой фазы $V_{th}$")
+    colorbar = QFrostPlot.Colorbar(csetf, plt.gcf(), is_thawed_parts_plot)
 
     plt.axis('tight')
     plt.ylim(ymin=min(max_depth, plt.ylim()[0]))
 
     if len(z_cont):
         print('Plotting contour...')
+        contour_locator = QFrostPlot.LocatorBasicTemperature()
         cset = plt.contour(x, y, z_cont,
-                           locator=MultipleLocator(base=0.5),
-                           linewidths=0.5, colors='k', linestyles='solid')
-        plt.clabel(cset,
-                   fontsize=6, inline=True, fmt=r'$%1.1f$',
-                   use_clabeltext=True)
+                           locator=contour_locator,
+                           colors=QFrostPlot.ContourBasicColors(),
+                           linewidths=QFrostPlot.ContourBasicLineWidths())
+        QFrostPlot.LabelContourTemperatures(cset)
 
     fig = plt.gcf()
     fig.set_size_inches(8, 6)
@@ -149,30 +99,20 @@ def plotstuff(x, y, z, is_thawed_parts_plot, filename,
     plt.close()
 
 
-def createanimation(t, v, tbf, y, dates, max_depth, filename):
-    formatter = DateFormatter("%d.%m")
-    plt.axes().set_axisbelow(True)  # сетка позади графиков
-    plt.grid(True, ls=':', c='#a0a0a0')
+def createanimation(t, v, tbf, y, dates, max_depth, filename, tmin, tmax):
+    QFrostPlot.SetupGridFor1D(plt.axes())
 
     p_v, = plt.plot([], [], 'b', linewidth=2)
-    plt.xlim(0, 1)
-    v_ax_label = plt.xlabel("Относительный объём талой фазы $V_{th}$",
-                            color="blue")
 
-    plt.ylabel('Глубина, м')
-
-    v_ax = plt.gca()
-    [i.set_color("blue") for i in v_ax.get_xticklabels()]
-
-    setDepthAxesSettings(v_ax.yaxis)
-    v_ax.xaxis.set_major_formatter(percentformatter)
+    QFrostPlot.SetupAxisThawedPart(plt.axes().xaxis)
+    QFrostPlot.SetupAxisDepth(plt.axes().yaxis)
 
     t_ax = plt.axes().twiny()
     p_tbf, = t_ax.plot(tbf, y, 'k--', linewidth=1)
     p_t, = t_ax.plot([], [], 'k', linewidth=3)
 
-    plt.xlim(-8, 2)
-    plt.xlabel("Температура, $^\circ$C")
+    QFrostPlot.SetupAxisTemperature(t_ax.xaxis)
+    plt.xlim(tmin, tmax)
 
     plt.legend((p_t, p_tbf, p_v),
                ('$T$', '$T_{bf}$', '$V_{th}$'),
@@ -195,6 +135,7 @@ def createanimation(t, v, tbf, y, dates, max_depth, filename):
         p_v.set_data([], [])
         return p_t, p_v
 
+    formatter = DateFormatter("%d.%m")
     def animate(i):
         if i == 0:
             p_t.set_ydata(y)
@@ -215,6 +156,7 @@ def createanimation(t, v, tbf, y, dates, max_depth, filename):
              bitrate=10000, dpi=125)
     plt.close()
 
+
 print("*** Parsing '%s' ***" % args.FILE.name)
 dates = readpart(args.FILE, datestr2num)
 depths = readpart(args.FILE, float)
@@ -228,28 +170,37 @@ if len(t) != len(v) or len(tbf) != len(depths) or len(t) != len(dates) * len(dep
     raise ValueError('bad input: {0} dates, {1} depths, {2} tbf, {3} t & {4} v'
                      .format(len(dates), len(depths), len(tbf), len(t), len(v)))
 
+tmin = min(t)
+tmax = max(t)
+
 t = reshape(t, (len(dates), len(depths)))
 v = reshape(v, (len(dates), len(depths)))
 
-out_basename = splitext(args.FILE.name)[0]
+filename_base = splitext(args.FILE.name)[0]
 
 if args.anim:
-    print('*** Creating T animation ***')
-    createanimation(t, v, tbf, depths, dates, args.depth, out_basename + '.mp4')
+    filename_anim = filename_base + '.mp4'
+    print('*** Creating T animation (%s) ***' % filename_anim)
+    createanimation(t, v, tbf, depths, dates, args.depth,
+                    filename_anim, tmin, tmax)
 else:
     t = t.swapaxes(0, 1)
     v = v.swapaxes(0, 1)
 
     stuff_extension = '.pdf' if args.scalable else '.png'
     scale_factor = 1.0 if args.scalable else args.factor
-    print('*** Plotting T ***')
+
+    filename_t = filename_base + '_t' + stuff_extension
+    print('*** Plotting T (%s) ***' % filename_t)
     plotstuff(dates, depths, t, False,
-              out_basename + '_t' + stuff_extension, scale_factor, args.depth, t)
+              filename_t, scale_factor, args.depth, t)
 
-    print('*** Plotting V ***')
+    filename_v = filename_base + '_v' + stuff_extension
+    print('*** Plotting V (%s) ***' % filename_v)
     plotstuff(dates, depths, v, True,
-              out_basename + '_v' + stuff_extension, scale_factor, args.depth)
+              filename_v, scale_factor, args.depth)
 
-    print('*** Plotting V and T ***')
+    filename_vt  = filename_base + '_vt' + stuff_extension
+    print('*** Plotting V & T (%s) ***' % filename_vt)
     plotstuff(dates, depths, v, True,
-              out_basename + '_tv' + stuff_extension, scale_factor, args.depth, t)
+              filename_vt, scale_factor, args.depth, t)
