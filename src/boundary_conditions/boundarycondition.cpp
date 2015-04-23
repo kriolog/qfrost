@@ -19,6 +19,8 @@
 
 #include <boundary_conditions/boundarycondition.h>
 
+#include <annualspline.h>
+
 #include <core/domain.h>
 
 using namespace qfgui;
@@ -169,7 +171,9 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
     switch (mType) {
     case qfcore::BoundaryCondition::FirstType:
         return qfcore::BoundaryCondition(mType,
-                                         stdVector(mTemperatures1),
+                                         mUsesTemperatureSpline
+                                         ? AnnualSpline(mTemperatures1).dailyValues().toStdVector()
+                                         : stdVector(mTemperatures1),
                                          mHasTemperatureTrend,
                                          mTemperatureTrend,
                                          mTemperatureTrendStartYear);
@@ -177,7 +181,9 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
         return qfcore::BoundaryCondition(mType,
                                          stdVector(mHeatFlowDensities));
     case qfcore::BoundaryCondition::ThirdType:
-        return qfcore::BoundaryCondition(stdVector(mTemperatures3),
+        return qfcore::BoundaryCondition(mUsesTemperatureSpline
+                                         ? AnnualSpline(mTemperatures3).dailyValues().toStdVector()
+                                         : stdVector(mTemperatures3),
                                          stdVector(resistivities()),
                                          mHasTemperatureTrend,
                                          mTemperatureTrend,

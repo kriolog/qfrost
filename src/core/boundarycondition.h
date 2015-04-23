@@ -23,6 +23,8 @@
 #include <vector>
 #include <cassert>
 
+#include <boost/date_time/gregorian/gregorian.hpp>
+
 namespace qfcore
 {
 
@@ -42,8 +44,8 @@ public:
     /**
      * Конструктор для условий I и II рода.
      * @param type тип граничного условия
-     * @param params 12 значений характеристики условия, т.е. температур для
-     *               условия I рода и плотностей теплопотока для условия II рода
+     * @param params значения характеристики условия (т.е. 12 или 365 температур
+     *               для I рода или же 12 плотностей теплопотока для II рода)
      * @param hasTemperatureTrend используется ли температурный тренд
      * @param temperatureTrend величина температурного тренда
      * @param temperatureTrendStartYear год, являющейся точкой отсчёта тренда
@@ -56,18 +58,21 @@ public:
         : mType(type)
         , mParams1(params)
         , mResistivities()
+        , mHasAnnualTemperatures(params.size() != 12)
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
         , mTemperatureTrendStartYear(temperatureTrendStartYear)
-        , mCurrentMonth(-1) {
-        assert(mParams1.size() == 12);
+        , mCurrentMonth(-1)
+    {
+        assert(mParams1.size() == 12 || mParams1.size() == 365);
         assert(mType != ThirdType);
         assert(mType != SecondType || !hasTemperatureTrend);
+        assert(mType != SecondType || !mHasAnnualTemperatures);
     }
 
     /**
      * Конструктор для условий III рода.
-     * @param temperatures 12 значений температур
+     * @param temperatures 12 или 365 значений температуры
      * @param resistivities 12 значений термического сопротивления
      * @param hasTemperatureTrend используется ли температурный тренд
      * @param temperatureTrend величина температурного тренда
@@ -81,12 +86,37 @@ public:
         : mType(ThirdType)
         , mParams1(temperatures)
         , mResistivities(resistivities)
+        , mHasAnnualTemperatures(temperatures.size() != 12)
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
         , mTemperatureTrendStartYear(temperatureTrendStartYear)
-        , mCurrentMonth(-1) {
-        assert(mParams1.size() == 12);
+        , mCurrentMonth(-1)
+    {
+        assert(mParams1.size() == 12 || mParams1.size() == 365);
         assert(mResistivities.size() == 12);
+    }
+
+    /**
+     * Номер элемента в массиве из 365 значений, соответствующий заданной дате.
+     * Для високосных лет 28 и 29 февраля считаются одним днём - 28 февраля.
+     */
+    inline static int annualArrayIndex(int year, int month, int day) {
+        if (boost::gregorian::gregorian_calendar::is_leap_year(year)) {
+            year = 2001;
+            if (month == 2 && day == 29) {
+                --day;
+            }
+        }
+        assert(!boost::gregorian::gregorian_calendar::is_leap_year(year));
+        try {
+            boost::gregorian::date date(year, month, day);
+            const int dayNumber = date.day_of_year();
+            assert(dayNumber >= 1 && dayNumber <= 365);
+            return dayNumber - 1;
+        } catch (std::out_of_range& e) {
+            std::cerr << "Bad date: " << e.what() << std::endl;
+            return 0;
+        }
     }
 
     /**
@@ -94,14 +124,15 @@ public:
      * @see SoilBlock::moveInTime(), HeatSurface::moveInTime().
      */
     inline void setDate(int year, int month, int day) {
-        if (mCurrentMonth == month) {
+        if (!mHasAnnualTemperatures && mCurrentMonth == month) {
             return;
         }
         mCurrentMonth = month;
-        --month;
-        mCurrentParam1 = mParams1.at(month);
+        mCurrentParam1 = mParams1.at(mHasAnnualTemperatures
+                                     ? annualArrayIndex(year, month, day)
+                                     : month - 1);
         if (mType == ThirdType) {
-            mCurrentResistivity = mResistivities.at(month);
+            mCurrentResistivity = mResistivities.at(month - 1);
         }
         if (mHasTemperatureTrend) {
             assert(mType != SecondType);
@@ -137,6 +168,9 @@ private:
     std::vector<double> mParams1;
     /// Термические сопротивления (для III рода)
     std::vector<double> mResistivities;
+
+    /// Есть ли в mParams1 365 значений температуры (false - 12 среднемесячных)
+    bool mHasAnnualTemperatures;
 
     /// Текущее термическое сопротивление
     double mCurrentResistivity;
