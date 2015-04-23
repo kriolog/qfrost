@@ -17,7 +17,7 @@ from matplotlib.patches import PathPatch
 from matplotlib.tri import UniformTriRefiner, TriAnalyzer
 import itertools
 
-plt.rc('font', **{'family' : 'Droid Sans'})
+from qfrost_plot_basics import QFrostPlot
 
 def _pathes(points):
     """Набор полилиний (matplotlib.path.Path), полученный из списка точек.
@@ -185,11 +185,6 @@ def _domain_path(outer_polygons_points, inner_polygons_points,
     return Path(points, codes)
 
 
-def _format_percent(x, i):
-    return str(int(round(x*100.0, 0))) + '%'
-
-_percent_formatter = FuncFormatter(_format_percent)
-
 class ContourPlot(QObject):
     __triang = None      # Результат триангуляции по центрам блоков
     __triang_ext = None  # Результат триангуляции по всем точкам (включая края)
@@ -244,60 +239,19 @@ class ContourPlot(QObject):
         self.__fig = figure
         self.__axes = figure.add_subplot(111)
 
-        # Цвета шкалы температуры
-        ctdictT = {'red':   [(0.0,  0.0, 0.0),
-                             (0.45, 0.0, 0.0),
-                             (0.5,  1.0, 1.0),
-                             (0.55, 1.0, 1.0),
-                             (1.0,  0.5, 0.5)],
 
-                   'green': [(0.0,  0.0, 0.0),
-                             (0.25, 0.0, 0.0),
-                             (0.45, 1.0, 1.0),
-                             (0.55, 1.0, 1.0),
-                             (0.75, 0.0, 0.0),
-                             (1.0,  0.0, 0.0)],
+        self.__cmap_t = QFrostPlot.ColormapTemperature()
+        self.__cmap_v = QFrostPlot.ColormapThawedPart()
+        self.__cmap_v2 = QFrostPlot.ColormapFront()
 
-                   'blue':  [(0.0,  0.5, 0.5),
-                             (0.45, 1.0, 1.0),
-                             (0.5,  1.0, 1.0),
-                             (0.55, 0.0, 0.0),
-                             (1.0,  0.0, 0.0)]}
-        self.__cmap_t = col.LinearSegmentedColormap('QFrostT', ctdictT)
-
-        # Цвета шкалы отн. объёма талой фазы (для полной карты)
-        startcolor = (0.0, 100.0/255.0, 0.0)
-        endcolor = (0.0, 1.0, 0.0)
-        self.__cmap_v = col.LinearSegmentedColormap.from_list('QFrostV',
-                                                               [startcolor,
-                                                                endcolor])
-
-        # Цвета шкалы отн. объёма талой фазы (для выделения фронта)
-        startcolor = (0.0, 0.3, 0.0, 0.0)
-        midcolor = (0.0, 0.3, 0.0, 1.0)
-        endcolor = startcolor
-        self.__cmap_v2 = col.LinearSegmentedColormap.from_list('QFrostV2',
-                                                               [startcolor,
-                                                                startcolor,
-                                                                startcolor,
-                                                                midcolor,
-                                                                endcolor,
-                                                                endcolor,
-                                                                endcolor])
-
-        # Ключевые значения температуры
-        self.__levels_t = [i/2.0 for i in range(-20, 21)]
-
-        # Ключевые значения отн. объёма талой фазы
-        self.__levels_v = [i/20.0 for i in range(0, 21)]
-        self.__levels_v[0] = 1e-15
-        self.__levels_v[-1] = 1.0 - self.__levels_v[0]
+        self.__levels_t = QFrostPlot.LevelsTemperature()
+        self.__levels_v = QFrostPlot.LevelsThawedPart()
 
         # Обе координаты - это метры, так что пусть оси будут равномасштабны
         self.__axes.set_aspect('equal')
 
         # Показываем сетку
-        self.__axes.grid(True, ls='-', c='#e0e0e0')
+        QFrostPlot.SetupGridFor2D(self.__axes)
 
         # Автоматически подгоняем размер фигуры под содержимое
         self.__fig.set_tight_layout(True)
@@ -465,13 +419,13 @@ class ContourPlot(QObject):
     def __plot_iso(self):
         self.stateChanged.emit('Plotting temperature contours...')
         self.__contour_t = self.__contour(self.__temperatures, self.__levels_t)
-        self.__contour_t.clabel(fontsize=8, fmt='%1.1f')
+        QFrostPlot.LabelContourTemperatures(self.__contour_t, 8)
         if not (self.__iso_shown and self.__iso_use_t):
             self.__hide_contour(self.__contour_t)
 
         self.stateChanged.emit('Plotting thawed part contours...')
         self.__contour_v = self.__contour(self.__thawed_parts, self.__levels_v)
-        self.__contour_v.clabel(fontsize=8, fmt=_percent_formatter)
+        QFrostPlot.LabelContourThawedPart(self.__contour_v, 8)
         if not (self.__iso_shown and not self.__iso_use_t):
             self.__hide_contour(self.__contour_v)
 
@@ -571,19 +525,12 @@ class ContourPlot(QObject):
             if self.__contourf_t is None:
                 print('Can not create colorbar without corresponding contourf!')
             else:
-                self.__colorbar = self.__fig.colorbar(self.__contourf_t,
-                                                      ticks=MultipleLocator(base=1.0),
-                                                      use_gridspec=True)
-                self.__colorbar.set_label(u"Температура $T$, °C")
+                self.__colorbar = QFrostPlot.ColorbarTemperature(self.__contourf_t, self.__fig)
         else:
             if self.__contourf_v is None:
                 print('Can not create colorbar without corresponding contourf!')
             else:
-                self.__colorbar = self.__fig.colorbar(self.__contourf_v,
-                                                      ticks=self.__levels_v,
-                                                      format=_percent_formatter,
-                                                      use_gridspec=True)
-                self.__colorbar.set_label("Относительный объём талой фазы $V_{th}$")
+                self.__colorbar = QFrostPlot.ColorbarThawedPart(self.__contourf_v, self.__fig)
 
 
     def __colorbar_remove(self):

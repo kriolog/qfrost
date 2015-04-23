@@ -199,14 +199,14 @@ class QFrostPlot():
 
     # Создаёт подписи для изолиний температуры cset
     @staticmethod
-    def LabelContourTemperatures(cset):
-        cset.clabel(fontsize=6, fmt='%1.1f')
+    def LabelContourTemperatures(cset, fontsize = 6):
+        cset.clabel(fontsize=fontsize, fmt='%1.1f')
 
 
     # Создаёт подписи для изолиний отн. объёма талой фазы cset
     @staticmethod
-    def LabelContourThawedPart(cset):
-        cset.clabel(fontsize=6, fmt=QFrostPlot.PercentFormatter())
+    def LabelContourThawedPart(cset, fontsize = 6):
+        cset.clabel(fontsize=fontsize, fmt=QFrostPlot.PercentFormatter())
 
 
     # ColormapThawedPart() или ColormapTemperature() (по is_thawed_parts_plot)
