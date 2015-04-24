@@ -1,15 +1,13 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-from os.path import splitext
+from sys import stderr
 from datetime import date
+from os.path import splitext
 
 from pylab import datestr2num
 from numpy import reshape, asarray, ndim
 
 from matplotlib import pyplot as plt
-from matplotlib.animation import FuncAnimation
 from matplotlib.dates import DateFormatter
+from matplotlib.animation import FuncAnimation
 
 from progressbar import ProgressBar, ETA, Percentage, Bar
 
@@ -26,8 +24,6 @@ class JournalPlot1D():
     __levels_t = QFrostPlot.LevelsTemperature()
     __levels_v = QFrostPlot.LevelsThawedPart()
 
-    __print_prefix = '  - '         # Суффикс, дописываемый к строкам до print()
-
     __dates = []                    # N значений даты
     __depths = []                   # M значений глубины
     __transition_temperatures = []  # M значений T_bf
@@ -43,6 +39,7 @@ class JournalPlot1D():
 
     __depth_min = 0.0;              # Минимальное значение __depths
     __depth_max = 8.0;              # Максимальное значение __depths
+
 
     def __init__(self, dates, depths,
                  transition_temperatures, temperatures, thawed_parts,
@@ -63,26 +60,26 @@ class JournalPlot1D():
                                   (thawed_parts, 'thawed_parts')):
             arg_type_name = type(arg_val).__name__;
             if not hasattr(arg_val, "__len__") or arg_type_name is 'string':
-                raise ValueError('Parameters must be arrays, but %1 is %2.'
+                raise ValueError('Parameters must be arrays, but {0} is {1}.'
                                  .format(arg_name, arg_type_name))
             if ndim(arg_val) != 1:
-                raise ValueError('Parameters must be 1-D, but %1.shape = %2.'
-                                 .format(arg_name, str(arg_val.shape)))
+                raise ValueError('Parameters must be 1-D, but {0} is {1}-D.'
+                                 .format(arg_name, ndim(arg_val)))
 
         num_dates = len(dates)
         num_depths = len(depths)
         num_values = num_dates * num_depths
 
         if len(transition_temperatures) != num_depths:
-            raise ValueError('Need %1 transition temperatures, but got %2.'
+            raise ValueError('Expected {0} transition temperatures, but got {1}.'
                              .format(num_depths, len(transition_temperatures)))
 
         if len(temperatures) != num_values:
-            raise ValueError('Need %1 temperatures, but got %2.'
+            raise ValueError('Expected {0} temperatures, but got {1}.'
                              .format(num_values, len(temperatures)))
 
         if len(thawed_parts) != num_values:
-            raise ValueError('Need %1 thawed parts, but got %2.'
+            raise ValueError('Expected {0} thawed parts, but got {1}.'
                              .format(num_values, len(thawed_parts)))
 
         self.__dates = asarray(dates, dtype=date)
@@ -104,10 +101,73 @@ class JournalPlot1D():
         self.__depth_max = min(max(depths), max_depth)
 
 
-    @staticmethod
-    def __print(text):
-        """Вызывает print() для text с дописанным к началу __print_prefix."""
-        print(JournalPlot1D.__print_prefix + text)
+    @classmethod
+    def from_file(cls, f, max_depth = float('inf')):
+        """Считывает журнал. Если это удалось, возвращает JournalPlot1D по нему.
+        Но если его загрузить не вышло (неверный формат ввода), возвращает None.
+
+        f: построчно итерируемый объект (открытый файл, массив строк и пр.).
+        max_depth: макс. значение глубины (по умолчанию ограничения нет).
+        """
+
+        global _line_number
+        _line_number = 0
+
+        def readpart(f, arg_converter=float):
+            """
+            1D массив значений, полученных чтением строк из f вплоть до пустой.
+            None, если попалась неконвертируемая строка (ошибка arg_converter).
+
+            f: построчно итерируемый объект (открытый файл, массив строк и пр.).
+            arg_converter: конвертер строк в эл-ты массива (по умолчанию float).
+            """
+            result = []
+            try:
+                for line in f:
+                    global _line_number
+                    _line_number += 1
+                    token = line.strip()
+                    if not token:
+                        break # пустая строка
+                    val = None
+                    try:
+                        val = arg_converter(token)
+                    except ValueError:
+                        _errprint('LOAD FAILED. Cannot get value from line {0}:\n'
+                                  ' >>> {1}'.format(_line_number, line.strip('\n')))
+                        return None
+                    else:
+                        result.append(val)
+                return result
+            except ValueError:
+                _errprint('LOAD FAILED. Cannot iterate through lines (binary input?).')
+                return None
+
+        dates = readpart(f, datestr2num)
+        if dates is None: return None
+
+        depths = readpart(f)
+        if depths is None: return None
+
+        t = readpart(f)
+        if t is None: return None
+
+        v = readpart(f)
+        if v is None: return None
+
+        tbf = readpart(f)
+        if tbf is None: return None
+
+        _subprint('Got {0} dates & {1} depths (=> {2} vals)'
+                   .format(len(dates), len(depths), len(dates)*len(depths)))
+
+        try:
+            # Если журнал некорректен, конструктор выкинет ValueError
+            return cls(dates, depths, tbf, t, v)
+        except ValueError as e:
+            _errprint('LOAD FAILED. ' + str(e))
+            return None
+
 
     @staticmethod
     def __file_extension(filename):
@@ -154,7 +214,7 @@ class JournalPlot1D():
         fig = plt.gcf()
 
         if need_map:
-            self.__print('%s color map' % map_type.name)
+            _subsubprint('%s color map' % map_type.name)
 
             contourf_cmap = QFrostPlot.Colormap(map_type)
             contourf_levels = QFrostPlot.Levels(map_type)
@@ -169,7 +229,7 @@ class JournalPlot1D():
 
 
         if need_iso:
-            self.__print('%s isopleths' % iso_type.name)
+            _subsubprint('%s isopleths' % iso_type.name)
             contour_locator = QFrostPlot.LocatorBasicTemperature()
             contour_cset = plt.contour(self.__dates,
                                        self.__depths,
@@ -186,7 +246,7 @@ class JournalPlot1D():
         fig.set_size_inches(8, 6)
         #plt.tight_layout()
 
-        self.__print("saving '%s'..." % filename)
+        _subsubprint("saving '%s'..." % filename)
         plt.savefig(filename, dpi=130.28*scale_factor, bbox_inches='tight')
 
         plt.close()
@@ -230,7 +290,7 @@ class JournalPlot1D():
         plt.tight_layout()
 
         num_frames = len(self.__dates)
-        pbar_widgets = ['{0}saving {1}:'.format(self.__print_prefix, filename),
+        pbar_widgets = [' - saving %s: ' % filename,
                         Percentage(), ' ',
                         Bar(), ' ',
                         ETA()]
@@ -257,3 +317,13 @@ class JournalPlot1D():
         progress_bar.finish()
 
         plt.close()
+
+
+def _errprint(text):
+    print(' ! ' + text, file=stderr)
+
+def _subprint(text):
+    print(' * ' + text)
+
+def _subsubprint(text):
+    print('  - ' + text)
