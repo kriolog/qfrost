@@ -34,6 +34,10 @@ parser.add_argument('-d', '--depth',
                     help='maximum depth in meters (default: 8.0)',
                     default=8.0)
 
+parser.add_argument('-m', '--mark-front',
+                    action='store_true',
+                    help='mark phase front on T map (by semi-transparent Vth map)')
+
 parser.add_argument('FILE',
                     nargs='*',
                     type=argparse.FileType('r'),
@@ -44,7 +48,7 @@ args = parser.parse_args()
 
 for file in args.FILE:
     print("****** Processing journal from '%s' ******" % file.name)
-    journal_plot = JournalPlot1D.from_file(file, args.depth)
+    journal_plot = JournalPlot1D.from_file(file, args.depth, args.mark_front)
     file.close()
 
     if journal_plot is None:

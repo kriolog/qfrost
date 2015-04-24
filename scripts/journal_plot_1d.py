@@ -40,10 +40,11 @@ class JournalPlot1D():
     __depth_min = 0.0;              # Минимальное значение __depths
     __depth_max = 8.0;              # Максимальное значение __depths
 
+    __mark_front = False;           # Нужно ли отмечать фронт ф. п. на картах T
 
     def __init__(self, dates, depths,
                  transition_temperatures, temperatures, thawed_parts,
-                 max_depth = float('inf')):
+                 max_depth = float('inf'), mark_front = False):
         """Стандартный конструктор - по комплекту одномерных (!) списков.
 
         dates: N возрастающих значений даты, для которых сохранены значения.
@@ -52,6 +53,7 @@ class JournalPlot1D():
         temperatures: N*M значений температуры - M по дню 1, M по дню 2, ...
         thawed_parts: N*M значений отн. объёма талой фазы.
         max_depth: максимальное значение глубины (по умолчанию ограничения нет).
+        mark_front: закрашивать ли фронт ф. п. на картах T (по умолчанию False).
         """
         for arg_val, arg_name in ((dates, 'dates'),
                                   (depths, 'depths'),
@@ -100,14 +102,17 @@ class JournalPlot1D():
         self.__depth_min = min(depths)
         self.__depth_max = min(max(depths), max_depth)
 
+        self.__mark_front = mark_front
+
 
     @classmethod
-    def from_file(cls, f, max_depth = float('inf')):
+    def from_file(cls, f, max_depth = float('inf'), mark_front = False):
         """Считывает журнал. Если это удалось, возвращает JournalPlot1D по нему.
         Но если его загрузить не вышло (неверный формат ввода), возвращает None.
 
         f: построчно итерируемый объект (открытый файл, массив строк и пр.).
         max_depth: макс. значение глубины (по умолчанию ограничения нет).
+        mark_front: закрашивать ли фронт ф. п. на картах T (по умолчанию False).
         """
 
         global _line_number
@@ -163,7 +168,7 @@ class JournalPlot1D():
 
         try:
             # Если журнал некорректен, конструктор выкинет ValueError
-            return cls(dates, depths, tbf, t, v)
+            return cls(dates, depths, tbf, t, v, max_depth, mark_front)
         except ValueError as e:
             _errprint('LOAD FAILED. ' + str(e))
             return None
@@ -226,6 +231,15 @@ class JournalPlot1D():
                                          extend='both')
             if iso_type != map_type:
                 colorbar = QFrostPlot.Colorbar(map_type, contourf_cset, fig)
+            elif map_type is QFrostVType.temperature and self.__mark_front:
+                 _subsubprint('(marking out phase front)')
+                 contourf_cset = plt.contourf(self.__dates,
+                                              self.__depths,
+                                              self.__thawed_parts_by_z,
+                                              self.__levels_v,
+                                              cmap=self.__cmap_v2,
+                                              extend='both')
+
 
 
         if need_iso:
@@ -311,7 +325,7 @@ class JournalPlot1D():
             return p_t, p_v
 
         ani = FuncAnimation(fig, animate, frames=num_frames,
-                            interval=40,  blit=True, init_func=init)
+                            interval=40, blit=True, init_func=init)
 
         ani.save(filename, extra_args=['-vcodec', 'libx264'], bitrate=-1, dpi=125)
         progress_bar.finish()
