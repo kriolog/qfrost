@@ -76,32 +76,6 @@ def _add_mask_domain(triang, outer_polygons, inner_polygons):
             triang.mask[i] = True
 
 
-def _add_mask_thawing(triang, v):
-    """Прячет треугольники из triang, в которых сейчас не идёт фазовый переход.
-
-    Треугольник скрывается, если относительный объём талой фазы (из v) во всех
-    его вершинах равны 0 или 1 (т.е. если грунт здесь полностью талый/мёрзлый).
-    """
-    ntri = triang.triangles.shape[0]
-    if triang.mask is None:
-        triang.set_mask(numpy.zeros(ntri, dtype=bool))
-    for i in range(0, ntri):
-        if triang.mask[i]:
-            continue
-        num0 = 0
-        num1 = 0
-        for thawedPart in v[triang.triangles[i]]:
-            if thawedPart == 0.0:
-                num0 += 1
-            else:
-                if thawedPart == 1.0:
-                    num1 += 1
-                else:
-                    break
-        if num0 == 3 or num1 == 3:
-            triang.mask[i] = True
-
-
 def _add_mask_flat(triang):
     """Прячет некорректные (плоские) треугольники из triang.
 
@@ -242,7 +216,7 @@ class ContourPlot(QObject):
 
         self.__cmap_t = QFrostPlot.ColormapTemperature()
         self.__cmap_v = QFrostPlot.ColormapThawedPart()
-        self.__cmap_v2 = QFrostPlot.ColormapFront()
+        self.__cmap_v2 = QFrostPlot.ColormapClear()
 
         self.__levels_t = QFrostPlot.LevelsTemperature()
         self.__levels_v = QFrostPlot.LevelsThawedPart()
@@ -419,13 +393,13 @@ class ContourPlot(QObject):
     def __plot_iso(self):
         self.stateChanged.emit('Plotting temperature contours...')
         self.__contour_t = self.__contour(self.__temperatures, self.__levels_t)
-        QFrostPlot.LabelContourTemperatures(self.__contour_t, 8)
+        QFrostPlot.LabelContoursTemperature(self.__contour_t, 8)
         if not (self.__iso_shown and self.__iso_use_t):
             self.__hide_contour(self.__contour_t)
 
         self.stateChanged.emit('Plotting thawed part contours...')
         self.__contour_v = self.__contour(self.__thawed_parts, self.__levels_v)
-        QFrostPlot.LabelContourThawedPart(self.__contour_v, 8)
+        QFrostPlot.LabelContoursThawedPart(self.__contour_v, 8)
         if not (self.__iso_shown and not self.__iso_use_t):
             self.__hide_contour(self.__contour_v)
 
@@ -453,10 +427,8 @@ class ContourPlot(QObject):
 
 
     def __plot_act(self):
-        self.stateChanged.emit('Plotting thawed part map for transition zone...')
-        self.__contourf_v2 = self.__contourf(self.__thawed_parts_ext,
-                                             self.__levels_v,
-                                             self.__cmap_v2)
+        self.stateChanged.emit('Hatching thawed zone...')
+        self.__contourf_v2 = self.__thawed_zone_contourf()
         if not self.__act_shown:
             self.__hide_contour(self.__contourf_v2)
         self.stateCleared.emit()
@@ -497,6 +469,21 @@ class ContourPlot(QObject):
                                    levels,
                                    cmap=cmap,
                                    filled=True,
+                                   extend='both',
+                                   antialiased=False)
+        for collection in result.collections:
+            collection.set_clip_path(self.__domain_patch)
+        return result
+
+
+    def __thawed_zone_contourf(self):
+        result = tri.TriContourSet(self.__axes,
+                                   self.__triang_ext,
+                                   self.__thawed_parts_ext,
+                                   QFrostPlot.LevelsThawedPartHatch(),
+                                   filled=True,
+                                   hatches=QFrostPlot.ThawedPartHatches(),
+                                   colors=QFrostPlot.ColormapClear(),
                                    extend='both',
                                    antialiased=False)
         for collection in result.collections:
