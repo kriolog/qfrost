@@ -41,6 +41,9 @@ class JournalPlot1D():
     __depth_min = 0.0;              # Минимальное значение __depths
     __depth_max = 8.0;              # Максимальное значение __depths
 
+    __dates_min = None;             # Минимальное (и первое) значение __dates
+    __dates_max = None;             # Максимальное (и последие) значение __dates
+
     __mark_thawed = False;          # Нужно ли отмечать на картах T талую зону
 
     def __init__(self, dates, depths,
@@ -102,6 +105,9 @@ class JournalPlot1D():
 
         self.__depth_min = min(depths)
         self.__depth_max = min(max(depths), max_depth)
+
+        self.__dates_min = dates[0]
+        self.__dates_max = dates[-1]
 
         self.__mark_thawed = mark_thawed
 
@@ -214,10 +220,14 @@ class JournalPlot1D():
         QFrostPlot.SetupAxisMonth(plt.axes().xaxis)
         QFrostPlot.SetupAxisDepth(plt.axes().yaxis)
 
+        fig = plt.gcf()
+        fig.set_size_inches(8, 6)
+
+        plt.xlim(xmin=self.__dates_min, xmax=self.__dates_max)
+        plt.ylim(ymin=self.__depth_max, ymax=self.__depth_min)
+
         need_map = map_type is not QFrostVType.none
         need_iso = iso_type is not QFrostVType.none
-
-        fig = plt.gcf()
 
         if need_map:
             _subsubprint('%s color map' % map_type.name)
@@ -257,11 +267,6 @@ class JournalPlot1D():
                                        linewidths=QFrostPlot.ContourBasicLineWidths())
             QFrostPlot.LabelContours(iso_type, contour_cset)
 
-
-        plt.axis('tight')
-        plt.ylim(ymin=self.__depth_max, ymax=self.__depth_min)
-
-        fig.set_size_inches(8, 6)
         #plt.tight_layout()
 
         _subsubprint("saving '%s'..." % filename)
