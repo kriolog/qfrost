@@ -41,6 +41,10 @@ format_group.add_argument('-s', '--scalable',
                           help='save plots to PDF '
                                '(by default will save to PNG)')
 
+parser.add_argument('-m', '--mark-thawed',
+                    action='store_true',
+                    help='mark thawed zone on T maps (with hatched Vth map)')
+
 parser.add_argument('FILE',
                     nargs='?',
                     type=argparse.FileType('r'),
@@ -95,25 +99,6 @@ def maskByDomain(triang, outerPolygons, innerPolygons):
                                             innerPolygons,
                                             point))
     triang.set_mask(mask)
-
-
-def addThawingMask(triang, v):
-    ntri = triang.triangles.shape[0]
-    for i in range(0, ntri):
-        if triang.mask[i]:
-            continue
-        num0 = 0
-        num1 = 0
-        for thawedPart in v[triang.triangles[i]]:
-            if thawedPart == 0.0:
-                num0 += 1
-            else:
-                if thawedPart == 1.0:
-                    num1 += 1
-                else:
-                    break
-        if num0 == 3 or num1 == 3:
-            triang.mask[i] = True
 
 
 def polygons(points, startPoints):
@@ -223,9 +208,10 @@ fullTriang.set_mask(mask)
 
 print("Plotting")
 
-plt.figure()
+fig = plt.figure()
 plt.xlim(xmin=minX, xmax=maxX)
 plt.ylim(ymin=maxY, ymax=minY)
+fig.set_size_inches(8, 6)
 plt.gca().set_aspect('equal')
 #plt.triplot(knownTriang, lw=0.5, color='white')
 
@@ -236,17 +222,11 @@ plt.gca().add_patch(mainPatch)
 QFrostPlot.SetupGridFor2D(plt.gca())
 #[line.set_zorder(15) for line in plt.axes().lines]
 
-#addThawingMask(fullTriang, fullV)
-
-cmapT = QFrostPlot.ColormapTemperature()
-cmapV = QFrostPlot.ColormapFront()
-
-Vt = QFrostPlot.LevelsTemperature()
-Vv = QFrostPlot.LevelsThawedPart()
-
 print("tricontourf T")
 cs = plt.tricontourf(fullTriang, fullT,
-                     Vt, cmap=cmapT, extend='both',
+                     QFrostPlot.LevelsTemperature(),
+                     cmap=QFrostPlot.ColormapTemperature(),
+                     extend='both',
                      antialiased=False) # антиалиасинг красив, если цвета сильно
                                         # меняются, иначе всё портят щели
 for collection in cs.collections:
@@ -254,19 +234,24 @@ for collection in cs.collections:
 
 colorbarT = QFrostPlot.ColorbarTemperature(cs, plt.gcf())
 
-print("tricontourf Vth")
-cs = plt.tricontourf(knownTriang, v,
-                     Vv, cmap=cmapV, extend='both', antialiased=True)
-for collection in cs.collections:
-    collection.set_clip_path(mainPatch)
-    collection.set_zorder(6)
+if args.mark_thawed:
+    print("tricontourf Vth (hatch thawed zone)")
+    cs = plt.tricontourf(knownTriang, v,
+                         QFrostPlot.LevelsThawedPartHatch(),
+                         colors=QFrostPlot.ColormapClear(),
+                         hatches=QFrostPlot.ThawedPartHatches(),
+                         extend='both')
 
-#addThawingMask(knownTriang, v)
+    for collection in cs.collections:
+        collection.set_clip_path(mainPatch)
+        collection.set_zorder(6)
+
+    hatches_bar = QFrostPlot.ColorbarThawedPartHatch(cs, plt.gcf())
 
 #plt.tricontour(tri_refi, z_test_refi)
 #plt.title('tricontourf, tricontour (refine->mask)')
 print('Saving')
-filename = args.FILE.name + '.pdf'
+filename = args.FILE.name + '.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
@@ -277,20 +262,19 @@ if refine_for_contrours:
     knownTriang, vals = refiner.refine_field(vals, subdiv=2)
 
 print("tricontour T")
-cs = plt.tricontour(knownTriang,
-                    t,
-                    Vt,
+cs = plt.tricontour(knownTriang, t,
+                    QFrostPlot.LevelsTemperature(),
                     colors=QFrostPlot.ContourBasicColors(),
                     linewidths=QFrostPlot.ContourBasicLineWidths())
 
-QFrostPlot.LabelContourTemperatures(cs)
+QFrostPlot.LabelContoursTemperature(cs)
 
 for collection in cs.collections:
     collection.set_clip_path(mainPatch)
     collection.set_zorder(5)
 
 print('Saving')
-filename = args.FILE.name + '.with_contours.pdf'
+filename = args.FILE.name + '.with_contours.png'
 plt.savefig(filename, dpi=200, bbox_inches='tight')
 print('Saved ' + filename + "!")
 
