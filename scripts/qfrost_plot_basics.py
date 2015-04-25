@@ -66,21 +66,6 @@ class QFrostPlot():
 
 
     @staticmethod
-    def ColormapFront():
-        """Шкала отн. объёма талой фазы (для выделения фронта)."""
-        startcolor = (0.0, 0.3, 0.0, 0.0)
-        midcolor = (0.0, 0.3, 0.0, 1.0)
-        endcolor = startcolor
-        return Colors.LinearSegmentedColormap.from_list('QFrostV2',
-                                                        [startcolor,
-                                                         startcolor,
-                                                         startcolor,
-                                                         midcolor,
-                                                         endcolor,
-                                                         endcolor,
-                                                         endcolor])
-
-    @staticmethod
     def Colormap(vtype):
         """Шкала для T или Vbf (исходя из vtype)."""
         if not isinstance(vtype, QFrostVType):
@@ -92,6 +77,18 @@ class QFrostPlot():
             return QFrostPlot.ColormapTemperature()
         else:
             raise ValueError("Argument 'vtype' can not be 'none'.")
+
+
+    @staticmethod
+    def ColormapClear():
+        """Шкала из 1го пустого (none) цвета. Нужна для штриховки талой зоны."""
+        return ['none']
+
+
+    @staticmethod
+    def ThawedPartHatches():
+        """Штриховки для выделения талой зоны (соотв. LevelsThawedPartHatch)."""
+        return [None, '....', '...', 'OO', '++', '\\']
     #==========================================================================#
 
 
@@ -106,6 +103,15 @@ class QFrostPlot():
     def LevelsThawedPart():
         """Ключевые значения Vth (для изолиний и межцветовых границ)."""
         result = [i/20.0 for i in range(0, 21)]
+        result[0] = 1e-15
+        result[-1] = 1.0 - result[0]
+        return result
+
+
+    @staticmethod
+    def LevelsThawedPartHatch():
+        """Ключевые значения Vth для штриховки талой зоны."""
+        result = [i/4 for i in range(0, 5)]
         result[0] = 1e-15
         result[-1] = 1.0 - result[0]
         return result
@@ -132,6 +138,11 @@ class QFrostPlot():
         """Локатор изолиний температуры (соответствует LevelsTemperature())."""
         return MultipleLocator(base=0.5)
 
+    @staticmethod
+    def LocatorBasicThawedPart():
+        """Локатор изолиний Vth (соответствует LevelsThawedPart())."""
+        return MultipleLocator(base=0.05)
+
 
     @staticmethod
     def LocatorColorbarTemperature():
@@ -140,37 +151,48 @@ class QFrostPlot():
 
 
     @staticmethod
-    def LocatorBasicThawedPart():
-        """Локатор изолиний Vth (соответствует LevelsThawedPart())."""
-        return MultipleLocator(base=0.05)
-
-
-    @staticmethod
     def LocatorColorbarThawedPart():
         """Локатор зарубок на шкале отн. объёма талой фазы."""
         return MultipleLocator(base=0.1)
+
+
+    @staticmethod
+    def LocatorColorbarThawedPartHatch():
+        """Локатор зарубок на шкале штриховок отн. объёма талой фазы."""
+        return MultipleLocator(base=0.25)
     #==========================================================================#
 
 
     #======================= Шкалы (создание столбиков) =======================#
     @staticmethod
     def ColorbarTemperature(csetf, fig):
-        """Создаёт и возвращает столбик шкалы T для csetf в фигуре fig."""
+        """Столбик шкалы T для цветовой карты csetf в фигуре fig."""
         result = fig.colorbar(csetf,
                               ticks=QFrostPlot.LocatorColorbarTemperature(),
                               use_gridspec=True)
-        result.set_label('Температура $T$, °C')
+        QFrostPlot._LabelColorbarTemperature(result)
         return result
 
 
     @staticmethod
     def ColorbarThawedPart(csetf, fig):
-        """Создаёт и возвращает столбик шкалы Vth для csetf в фигуре fig."""
+        """Столбик шкалы Vth для цветовой карты csetf в фигуре fig."""
         result = fig.colorbar(csetf,
                               ticks=QFrostPlot.LocatorColorbarThawedPart(),
                               format=QFrostPlot.PercentFormatter(),
                               use_gridspec=True)
-        result.set_label('Относительный объём талой фазы $V_{th}$')
+        QFrostPlot._LabelColorbarThawedPart(result)
+        return result
+
+
+    @staticmethod
+    def ColorbarThawedPartHatch(csetf, fig):
+        """Столбик шкалы Vth для (штрих-карты) талой зоны csetf в фигуре fig."""
+        result = fig.colorbar(csetf,
+                              ticks=QFrostPlot.LocatorColorbarThawedPartHatch(),
+                              format=QFrostPlot.PercentFormatter(),
+                              use_gridspec=True)
+        QFrostPlot._LabelColorbarThawedPart(result)
         return result
 
 
@@ -186,6 +208,17 @@ class QFrostPlot():
             return QFrostPlot.ColorbarTemperature(csetf, fig)
         else:
             raise ValueError("Argument 'vtype' can not be 'none'.")
+
+
+    @staticmethod
+    def _LabelColorbarTemperature(colorbar):
+        """Настраивает подпись для столбика шкалы T."""
+        colorbar.set_label('Температура $T$, °C', labelpad=2)
+
+    @staticmethod
+    def _LabelColorbarThawedPart(colorbar):
+        """Настраивает подпись для столбика шкалы Vth."""
+        colorbar.set_label('Относительный объём талой фазы $V_{th}$', labelpad=1)
     #==========================================================================#
 
 

@@ -34,9 +34,10 @@ parser.add_argument('-d', '--depth',
                     help='maximum depth in meters (default: 8.0)',
                     default=8.0)
 
-parser.add_argument('-m', '--mark-front',
+parser.add_argument('-m', '--mark-thawed',
                     action='store_true',
-                    help='mark phase front on T map (by semi-transparent Vth map)')
+                    help='mark thawed zone on T maps (with hatched Vth map)')
+
 
 parser.add_argument('FILE',
                     nargs='*',
@@ -48,7 +49,7 @@ args = parser.parse_args()
 
 for file in args.FILE:
     print("****** Processing journal from '%s' ******" % file.name)
-    journal_plot = JournalPlot1D.from_file(file, args.depth, args.mark_front)
+    journal_plot = JournalPlot1D.from_file(file, args.depth, args.mark_thawed)
     file.close()
 
     if journal_plot is None:
@@ -71,16 +72,24 @@ for file in args.FILE:
                                 QFrostVType.temperature,
                                 QFrostVType.temperature)
 
-        filename_v = filename_base + '_v' + stuff_extension
+        filename_tmap = filename_base + '_t_map' + stuff_extension
+        print(' * Plotting T [standalone color map]')
+        journal_plot.savePlot2D(filename_tmap,
+                                scale_factor,
+                                QFrostVType.temperature,
+                                QFrostVType.none)
+
+        filename_vmap = filename_base + '_v_map' + stuff_extension
         print(' * Plotting V [standalone color map]')
-        journal_plot.savePlot2D(filename_v,
+        journal_plot.savePlot2D(filename_vmap,
                                 scale_factor,
                                 QFrostVType.thawed_part,
                                 QFrostVType.none)
-
+        """
         filename_tv  = filename_base + '_both' + stuff_extension
         print(' * Plotting T&V [T map & V contours]')
         journal_plot.savePlot2D(filename_tv,
                                 scale_factor,
                                 QFrostVType.thawed_part,
                                 QFrostVType.temperature)
+        """
