@@ -497,8 +497,8 @@ class ContourPlot(QObject):
                                    values,
                                    levels,
                                    filled=False,
-                                   colors=['0.25', '0.5', '0.5', '0.5', '0.5'],
-                                   linewidths=[1.0, 0.5, 0.5, 0.5, 0.5])
+                                   colors=QFrostPlot.ContourBasicColors(),
+                                   linewidths=QFrostPlot.ContourBasicLineWidths())
 
         for collection in result.collections:
             collection.set_clip_path(self.__domain_patch)
