@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -25,6 +25,8 @@
 #include <qfrost.h>
 
 QT_FORWARD_DECLARE_CLASS(QTableView)
+QT_FORWARD_DECLARE_CLASS(QPushButton)
+QT_FORWARD_DECLARE_CLASS(QPersistentModelIndex)
 
 namespace qfgui
 {
@@ -49,9 +51,19 @@ signals:
 
 private slots:
     void emitValuesChanged();
+    void updateButtons();
+    void removeSelectedPoints();
 
 private:
-    QTableView *mView;
+    /// Список устойчивых индексов по 0 столбцу всех целиком выбранных строк
+    QList<QPersistentModelIndex> selectedRows() const;
+
+    SortedPointsModel *const mModel;
+
+    QTableView *const mView;
+
+    QPushButton *const mNewPoint;
+    QPushButton *const mRemovePoint;
 };
 
 }

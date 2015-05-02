@@ -335,22 +335,26 @@ public:
 
 double qfcore::interpolate(const std::map< double, double > &data, double x)
 {
-    typedef std::map<double, double>::const_iterator IT;
+    if (data.empty()) {
+        return 0.0;
+    } else {
+        typedef std::map<double, double>::const_iterator IT;
 
-    IT i = data.upper_bound(x);
+        IT i = data.upper_bound(x);
 
-    if (i == data.end()) {
-        return (--i)->second;
+        if (i == data.end()) {
+            return (--i)->second;
+        }
+        if (i == data.begin()) {
+            return i->second;
+        }
+
+        IT l = i;
+        --l;
+
+        const double delta = (x - l->first) / (i->first - l->first);
+        return delta * i->second + (1 - delta) * l->second;
     }
-    if (i == data.begin()) {
-        return i->second;
-    }
-
-    IT l = i;
-    --l;
-
-    const double delta = (x - l->first) / (i->first - l->first);
-    return delta * i->second + (1 - delta) * l->second;
 }
 
 #endif // QFCORE_SOILBLOCK_H

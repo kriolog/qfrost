@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2012  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -19,9 +19,13 @@
 
 #include "soil.h"
 
+#include <limits>
+
 #include <QtCore/QLocale>
+
 #include <boundary_conditions/boundarycondition.h>
 #include <graphicsviews/block.h>
+#include <units/units.h>
 
 using namespace qfgui;
 
@@ -197,16 +201,24 @@ void Soil::updateFromWaterCurve()
 
 double Soil::moistureTotalMinimum() const
 {
-    std::map<double, double>::const_iterator it;
-    it = mBlock.mUnfrozenWaterCurve.begin();
-    return it->second;
+    if (mBlock.mUnfrozenWaterCurve.size() <= 1) {
+        return Units::unit(this, Moisture).minimum();
+    } else {
+        std::map<double, double>::const_iterator it;
+        it = mBlock.mUnfrozenWaterCurve.begin();
+        return it->second;
+    }
 }
 
 double Soil::moistureTotalMaximum() const
 {
-    std::map<double, double>::const_iterator it;
-    it = mBlock.mUnfrozenWaterCurve.end();
-    return (--it)->second;
+    if (mBlock.mUnfrozenWaterCurve.size() <= 1) {
+        return Units::unit(this, Moisture).maximum();
+    } else {
+        std::map<double, double>::const_iterator it;
+        it = mBlock.mUnfrozenWaterCurve.end();
+        return (--it)->second;
+    }
 }
 
 QList< QString > Soil::priorityProperties()

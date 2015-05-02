@@ -70,6 +70,18 @@ Qt::ItemFlags SortedPointsModel::flags(const QModelIndex &index) const
     return flags;
 }
 
+bool SortedPointsModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    qDebug("remove rows from %d, count %d", row, count);
+    beginRemoveRows(QModelIndex(), row, row + count - 1);
+    QMap<double, double>::Iterator it = mValues.end() - row - 1;
+    for (int i = 0; i < count; ++i) {
+        it = mValues.erase(it);
+    }
+    endRemoveRows();
+    return true;
+}
+
 QVariant SortedPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role != Qt::DisplayRole) {
@@ -175,6 +187,7 @@ void SortedPointsModel::setValues(const QMap< double, double > &data)
         return;
     }
     beginRemoveRows(index(0, 0), 0, mValues.size());
+    mValues.clear();
     endRemoveRows();
     beginInsertRows(index(0, 0), 0, data.size() - 1);
     mValues = data;

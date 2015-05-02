@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -22,6 +22,7 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QDataWidgetMapper>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QFrame>
 
 #include <units/physicalpropertyspinbox.h>
 #include <soils/sortedpointswidget.h>
@@ -44,8 +45,11 @@ UnfrozenWaterWidget::UnfrozenWaterWidget(QWidget *parent)
     setCheckable(true);
     setChecked(false);
 
+    QFrame *separator = new QFrame(this);
+    separator->setFrameStyle(QFrame::HLine | QFrame::Plain);
     boxLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
     boxLayout->addRow(mUnfrozenWaterCurve);
+    boxLayout->addRow(separator);
     boxLayout->addRow(tr("H&umidity Total w<sub>tot</sub>"),
                       mMoistureTotal);
     boxLayout->addRow(tr("D&ry Density \317\201<sub>d</sub>"),

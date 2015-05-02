@@ -285,6 +285,9 @@ void SoilBlock::updateFromWaterCurve()
     if (!mUsesUnfrozenWaterCurve) {
         return;
     }
+    if (mUnfrozenWaterCurve.empty()) {
+        return;
+    }
     std::map<double, double>::const_iterator i = mUnfrozenWaterCurve.end();
     --i;
 
@@ -316,12 +319,13 @@ void SoilBlock::updateFromWaterCurve()
 void SoilBlock::getTransitionTemperatureFromWaterCurve()
 {
     assert(mUsesUnfrozenWaterCurve);
-    assert(!mUnfrozenWaterCurve.empty());
-    std::map<double, double> invertedUnfrozenWaterCurve;
-    std::map<double, double>::const_reverse_iterator j = mUnfrozenWaterCurve.rbegin();
-    assert(j->second >= mMoistureTotal);
-    for (; j != mUnfrozenWaterCurve.rend(); ++j) {
-        invertedUnfrozenWaterCurve[j->second] = j->first;
+    if (mUnfrozenWaterCurve.size() > 1) {
+        std::map<double, double> invertedUnfrozenWaterCurve;
+        std::map<double, double>::const_reverse_iterator j = mUnfrozenWaterCurve.rbegin();
+        assert(j->second >= mMoistureTotal);
+        for (; j != mUnfrozenWaterCurve.rend(); ++j) {
+            invertedUnfrozenWaterCurve[j->second] = j->first;
+        }
+        mTransitionTemperature = interpolate(invertedUnfrozenWaterCurve, mMinBfMoisture);
     }
-    mTransitionTemperature = interpolate(invertedUnfrozenWaterCurve, mMinBfMoisture);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -25,6 +25,9 @@
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtCore/QPersistentModelIndex>
 
 using namespace qfgui;
 
@@ -34,29 +37,47 @@ SortedPointsWidget::SortedPointsWidget(const QString &xName,
                                        PhysicalProperty yProp,
                                        QWidget *parent)
     : QWidget(parent)
+    , mModel(new SortedPointsModel(xName, yName, xProp, yProp, this))
     , mView(new QTableView(this))
+    , mNewPoint(new QPushButton(QIcon::fromTheme("list-add"), "", this))
+    , mRemovePoint(new QPushButton(QIcon::fromTheme("list-remove"), "", this))
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(QMargins());
     mainLayout->addWidget(mView);
 
-    SortedPointsModel *model = new SortedPointsModel(xName, yName, xProp, yProp, this);
-    mView->setModel(model);
+    mView->setModel(mModel);
 
     mView->setItemDelegate(new PhysicalPropertyDelegate(mView));
 
-    mView->setSelectionMode(QAbstractItemView::NoSelection);
+    mView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     mView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     mView->verticalHeader()->hide();
     mView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+    connect(mModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
             SLOT(emitValuesChanged()));
-    connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)),
+    connect(mModel, SIGNAL(rowsInserted(QModelIndex, int, int)),
             SLOT(emitValuesChanged()));
-    connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)),
+    connect(mModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
             SLOT(emitValuesChanged()));
+
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    buttonsLayout->setContentsMargins(QMargins());
+    mainLayout->addLayout(buttonsLayout);
+    buttonsLayout->addWidget(mNewPoint);
+    buttonsLayout->addWidget(mRemovePoint);
+
+    mNewPoint->setToolTip(tr("Add new point"));
+    mRemovePoint->setToolTip(tr("Remove selected points"));
+
+    connect(mView->selectionModel(),
+            SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            SLOT(updateButtons()));
+    updateButtons();
+
+    connect(mRemovePoint, SIGNAL(clicked()), SLOT(removeSelectedPoints()));
 }
 
 void SortedPointsWidget::setValues(const DoubleMap &data)
@@ -73,4 +94,33 @@ const DoubleMap &SortedPointsWidget::values() const
 void SortedPointsWidget::emitValuesChanged()
 {
     emit valuesChanged(values());
+}
+
+void SortedPointsWidget::updateButtons()
+{
+    const bool anythingIsSelected = mView->selectionModel()->hasSelection();
+    mRemovePoint->setEnabled(anythingIsSelected);
+}
+
+void SortedPointsWidget::removeSelectedPoints()
+{
+    foreach (const QPersistentModelIndex &index, selectedRows()) {
+        mModel->removeRow(index.row());
+    }
+}
+
+QList<QPersistentModelIndex> SortedPointsWidget::selectedRows() const
+{
+    Q_ASSERT(mView->selectionModel()->model() == mModel);
+    QList<QPersistentModelIndex> result;
+    // HACK: вместо selectedRows приходится использовать такой велосипед, ибо
+    //       Qt может развыделять ячейки без флага ItemIsEnabled при
+    //       пересортировке QItemSelectionModel, после чего selectedRows
+    //       возвращает пустой список.
+    foreach(const QModelIndex & index, mView->selectionModel()->selectedIndexes()) {
+        if (index.column() == 0) {
+            result << QPersistentModelIndex(index);
+        }
+    }
+    return result;
 }
