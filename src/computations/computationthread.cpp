@@ -21,7 +21,8 @@
 
 #include <cmath>
 
-#include <QtCore/qmath.h>
+#include <QtCore/QtMath>
+#include <QtCore/QLocale>
 
 #include <geometry/block_within_polygon.h>
 #include <geometry/clip_polyline.h>
@@ -148,10 +149,17 @@ QString ComputationThread::setDataInDomain(QList<Block *> blocks,
     for (p = outerPolygons.begin(); p != outerPolygons.end(); ++p) {
         for (b = blocks.begin(); b != blocks.end(); ++b) {
             if (BlockWithinPolygon::blockIntersectsPolygon(*b, *p)) {
-                if (!(*b)->isReady()) {
+                if (!(*b)->hasSoil()) {
                     return tr("Block without parameters detected!\n"
                               "You must set soil of all blocks inside domain "
                               "before starting computation.");
+                }
+                const Soil *soil = (*b)->soil();
+                Q_ASSERT(soil != NULL);
+                if (soil->usesUnfrozenWaterCurve() && soil->unfrozenWaterCurve().size() <= 1) {
+                    return tr("Block with invalid parameters detected!\n"
+                              "Soil %1 has insufficient unfrozen water curve points!")
+                           .arg(QLocale().quoteString(soil->name()));
                 }
                 blocksInDomain.append(*b);
                 // если блок попал в рассчётную область, проверять его больше не надо

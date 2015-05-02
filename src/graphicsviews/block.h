@@ -126,10 +126,6 @@ public:
 
     DEFINETYPE(BLOCKTYPE)
 
-    bool isReady() const {
-        return hasSoil();
-    }
-
     /**
      * Обновить mBrush. Вызывать при:
      * - смене стиля отображения сцены;
@@ -168,12 +164,12 @@ public:
     const qfcore::SoilBlock *soilBlock() const {
         return &mSoilBlock;
     }
-    
+
     /// Указан ли наш грунтовый блок (закрашены ли мы).
     bool hasSoil() const {
         return mSoil != NULL;
     }
-    
+
     const Soil *soil() const {
         return mSoil;
     }
