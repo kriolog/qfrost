@@ -489,6 +489,9 @@ void MainWindow::init()
 #ifdef WIN32
     setStyle(new CorrectedStyle);
 #endif
+    qApp->setStyleSheet(QString("*[%1=\"true\"] { background-color: #FFBFBF }")
+                        .arg(QFrost::InvalidInputPropertyName));
+
     mDialogToExecOnShow = NULL;
     mUnits = new Units(this);
     mColorGenerator = new ColorGenerator(this);

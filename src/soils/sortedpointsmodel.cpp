@@ -186,10 +186,24 @@ void SortedPointsModel::setValues(const QMap< double, double > &data)
     if (mValues == data) {
         return;
     }
-    beginRemoveRows(index(0, 0), 0, mValues.size());
+    beginRemoveRows(QModelIndex(), 0, mValues.size());
     mValues.clear();
     endRemoveRows();
-    beginInsertRows(index(0, 0), 0, data.size() - 1);
+    beginInsertRows(QModelIndex(), 0, data.size() - 1);
     mValues = data;
+    endInsertRows();
+}
+
+void SortedPointsModel::addPoint(double x, double y)
+{
+    Q_ASSERT(!mValues.keys().contains(x));
+    QMap<double, double>::ConstIterator it = mValues.upperBound(x);
+    int row = 0;
+    while (it != mValues.constEnd()) {
+        ++it;
+        ++row;
+    }
+    beginInsertRows(QModelIndex(), row, row);
+    mValues.insert(x, y);
     endInsertRows();
 }

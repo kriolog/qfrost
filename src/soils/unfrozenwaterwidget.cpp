@@ -34,10 +34,11 @@ using namespace qfgui;
 
 UnfrozenWaterWidget::UnfrozenWaterWidget(QWidget *parent)
     : QGroupBox(tr("Unfrozen Water Curve"), parent)
-    , mUnfrozenWaterCurve(new SortedPointsWidget(tr("T"), tr("W_w"),
-                          Temperature,
-                          Moisture,
-                          this))
+    , mUnfrozenWaterCurve(new SortedPointsWidget(Temperature, tr("T"),
+                                                 tr("Temperature T"),
+                                                 Moisture, tr("W_w"),
+                                                 tr("Unfrozen moisture W<sub>w</sub>"),
+                                                 this))
     , mMoistureTotal(new PhysicalPropertySpinBox(this))
     , mDryDensity(new PhysicalPropertySpinBox(this))
 {

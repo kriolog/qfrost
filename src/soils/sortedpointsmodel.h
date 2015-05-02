@@ -48,6 +48,11 @@ public:
     }
     void setValues(const QMap<double, double> &data);
 
+    PhysicalProperty propertyX() const { return mXProp; }
+    PhysicalProperty propertyY() const { return mYProp; }
+
+    void addPoint(double x, double y);
+
 private slots:
     void updateHeaderData();
 

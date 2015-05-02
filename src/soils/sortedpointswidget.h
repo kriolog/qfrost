@@ -21,17 +21,21 @@
 #define QFGUI_SORTEDPOINTSWIDGET_H
 
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QDialog>
 
 #include <qfrost.h>
 
+QT_FORWARD_DECLARE_CLASS(QLabel)
 QT_FORWARD_DECLARE_CLASS(QTableView)
 QT_FORWARD_DECLARE_CLASS(QPushButton)
 QT_FORWARD_DECLARE_CLASS(QPersistentModelIndex)
+QT_FORWARD_DECLARE_CLASS(QDialogButtonBox)
 
 namespace qfgui
 {
 
 QT_FORWARD_DECLARE_CLASS(SortedPointsModel)
+QT_FORWARD_DECLARE_CLASS(PhysicalPropertySpinBox)
 
 typedef QMap<double, double> DoubleMap;
 class SortedPointsWidget : public QWidget
@@ -39,9 +43,9 @@ class SortedPointsWidget : public QWidget
     Q_OBJECT
     Q_PROPERTY(DoubleMap values READ values WRITE setValues NOTIFY valuesChanged USER true)
 public:
-    SortedPointsWidget(const QString &xName, const QString &yName,
-                       PhysicalProperty xProp, PhysicalProperty yProp,
-                       QWidget *parent);
+    SortedPointsWidget(PhysicalProperty xProp, const QString& xName, const QString& xNameFull,
+                       PhysicalProperty yProp, const QString& yName, const QString& yNameFull,
+                       QWidget* parent);
 
     const DoubleMap &values() const;
     void setValues(const DoubleMap &data);
@@ -52,6 +56,8 @@ signals:
 private slots:
     void emitValuesChanged();
     void updateButtons();
+
+    void openNewPointDialog();
     void removeSelectedPoints();
 
 private:
@@ -64,6 +70,44 @@ private:
 
     QPushButton *const mNewPoint;
     QPushButton *const mRemovePoint;
+
+    const QString mXNameFull;
+    const QString mYNameFull;
+};
+
+/**
+ * Диалог для добавления новой точки в SortedPointsModel.
+ * Соблюдает валидность добавляемых значений (в соответствие с текущими).
+ */
+class SortedPointsNewPointDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    SortedPointsNewPointDialog(const SortedPointsModel *model,
+                               const QString &xName,
+                               const QString &yName,
+                               QWidget * parent = 0);
+
+    double x() const;
+    double y() const;
+
+private slots:
+    void checkInput();
+
+private:
+    const SortedPointsModel *mModel;
+
+    PhysicalPropertySpinBox *const mSpinBoxX;
+    PhysicalPropertySpinBox *const mSpinBoxY;
+
+    QLabel *const mInvalidInputNotice;
+
+    QDialogButtonBox *const mButtons;
+
+    const QString mXNameForLabel;
+    const QString mYNameForLabel;
+
+    const QString kLabelMaskInvalidYBothBounds;
 };
 
 }

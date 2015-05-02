@@ -24,6 +24,8 @@
 #include <QtCore/QLocale>
 #include <QtCore/QTime>
 #include <QtGui/QIcon>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QStyle>
 
 using namespace qfgui;
 
@@ -63,6 +65,23 @@ const QRectF QFrost::boundRectInMeters(-sceneHalfSizeInMeters,
                                        2 * sceneHalfSizeInMeters);
 
 const char *const QFrost::UndoBinderIsEnabled = "undoBinderIsEnabled";
+const char *const QFrost::InvalidInputPropertyName = "hasInvalidInput";
+
+void QFrost::setInputValidity(QWidget *widget, bool isValid)
+{
+    const QVariant wasInvalidVariant = widget->property(QFrost::InvalidInputPropertyName);
+
+    const bool wasInvalid = wasInvalidVariant.isValid() && wasInvalidVariant.toBool();
+
+    if (isValid == wasInvalid) {
+        return;
+    }
+
+    widget->setProperty(QFrost::InvalidInputPropertyName, isValid);
+    widget->style()->unpolish(widget);
+    widget->style()->polish(widget);
+    widget->update();
+}
 
 QString QFrost::dateFormat()
 {

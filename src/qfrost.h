@@ -154,6 +154,13 @@ public:
     /// Свойство, которое должно быть true, чтобы UndoBinder'ы создавали команды
     static const char *const UndoBinderIsEnabled;
 
+    /// Свойство, которое установлено true, если введены некорректные данные
+    static const char *const InvalidInputPropertyName;
+
+    /// Изменяет свойство InvalidInputPropertyName у @p widget на @p isValid.
+    /// Перерисовывает, если поменялось (ибо используются таблицы стилей Qt).
+    static void setInputValidity(QWidget *widget, bool isValid);
+
     /// Физический смысл величины
     static const int PhysicalPropertyRole;
     /// Дополнительное (к Unit) ограничение на минимальное допустимое значение
