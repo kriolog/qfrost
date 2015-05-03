@@ -2315,27 +2315,32 @@ Water Curve</source>
 <context>
     <name>qfgui::SortedPointsNewPointDialog</name>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="170"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="169"/>
         <source>The %1 must be more than %2 and less than %3!</source>
         <translation>Допустима %1 в пределах от %2 до %3!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="173"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="172"/>
         <source>New Point</source>
         <translation>Новая точка</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="231"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="192"/>
+        <source>Add point</source>
+        <translation>Добавить точку</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="230"/>
         <source>Already has point with this %1!</source>
         <translation>Такая %1 уже есть среди имеющихся точек!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="254"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="253"/>
         <source>The %1 must be less than %2!</source>
         <translation>Допустима %1 не более %2!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="262"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="261"/>
         <source>The %1 must be more than %2!</source>
         <translation>Допустима %1 не менее %2!</translation>
     </message>

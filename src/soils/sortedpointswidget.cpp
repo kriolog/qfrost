@@ -189,7 +189,7 @@ SortedPointsNewPointDialog::SortedPointsNewPointDialog(const SortedPointsModel *
     mainLayout->addWidget(mInvalidInputNotice);
     mainLayout->addWidget(mButtons);
 
-    mButtons->button(QDialogButtonBox::Ok)->setText("Add point");
+    mButtons->button(QDialogButtonBox::Ok)->setText(tr("Add point"));
     connect(mButtons, SIGNAL(accepted()), SLOT(accept()));
     connect(mButtons, SIGNAL(rejected()), SLOT(reject()));
 
