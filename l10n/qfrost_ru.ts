@@ -351,6 +351,19 @@
     </message>
 </context>
 <context>
+    <name>qfgui::AnnualSpline</name>
+    <message>
+        <location filename="../src/boundary_conditions/annualspline.cpp" line="187"/>
+        <source>Spline Error</source>
+        <translation>Ошибка нахождения сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/annualspline.cpp" line="188"/>
+        <source>Can not solve spline! Solver info: %1</source>
+        <translation>Не удалось найти коэффициенты для сплайка! Ошибка #%1</translation>
+    </message>
+</context>
+<context>
     <name>qfgui::BackgroundDialog</name>
     <message>
         <location filename="../src/backgrounddialog.cpp" line="77"/>
@@ -1630,7 +1643,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="743"/>
-        <location filename="../src/mainwindow.cpp" line="1408"/>
+        <location filename="../src/mainwindow.cpp" line="1420"/>
         <source>&amp;Settings</source>
         <translation>&amp;Настройка</translation>
     </message>
@@ -1650,7 +1663,7 @@ At least %n steps per day is needed.</source>
         <translation>Параметры инструмента</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="898"/>
+        <location filename="../src/mainwindow.cpp" line="904"/>
         <source>Are blocks gridded?
 Blocks are gridded if each
 has not more than one neighbor
@@ -1664,37 +1677,37 @@ each contact fits it&apos;s dimension.</source>
 соответсвует его размерам.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1002"/>
+        <location filename="../src/mainwindow.cpp" line="1014"/>
         <source>The document %1 has been modified.
 Do you want to save your changes or discard them?</source>
         <translation>Документ %1 был изменён.
 Сохранить изменения или отклонить их?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1418"/>
+        <location filename="../src/mainwindow.cpp" line="1430"/>
         <source>Filling with soil %1...</source>
         <translation>Идёт заливка грунтом %1...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="335"/>
-        <location filename="../src/mainwindow.cpp" line="1201"/>
-        <location filename="../src/mainwindow.cpp" line="1229"/>
+        <location filename="../src/mainwindow.cpp" line="1213"/>
+        <location filename="../src/mainwindow.cpp" line="1241"/>
         <source>Cannot write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1036"/>
+        <location filename="../src/mainwindow.cpp" line="1048"/>
         <source>Cannot load file %1.</source>
         <translation>Не удалось загрузить файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1227"/>
+        <location filename="../src/mainwindow.cpp" line="1239"/>
         <source>Cannot read file %1.</source>
         <translation>Не удалось прочитать файл %1.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="460"/>
-        <location filename="../src/mainwindow.cpp" line="1231"/>
+        <location filename="../src/mainwindow.cpp" line="1243"/>
         <source>Cannot open file %1.</source>
         <translation>Не удалось открыть файл %1.</translation>
     </message>
@@ -1704,27 +1717,27 @@ Do you want to save your changes or discard them?</source>
         <translation>Экспорт &amp;для построения...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1114"/>
+        <location filename="../src/mainwindow.cpp" line="1126"/>
         <source>Provided version ID: %1. Wanted version ID: %2.</source>
         <translation>ID версии в файле: %1. Требуемый ID версии: %2.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1207"/>
+        <location filename="../src/mainwindow.cpp" line="1219"/>
         <source>Unfinished file has been removed.</source>
         <translation>Незавершённый файл был удалён.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1209"/>
+        <location filename="../src/mainwindow.cpp" line="1221"/>
         <source>Unfinished file removal failed, please remove it manually.</source>
         <translation>Незавершённый файл не был удалён, удалите его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1397"/>
+        <location filename="../src/mainwindow.cpp" line="1409"/>
         <source>Exit &amp;Full Screen Mode</source>
         <translation>Выйти из &amp;полноэкранного режима</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1401"/>
+        <location filename="../src/mainwindow.cpp" line="1413"/>
         <source>&amp;Full Screen Mode</source>
         <translation>&amp;Полноэкранный режим</translation>
     </message>
@@ -1774,89 +1787,89 @@ Do you want to save your changes or discard them?</source>
         <translation>Список команд</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="881"/>
+        <location filename="../src/mainwindow.cpp" line="888"/>
         <source>Welcome to %1!</source>
         <translation>Добро пожаловать в %1!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="891"/>
+        <location filename="../src/mainwindow.cpp" line="897"/>
         <source>[1D]</source>
         <translation>[1D]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="892"/>
+        <location filename="../src/mainwindow.cpp" line="898"/>
         <source>Are blocks placed one-dimensional (and vertically)?</source>
         <translation>Является ли задача одномерной (и вертикальной)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="896"/>
-        <location filename="../src/mainwindow.cpp" line="897"/>
+        <location filename="../src/mainwindow.cpp" line="902"/>
+        <location filename="../src/mainwindow.cpp" line="903"/>
         <source>[Grid]</source>
         <translation>[Сетка]</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="907"/>
+        <location filename="../src/mainwindow.cpp" line="913"/>
         <source>Blocks counter. Exceeding 20–30 thousands may
 slow interface and therefore is not recommended.</source>
         <translation>Количество блоков. Использование более 20–30 тысяч может
 значительно замедлить работу интерфейса и не рекомендуется.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="913"/>
+        <location filename="../src/mainwindow.cpp" line="919"/>
         <source>Cursor coordinates.
 Blank if outside of work area.</source>
         <translation>Координаты курсора.
 Прочерк, если находится вне рабочей области.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="919"/>
+        <location filename="../src/mainwindow.cpp" line="925"/>
         <source>Anchor coordinates.
 Blank if not found or disabled.</source>
         <translation>Коодинаты привязки.
 Прочерк, если не найдена или не требуется.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1001"/>
+        <location filename="../src/mainwindow.cpp" line="1013"/>
         <source>Close Document</source>
         <translation>Закрыть документ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1018"/>
+        <location filename="../src/mainwindow.cpp" line="1030"/>
         <source>Load Failed</source>
         <translation>Загрузка не удалась</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1042"/>
+        <location filename="../src/mainwindow.cpp" line="1054"/>
         <source>File loaded</source>
         <translation>Файл загружен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1060"/>
+        <location filename="../src/mainwindow.cpp" line="1072"/>
         <source>File is corrupted or is in bad format.</source>
         <translation>Файл повреждён или имеет неправильный формат.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1108"/>
+        <location filename="../src/mainwindow.cpp" line="1120"/>
         <source>File is for older version of %1.</source>
         <translation>Файл предназначен для устаревшей версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1111"/>
+        <location filename="../src/mainwindow.cpp" line="1123"/>
         <source>File is for newer version of %1.</source>
         <translation>Файл предназначен для более новой версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1152"/>
+        <location filename="../src/mainwindow.cpp" line="1164"/>
         <source>Save Failed</source>
         <translation>Сохранение не удалось</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1191"/>
+        <location filename="../src/mainwindow.cpp" line="1203"/>
         <source>File saved</source>
         <translation>Файл сохранён</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1245"/>
+        <location filename="../src/mainwindow.cpp" line="1257"/>
         <source>unnamed</source>
         <translation>безымянный</translation>
     </message>
@@ -2315,32 +2328,32 @@ Water Curve</source>
 <context>
     <name>qfgui::SortedPointsNewPointDialog</name>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="169"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="171"/>
         <source>The %1 must be more than %2 and less than %3!</source>
         <translation>Допустима %1 в пределах от %2 до %3!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="172"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="174"/>
         <source>New Point</source>
         <translation>Новая точка</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="192"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="194"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="230"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="232"/>
         <source>Already has point with this %1!</source>
         <translation>Такая %1 уже есть среди имеющихся точек!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="253"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="255"/>
         <source>The %1 must be less than %2!</source>
         <translation>Допустима %1 не более %2!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="261"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="263"/>
         <source>The %1 must be more than %2!</source>
         <translation>Допустима %1 не менее %2!</translation>
     </message>
@@ -2348,12 +2361,12 @@ Water Curve</source>
 <context>
     <name>qfgui::SortedPointsWidget</name>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="79"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="81"/>
         <source>Add new point</source>
         <translation>Добавить новую точку</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="80"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="82"/>
         <source>Remove selected points</source>
         <translation>Удалить выделенные точки</translation>
     </message>
@@ -2591,58 +2604,63 @@ Water Curve</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="258"/>
+        <location filename="../src/units/units.cpp" line="257"/>
         <source>W</source>
         <extracomment>watt</extracomment>
         <translation>Вт</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="260"/>
+        <location filename="../src/units/units.cpp" line="259"/>
         <source>J</source>
         <extracomment>joule</extracomment>
         <translation>Дж</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="262"/>
+        <location filename="../src/units/units.cpp" line="261"/>
         <source>g</source>
         <extracomment>gram</extracomment>
         <translation>г</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="264"/>
+        <location filename="../src/units/units.cpp" line="263"/>
         <source>cal</source>
         <extracomment>calory</extracomment>
         <translation>кал</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="266"/>
+        <location filename="../src/units/units.cpp" line="265"/>
         <source>h</source>
         <extracomment>hour</extracomment>
         <translation>ч</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="268"/>
+        <location filename="../src/units/units.cpp" line="267"/>
         <source>s</source>
         <extracomment>second</extracomment>
         <translation>с</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="272"/>
+        <location filename="../src/units/units.cpp" line="271"/>
         <source>k</source>
         <extracomment>kilo</extracomment>
         <translation>к</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="274"/>
+        <location filename="../src/units/units.cpp" line="273"/>
         <source>M</source>
         <extracomment>mega</extracomment>
         <translation>М</translation>
     </message>
     <message>
-        <location filename="../src/units/units.cpp" line="277"/>
+        <location filename="../src/units/units.cpp" line="276"/>
         <source>·</source>
         <extracomment>multiplication mark</extracomment>
         <translation>·</translation>
+    </message>
+    <message>
+        <location filename="../src/units/units.cpp" line="280"/>
+        <source>cm</source>
+        <translation>см</translation>
     </message>
     <message>
         <location filename="../src/units/units.cpp" line="358"/>

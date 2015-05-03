@@ -277,6 +277,7 @@ Unit Units::createUnit(PhysicalProperty property, Units::System system)
 
     static const QString m2 = meterText() + "\302\262";
     static const QString m3 = meterText() + "\302\263";
+    static const QString sm3 = tr("cm")+ "\302\263";
 
     if (property == NoProperty) {
         return Unit(property, QString(), 1, false);
@@ -311,12 +312,12 @@ Unit Units::createUnit(PhysicalProperty property, Units::System system)
                         1);
         case Moisture:
             return Unit(property,
-                        QString(),
-                        1, false);
+                        "%",
+                        0.01, false);
         case Density:
             return Unit(property,
-                        g + "/" + m3,
-                        1);
+                        g + "/" + sm3,
+                        1000);
         case Energy:
             return Unit(property,
                         J, 1);
@@ -350,11 +351,11 @@ Unit Units::createUnit(PhysicalProperty property, Units::System system)
                         1000 * 1000);
         case Density:
             return Unit(property,
-                        kilo + g + "/" + m3,
+                        g + "/" + sm3,
                         1000);
         case Moisture:
             return Unit(property,
-                        tr("%"),
+                        "%",
                         0.01, false);
         case Energy:
             return Unit(property,
