@@ -113,7 +113,7 @@ void ComputationThread::run()
     }
 
     // Последняя итерация цикла перевела нас на начало последнего дня
-    Q_ASSERT(date == mFinalDate);
+    Q_ASSERT(date == mFinalDate || mMustStop);
     // (конечный результат не идёт в журнал - он пойдёт в начало следующего)
 
     if (mLoggingMode != ComputationSettings::NoLogging) {
