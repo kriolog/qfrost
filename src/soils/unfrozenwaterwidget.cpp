@@ -42,19 +42,23 @@ UnfrozenWaterWidget::UnfrozenWaterWidget(QWidget *parent)
     , mMoistureTotal(new PhysicalPropertySpinBox(this))
     , mDryDensity(new PhysicalPropertySpinBox(this))
 {
-    QFormLayout *boxLayout = new QFormLayout(this);
+    QFormLayout *boxLayout = new QFormLayout();
     setCheckable(true);
     setChecked(false);
 
-    QFrame *separator = new QFrame(this);
-    separator->setFrameStyle(QFrame::HLine | QFrame::Plain);
     boxLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
-    boxLayout->addRow(mUnfrozenWaterCurve);
-    boxLayout->addRow(separator);
     boxLayout->addRow(tr("H&umidity Total w<sub>tot</sub>"),
                       mMoistureTotal);
     boxLayout->addRow(tr("D&ry Density \317\201<sub>d</sub>"),
                       mDryDensity);
+
+    QFrame *separator = new QFrame(this);
+    separator->setFrameStyle(QFrame::HLine | QFrame::Plain);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(mUnfrozenWaterCurve, 1);
+    mainLayout->addWidget(separator);
+    mainLayout->addLayout(boxLayout);
 
     connect(this, SIGNAL(toggled(bool)), SIGNAL(unfrozenWaterUsageToggled(bool)));
 }

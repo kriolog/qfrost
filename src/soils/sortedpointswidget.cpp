@@ -20,6 +20,7 @@
 #include "sortedpointswidget.h"
 
 #include <soils/sortedpointsmodel.h>
+#include <plot/sortedpointsplot.h>
 #include <units/units.h>
 #include <units/physicalpropertydelegate.h>
 #include <units/physicalpropertyspinbox.h>
@@ -53,7 +54,8 @@ SortedPointsWidget::SortedPointsWidget(PhysicalProperty xProp,
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(QMargins());
-    mainLayout->addWidget(mView);
+
+    mainLayout->addWidget(mView, 1);
 
     mView->setModel(mModel);
 
@@ -61,22 +63,18 @@ SortedPointsWidget::SortedPointsWidget(PhysicalProperty xProp,
 
     mView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    mView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     mView->verticalHeader()->hide();
     mView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    connect(mModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-            SLOT(emitValuesChanged()));
-    connect(mModel, SIGNAL(rowsInserted(QModelIndex, int, int)),
-            SLOT(emitValuesChanged()));
-    connect(mModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
-            SLOT(emitValuesChanged()));
+    connect(mModel, SIGNAL(valuesChanged()), SLOT(emitValuesChanged()));
 
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     buttonsLayout->setContentsMargins(QMargins());
     mainLayout->addLayout(buttonsLayout);
     buttonsLayout->addWidget(mNewPoint);
     buttonsLayout->addWidget(mRemovePoint);
+
+    mainLayout->addWidget(new SortedPointsPlot(mModel, this));
 
     mNewPoint->setToolTip(tr("Add new point"));
     mRemovePoint->setToolTip(tr("Remove selected points"));

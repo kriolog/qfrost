@@ -1,6 +1,7 @@
 set(qfrost_plot_SRCS
     curveplot.cpp
 	curveplotdialog.cpp
+	sortedpointsplot.cpp
 )
 
 add_library(qfrost_plot

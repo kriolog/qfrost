@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -72,13 +72,15 @@ Qt::ItemFlags SortedPointsModel::flags(const QModelIndex &index) const
 
 bool SortedPointsModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    qDebug("remove rows from %d, count %d", row, count);
     beginRemoveRows(QModelIndex(), row, row + count - 1);
     QMap<double, double>::Iterator it = mValues.end() - row - 1;
     for (int i = 0; i < count; ++i) {
         it = mValues.erase(it);
     }
     endRemoveRows();
+
+    emit valuesChanged();
+
     return true;
 }
 
@@ -176,6 +178,7 @@ bool SortedPointsModel::setData(const QModelIndex &dataIndex,
             QModelIndex nextIndex = index(nextRow, dataIndex.column());
             emit dataChanged(nextIndex, nextIndex);
         }
+        emit valuesChanged();
         return true;
     }
     return false;
@@ -192,6 +195,8 @@ void SortedPointsModel::setValues(const QMap< double, double > &data)
     beginInsertRows(QModelIndex(), 0, data.size() - 1);
     mValues = data;
     endInsertRows();
+
+    emit valuesChanged();
 }
 
 void SortedPointsModel::addPoint(double x, double y)
@@ -206,4 +211,6 @@ void SortedPointsModel::addPoint(double x, double y)
     beginInsertRows(QModelIndex(), row, row);
     mValues.insert(x, y);
     endInsertRows();
+
+    emit valuesChanged();
 }

@@ -126,9 +126,7 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     leftLayout->addStretch();
 
     /**************************** Кривая нез. воды ****************************/
-    rightLayout->addStretch();
     rightLayout->addWidget(mUnfrozenWater);
-    rightLayout->addStretch();
 
     /**************************************************************************/
 
