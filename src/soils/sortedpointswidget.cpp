@@ -57,13 +57,15 @@ SortedPointsWidget::SortedPointsWidget(PhysicalProperty xProp,
 
     mainLayout->addWidget(mView, 1);
 
+    mView->setMinimumHeight(180);
+
     mView->setModel(mModel);
 
     mView->setItemDelegate(new PhysicalPropertyDelegate(mView));
 
     mView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    mView->verticalHeader()->hide();
+    mView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     mView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     connect(mModel, SIGNAL(valuesChanged()), SLOT(emitValuesChanged()));
