@@ -172,8 +172,7 @@ QPair<double, double> Units::minMaxSI(PhysicalProperty property)
     case TransitionHeat:
         return qMakePair(kUnreachableZero, 100000000000.0);
     case Moisture:
-        // FIXME: выбрать другой максимум? Оно ведь может быть больше 1.
-        return qMakePair(0.0, 1.0);
+        return qMakePair(0.0, 99.999);
     case Density:
         return qMakePair(kUnreachableZero, 10000.0);
     case PowerDensity:
