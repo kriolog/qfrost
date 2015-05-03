@@ -148,10 +148,9 @@ static QString nameForLabel(const QString &name)
 {
     QStringList tokens = name.split(' ');
     if (tokens.size() <= 1) {
-        return name.toLower();
+        return name;
     } else {
-        tokens.removeLast();
-        return tokens.join(' ').toLower();
+        return tokens.last();
     }
 }
 
