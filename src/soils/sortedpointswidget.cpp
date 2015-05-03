@@ -174,7 +174,7 @@ SortedPointsNewPointDialog::SortedPointsNewPointDialog(const SortedPointsModel *
     setWindowTitle(tr("New Point"));
     setWindowFlags(windowFlags() ^ Qt::WindowContextHelpButtonHint);
 
-    mInvalidInputNotice->setText("<i>" + kLabelMaskInvalidYBothBounds.arg("999.9%").arg("999.9%") + "</i>");
+    mInvalidInputNotice->setText("<b>" + kLabelMaskInvalidYBothBounds.arg("999.9%").arg("999.9%") + "</b>");
     mInvalidInputNotice->updateGeometry();
     mInvalidInputNotice->setMinimumWidth(mInvalidInputNotice->sizeHint().width());
 
@@ -279,7 +279,7 @@ void SortedPointsNewPointDialog::checkInput()
 
     mInvalidInputNotice->setVisible(isInvalid);
     if (isInvalid) {
-        mInvalidInputNotice->setText(QString("<i>%1</i>").arg(textForLabel));
+        mInvalidInputNotice->setText(QString("<b>%1</b>").arg(textForLabel));
     }
 
     mButtons->button(QDialogButtonBox::Ok)->setEnabled(!isInvalid);
