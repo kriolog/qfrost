@@ -876,6 +876,13 @@ void MainWindow::createToolBars()
             SLOT(onComputationStateChanged(bool)));
 }
 
+static QFrame *createVerticalSepator()
+{
+    QFrame *result = new QFrame();
+    result->setFrameStyle(QFrame::VLine | QFrame::Sunken);
+    return result;
+}
+
 void MainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Welcome to %1!")
@@ -885,8 +892,7 @@ void MainWindow::createStatusBar()
     const int emptyStatusBarHeight = statusBar()->sizeHint().height();
     #endif
 
-    statusBar()->setStyleSheet("QStatusBar::item {border: 1px inset palette(dark); "
-                                                 "margin: 0; padding: 0; }");
+    statusBar()->setStyleSheet("QStatusBar::item {border: none; margin: 0; padding: 0; }");
 
     QLabel *indicator1D = new QLabel(tr("[1D]"), this);
     indicator1D->setToolTip(tr("Are blocks placed one-dimensional (and vertically)?"));
@@ -952,11 +958,17 @@ void MainWindow::createStatusBar()
         cursorSB->setStyleSheet("QLabel#iconSB { padding-top: 1px; }");
     }
 
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(cursorSB);
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(anchorSB);
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(blocksSB);
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(indicator1D);
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(indicatorGrid);
+    statusBar()->addPermanentWidget(createVerticalSepator());
     statusBar()->addPermanentWidget(zoomSlider);
 
     #ifndef QT_NO_DEBUG_OUTPUT
