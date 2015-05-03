@@ -22,6 +22,12 @@
 
 #include <QDate>
 
+#include <QMessageBox>
+
+#ifdef Q_OS_WIN // HACK почему-то без этого релиз-сборка в винде падает
+#define eigen_assert(X) if(!X) { QString("Eigen assert failed! %1 at\n%2, line %3.").arg(#X).arg(__FILE__).arg(__LINE__); }
+#endif //Q_OS_WIN
+#define EIGEN_INITIALIZE_MATRICES_BY_ZERO
 #include <Eigen/Sparse>
 
 using namespace qfgui;
@@ -103,14 +109,26 @@ QVector<SplineCoeffs> avgSplineCoeffs(const QVector<double> &x, const QVector<do
     if (numIntervals < 2) {
         return result;
     }
+
+    bool inputIsHorizontal = true;
+    foreach(const double value, y) {
+        if (value != y.first()) {
+            inputIsHorizontal = false;
+            break;
+        }
+    }
+    if (inputIsHorizontal) {
+        return result;
+    }
+
     result.reserve(numIntervals);
 
     typedef Eigen::SparseMatrix<double, Eigen::ColMajor> Matrix;
     typedef Eigen::VectorXd Matrix1D;
     typedef Eigen::SparseLU<Matrix, Eigen::COLAMDOrdering<int> > Solver;
 
-    Matrix a(numEquations, numEquations);
-    Matrix1D b(numEquations);
+    Matrix a = Matrix(numEquations, numEquations);
+    Matrix1D b = Matrix1D(numEquations);
 
     double prevX = x.first();
     for (int i = 0, j = 0; i < numIntervals; ++i, j += 3) {
@@ -128,7 +146,7 @@ QVector<SplineCoeffs> avgSplineCoeffs(const QVector<double> &x, const QVector<do
         a.coeffRef(j, j+1) = h;
         a.coeffRef(j, j+2) = h2;
 
-        // a.coeffRef(j+1, j) = 0.0 (уже)
+        Q_ASSERT(a.coeffRef(j+1, j) == 0.0);
         a.coeffRef(j+1, j+1) = 1.0;
         a.coeffRef(j+1, j+2) = 2.0 * h;
 
@@ -136,8 +154,8 @@ QVector<SplineCoeffs> avgSplineCoeffs(const QVector<double> &x, const QVector<do
         a.coeffRef(j+2, j+1) = h / 2.0;
         a.coeffRef(j+2, j+2) = h2 / 3.0;
 
-        b.coeffRef(j) = 0.0;
-        b.coeffRef(j+1) = 0.0;
+        Q_ASSERT(b.coeffRef(j) == 0.0);
+        Q_ASSERT(b.coeffRef(j+1) == 0.0);
         b.coeffRef(j+2) = y.at(i);
 
         prevX = nextX;
@@ -166,7 +184,8 @@ QVector<SplineCoeffs> avgSplineCoeffs(const QVector<double> &x, const QVector<do
             result.append(coeffs);
         }
     } else {
-        qCritical("%s: can not solve! Solver info: %d", solver.info());
+        QMessageBox::critical(NULL, AnnualSpline::tr("Spline Error"),
+                              AnnualSpline::tr("Can not solve spline! Solver info: %1").arg(solver.info()));
     }
 
     return result;
