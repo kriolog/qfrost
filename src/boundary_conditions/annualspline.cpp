@@ -180,7 +180,8 @@ QVector<SplineCoeffs> annualSplineCoeffs(const QList<double> &monthlyValues)
 }
 
 AnnualSpline::AnnualSpline(const QList<double> &monthlyValues)
-    : mCoeffs(annualSplineCoeffs(monthlyValues))
+    : mMontlyValues(monthlyValues)
+    , mCoeffs(annualSplineCoeffs(monthlyValues))
 {
     Q_ASSERT(!QDate::isLeapYear(MainYear));
     Q_ASSERT(MainYearDaysNum == 365);
@@ -190,29 +191,32 @@ AnnualSpline::AnnualSpline(const QList<double> &monthlyValues)
 QVector< double > AnnualSpline::dailyValues()
 {
     QVector<double> result;
-
-    if (mCoeffs.isEmpty()) {
-        return result;
-    }
-
     result.reserve(MainYearDaysNum);
 
-    Q_ASSERT(mCoeffs.size() == 12);
-    QVector<SplineCoeffs>::ConstIterator coeffIt = mCoeffs.constBegin();
-    int daysSinceMonthStart = 0;
-
-    QDate date = MainYearFirstDate;
-    while (date.year() == MainYear) {
-        result << coeffIt->value(daysSinceMonthStart * 24 * 60 * 60);
-        ++daysSinceMonthStart;
-        date = date.addDays(1);
-        if (date.day() == 1) {
-            daysSinceMonthStart = 0;
-            ++coeffIt; // сейчас перейдём в следующий месяц
+    if (mCoeffs.isEmpty()) {
+        QDate date(MainYear, 1, 1);
+        for (int i = 0; i < MainYearDaysNum; ++i) {
+            result.append(mMontlyValues.at(date.month() - 1));
+            date = date.addDays(1);
         }
-    }
+    } else {
+        Q_ASSERT(mCoeffs.size() == 12);
+        QVector<SplineCoeffs>::ConstIterator coeffIt = mCoeffs.constBegin();
+        int daysSinceMonthStart = 0;
 
-    Q_ASSERT(result.size() == MainYearDaysNum);
+        QDate date = MainYearFirstDate;
+        while (date.year() == MainYear) {
+            result << coeffIt->value(daysSinceMonthStart * 24 * 60 * 60);
+            ++daysSinceMonthStart;
+            date = date.addDays(1);
+            if (date.day() == 1) {
+                daysSinceMonthStart = 0;
+                ++coeffIt; // сейчас перейдём в следующий месяц
+            }
+        }
+
+        Q_ASSERT(result.size() == MainYearDaysNum);
+        }
 
     return result;
 }

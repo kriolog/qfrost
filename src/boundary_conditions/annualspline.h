@@ -47,6 +47,7 @@ public:
     static const QVector<double> MonthlyKeys; ///< 13 дней-границ меж месяцев
 
 private:
+    const QList<double> &mMontlyValues;
     const QVector<SplineCoeffs> mCoeffs;
 };
 
