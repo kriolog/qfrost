@@ -77,7 +77,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     QStringListModel *typeModel = new QStringListModel(items, this);
     mTypeBox->setModel(typeModel);
     QFormLayout *typeLayout = new QFormLayout;
-    typeLayout->addRow(tr("&Type"), mTypeBox);
+    typeLayout->addRow(tr("&Type:"), mTypeBox);
     mainLayout->addLayout(typeLayout);
 
     /**************************************************************************/

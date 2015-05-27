@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012  Denis Pesotsky
+ * Copyright (C) 2012-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -53,7 +53,7 @@ ItemEditDialog::ItemEditDialog(ItemsModel *model,
     mLayout->addWidget(mButtons);
 
     QLineEdit *nameEdit = new QLineEdit(this);
-    addRow(tr("&Name"), nameEdit);
+    addRow(tr("&Name:"), nameEdit);
     connect(nameEdit, SIGNAL(textChanged(QString)), SLOT(updateOkButton(QString)));
 
     mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);

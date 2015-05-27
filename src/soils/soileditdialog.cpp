@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky
+ * Copyright (C) 2010-2015  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -73,8 +73,8 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     QGroupBox *conductivityBox = new QGroupBox(tr("Heat Conductivity \316\273"),
             this);
     QFormLayout *conductivityLayout = new QFormLayout(conductivityBox);
-    conductivityLayout->addRow(tr("&Thawed"), mConductivityTh);
-    conductivityLayout->addRow(tr("&Frozen"), mConductivityFr);
+    conductivityLayout->addRow(tr("&Thawed:"), mConductivityTh);
+    conductivityLayout->addRow(tr("&Frozen:"), mConductivityFr);
     leftLayout->addStretch();
     leftLayout->addWidget(conductivityBox);
     /**************************************************************************/
@@ -82,8 +82,8 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     /****************************** Теплоёмкость ******************************/
     QGroupBox *capacityBox = new QGroupBox(tr("Heat Capacity C"), this);
     QFormLayout *capacityLayout = new QFormLayout(capacityBox);
-    capacityLayout->addRow(tr("Thawe&d"), mCapacityTh);
-    capacityLayout->addRow(tr("Froze&n"), mCapacityFr);
+    capacityLayout->addRow(tr("Thawe&d:"), mCapacityTh);
+    capacityLayout->addRow(tr("Froze&n:"), mCapacityFr);
     leftLayout->addStretch();
     leftLayout->addWidget(capacityBox);
     /**************************************************************************/
@@ -94,9 +94,9 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     QFormLayout *transitionLayout = new QFormLayout(transitionBox);
 
     transitionLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
-    transitionLayout->addRow(tr("T&emperature T<sub>bf</sub>"),
+    transitionLayout->addRow(tr("T&emperature T<sub>bf</sub>:"),
                              mTransitionTemperature);
-    transitionLayout->addRow(tr("&Heat (per unit volume) Q<sub>ph</sub>"),
+    transitionLayout->addRow(tr("&Heat (per unit volume) Q<sub>ph</sub>:"),
                              mTransitionHeat);
     leftLayout->addStretch();
     leftLayout->addWidget(transitionBox);
@@ -118,7 +118,7 @@ SoilEditDialog::SoilEditDialog(ItemsModel *model,
     QGroupBox *miscBox = new QGroupBox(tr("Miscellaneous"), this);
     QFormLayout *miscLayout = new QFormLayout(miscBox);
     miscLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
-    miscLayout->addRow(tr("&Int. heat sources power density F"),
+    miscLayout->addRow(tr("&Int. heat sources power density F:"),
                        mInternalHeatSourcePowerDensity);
 
     leftLayout->addStretch();

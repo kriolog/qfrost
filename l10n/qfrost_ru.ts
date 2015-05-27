@@ -586,14 +586,14 @@ For fixed height use unity (minimum).</source>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="82"/>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="85"/>
-        <source>&amp;b&lt;sub&gt;1&lt;/sub&gt;</source>
-        <translation>&amp;b&lt;sub&gt;1&lt;/sub&gt;</translation>
+        <source>&amp;b&lt;sub&gt;1&lt;/sub&gt;:</source>
+        <translation>&amp;b&lt;sub&gt;1&lt;/sub&gt;:</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="83"/>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="86"/>
-        <source>&amp;q</source>
-        <translation>&amp;q</translation>
+        <source>&amp;q:</source>
+        <translation>&amp;q:</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/blockcreatorpanel.cpp" line="93"/>
@@ -723,8 +723,8 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="80"/>
-        <source>&amp;Type</source>
-        <translation>&amp;Род</translation>
+        <source>&amp;Type:</source>
+        <translation>&amp;Род:</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="104"/>
@@ -1239,8 +1239,8 @@ At least %n steps per day is needed.</source>
     <name>qfgui::ItemEditDialog</name>
     <message>
         <location filename="../src/itemviews/itemeditdialog.cpp" line="56"/>
-        <source>&amp;Name</source>
-        <translation>&amp;Имя</translation>
+        <source>&amp;Name:</source>
+        <translation>&amp;Имя:</translation>
     </message>
 </context>
 <context>
@@ -2108,44 +2108,9 @@ q</translation>
         <translation>Теплопроводность λ</translation>
     </message>
     <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="76"/>
-        <source>&amp;Thawed</source>
-        <translation>&amp;Талого</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="77"/>
-        <source>&amp;Frozen</source>
-        <translation>&amp;Мёрзлого</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="85"/>
-        <source>Thawe&amp;d</source>
-        <translation>Та&amp;лого</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="86"/>
-        <source>Froze&amp;n</source>
-        <translation>Мё&amp;рзлого</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="97"/>
-        <source>T&amp;emperature T&lt;sub&gt;bf&lt;/sub&gt;</source>
-        <translation>Температура &amp;T&lt;sub&gt;bf&lt;/sub&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="99"/>
-        <source>&amp;Heat (per unit volume) Q&lt;sub&gt;ph&lt;/sub&gt;</source>
-        <translation>Те&amp;плота (объёмная) Q&lt;sub&gt;ф&lt;/sub&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/soils/soileditdialog.cpp" line="118"/>
         <source>Miscellaneous</source>
         <translation>Прочее</translation>
-    </message>
-    <message>
-        <location filename="../src/soils/soileditdialog.cpp" line="121"/>
-        <source>&amp;Int. heat sources power density F</source>
-        <translation>&amp;Мощн. внутренних теплоисточников F</translation>
     </message>
     <message>
         <location filename="../src/soils/soileditdialog.cpp" line="83"/>
@@ -2163,9 +2128,44 @@ q</translation>
         <translation>Правка грунта %1</translation>
     </message>
     <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="76"/>
+        <source>&amp;Thawed:</source>
+        <translation>&amp;Талого:</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="77"/>
+        <source>&amp;Frozen:</source>
+        <translation>&amp;Мёрзлого:</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="85"/>
+        <source>Thawe&amp;d:</source>
+        <translation>Та&amp;лого:</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="86"/>
+        <source>Froze&amp;n:</source>
+        <translation>Мё&amp;рзлого</translation>
+    </message>
+    <message>
         <location filename="../src/soils/soileditdialog.cpp" line="92"/>
         <source>Phase Transition Parameters</source>
         <translation>Параметры фазового перехода</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="97"/>
+        <source>T&amp;emperature T&lt;sub&gt;bf&lt;/sub&gt;:</source>
+        <translation>Температура &amp;T&lt;sub&gt;bf&lt;/sub&gt;:</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="99"/>
+        <source>&amp;Heat (per unit volume) Q&lt;sub&gt;ph&lt;/sub&gt;:</source>
+        <translation>Те&amp;плота (объёмная) Q&lt;sub&gt;ф&lt;/sub&gt;:</translation>
+    </message>
+    <message>
+        <location filename="../src/soils/soileditdialog.cpp" line="121"/>
+        <source>&amp;Int. heat sources power density F:</source>
+        <translation>&amp;Мощн. внутренних теплоисточников F:</translation>
     </message>
 </context>
 <context>
@@ -2403,8 +2403,23 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/control_panel/startingconditions.cpp" line="63"/>
-        <source>&amp;T</source>
-        <translation>&amp;T</translation>
+        <source>&amp;T:</source>
+        <translation>&amp;T:</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/startingconditions.cpp" line="71"/>
+        <source>T&lt;sub&gt;&amp;1&lt;/sub&gt;:</source>
+        <translation>T&lt;sub&gt;&amp;1&lt;/sub&gt;:</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/startingconditions.cpp" line="73"/>
+        <source>T&lt;sub&gt;&amp;2&lt;/sub&gt;:</source>
+        <translation>T&lt;sub&gt;&amp;2&lt;/sub&gt;:</translation>
+    </message>
+    <message>
+        <location filename="../src/control_panel/startingconditions.cpp" line="80"/>
+        <source>&amp;V&lt;sub&gt;th&lt;/sub&gt;:</source>
+        <translation>&amp;V&lt;sub&gt;th&lt;/sub&gt;:</translation>
     </message>
     <message>
         <location filename="../src/control_panel/startingconditions.cpp" line="66"/>
@@ -2422,16 +2437,6 @@ Water Curve</source>
         <translation>Температура снизу выделения</translation>
     </message>
     <message>
-        <location filename="../src/control_panel/startingconditions.cpp" line="71"/>
-        <source>T&lt;sub&gt;&amp;1&lt;/sub&gt;</source>
-        <translation>T&lt;sub&gt;&amp;1&lt;/sub&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/control_panel/startingconditions.cpp" line="73"/>
-        <source>T&lt;sub&gt;&amp;2&lt;/sub&gt;</source>
-        <translation>T&lt;sub&gt;&amp;2&lt;/sub&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/control_panel/startingconditions.cpp" line="77"/>
         <source>Thawed Volume Fraction</source>
         <translation>Отн. объём талой фазы</translation>
@@ -2440,11 +2445,6 @@ Water Curve</source>
         <location filename="../src/control_panel/startingconditions.cpp" line="79"/>
         <source>Thawed volume fraction</source>
         <translation>Степерь протаивания блоков (отношение объёма незамёрзшей воды к общему объему воды)</translation>
-    </message>
-    <message>
-        <location filename="../src/control_panel/startingconditions.cpp" line="80"/>
-        <source>&amp;V&lt;sub&gt;th&lt;/sub&gt;</source>
-        <translation>&amp;V&lt;sub&gt;th&lt;/sub&gt;</translation>
     </message>
 </context>
 <context>
@@ -2586,13 +2586,13 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/soils/unfrozenwaterwidget.cpp" line="50"/>
-        <source>H&amp;umidity Total w&lt;sub&gt;tot&lt;/sub&gt;</source>
-        <translation>Суммарная &amp;влажность w&lt;sub&gt;tot&lt;/sub&gt;</translation>
+        <source>H&amp;umidity Total w&lt;sub&gt;tot&lt;/sub&gt;:</source>
+        <translation>Суммарная &amp;влажность w&lt;sub&gt;tot&lt;/sub&gt;:</translation>
     </message>
     <message>
         <location filename="../src/soils/unfrozenwaterwidget.cpp" line="52"/>
-        <source>D&amp;ry Density ρ&lt;sub&gt;d&lt;/sub&gt;</source>
-        <translation>&amp;Плотность скелета ρ&lt;sub&gt;d&lt;/sub&gt;</translation>
+        <source>D&amp;ry Density ρ&lt;sub&gt;d&lt;/sub&gt;:</source>
+        <translation>&amp;Плотность скелета ρ&lt;sub&gt;d&lt;/sub&gt;:</translation>
     </message>
 </context>
 <context>
@@ -2661,11 +2661,6 @@ Water Curve</source>
         <location filename="../src/units/units.cpp" line="280"/>
         <source>cm</source>
         <translation>см</translation>
-    </message>
-    <message>
-        <location filename="../src/units/units.cpp" line="358"/>
-        <source>%</source>
-        <translation>%</translation>
     </message>
     <message>
         <location filename="../src/units/units.cpp" line="449"/>

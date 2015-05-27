@@ -79,11 +79,11 @@ BlockCreatorPanel::BlockCreatorPanel(QWidget *parent)
     SettingsBox *xBox = new SettingsBox(tr("Width Progression"), this);
     SettingsBox *yBox = new SettingsBox(tr("Height Progression"), this);
 
-    xBox->addRow(tr("&b<sub>1</sub>"), mWidthSpinBox);
-    xBox->addRow(tr("&q"), mWidthQSpinBox);
+    xBox->addRow(tr("&b<sub>1</sub>:"), mWidthSpinBox);
+    xBox->addRow(tr("&q:"), mWidthQSpinBox);
 
-    yBox->addRow(tr("&b<sub>1</sub>"), mHeightSpinBox);
-    yBox->addRow(tr("&q"), mHeightQSpinBox);
+    yBox->addRow(tr("&b<sub>1</sub>:"), mHeightSpinBox);
+    yBox->addRow(tr("&q:"), mHeightQSpinBox);
 
     mainLayout->addWidget(xBox);
     mainLayout->addWidget(yBox);

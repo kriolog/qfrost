@@ -47,9 +47,9 @@ UnfrozenWaterWidget::UnfrozenWaterWidget(QWidget *parent)
     setChecked(false);
 
     boxLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
-    boxLayout->addRow(tr("H&umidity Total w<sub>tot</sub>"),
+    boxLayout->addRow(tr("H&umidity Total w<sub>tot</sub>:"),
                       mMoistureTotal);
-    boxLayout->addRow(tr("D&ry Density \317\201<sub>d</sub>"),
+    boxLayout->addRow(tr("D&ry Density \317\201<sub>d</sub>:"),
                       mDryDensity);
 
     QFrame *separator = new QFrame(this);

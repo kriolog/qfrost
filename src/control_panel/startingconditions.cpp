@@ -60,7 +60,7 @@ StartingConditions::StartingConditions(QWidget *parent)
     QGroupBox *tBox = new QGroupBox(tr("Temperature"), this);
     QFormLayout *tFormLayout = new QFormLayout(tBox);
     tFormLayout->setRowWrapPolicy(QFormLayout::WrapLongRows);
-    tFormLayout->addRow(tr("&T"), mTSpinBox);
+    tFormLayout->addRow(tr("&T:"), mTSpinBox);
     tFormLayout->addRow(mApplyTToSelection);
 
     QGroupBox *tGradBox = new QGroupBox(tr("Temperature Gradient"), this);
@@ -68,16 +68,16 @@ StartingConditions::StartingConditions(QWidget *parent)
     tGradFormLayout->setRowWrapPolicy(QFormLayout::WrapLongRows);
     mT1SpinBox->setToolTip(tr("Temperature at top of selection"));
     mT2SpinBox->setToolTip(tr("Temperature at bottom of selection"));
-    tGradFormLayout->addRow(tr("T<sub>&1</sub>"),
+    tGradFormLayout->addRow(tr("T<sub>&1</sub>:"),
                             mT1SpinBox);
-    tGradFormLayout->addRow(tr("T<sub>&2</sub>"),
+    tGradFormLayout->addRow(tr("T<sub>&2</sub>:"),
                             mT2SpinBox);
     tGradFormLayout->addRow(mApplyTGradToSelection);
 
     QGroupBox *vBox = new QGroupBox(tr("Thawed Volume Fraction"), this);
     QFormLayout *vFormLayout = new QFormLayout(vBox);
     mVSpinBox->setToolTip(tr("Thawed volume fraction"));
-    vFormLayout->addRow(tr("&V<sub>th</sub>"), mVSpinBox);
+    vFormLayout->addRow(tr("&V<sub>th</sub>:"), mVSpinBox);
     vFormLayout->addRow(mApplyVToSelection);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
