@@ -369,7 +369,7 @@ void Scene::slotComputationFinished(const QString &errorText)
     onComputationFinished();
     if (!errorText.isEmpty()) {
         QMessageBox::warning(qfView(),
-                             tr("Computations Start Unsuccessful"),
+                             tr("Computation Start Unsuccessful"),
                              errorText);
     }
 }

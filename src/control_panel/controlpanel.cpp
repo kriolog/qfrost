@@ -52,7 +52,7 @@ ControlPanel::ControlPanel(MainWindow *parent): QDockWidget(tr("Control Panel"),
 
     mControls->addTab(mSoilsPanel, tr("Soils"));
     mControls->addTab(mBoundaryConditions, tr("Boundary cond."));
-    mControls->addTab(mStartingConditions, tr("Starting cond."));
+    mControls->addTab(mStartingConditions, tr("Initial cond."));
     mControls->addTab(mComputation, computationTabText());
 
     connect(mControls, SIGNAL(currentChanged(int)), SLOT(slotTabChanged(int)));

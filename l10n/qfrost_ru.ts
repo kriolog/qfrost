@@ -250,13 +250,13 @@
     </message>
     <message>
         <location filename="../src/undo/readfromcomputationdatacommand.cpp" line="55"/>
-        <source>computations (%1 – %2)</source>
-        <extracomment>%1 is computations start date, %2 is end date</extracomment>
+        <source>computation (%1 – %2)</source>
+        <extracomment>%1 is computation start date, %2 is end date</extracomment>
         <translation>расчёты (%1 – %2)</translation>
     </message>
     <message>
         <location filename="../src/undo/readfromcomputationdatacommand.cpp" line="59"/>
-        <source>computations</source>
+        <source>computation</source>
         <translation>расчёты</translation>
     </message>
     <message numerus="yes">
@@ -800,7 +800,7 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     <name>qfgui::ComputationControl</name>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="105"/>
-        <source>Computations Control</source>
+        <source>Computation Control</source>
         <translation>Управление расчётами</translation>
     </message>
     <message>
@@ -850,7 +850,7 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     </message>
     <message>
         <location filename="../src/control_panel/computationcontrol.cpp" line="286"/>
-        <source>Single step %1 %2</source>
+        <source>Time step %1 %2</source>
         <extracomment>%1 is equality symbol (= or ≈), %2 is time (HH:mm:ss)</extracomment>
         <translation>Шаг %1 %2</translation>
     </message>
@@ -1005,7 +1005,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/control_panel/controlpanel.cpp" line="55"/>
-        <source>Starting cond.</source>
+        <source>Initial cond.</source>
         <translation>Начальные усл.</translation>
     </message>
     <message>
@@ -1015,7 +1015,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/control_panel/controlpanel.h" line="51"/>
-        <source>Computations</source>
+        <source>Computation</source>
         <translation>Расчёты</translation>
     </message>
 </context>
@@ -1378,7 +1378,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="397"/>
-        <source>Temperature fields modeling and visualization</source>
+        <source>Thermophysical processes modelling and visualisation in freezing and frozen soils</source>
         <translation>Моделирование и визуализация температурных полей</translation>
     </message>
     <message>
@@ -1636,7 +1636,7 @@ At least %n steps per day is needed.</source>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="746"/>
-        <source>&amp;Toolbars Shown</source>
+        <source>&amp;Toolbars</source>
         <translation>&amp;Видимые панели инструментов</translation>
     </message>
     <message>
@@ -2021,7 +2021,7 @@ q</translation>
     <name>qfgui::Scene</name>
     <message>
         <location filename="../src/graphicsviews/scene.cpp" line="372"/>
-        <source>Computations Start Unsuccessful</source>
+        <source>Computation Start Unsuccessful</source>
         <translation>Запуск расчётов не удался</translation>
     </message>
 </context>
@@ -2463,7 +2463,7 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="80"/>
-        <source>&amp;Boundary Conditions Applicator</source>
+        <source>&amp;Boundary Conditions Filler</source>
         <translation>&amp;Изменение типа граничных условий</translation>
     </message>
     <message>
@@ -2488,33 +2488,33 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="106"/>
-        <source>Pressing &lt;b&gt;Backspace&lt;/b&gt; will delete last added point.</source>
+        <source>Pressing &lt;b&gt;Backspace&lt;/b&gt; will delete the last added point.</source>
         <translation>Нажатие &lt;b&gt;Backspace&lt;/b&gt; удалит последнюю добавленную точку.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="111"/>
-        <source>Create polygon with sequential clicks to select blocks and you will be able to set their soil and staring conditions.</source>
+        <source>Create polygon with sequential clicks to select blocks to specify their soil type and initial conditions.</source>
         <translation>Создайте полигон последовательными кликами и вы сможете изменять грунт и начальные условия в выделенных им блоках.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="115"/>
         <location filename="../src/tools_panel/toolspanel.cpp" line="142"/>
-        <source>Select wanted blocks and you will be able to set their soil and staring conditions.</source>
+        <source>"Select desired blocks to specify their soil type and initial conditions."</source>
         <translation>Выделите желаемые блоки и вы сможете изменять их грунт и начальные условия.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="119"/>
-        <source>Draw wanted polygon with sequential clicks and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
+        <source>Draw a desired polygon with sequential clicks and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте полигон последовательными кликами и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="123"/>
-        <source>Draw wanted ellipse and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract  it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
+        <source>Draw a desired ellipse and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract  it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте эллипс и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="127"/>
-        <source>Tool for choosing boundary conditions on polygons&apos; borders.&lt;br&gt;First click selects first point. All following clicks allow to choose condition for selected part and start next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to stop sequence.</source>
+        <source>A tool for applying boundary conditions on the polygon border.&lt;br&gt;The first click selects an initial point. All the following clicks allow to choose condition for the selected part and start the next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to interrupt the sequence.</source>
         <translation>Инструмент для задания граничных условий на участках границ полигонов.&lt;br&gt;Первый клик отмечает первую точку. Последующие клики позволяют выбрать граничное условие для выделенного участка и начинают выделение следующего.&lt;br&gt;Для остановки последовательности, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
@@ -2687,7 +2687,7 @@ Water Curve</source>
     </message>
     <message>
         <location filename="../src/welcomedialog.cpp" line="64"/>
-        <source>Please choose settings for new document.You can change this settings at any time in &lt;i&gt;%1&lt;/i&gt; panel and in &lt;i&gt;%2&lt;/i&gt; menu.</source>
+        <source>Please choose settings for a new document. You can change this settings at any time in &lt;i&gt;%1&lt;/i&gt; panel and in &lt;i&gt;%2&lt;/i&gt; menu.</source>
         <translation>Выберите настройки для нового документа. Вы сможете изменить их в любое время в панели &lt;i&gt;%1&lt;/i&gt; и в меню &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>

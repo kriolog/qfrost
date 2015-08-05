@@ -394,7 +394,7 @@ void MainWindow::about()
 {
     static const QString den = tr("Denis Pesotsky");
     static const QString max = tr("Maxim Torgonsky");
-    About aboutDialog(tr("Temperature fields modeling and visualization"),
+    About aboutDialog(tr("Thermophysical processes modelling and visualisation in freezing and frozen soils"),
                       COPYRIGHT_YEARS, den + ", " + max, this);
 
     aboutDialog.addAuthor(den, tr("Main developer"),
@@ -743,7 +743,7 @@ void MainWindow::createMenus()
     QMenu *settingsMenu = menuBar()->addMenu(tr("&Settings"));
     QMenu *popupMenu = createPopupMenu();
     Q_ASSERT(popupMenu != NULL);
-    popupMenu->setTitle(tr("&Toolbars Shown"));
+    popupMenu->setTitle(tr("&Toolbars"));
     popupMenu->setIcon(QIcon::fromTheme("configure-toolbars"));
     settingsMenu->addMenu(popupMenu);
     settingsMenu->addSeparator();

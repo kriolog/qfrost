@@ -52,11 +52,11 @@ ReadFromComputationDataCommand::ReadFromComputationDataCommand(Scene *scene,
 void ReadFromComputationDataCommand::updateText()
 {
     //: %1 is computations start date, %2 is end date
-    setText(QUndoStack::tr("computations (%1 \342\200\223 %2)")
+    setText(QUndoStack::tr("computation (%1 \342\200\223 %2)")
             .arg(oldDate().toString(QFrost::dateFormat()))
             .arg(newDate().toString(QFrost::dateFormat())) + "\n"
             //: Short action name. Accusative case.
-            + QUndoStack::tr("computations"));
+            + QUndoStack::tr("computation"));
 }
 
 void ReadFromComputationDataCommand::undo()

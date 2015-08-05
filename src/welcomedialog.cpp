@@ -61,7 +61,7 @@ WelcomeDialog::WelcomeDialog(MainWindow *parent)
     QVBoxLayout *textLayout = new QVBoxLayout();
     QLabel *label1 = new QLabel(tr("Welcome to <b>%1</b>!").arg(QCoreApplication::applicationName()));
     // FIXME брать названия панели и меню прямо из них
-    QLabel *label2 = new QLabel(tr("Please choose settings for new document."
+    QLabel *label2 = new QLabel(tr("Please choose settings for a new document. "
                                    "You can change this settings at any time"
                                    " in <i>%1</i> panel and in <i>%2</i> menu.")
                                 .arg(parent->controlPanel()->computationTabText())

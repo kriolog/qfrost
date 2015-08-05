@@ -19,6 +19,8 @@
 
 #include "sortedpointswidget.h"
 
+#include <limits>
+
 #include <soils/sortedpointsmodel.h>
 #include <plot/sortedpointsplot.h>
 #include <units/units.h>
