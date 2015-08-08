@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/undo/readfromcomputationdatacommand.cpp" line="55"/>
         <source>computation (%1 – %2)</source>
-        <extracomment>%1 is computation start date, %2 is end date</extracomment>
+        <extracomment>%1 is computations start date, %2 is end date</extracomment>
         <translation>расчёты (%1 – %2)</translation>
     </message>
     <message>
@@ -2033,7 +2033,7 @@ q</translation>
 <context>
     <name>qfgui::Scene</name>
     <message>
-        <location filename="../src/graphicsviews/scene.cpp" line="372"/>
+        <location filename="../src/graphicsviews/scene.cpp" line="375"/>
         <source>Computation Start Unsuccessful</source>
         <translation>Запуск расчётов не удался</translation>
     </message>
@@ -2328,32 +2328,32 @@ Water Curve</source>
 <context>
     <name>qfgui::SortedPointsNewPointDialog</name>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="171"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="173"/>
         <source>The %1 must be more than %2 and less than %3!</source>
         <translation>Допустима %1 в пределах от %2 до %3!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="174"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="176"/>
         <source>New Point</source>
         <translation>Новая точка</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="194"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="196"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="232"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="234"/>
         <source>Already has point with this %1!</source>
         <translation>Такая %1 уже есть среди имеющихся точек!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="255"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="257"/>
         <source>The %1 must be less than %2!</source>
         <translation>Допустима %1 не более %2!</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="263"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="265"/>
         <source>The %1 must be more than %2!</source>
         <translation>Допустима %1 не менее %2!</translation>
     </message>
@@ -2361,12 +2361,12 @@ Water Curve</source>
 <context>
     <name>qfgui::SortedPointsWidget</name>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="81"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="83"/>
         <source>Add new point</source>
         <translation>Добавить новую точку</translation>
     </message>
     <message>
-        <location filename="../src/soils/sortedpointswidget.cpp" line="82"/>
+        <location filename="../src/soils/sortedpointswidget.cpp" line="84"/>
         <source>Remove selected points</source>
         <translation>Удалить выделенные точки</translation>
     </message>
@@ -2517,8 +2517,13 @@ Water Curve</source>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="115"/>
         <location filename="../src/tools_panel/toolspanel.cpp" line="142"/>
-        <source>"Select desired blocks to specify their soil type and initial conditions."</source>
+        <source>Select desired blocks to specify their soil type and initial conditions.</source>
         <translation>Выделите желаемые блоки и вы сможете изменять их грунт и начальные условия.</translation>
+    </message>
+    <message>
+        <location filename="../src/tools_panel/toolspanel.cpp" line="127"/>
+        <source>A tool for applying boundary conditions on the polygon border.&lt;br&gt;The first click selects an initial point. All the clicks allow to choose condition for the selected part and start the next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to interrupt the sequence.</source>
+        <translation>Инструмент для задания граничных условий на участках границ полигонов.&lt;br&gt;Первый клик отмечает первую точку. Последующие позволяют выбрать граничное условие для выделенного участка и начинают выделение следующего.&lt;br&gt;Для остановки последовательности, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="119"/>
@@ -2529,11 +2534,6 @@ Water Curve</source>
         <location filename="../src/tools_panel/toolspanel.cpp" line="123"/>
         <source>Draw a desired ellipse and add it with &lt;b&gt;Enter&lt;/b&gt; or subtract  it with &lt;b&gt;Shift+Enter&lt;/b&gt;.</source>
         <translation>Создайте эллипс и используйте &lt;b&gt;Enter&lt;/b&gt; для его прибавления или &lt;b&gt;Shift+Enter&lt;/b&gt; для его вычитания.</translation>
-    </message>
-    <message>
-        <location filename="../src/tools_panel/toolspanel.cpp" line="127"/>
-        <source>A tool for applying boundary conditions on the polygon border.&lt;br&gt;The first click selects an initial point. All the following clicks allow to choose condition for the selected part and start the next part selection.&lt;br&gt;Press &lt;b&gt;Esc&lt;/b&gt; or any tool icon to interrupt the sequence.</source>
-        <translation>Инструмент для задания граничных условий на участках границ полигонов.&lt;br&gt;Первый клик отмечает первую точку. Последующие клики позволяют выбрать граничное условие для выделенного участка и начинают выделение следующего.&lt;br&gt;Для остановки последовательности, нажмите &lt;b&gt;Esc&lt;/b&gt; или на пиктограмму любого инструмента.</translation>
     </message>
     <message>
         <location filename="../src/tools_panel/toolspanel.cpp" line="133"/>
