@@ -437,7 +437,7 @@ void BlockCreator::apply(bool alt)
         return;
     }
 
-    static const int kCriticalSize = 20000;
+    static const int kCriticalSize = 100000;
     if (mColumns.size() * mRows.size() > kCriticalSize) {
         if (QMessageBox::question(scene()->views().first(), tr("Too much blocks"),
                                   tr("You are trying to add more than %n block(s), are you sure?"
