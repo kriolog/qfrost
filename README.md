@@ -1,14 +1,14 @@
-**QFrost** is used for temperature fields modeling and visualization.
-It was created for engineering geocrylogy needs.
+**QFrost** is a software for a numerical geotechnical modeling of thermophysical
+processes in freezing and frozen soils.
 
-Currently most comments in code are made in Russian. If you need
-them in English, contact developers team via email (see above).
+Currently the most of comments in code is written in Russian. If you need
+an English translation, please contact developers team via email (see below).
 
 Home page: http://www.qfrost.net/
 
 Maintaiers mailbox: dev@qfrost.net
 
-QFrost is free software.  See the file COPYING for copying conditions.
+QFrost is an open source software.  See the file COPYING for copying conditions.
 
 ***
 

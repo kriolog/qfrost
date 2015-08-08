@@ -48,7 +48,7 @@ public:
     StartingConditions *startingConditions();
 
     QString computationTabText() const {
-        return tr("Computations");
+        return tr("Computation");
     }
 
 private:

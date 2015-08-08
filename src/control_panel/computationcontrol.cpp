@@ -102,7 +102,7 @@ ComputationControl::ComputationControl(QWidget *parent)
     mStatus->addWidget(mStepLabel);
     mStatus->addWidget(mComputationsProgressBar);
 
-    QGroupBox *computationBox = new QGroupBox(tr("Computations Control"), this);
+    QGroupBox *computationBox = new QGroupBox(tr("Computation Control"), this);
     QFormLayout *formLayout = new QFormLayout(computationBox);
     ////////////////////////////////////////////////////////////////////////////
     // сначала те виджеты, которые активны только до рассчётов
@@ -283,7 +283,7 @@ void ComputationControl::updateStepInfo(int numOfStepsInDay)
 
     const QPair<QString, bool> singleStep = QFrost::singleStepInfo(numOfStepsInDay);
     //: %1 is equality symbol (= or \342\211\210), %2 is time (HH:mm:ss)
-    s += tr("Single step %1 %2")
+    s += tr("Time step %1 %2")
          .arg(singleStep.second ? "=" : "\342\211\210")
          .arg(singleStep.first);
     /*s += "<br/>";

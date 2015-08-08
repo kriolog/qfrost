@@ -77,7 +77,7 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     mPickBoundaryEllipseCreator(new QAction(QIcon(":/tools/boundary_ellipse.png"),
                                             tr("&Boundary Ellipse Creator"), this)),
     mPickBoundaryConditionsCreator(new QAction(QIcon(":/tools/boundary_condition.png"),
-                                   tr("&Boundary Conditions Applicator"), this)),
+                                   tr("&Boundary Conditions Filler"), this)),
     mPickPolygonalSelection(new QAction(QIcon(":/tools/polygonal_selection.png"),
                                         tr("&Polygonal Selection"), this)),
     mPickEllipseSelection(new QAction(QIcon(":/tools/ellipse_selection.png"),
@@ -103,32 +103,32 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
     QVBoxLayout *mainLayout = new QVBoxLayout(widget);
 
     QString escHint(tr("To cancel drawing, press <b>Esc</b> or any tool icon."));
-    QString polygonDelHint(tr("Pressing <b>Backspace</b> will delete last added point."));
+    QString polygonDelHint(tr("Pressing <b>Backspace</b> will delete the last added point."));
 
     // Должно совпадать с порядком в QFrost::ToolType!
     addTool(mPickNoTool, "");
     addTool(mPickPolygonalSelection,
-            tr("Create polygon with sequential clicks to select blocks and "
-               "you will be able to set their soil and staring conditions.")
+            tr("Create polygon with sequential clicks to select blocks "
+               "to specify their soil type and initial conditions.")
             + "<br>" + polygonDelHint + "<br>" + escHint);
     addTool(mPickRectangleSelection,
-            tr("Select wanted blocks and you will be able to set their soil "
-               "and staring conditions.") + " " + escHint,
+            tr("Select desired blocks to specify their soil type "
+               "and initial conditions.") + " " + escHint,
             new RectangularToolPanel(this));
     addTool(mPickBoundaryPolygonCreator,
-            tr("Draw wanted polygon with sequential clicks and add it with "
+            tr("Draw a desired polygon with sequential clicks and add it with "
                "<b>Enter</b> or subtract it with <b>Shift+Enter</b>.")
             + "<br>" + polygonDelHint + "<br>" + escHint);
     addTool(mPickBoundaryEllipseCreator,
-            tr("Draw wanted ellipse and add it with <b>Enter</b> or subtract "
+            tr("Draw a desired ellipse and add it with <b>Enter</b> or subtract "
                " it with <b>Shift+Enter</b>.") + " " + escHint,
             new RectangularToolPanel(this));
     addTool(mPickBoundaryConditionsCreator,
-            tr("Tool for choosing boundary conditions on polygons' borders.<br>"
-               "First click selects first point. All following "
-               "clicks allow to choose condition for selected "
-               "part and start next part selection.<br>"
-               "Press <b>Esc</b> or any tool icon to stop sequence."));
+            tr("A tool for applying boundary conditions on the polygon border.<br>"
+               "The first click selects an initial point. All the "
+               "clicks allow to choose condition for the selected "
+               "part and start the next part selection.<br>"
+               "Press <b>Esc</b> or any tool icon to interrupt the sequence."));
     addTool(mPickBlockCreator,
             tr("Select rectangle, choose additional properties and create "
                "blocks in one of two following ways.<br>"
@@ -139,8 +139,8 @@ ToolsPanel::ToolsPanel(MainWindow *parent): QDockWidget(tr("Tools Panel"), paren
             + "<br>" + escHint,
             new BlockCreatorPanel(this), true);
     addTool(mPickEllipseSelection,
-            tr("Select wanted blocks and you will be able to set their soil "
-            "and staring conditions.") + " " + escHint,
+            tr("Select desired blocks to specify their soil type "
+               "and initial conditions.") + " " + escHint,
             new RectangularToolPanel(this));
     addTool(mPickCurvePlot,
             tr("Select single block to plot temperature (and thawed part) graphs "

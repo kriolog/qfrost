@@ -92,7 +92,10 @@ Scene::Scene(MainWindow *parent)
     , mBackgroundItem(NULL)
     , mCurvePlotDialogSpawner(NULL)
 {
-    //setItemIndexMethod(NoIndex);
+    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+    // 2^20 = 1M blocks; one block item per leaf in a prefectly balanced binary tree.
+    // Recommended Qt value is 0-10 items per leaf.
+    setBspTreeDepth(20);
     int sceneHalfsize = QFrost::sceneHalfSize * 1.01;
     setSceneRect(QRect(-sceneHalfsize, -sceneHalfsize,
                        2 * sceneHalfsize, 2 * sceneHalfsize));
@@ -369,7 +372,7 @@ void Scene::slotComputationFinished(const QString &errorText)
     onComputationFinished();
     if (!errorText.isEmpty()) {
         QMessageBox::warning(qfView(),
-                             tr("Computations Start Unsuccessful"),
+                             tr("Computation Start Unsuccessful"),
                              errorText);
     }
 }
