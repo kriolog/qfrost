@@ -8,7 +8,9 @@ Home page: http://www.qfrost.net/
 
 Maintaiers mailbox: dev@qfrost.net
 
-QFrost is an open source software.  See the file COPYING for copying conditions.
+QFrost is an open source software.  See the COPYING file for copying conditions.
+
+See the INSTALL file for installation details.
 
 ***
 
@@ -22,3 +24,5 @@ QFrost is an open source software.  See the file COPYING for copying conditions.
 
 QFrost является свободным программным обеспечением.
 Смотрите файл COPYING для получения информации о воспроизведении.
+
+Смотрите файл ./INSTALL для получения руководства по установке.
