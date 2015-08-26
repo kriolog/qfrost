@@ -132,7 +132,6 @@ void ComputationThread::run()
     emit finished(mComputationData);
 }
 
-#include <iostream>
 QString ComputationThread::setDataInDomain(QList<Block *> blocks,
         const QList<BoundaryPolygon *> outerPolygons)
 {
@@ -293,12 +292,12 @@ QString ComputationThread::setDataInDomain(QList<Block *> blocks,
         }
     }
 
-    qDebug("ComputationThread: shuffling heat surfaces");
+    /*qDebug("ComputationThread: shuffling heat surfaces");
     try {
         mDomain.shuffleHeatSurfaces();
     } catch (std::exception &e) {
         std::cerr << "exception caught: " << e.what() << std::endl;
-    }
+    }*/
 
     return QString();
 }
