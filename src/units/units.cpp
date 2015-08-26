@@ -205,7 +205,7 @@ int Units::decimals(PhysicalProperty property)
     case Density:
         return -1;
     case PowerDensity:
-        return 2;
+        return 3;
     case Energy:
     case Power:
     case NoProperty:
@@ -234,7 +234,7 @@ int Units::stepDecimals(PhysicalProperty property)
     case Density:
         return -1;
     case PowerDensity:
-        return 1;
+        return 2;
     case Energy:
     case Power:
     case NoProperty:
