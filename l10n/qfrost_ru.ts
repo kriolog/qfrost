@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/boundary_conditions/annualspline.cpp" line="188"/>
         <source>Can not solve spline! Solver info: %1</source>
-        <translation>Не удалось найти коэффициенты для сплайка! Ошибка #%1</translation>
+        <translation>Не удалось найти коэффициенты для сплайна! Ошибка #%1</translation>
     </message>
 </context>
 <context>
@@ -963,35 +963,35 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
 <context>
     <name>qfgui::ComputationThread</name>
     <message>
-        <location filename="../src/computations/computationthread.cpp" line="140"/>
+        <location filename="../src/computations/computationthread.cpp" line="139"/>
         <source>Domain is empty!
 Please create blocks in the domain.</source>
         <translation>Расчётная область пуста!
 Создайте в ней грунтовые блоки.</translation>
     </message>
     <message>
-        <location filename="../src/computations/computationthread.cpp" line="153"/>
+        <location filename="../src/computations/computationthread.cpp" line="152"/>
         <source>Block without parameters detected!
 You must set soil of all blocks inside domain before starting computation.</source>
         <translation>Обнаружен блок без параметров!
 Прежде чем начать расчёты, вы должны установить грунт для всех блоков в расчётной области.</translation>
     </message>
     <message>
-        <location filename="../src/computations/computationthread.cpp" line="160"/>
+        <location filename="../src/computations/computationthread.cpp" line="159"/>
         <source>Block with invalid parameters detected!
 Soil %1 has insufficient unfrozen water curve points!</source>
         <translation>Обнаружен блок с некорректными параметрами!
 Грунт %1 имеет недостаточно точек на кривой незамёрзшей воды!</translation>
     </message>
     <message>
-        <location filename="../src/computations/computationthread.cpp" line="179"/>
+        <location filename="../src/computations/computationthread.cpp" line="178"/>
         <source>Domain is empty!
 There are no blocks inside boundary polygons.</source>
         <translation>Расчётная область пуста!
 Нет ни одного блока, который находился бы внутри полигона граничных условий.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/computations/computationthread.cpp" line="240"/>
+        <location filename="../src/computations/computationthread.cpp" line="239"/>
         <source>Time step is not enought, it must not be bigger than %1!
 At least %n steps per day is needed.</source>
         <translation>
