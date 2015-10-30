@@ -287,6 +287,9 @@ void MonthsTablePlot::setConditionType(int type)
 
 void MonthsTablePlot::setGraphsVisibile(int type, bool visible)
 {
+    if (type == 3) {
+        return;
+    }
     switch(type) {
     case 0:
         mTemperatures1->setVisible(visible);

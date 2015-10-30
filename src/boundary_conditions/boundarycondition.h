@@ -78,6 +78,11 @@ class BoundaryCondition: public Item
                READ usesTemperatureSpline
                WRITE setUsesTemperatureSpline
                NOTIFY usesTemperatureSplineChanged)
+    
+    Q_PROPERTY(YearlyParams yearlyParams3
+               READ yearlyParams3
+               WRITE setYearlyParams3
+               NOTIFY yearlyParams3Changed)
 
 public:
     Q_INVOKABLE BoundaryCondition(const QString &name,
@@ -105,6 +110,9 @@ public:
     }
     const QList<double> &heatTransferFactors() const {
         return mHeatTransferFactors;
+    }
+    const YearlyParams &yearlyParams3() const {
+        return mYearlyParams3;
     }
 
     bool hasTemperatureTrend() const {
@@ -156,6 +164,8 @@ public slots:
     void setTemperatureTrendStartYear(double v);
 
     void setUsesTemperatureSpline(bool b);
+    
+    void setYearlyParams3(const YearlyParams &vals);
 
 signals:
     void typeChanged();
@@ -169,6 +179,8 @@ signals:
     void temperatureTrendStartYearChanged();
 
     void usesTemperatureSplineChanged();
+    
+    void yearlyParams3Changed();
 
 protected:
     int propertiesLackCount(int version);
@@ -185,6 +197,9 @@ private:
     QList<double> mTemperatures3;
     /// Среднемесячные коэффициенты теплоотдачи (для 3го рода)
     QList<double> mHeatTransferFactors;
+    
+    /// Карта по годам, каждый элемент - массив из 12 пар температур и альф
+    QMap<int, QList<QPair<double,double> > > mYearlyParams3;
 
     /// Включен ли тренд температуры
     bool mHasTemperatureTrend;
@@ -207,6 +222,8 @@ private:
 
     /// Возвращает std::vector, полученный из @p list
     static std::vector<double> stdVector(const QList<double> &list);
+    
+    static std::map<int, std::vector<std::pair<double, double> > > stdMap(const QMap<int, QList<QPair<double,double> > > &map);
 
     static const BoundaryCondition *const kmVoidCondition;
 

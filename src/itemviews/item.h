@@ -32,10 +32,12 @@
 #include <qfrost.h>
 
 typedef QMap<double, double> DoubleMap;
+typedef QMap<int, QList<QPair<double,double> > > YearlyParams;
 
 Q_DECLARE_METATYPE(qint32)
 Q_DECLARE_METATYPE(DoubleMap)
 Q_DECLARE_METATYPE(QList<double>)
+Q_DECLARE_METATYPE(YearlyParams)
 
 namespace qfgui
 {

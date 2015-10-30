@@ -72,6 +72,7 @@ void HeatSurface::moveInTime() const
             h = mBoundaryCondition->heatFlowDensity();
             break;
         case BoundaryCondition::ThirdType:
+        case BoundaryCondition::ThirdTypeYearly:
             h = (mBoundaryCondition->temperature() - mSoilBlock1->temperature())
                 / (mR * mSoilBlock1->invertedEffectiveConductivity()
                    + mBoundaryCondition->resistivity());

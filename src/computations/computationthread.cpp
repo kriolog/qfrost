@@ -256,6 +256,11 @@ QString ComputationThread::setDataInDomain(QList<Block *> blocks,
         }
     }
     foreach(BoundaryCondition * condition, boundaryConditions) {
+        if (condition->type() == qfcore::BoundaryCondition::ThirdTypeYearly
+            && condition->yearlyParams3().isEmpty()) {
+            return tr("Boundary condition %1 has no data.")
+                   .arg(QLocale().quoteString(condition->name()));
+        }
         condition->moveDataToDomain(&mDomain);
 
         if (mMustStop) {

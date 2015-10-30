@@ -21,6 +21,7 @@
 #define QFCORE_BOUNDARYCONDITION_H
 
 #include <vector>
+#include <map>
 #include <cassert>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
@@ -38,7 +39,8 @@ public:
     enum Type {
         FirstType = 0,  ///< I -- температура среды
         SecondType = 1, ///< II -- плотность теплопотока
-        ThirdType = 2   ///< III -- температура среды и коэффициент теплоотдачи
+        ThirdType = 2,  ///< III -- температура среды и коэффициент теплоотдачи
+        ThirdTypeYearly = 3
     };
 
     /**
@@ -58,11 +60,13 @@ public:
         : mType(type)
         , mParams1(params)
         , mResistivities()
+        , mYearlyParams3()
         , mHasAnnualTemperatures(params.size() != 12)
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
         , mTemperatureTrendStartYear(temperatureTrendStartYear)
         , mCurrentMonth(-1)
+        , mCurrentYear(-1)
     {
         assert(mParams1.size() == 12 || mParams1.size() == 365);
         assert(mType != ThirdType);
@@ -86,14 +90,31 @@ public:
         : mType(ThirdType)
         , mParams1(temperatures)
         , mResistivities(resistivities)
+        , mYearlyParams3()
         , mHasAnnualTemperatures(temperatures.size() != 12)
         , mHasTemperatureTrend(hasTemperatureTrend)
         , mTemperatureTrend(temperatureTrend)
         , mTemperatureTrendStartYear(temperatureTrendStartYear)
         , mCurrentMonth(-1)
+        , mCurrentYear(-1)
     {
         assert(mParams1.size() == 12 || mParams1.size() == 365);
         assert(mResistivities.size() == 12);
+    }
+    
+    BoundaryCondition(const std::map<int, std::vector<std::pair<double, double> > > &yearlyParams)
+        : mType(ThirdTypeYearly)
+        , mParams1()
+        , mResistivities()
+        , mYearlyParams3(yearlyParams)
+        , mHasAnnualTemperatures(false)
+        , mHasTemperatureTrend(false)
+        , mTemperatureTrend()
+        , mTemperatureTrendStartYear()
+        , mCurrentMonth(-1)
+        , mCurrentYear(-1)
+    {
+        
     }
 
     /**
@@ -125,18 +146,31 @@ public:
      */
     inline void setDate(int year, int month, int day) {
         if (!mHasAnnualTemperatures && mCurrentMonth == month) {
-            return;
+            if (mType != ThirdTypeYearly || mCurrentYear != year) {
+                return;
+            }
         }
+        mCurrentYear = year;
         mCurrentMonth = month;
-        mCurrentParam1 = mParams1.at(mHasAnnualTemperatures
-                                     ? annualArrayIndex(year, month, day)
-                                     : month - 1);
-        if (mType == ThirdType) {
-            mCurrentResistivity = mResistivities.at(month - 1);
-        }
-        if (mHasTemperatureTrend) {
-            assert(mType != SecondType);
-            mCurrentParam1 += mTemperatureTrend * double(year - mTemperatureTrendStartYear);
+        if (mType != ThirdTypeYearly) {
+            mCurrentParam1 = mParams1.at(mHasAnnualTemperatures
+                                        ? annualArrayIndex(year, month, day)
+                                        : month - 1);
+            if (mType == ThirdType) {
+                mCurrentResistivity = mResistivities.at(month - 1);
+            }
+            if (mHasTemperatureTrend) {
+                assert(mType != SecondType);
+                mCurrentParam1 += mTemperatureTrend * double(year - mTemperatureTrendStartYear);
+            }
+        } else {
+            std::map<int, std::vector<std::pair<double, double> > >::const_iterator it = mYearlyParams3.lower_bound(year);
+            if (it == mYearlyParams3.cend()) {
+                --it;
+            }
+            assert(it->second.size() == 12);
+            mCurrentParam1 = it->second.at(month - 1).first;
+            mCurrentResistivity = 1.0/(it->second.at(month - 1).second);
         }
     }
 
@@ -151,7 +185,7 @@ public:
     }
     /// Текущее термическое сопротивление (\f$ R=1/\alpha \f$)
     inline double resistivity() const {
-        assert(mType == ThirdType);
+        assert(mType == ThirdType || mType == ThirdTypeYearly);
         return mCurrentResistivity;
     }
     /// Текущая плотность теплоптока (\f$ q \f$)
@@ -168,6 +202,9 @@ private:
     std::vector<double> mParams1;
     /// Термические сопротивления (для III рода)
     std::vector<double> mResistivities;
+    
+    /// Температуры и альфы (по 12 значений) по годам
+    std::map<int, std::vector<std::pair<double, double> > > mYearlyParams3;
 
     /// Есть ли в mParams1 365 значений температуры (false - 12 среднемесячных)
     bool mHasAnnualTemperatures;
@@ -186,6 +223,9 @@ private:
 
     /// Текущий месяц (от 1 до 12) или -1, если setDate() не вызывался
     int mCurrentMonth;
+    
+    /// Текущий год или -1, если setDate() не вызывался
+    int mCurrentYear;
 };
 
 }

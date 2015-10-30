@@ -84,9 +84,10 @@ static const quint32 kFilesMagicNumber = 0xD3ADB00B;
  *    переводом на qfgui::Item) + теперь сохраняется галочка осесимметричности
  * 6. в конец теперь дописываются системы измерения (qint32)
  * 7. QDataStream версии 5.0 вместо 4.8
- * 8. Добавлен тренд потепления + вероятно, что-то ещё будет добавлено до релиза
+ * 8. Добавлен тренд потепления
+ * 9. Добавлены гр. усл. с ежегодными температурами и альфами
  */
-static const quint32 kFilesVersion = 8;
+static const quint32 kFilesVersion = 9;
 /// Версия настроек (QSettings)
 static const int kSettingsVersion = 2;
 

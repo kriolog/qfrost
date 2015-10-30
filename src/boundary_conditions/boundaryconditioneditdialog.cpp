@@ -39,6 +39,7 @@
 #include <annualspline.h>
 #include "monthstableview.h"
 #include "monthstableplot.h"
+#include <yearlyparamswidget.h>
 
 using namespace qfgui;
 
@@ -53,6 +54,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     , mTable1(new MonthsTableWidget(TablesOrienation, this))
     , mTable2(new MonthsTableWidget(TablesOrienation, this))
     , mTable3(new MonthsTableWidget(TablesOrienation, this))
+    , mYearlyParams(new YearlyParamsWidget(this))
     , mExp1(mTable1->addExpander(tr("T")))
     , mExp2(mTable2->addExpander(tr("q")))
     , mExp3t(mTable3->addExpander(tr("T")))
@@ -73,7 +75,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
 
     QStringList items;
-    items << tr("First") << tr("Second") << tr("Third");
+    items << tr("First") << tr("Second") << tr("Third") << tr("Third (yearly)");
     QStringListModel *typeModel = new QStringListModel(items, this);
     mTypeBox->setModel(typeModel);
     QFormLayout *typeLayout = new QFormLayout;
@@ -86,6 +88,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     valuesWidget->addWidget(mTable1);
     valuesWidget->addWidget(mTable2);
     valuesWidget->addWidget(mTable3);
+    valuesWidget->addWidget(mYearlyParams);
 
     QGroupBox *tablesGroupBox = new QGroupBox(this);
     QVBoxLayout *tablesGroupBoxLayout = new QVBoxLayout(tablesGroupBox);
@@ -152,6 +155,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     mapper()->addMapping(trendValue, BC_TemperatureTrend);
     mapper()->addMapping(trendStartYear, BC_TemperatureTrendStartYear);
     mapper()->addMapping(mUsesTemperatureSpline, BC_UsesTemperatureSpline);
+    mapper()->addMapping(mYearlyParams, BC_YearlyParams);
 
     mapper()->revert();
 
@@ -174,7 +178,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
 
 void BoundaryConditionEditDialog::updateTemperatureWidgets(int type)
 {
-    const bool hasTemps = (type != 1);
+    const bool hasTemps = (type != 1 && type != 3);
     mTrendGroupBox->setEnabled(hasTemps);
     mUsesTemperatureSpline->setEnabled(hasTemps);
 }

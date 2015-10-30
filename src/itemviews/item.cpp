@@ -32,6 +32,7 @@ static void registerMetatypes()
         qRegisterMetaTypeStreamOperators<qint32>("qint32");
         qRegisterMetaTypeStreamOperators<QList<double> >("QList<double>");
         qRegisterMetaTypeStreamOperators<DoubleMap>("DoubleMap");
+        qRegisterMetaTypeStreamOperators<YearlyParams>("YearlyParams");
         wasAlreadyRun = true;
     }
 }

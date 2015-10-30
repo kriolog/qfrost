@@ -23,6 +23,8 @@
 
 #include <core/domain.h>
 
+#include <utility>
+
 using namespace qfgui;
 
 const BoundaryCondition *const BoundaryCondition::kmVoidCondition =
@@ -42,6 +44,7 @@ BoundaryCondition::BoundaryCondition(const QString &name,
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mYearlyParams3()
     , mHasTemperatureTrend(false)
     , mTemperatureTrend(0.1)
     // TODO лучше вынести начальную дату в qfrost.h и брать год оттуда
@@ -69,6 +72,7 @@ BoundaryCondition::BoundaryCondition(const Item *other,
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mYearlyParams3(static_cast<const BoundaryCondition *>(other)->mYearlyParams3)
     , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
     , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
     , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
@@ -84,6 +88,7 @@ BoundaryCondition::BoundaryCondition(const Item *other)
     , mHeatFlowDensities(static_cast<const BoundaryCondition *>(other)->mHeatFlowDensities)
     , mTemperatures3(static_cast<const BoundaryCondition *>(other)->mTemperatures3)
     , mHeatTransferFactors(static_cast<const BoundaryCondition *>(other)->mHeatTransferFactors)
+    , mYearlyParams3(static_cast<const BoundaryCondition *>(other)->mYearlyParams3)
     , mHasTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mHasTemperatureTrend)
     , mTemperatureTrend(static_cast<const BoundaryCondition *>(other)->mTemperatureTrend)
     , mTemperatureTrendStartYear(static_cast<const BoundaryCondition *>(other)->mTemperatureTrendStartYear)
@@ -100,6 +105,7 @@ BoundaryCondition::BoundaryCondition()
     , mHeatFlowDensities()
     , mTemperatures3()
     , mHeatTransferFactors()
+    , mYearlyParams3()
     , mHasTemperatureTrend()
     , mTemperatureTrend()
     , mTemperatureTrendStartYear()
@@ -188,6 +194,8 @@ qfcore::BoundaryCondition BoundaryCondition::boundaryCondition() const
                                          mHasTemperatureTrend,
                                          mTemperatureTrend,
                                          mTemperatureTrendStartYear);
+    case qfcore::BoundaryCondition::ThirdTypeYearly:
+        return qfcore::BoundaryCondition(stdMap(mYearlyParams3));
     default:
         Q_ASSERT(false);
         return qfcore::BoundaryCondition(std::vector<double>(), std::vector<double>());
@@ -200,6 +208,21 @@ std::vector<double> BoundaryCondition::stdVector(const QList<double> &list)
     QList<double>::ConstIterator it;
     for (it = list.begin(); it != list.end(); ++it) {
         result.push_back(*it);
+    }
+    return result;
+}
+
+std::map<int, std::vector<std::pair<double, double> > > BoundaryCondition::stdMap(const QMap<int, QList<QPair<double,double> > > &map)
+{
+    std::map<int, std::vector<std::pair<double, double> > > result;
+    QMap<int, QList<QPair<double,double> > >::ConstIterator it;
+    for (it = map.constBegin(); it != map.constEnd(); ++it) {
+        std::vector<std::pair<double, double> > list;
+        QList<QPair<double, double> >::ConstIterator it2;
+        for (it2 = it.value().constBegin(); it2 != it.value().constEnd(); ++it2) {
+            list.push_back(std::make_pair(it2->first, it2->second));
+        }
+        result.insert(std::make_pair(it.key(), list));
     }
     return result;
 }
@@ -222,7 +245,7 @@ void BoundaryCondition::setType(int t)
     if (type() == t) {
         return;
     }
-    if (t < 0 || t > 2) {
+    if (t < 0 || t > 3) {
         Q_ASSERT(false);
         return;
     }
@@ -302,6 +325,12 @@ void BoundaryCondition::setUsesTemperatureSpline(bool b)
     emit usesTemperatureSplineChanged();
 }
 
+void BoundaryCondition::setYearlyParams3(const YearlyParams& vals)
+{
+    mYearlyParams3 = vals;
+    emit yearlyParams3Changed();
+}
+
 QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName)
 {
     if (propertyName == "type") {
@@ -323,6 +352,8 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
         return tr("trend ref. year");
     } else if (propertyName == "usesTemperatureSpline") {
         return tr("T spline");
+    } else if (propertyName == "yearlyParams3") {
+        return tr("yearly params");
     } else {
         return Item::shortPropertyNameGenetive(propertyName);
     }
@@ -331,6 +362,10 @@ QString BoundaryCondition::shortPropertyNameGenetive(const QString &propertyName
 int BoundaryCondition::propertiesLackCount(int version)
 {
     Q_ASSERT(version >= 7);
-    return version == 7 ? 4 : 0;
+    switch (version) {
+    case 7: return 5;
+    case 8: return 1;
+    default: return 0;
+    }
 }
 

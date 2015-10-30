@@ -36,6 +36,7 @@ QT_FORWARD_DECLARE_CLASS(BoundaryConditionsModel)
 QT_FORWARD_DECLARE_CLASS(MonthsTableWidget)
 QT_FORWARD_DECLARE_CLASS(MonthsTableExpander)
 QT_FORWARD_DECLARE_CLASS(MonthsTablePlot)
+QT_FORWARD_DECLARE_CLASS(YearlyParamsWidget)
 
 class BoundaryConditionEditDialog : public ItemEditDialog
 {
@@ -59,6 +60,7 @@ private:
     MonthsTableWidget *mTable1;
     MonthsTableWidget *mTable2;
     MonthsTableWidget *mTable3;
+    YearlyParamsWidget *mYearlyParams;
 
     MonthsTableExpander *mExp1;
     MonthsTableExpander *mExp2;
