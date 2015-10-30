@@ -106,10 +106,29 @@ void YearlyParamsWidget::loadFromFile()
             }
             QList<QPair<double, double> > list;
             for (int i = 0; i < 12; ++i) {
-                list.append(qMakePair(lineSplit.at(i+1).toDouble(),
-                                      lineSplit.at(i+1+12).toDouble()));
+                bool ok1, ok2;
+                list.append(qMakePair(lineSplit.at(i+1).toDouble(&ok1),
+                                      lineSplit.at(i+1+12).toDouble(&ok2)));
+                if (!ok1 || !ok2) {
+                    QMessageBox::warning(this, 
+                                        tr("Error"),
+                                        tr("Bad input:\n%1").arg(line));
+                    hasError = true;
+                    break;
+                }
             }
-            values.insert(lineSplit.first().toInt(), list);
+            if (hasError) {
+                break;
+            }
+            bool ok;
+            values.insert(lineSplit.first().toInt(&ok), list);
+            if (!ok) {
+                QMessageBox::warning(this, 
+                                    tr("Error"),
+                                    tr("Bad input:\n%1").arg(line));
+                hasError = true;
+                break;
+            }
         }
         
         if (!hasError) {
