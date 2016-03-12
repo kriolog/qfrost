@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2016  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -71,7 +71,8 @@ public:
     QMap<QFrost::ToolType, ToolSettings *> toolsSettings();
 
     QVBoxLayout *toolSettingsLayout() const { return mToolSettingsLayout; }
-
+    QStackedWidget *toolsPanels() const { return mToolsPanels; }
+    
 private:
     QActionGroup *mTools;
     QAction *mPickNoTool;

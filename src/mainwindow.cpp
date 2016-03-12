@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2015  Denis Pesotsky
+ * Copyright (C) 2010-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -539,6 +539,7 @@ void MainWindow::init()
     // Чтобы принимать все нажатия энтера в их виджетах...
     mControlPanel->installEventFilter(this);
     mToolsPanel->installEventFilter(this);
+    mToolsPanel->toolsPanels()->installEventFilter(this);
 
     setAcceptDrops(true);
 
