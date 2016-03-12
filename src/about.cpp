@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky
+ * Copyright (C) 2010-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -78,7 +78,7 @@ QString mailLink(const QString &string)
 }
 
 About::About(const QString &description,
-             QString copyrightYears, const QString &copyrightNames,
+             QString copyrightNotice,
              QWidget *parent):
     QDialog(parent, Qt::WindowTitleHint | Qt::WindowCloseButtonHint),
     mAuthors(new PersonListWidget(this)),
@@ -86,7 +86,7 @@ About::About(const QString &description,
 {
     setWindowTitle(tr("About %1").arg(QCoreApplication::applicationName()));
 
-    copyrightYears.replace("-", "–");
+    copyrightNotice.replace("-", "–");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
@@ -117,9 +117,7 @@ About::About(const QString &description,
     infoLayout->addWidget(info);
     info->setText(description
                   + "<br><br>"
-                  //: %1 -- year(s), %2 -- person(s)
-                  + tr("Copyright \302\251 %1 %2")
-                  .arg(copyrightYears, copyrightNames) + "<br/>"
+                  + copyrightNotice + "<br/>"
                   + httpLink(QCoreApplication::organizationDomain()) + "<br/>"
                   + "<a href=\"openLicense\">"
                   + tr("License: GNU General Public License version 3")

@@ -396,11 +396,13 @@ void MainWindow::about()
     static const QString den = tr("Denis Pesotsky");
     static const QString max = tr("Maxim Torgonsky");
     About aboutDialog(tr("Thermophysical processes modelling and visualisation in freezing and frozen soils"),
-                      COPYRIGHT_YEARS, den + ", " + max, this);
+                      QString("© 2010-2011 %1, %2<br>"
+                              "© 2011-2016 %1").arg(den).arg(max),
+                         this);
 
     aboutDialog.addAuthor(den, tr("Main developer"),
                           "dev@qfrost.net");
-    aboutDialog.addAuthor(max, tr("Developer, many ideas and algorythms"),
+    aboutDialog.addAuthor(max, tr("Developer, some ideas and algorythms"),
                           "kriolog@gmail.com");
 
     aboutDialog.addCredit(tr("L. N. Chrustalev"),

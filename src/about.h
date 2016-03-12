@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013  Denis Pesotsky
+ * Copyright (C) 2010-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -71,17 +71,13 @@ public:
      * - информация о лицензии.
      * Вкладка с общей информацией заполняется из аргументов.
      * @param description краткое описание программы
-     * @param copyrightYear год (или года через дефис) копирайта
-     * @param copyrightNames имя человека (организации), которому принадлежает
-     *                        авторские права (или имена через запятые)
+     * @param copyrightNotice записка о копирайте (со знаком копирайта)
      * @param parent родительский виджет
      * Название, версия и доменное имя берутся из соответствующих статических
      * методов класса QCoreApplication: applicationName(), applicationVersion()
      * и organizationDomain()
      */
-    About(const QString &description,
-          QString copyrightYears, const QString &copyrightNames,
-          QWidget *parent = NULL);
+    About(const QString& description, QString copyrightNotice, QWidget* parent = 0);
 
     /**
      * Добавляет персону к списку авторов.
