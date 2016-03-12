@@ -107,8 +107,14 @@ void YearlyParamsWidget::loadFromFile()
             QList<QPair<double, double> > list;
             for (int i = 0; i < 12; ++i) {
                 bool ok1, ok2;
-                list.append(qMakePair(lineSplit.at(i+1).toDouble(&ok1),
-                                      lineSplit.at(i+1+12).toDouble(&ok2)));
+                
+                QString v1 = lineSplit.at(i+1);
+                v1.replace(',', '.');
+                QString v2 = lineSplit.at(i+1+12);
+                v2.replace(',', '.');
+                
+                list.append(qMakePair(v1.toDouble(&ok1),
+                                      v2.toDouble(&ok2)));
                 if (!ok1 || !ok2) {
                     QMessageBox::warning(this, 
                                         tr("Error"),
