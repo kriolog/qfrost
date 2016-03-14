@@ -723,8 +723,8 @@ Else will create blocks without modifying (or creating) any polygons at all.</so
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="78"/>
-        <source>Third (yearly)</source>
-        <translation>Третий (ежегодн.)</translation>
+        <source>Third (yearly from file)</source>
+        <translation>Третий (по годам из файла)</translation>
     </message>
     <message>
         <location filename="../src/boundary_conditions/boundaryconditioneditdialog.cpp" line="82"/>

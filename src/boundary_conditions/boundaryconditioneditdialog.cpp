@@ -75,7 +75,7 @@ BoundaryConditionEditDialog::BoundaryConditionEditDialog(ItemsModel *model,
     /**************************************************************************/
 
     QStringList items;
-    items << tr("First") << tr("Second") << tr("Third") << tr("Third (yearly)");
+    items << tr("First") << tr("Second") << tr("Third") << tr("Third (yearly from file)");
     QStringListModel *typeModel = new QStringListModel(items, this);
     mTypeBox->setModel(typeModel);
     QFormLayout *typeLayout = new QFormLayout;
