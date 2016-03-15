@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/backgrounddialog.cpp" line="570"/>
         <source>You requested auto setting %1 coordinate (meters) value for cross %2.Please input background scale factor ratio (X:Y). It will be used besides all other coordinates you&apos;ve entered in main dialog window.&lt;br&gt;&lt;br&gt;&lt;b&gt;Warning!&lt;/b&gt; If you have vector version of background, it is recommended to export it with uniform scaling (and input 1:1 here).</source>
-        <translation>Вы выбрали автоматическую установку (метровой) координаты %1 для креста %2. Введите соотношение коэффициентов масштабирования (X:Y). Оно будет использовано наравне со всеми остальнымы установленными в главном диалоге координатами. &lt;br&gt;&lt;br&gt;&lt;b&gt;Внимание!&lt;/b&gt; Если у вас имеется векторная версия подложки, рекомендуется сохрнать его с равномерным масштабированием (и ввести 1:1 здесь).</translation>
+        <translation>Вы выбрали автоматическую установку (метровой) координаты %1 для креста %2. Введите соотношение коэффициентов масштабирования (X:Y). Оно будет использовано наравне со всеми остальнымы установленными в главном диалоге координатами. &lt;br&gt;&lt;br&gt;&lt;b&gt;Внимание!&lt;/b&gt; Если у вас имеется векторная версия подложки, рекомендуется сохранить его с равномерным масштабированием (и ввести 1:1 в этом диалоге).</translation>
     </message>
 </context>
 <context>
