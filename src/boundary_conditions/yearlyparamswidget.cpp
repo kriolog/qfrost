@@ -163,7 +163,8 @@ void YearlyParamsWidget::showHelp()
                              tr("Supported file format is CSV with lines like following:<br>"
                                 "<tt>year,t1,t2,…,t12,α1,α2,…,α12</tt><br><br>"
                                 "You can either use comma or semicolon as fields separator "
-                                "and either dot or comma as decimal separator."));
+                                "and either dot or comma as decimal separator.<br>"
+                                "If some years are missing, data from previous year is used for calculations."));
 }
 
 void YearlyParamsWidget::showDataDialog()
