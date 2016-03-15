@@ -2740,54 +2740,97 @@ Water Curve</source>
     </message>
 </context>
 <context>
-    <name>qfgui::YearlyParamsWidget</name>
+    <name>qfgui::YearlyParamsTableDialog</name>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="39"/>
-        <source>Load</source>
-        <translation>Загрузить</translation>
+        <location filename="../src/boundary_conditions/yearlyparamstabledialog.cpp" line="36"/>
+        <source>Yearly Boundary Condition Data</source>
+        <translation>Свойства граничного условия по годам</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="56"/>
+        <location filename="../src/boundary_conditions/yearlyparamstabledialog.cpp" line="50"/>
+        <source>Temperature</source>
+        <translation>Температура</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamstabledialog.cpp" line="57"/>
+        <source>Heat Transfer Factor</source>
+        <translation>Коэффициент теплообмена</translation>
+    </message>
+</context>
+<context>
+    <name>qfgui::YearlyParamsWidget</name>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="70"/>
         <source>No data</source>
         <translation>Нет данных</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="58"/>
-        <source>Data for years %1-%2</source>
-        <translation>Данные за года %1-%2</translation>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="39"/>
+        <source>View Data</source>
+        <translation>Просмотр данных</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="75"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="45"/>
+        <source>Load...</source>
+        <translation>Загрузить...</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="48"/>
+        <source>File Format Info</source>
+        <translation>Формат файла</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="72"/>
+        <source>Loaded data for %1–%2</source>
+        <translation>Загружены данные за %1–%2</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="80"/>
+        <source> (except years %1)</source>
+        <translation> (кроме %1)</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="89"/>
         <source>Open Yearly Params File</source>
         <comment>Dialog Title</comment>
         <translation>Открыть файл с ежегодными параметрами</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="77"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="91"/>
         <source>CSV files (*.csv)</source>
         <translation>CSV файлы (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="85"/>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="102"/>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="120"/>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="133"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="99"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="116"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="134"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="147"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="86"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="100"/>
         <source>Can not open file %1</source>
         <translation>Невозможно открыть файл %1</translation>
     </message>
     <message>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="103"/>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="121"/>
-        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="134"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="117"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="135"/>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="148"/>
         <source>Bad input:
 %1</source>
         <translation>Неправильный ввод:
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="162"/>
+        <source>Yearly Params File Format</source>
+        <translation>Формат файла свойств по годам</translation>
+    </message>
+    <message>
+        <location filename="../src/boundary_conditions/yearlyparamswidget.cpp" line="163"/>
+        <source>Supported file format is CSV with lines like following:&lt;br&gt;&lt;tt&gt;year,t1,t2,…,t12,α1,α2,…,α12&lt;/tt&gt;&lt;br&gt;&lt;br&gt;You can either use comma or semicolon as fields separator and either dot or comma as decimal separator.&lt;br&gt;If some years are missing, data from previous year is used for calculations.</source>
+        <translation>Необходимо предоставить CSV-файл следующего формата:&lt;br&gt;&lt;tt&gt;год,t1,t2,…,t12,α1,α2,…,α12&lt;/tt&gt;&lt;br&gt;&lt;br&gt;В качестве разделителя значений возможно использовать запятую или точку с запятой, в качестве десятичного разделителя — запятую или точку.&lt;br&gt;Если данные за какие-либо года отсутствуют, для расчётов используются значения за предыдущий год.</translation>
     </message>
 </context>
 </TS>
