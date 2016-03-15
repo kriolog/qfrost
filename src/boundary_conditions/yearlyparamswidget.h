@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Denis Pesotsky
+ * Copyright (C) 2015-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -25,6 +25,7 @@
 #include "boundarycondition.h"
 
 QT_FORWARD_DECLARE_CLASS(QLabel)
+QT_FORWARD_DECLARE_CLASS(QPushButton)
 
 namespace qfgui {
 
@@ -49,6 +50,7 @@ public:
 private slots:
     void loadFromFile();
     void showHelp();
+    void showDataDialog();
     
 signals:
     void valuesChanged();
@@ -57,6 +59,7 @@ private:
     YearlyParams mValues;
     
     QLabel *mLabel;
+    QPushButton *mViewDataButton;
 };
 }
 

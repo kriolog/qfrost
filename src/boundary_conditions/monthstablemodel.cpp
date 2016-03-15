@@ -48,31 +48,11 @@ QVariant MonthsTableModel::headerData(int section, Qt::Orientation orientation, 
     const bool isMonth = (orientation == mOrientation);
 
     if (isMonth) {
-        if (role == Qt::FontRole) {
-            // летние месяцы выделяем
-            if (section >= 5 && section <= 7) {
-                QFont font;
-                font.setItalic(true);
-                return font;
-            } else {
-                return QVariant();
-            }
-        }
-
-        if (role == Qt::ToolTipRole) {
-            return section + 1;
-        }
-
-        if (role == Qt::DisplayRole) {
-            const QLocale locale;
-            return locale.standaloneMonthName(section + 1,
-                                              mIsHorizontal
-                                              ? QLocale::ShortFormat
-                                              : QLocale::LongFormat);
-        }
+        return QFrost::monthHeaderData(section, role,
+                                       orientation == Qt::Horizontal);
     } else {
         if (role == Qt::DisplayRole) {
-                return mExpanders.at(section)->headerText();
+            return mExpanders.at(section)->headerText();
         }
     }
 

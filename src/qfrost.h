@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2016  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -267,6 +267,10 @@ public:
 
     /// Строка с римской записью числа @p number
     static QString romanNumeral(int number, int markCount = 0);
+    
+    /// Данные для заголовка таблицы с названием месяца (летние шрифты курсивом)
+    static QVariant monthHeaderData(int section, int role,
+                                    bool useShortMonthFormat = true);
 
 private:
     /**

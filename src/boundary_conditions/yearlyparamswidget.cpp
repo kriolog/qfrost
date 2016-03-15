@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015  Denis Pesotsky
+ * Copyright (C) 2015-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -28,11 +28,15 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
+#include "yearlyparamstabledialog.h"
+
 using namespace qfgui;
 
 YearlyParamsWidget::YearlyParamsWidget(QWidget* parent)
     : QWidget(parent)
     , mLabel(new QLabel(this))
+    , mViewDataButton(new QPushButton(QIcon::fromTheme("document-preview"),
+                                      tr("View Data")))
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(mLabel);
@@ -43,17 +47,20 @@ YearlyParamsWidget::YearlyParamsWidget(QWidget* parent)
     QPushButton *helpButton = new QPushButton(QIcon::fromTheme("help-hint"),
                                               tr("File Format Info"));
     buttonsLayout->addWidget(helpButton);
+    buttonsLayout->addWidget(mViewDataButton);
     layout->addLayout(buttonsLayout);
     updateLabel();
     
     connect(loadButton, SIGNAL(clicked()), SLOT(loadFromFile()));
-    connect(helpButton, SIGNAL(clicked(bool)), SLOT(showHelp()));
+    connect(helpButton, SIGNAL(clicked()), SLOT(showHelp()));
+    connect(mViewDataButton, SIGNAL(clicked()), SLOT(showDataDialog()));
 }
 
 void YearlyParamsWidget::setValues(const YearlyParams& v)
 {
     mValues = v;
     updateLabel();
+    mViewDataButton->setDisabled(v.isEmpty());
     emit valuesChanged();
 }
 
@@ -157,4 +164,10 @@ void YearlyParamsWidget::showHelp()
                                 "<tt>year,t1,t2,…,t12,α1,α2,…,α12</tt><br><br>"
                                 "You can either use comma or semicolon as fields separator "
                                 "and either dot or comma as decimal separator."));
+}
+
+void YearlyParamsWidget::showDataDialog()
+{
+    YearlyParamsTableDialog *dialog = new YearlyParamsTableDialog(mValues, this);
+    dialog->exec();
 }

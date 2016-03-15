@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2015  Denis Pesotsky, Maxim Torgonsky
+ * Copyright (C) 2010-2016  Denis Pesotsky, Maxim Torgonsky
  *
  * This file is part of QFrost.
  *
@@ -145,4 +145,31 @@ QString QFrost::romanNumeral(int number, int markCount)
         }
     }
     return result;
+}
+
+QVariant QFrost::monthHeaderData(int section, int role, bool useShortMonthFormat)
+{
+    if (role == Qt::FontRole) {
+        // летние месяцы выделяем
+        if (section >= 5 && section <= 7) {
+            QFont font;
+            font.setItalic(true);
+            return font;
+        } else {
+            return QVariant();
+        }
+    }
+    
+    if (role == Qt::ToolTipRole) {
+        return section + 1;
+    }
+    
+    if (role == Qt::DisplayRole) {
+        return QLocale().standaloneMonthName(section + 1,
+                                             useShortMonthFormat
+                                             ? QLocale::ShortFormat
+                                             : QLocale::LongFormat);
+    }
+    
+    return QVariant();
 }
