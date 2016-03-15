@@ -48,6 +48,7 @@ public:
     
 private slots:
     void loadFromFile();
+    void showHelp();
     
 signals:
     void valuesChanged();

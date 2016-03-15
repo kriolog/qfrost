@@ -38,9 +38,12 @@ YearlyParamsWidget::YearlyParamsWidget(QWidget* parent)
     layout->addWidget(mLabel);
     QPushButton *loadButton = new QPushButton(tr("Load"));
     layout->addWidget(loadButton);
+    QPushButton *helpButton = new QPushButton(tr("File format info"));
+    layout->addWidget(helpButton);
     updateLabel();
     
     connect(loadButton, SIGNAL(clicked()), SLOT(loadFromFile()));
+    connect(helpButton, SIGNAL(clicked(bool)), SLOT(showHelp()));
 }
 
 void YearlyParamsWidget::setValues(const YearlyParams& v)
@@ -141,4 +144,13 @@ void YearlyParamsWidget::loadFromFile()
             setValues(values);
         }
     }
+}
+
+void YearlyParamsWidget::showHelp()
+{
+    QMessageBox::information(this, tr("Yearly Params File Format"),
+                             tr("Supported file format is CSV with lines like following:<br>"
+                                "<tt>year,t1,t2,…,t12,α1,α2,…,α12</tt><br><br>"
+                                "You can either use comma or semicolon as fields separator "
+                                "and either dot or comma as decimal separator."));
 }
