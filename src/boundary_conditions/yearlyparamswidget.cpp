@@ -36,10 +36,14 @@ YearlyParamsWidget::YearlyParamsWidget(QWidget* parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(mLabel);
-    QPushButton *loadButton = new QPushButton(tr("Load"));
-    layout->addWidget(loadButton);
-    QPushButton *helpButton = new QPushButton(tr("File format info"));
-    layout->addWidget(helpButton);
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    QPushButton *loadButton = new QPushButton(QIcon::fromTheme("document-open"),
+                                              tr("Load..."));
+    buttonsLayout->addWidget(loadButton);
+    QPushButton *helpButton = new QPushButton(QIcon::fromTheme("help-hint"),
+                                              tr("File Format Info"));
+    buttonsLayout->addWidget(helpButton);
+    layout->addLayout(buttonsLayout);
     updateLabel();
     
     connect(loadButton, SIGNAL(clicked()), SLOT(loadFromFile()));
@@ -58,7 +62,7 @@ void YearlyParamsWidget::updateLabel()
     if (mValues.isEmpty()) {
         mLabel->setText(tr("No data"));
     } else {
-        QString text = tr("Data for years %1-%2").arg(mValues.firstKey()).arg(mValues.lastKey());
+        QString text = tr("Loaded data for %1–%2").arg(mValues.firstKey()).arg(mValues.lastKey());
         QStringList missingYears;
         for (int i = mValues.firstKey(); i < mValues.lastKey(); ++i) {
             if (!mValues.contains(i)) {
@@ -66,7 +70,7 @@ void YearlyParamsWidget::updateLabel()
             }
         }
         if (!missingYears.isEmpty()) {
-            text.append("(except years " + missingYears.join(", ") + ")");
+            text.append(tr(" (except years %1)").arg(missingYears.join(", ")));
         }
         mLabel->setText(text);
     }
