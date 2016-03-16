@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015  Denis Pesotsky
+ * Copyright (C) 2014-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -31,7 +31,6 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <QSlider>
-#include <QFormLayout>
 #include <QPushButton>
 #include <QEvent>
 #include <QGraphicsSceneMouseEvent>
@@ -49,6 +48,51 @@
 using namespace qfgui;
 
 const QString BackgroundDialog::kReferenceFileExtension = ".qfref";
+
+static QLayout *xyLayout(QWidget *xWidget, QWidget *yWidget)
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    
+    QHBoxLayout *xLayout = new QHBoxLayout();
+    xLayout->addWidget(new QLabel("X:"));
+    xLayout->addWidget(xWidget, 1);
+    
+    QHBoxLayout *yLayout = new QHBoxLayout();
+    yLayout->addWidget(new QLabel("Y:"));
+    yLayout->addWidget(yWidget, 1);
+    
+    mainLayout->addStretch(1);
+    mainLayout->addLayout(xLayout);
+    mainLayout->addStretch(1);
+    mainLayout->addLayout(yLayout);
+    mainLayout->addStretch(1);
+    
+    return mainLayout;
+}
+
+static QLayout *xyLayout(QWidget *xWidget1, QWidget *xWidget2,
+                         QWidget *yWidget1, QWidget *yWidget2)
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    
+    QHBoxLayout *xLayout = new QHBoxLayout();
+    xLayout->addWidget(new QLabel("X:"));
+    xLayout->addWidget(xWidget1, 1);
+    xLayout->addWidget(xWidget2);
+    
+    QHBoxLayout *yLayout = new QHBoxLayout();
+    yLayout->addWidget(new QLabel("Y:"));
+    yLayout->addWidget(yWidget1, 1);
+    yLayout->addWidget(yWidget2);
+    
+    mainLayout->addStretch(1);
+    mainLayout->addLayout(xLayout);
+    mainLayout->addStretch(1);
+    mainLayout->addLayout(yLayout);
+    mainLayout->addStretch(1);
+    
+    return mainLayout;
+}
 
 BackgroundDialog::BackgroundDialog(const QString &imageFileName,
                                    const QPixmap &pixmap,
@@ -86,13 +130,17 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
 
     mCross1PixmapX->setMinimum(0);
     mCross1PixmapX->setMaximum(pixmap.width());
+    mCross1PixmapX->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     mCross2PixmapX->setMinimum(0);
     mCross2PixmapX->setMaximum(pixmap.width());
+    mCross2PixmapX->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     mCross1PixmapY->setMinimum(0);
     mCross1PixmapY->setMaximum(pixmap.height());
+    mCross1PixmapY->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     mCross2PixmapY->setMinimum(0);
     mCross2PixmapY->setMaximum(pixmap.height());
+    mCross2PixmapY->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     connect(mCross1PixmapX, SIGNAL(valueChanged(int)), SLOT(updateCross1Pos()));
     connect(mCross1PixmapY, SIGNAL(valueChanged(int)), SLOT(updateCross1Pos()));
@@ -155,56 +203,26 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     connect(autoSetCross2SceneY, SIGNAL(clicked()), SLOT(autoSetCross2SceneY()));
 
     QGroupBox *imagePos1Box = new QGroupBox(tr("Image Position 1"));
-    imagePos1Box->setFlat(true);
-    QFormLayout *imagePos1CoordsLayout = new QFormLayout();
-    imagePos1CoordsLayout->addRow(tr("X:"), mCross1PixmapX);
-    imagePos1CoordsLayout->addRow(tr("Y:"), mCross1PixmapY);
+    //imagePos1Box->setFlat(true);
     QHBoxLayout *imagePos1Layout = new QHBoxLayout(imagePos1Box);
-    imagePos1Layout->addLayout(imagePos1CoordsLayout, 1);
+    imagePos1Layout->addLayout(xyLayout(mCross1PixmapX, mCross1PixmapY), 1);
     imagePos1Layout->addWidget(mPlaceCross1Button);
 
     QGroupBox *imagePos2Box = new QGroupBox(tr("Image Position 2"));
-    imagePos2Box->setFlat(true);
-    QFormLayout *imagePos2CoordsLayout = new QFormLayout();
-    imagePos2CoordsLayout->addRow(tr("X:"), mCross2PixmapX);
-    imagePos2CoordsLayout->addRow(tr("Y:"), mCross2PixmapY);
+    //imagePos2Box->setFlat(true);
     QHBoxLayout *imagePos2Layout = new QHBoxLayout(imagePos2Box);
-    imagePos2Layout->addLayout(imagePos2CoordsLayout, 1);
+    imagePos2Layout->addLayout(xyLayout(mCross2PixmapX, mCross2PixmapY), 1);
     imagePos2Layout->addWidget(mPlaceCross2Button);
-    mPlaceCross1Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    mPlaceCross2Button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-    QHBoxLayout *scenePos1XLayout = new QHBoxLayout();
-    scenePos1XLayout->setMargin(0);
-    scenePos1XLayout->addWidget(mCross1SceneX, 1);
-    scenePos1XLayout->addWidget(autoSetCross1SceneX);
-
-    QHBoxLayout *scenePos1YLayout = new QHBoxLayout();
-    scenePos1YLayout->setMargin(0);
-    scenePos1YLayout->addWidget(mCross1SceneY, 1);
-    scenePos1YLayout->addWidget(autoSetCross1SceneY);
-
-    QHBoxLayout *scenePos2XLayout = new QHBoxLayout();
-    scenePos2XLayout->setMargin(0);
-    scenePos2XLayout->addWidget(mCross2SceneX, 1);
-    scenePos2XLayout->addWidget(autoSetCross2SceneX);
-
-    QHBoxLayout *scenePos2YLayout = new QHBoxLayout();
-    scenePos2YLayout->setMargin(0);
-    scenePos2YLayout->addWidget(mCross2SceneY, 1);
-    scenePos2YLayout->addWidget(autoSetCross2SceneY);
 
     QGroupBox *scenePos1Box = new QGroupBox(tr("Domain Position 1"));
-    scenePos1Box->setFlat(true);
-    QFormLayout *scenePos1Layout = new QFormLayout(scenePos1Box);
-    scenePos1Layout->addRow(tr("X:"), scenePos1XLayout);
-    scenePos1Layout->addRow(tr("Y:"), scenePos1YLayout);
+    //scenePos1Box->setFlat(true);
+    scenePos1Box->setLayout(xyLayout(mCross1SceneX, autoSetCross1SceneX,
+                                     mCross1SceneY, autoSetCross1SceneY));
 
     QGroupBox *scenePos2Box = new QGroupBox(tr("Domain Position 2"));
-    scenePos2Box->setFlat(true);
-    QFormLayout *scenePos2Layout = new QFormLayout(scenePos2Box);
-    scenePos2Layout->addRow(tr("X:"), scenePos2XLayout);
-    scenePos2Layout->addRow(tr("Y:"), scenePos2YLayout);
+    //scenePos2Box->setFlat(true);
+    scenePos2Box->setLayout(xyLayout(mCross2SceneX, autoSetCross2SceneX,
+                                     mCross2SceneY, autoSetCross2SceneY));
 
     QGroupBox *imagePosBox = new QGroupBox(tr("Anchor Points on Image (Coordinates in Pixels)"));
     QHBoxLayout *imagePosLayout = new QHBoxLayout(imagePosBox);
