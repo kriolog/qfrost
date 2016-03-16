@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="570"/>
+        <location filename="../src/backgrounddialog.cpp" line="588"/>
         <source>You requested auto setting %1 coordinate (meters) value for cross %2.Please input background scale factor ratio (X:Y). It will be used besides all other coordinates you&apos;ve entered in main dialog window.&lt;br&gt;&lt;br&gt;&lt;b&gt;Warning!&lt;/b&gt; If you have vector version of background, it is recommended to export it with uniform scaling (and input 1:1 here).</source>
         <translation>Вы выбрали автоматическую установку (метровой) координаты %1 для креста %2. Введите соотношение коэффициентов масштабирования (X:Y). Оно будет использовано наравне со всеми остальнымы установленными в главном диалоге координатами. &lt;br&gt;&lt;br&gt;&lt;b&gt;Внимание!&lt;/b&gt; Если у вас имеется векторная версия подложки, рекомендуется сохранить его с равномерным масштабированием (и ввести 1:1 в этом диалоге).</translation>
     </message>
@@ -361,46 +361,56 @@
 <context>
     <name>qfgui::BackgroundDialog</name>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="77"/>
+        <location filename="../src/backgrounddialog.cpp" line="121"/>
         <source>&amp;Save input data to reference file %1</source>
         <translation>&amp;Сохранить введённые данные в привязочный файл %1</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="81"/>
+        <location filename="../src/backgrounddialog.cpp" line="125"/>
         <source>Background Reference</source>
         <translation>Привязка графической подложки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="140"/>
+        <location filename="../src/backgrounddialog.cpp" line="188"/>
         <source>Set this coordinate automatically for scaling with given factor ratio.
 All the rest coordinates (4 pixmap &amp; 3 domain) must be set.</source>
         <translation>Установка этой координаты автоматически (по соотношению коэффициентов масштабирования).
 Все остальные координаты (4 на изображении и 3 в расчётной области) должны быть установлены.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="209"/>
+        <location filename="../src/backgrounddialog.cpp" line="205"/>
+        <source>Image Position 1 (Red Cross)</source>
+        <translation>Позиция 1 на изображении (красный)</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="211"/>
+        <source>Image Position 2 (Blue Cross)</source>
+        <translation>Позиция 2 на изображении (синий)</translation>
+    </message>
+    <message>
+        <location filename="../src/backgrounddialog.cpp" line="227"/>
         <source>Anchor Points on Image (Coordinates in Pixels)</source>
         <translation>Опорные точки на изображении (координаты в пикселах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="214"/>
+        <location filename="../src/backgrounddialog.cpp" line="232"/>
         <source>Anchor Points on Domain (Coordinates in Meters)</source>
         <translation>Опорные точки в расчётной области (координаты в метрах)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="239"/>
+        <location filename="../src/backgrounddialog.cpp" line="257"/>
         <source>Save input data to reference file (*.%1) in the same folder with image.
 It will be automatically loaded when you open this image again.</source>
         <translation>Сохранить введённые данные в файл привязки (*.%1) в папке с изображением.
 Он будет автоматически использован при загрузке этого изображения в будущем.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="269"/>
+        <location filename="../src/backgrounddialog.cpp" line="287"/>
         <source>Scale Factor Ratio Changes too Much</source>
         <translation>Слишком неравномерное масштабирование</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="270"/>
+        <location filename="../src/backgrounddialog.cpp" line="288"/>
         <source>Background aspect factor ratio (X:Y) will too much differ from original. It can lead to fuzzy lines on it.
 
 If you have vector version of image, it is recommended to export bitmap with uniform scaling (1:1) before loading it in %1.
@@ -412,111 +422,85 @@ Are you sure to continue and use flattened background?</source>
 Вы действительно хотите продолжить работу со сплющенным растром?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="534"/>
+        <location filename="../src/backgrounddialog.cpp" line="552"/>
         <source>(replace old one)</source>
         <translation>(заменить старый)</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="677"/>
+        <location filename="../src/backgrounddialog.cpp" line="695"/>
         <source>Loaded corresponding reference file from image directory.
 It is recommended to check coordinates before proceeding.</source>
         <translation>Загружен соответствующий изображению файл привязки.
 Проверьте значения координат до установки подложки.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="409"/>
+        <location filename="../src/backgrounddialog.cpp" line="427"/>
         <source>Save Reference File</source>
         <translation>Сохранение файла привязки</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="129"/>
+        <location filename="../src/backgrounddialog.cpp" line="177"/>
         <source>Set both coordinates for cross by placing cursor over image.
 Cross will follow mouse in image area. Left click to finish.</source>
         <translation>Установка координат отметки на изображении мышью.
 Крест следует за курсором до нажатия левой кнопки.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="157"/>
-        <source>Image Position 1</source>
-        <translation>Позиция 1 на изображении</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="160"/>
-        <location filename="../src/backgrounddialog.cpp" line="169"/>
-        <location filename="../src/backgrounddialog.cpp" line="200"/>
-        <location filename="../src/backgrounddialog.cpp" line="206"/>
-        <source>X:</source>
-        <translation>X:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="161"/>
-        <location filename="../src/backgrounddialog.cpp" line="170"/>
-        <location filename="../src/backgrounddialog.cpp" line="201"/>
-        <location filename="../src/backgrounddialog.cpp" line="207"/>
-        <source>Y:</source>
-        <translation>Y:</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="166"/>
-        <source>Image Position 2</source>
-        <translation>Позиция 2 на изображении</translation>
-    </message>
-    <message>
-        <location filename="../src/backgrounddialog.cpp" line="197"/>
+        <location filename="../src/backgrounddialog.cpp" line="217"/>
         <source>Domain Position 1</source>
-        <translation>Позиция 1 в рассчётной области</translation>
+        <translation>Позиция 1 в расчётной области</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="203"/>
+        <location filename="../src/backgrounddialog.cpp" line="222"/>
         <source>Domain Position 2</source>
-        <translation>Позиция 2 в рассчётной области</translation>
+        <translation>Позиция 2 в расчётной области</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="410"/>
+        <location filename="../src/backgrounddialog.cpp" line="428"/>
         <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 уже существует.
 Хотите заменить его?</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="419"/>
+        <location filename="../src/backgrounddialog.cpp" line="437"/>
         <source>Save Reference File Failed</source>
         <translation>Сохранение файла привязки не удалось</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="420"/>
+        <location filename="../src/backgrounddialog.cpp" line="438"/>
         <source>Can not write file %1.</source>
         <translation>Не удалась запись в файл %1.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="433"/>
+        <location filename="../src/backgrounddialog.cpp" line="451"/>
         <source>Saved Reference File</source>
         <translation>Файл привязки сохранён</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="434"/>
+        <location filename="../src/backgrounddialog.cpp" line="452"/>
         <source>Saved reference file %1.
 It will be loaded when you open this image again.</source>
         <translation>Файл привязки сохранён как %1.
 Он будет загружен при последующем использовании этого изображения.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="451"/>
+        <location filename="../src/backgrounddialog.cpp" line="469"/>
         <source>Load Reference File Failed</source>
         <translation>Загрузка файла привязки не удалась</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="454"/>
+        <location filename="../src/backgrounddialog.cpp" line="472"/>
         <source>Reference file %1 exists but can not be opened.</source>
         <translation>Файл привязки %1 существует, но не может быть открыт на чтение.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="470"/>
+        <location filename="../src/backgrounddialog.cpp" line="488"/>
         <source>Reference file %1 has bad format. Maybe it was created with other version of %2 or incorrectly modified.</source>
         <translation>Файл привязки %1 имеет неподдерживаемый формат. Возможно, он был создан в другой версии %2 или некорректно отредактирован.</translation>
     </message>
     <message>
-        <location filename="../src/backgrounddialog.cpp" line="676"/>
+        <location filename="../src/backgrounddialog.cpp" line="694"/>
         <source>Loaded Reference File</source>
         <translation>Загружен файл привязки</translation>
     </message>
