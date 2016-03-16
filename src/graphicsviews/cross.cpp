@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * 
+ * Copyright (C) 2014-2016  Denis Pesotsky
  *
  * This file is part of QFrost.
  *
@@ -24,8 +25,9 @@
 
 using namespace qfgui;
 
-Cross::Cross(QGraphicsItem *parent, uint halfSize) :
+Cross::Cross(const QColor &color, QGraphicsItem *parent, uint halfSize) :
     QGraphicsItem(parent),
+    mColor(color),
     mHalfSize(halfSize)
 {
     setFlag(QGraphicsItem::ItemIgnoresTransformations);
@@ -44,6 +46,9 @@ void Cross::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
+    
+    painter->setPen(QPen(mColor, 5));
+    painter->drawLines(mCrossPointPairs);
 
     painter->setPen(QPen(Qt::white, 3));
     painter->drawLines(mCrossPointPairs);

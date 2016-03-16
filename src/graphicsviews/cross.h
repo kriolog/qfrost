@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Denis Pesotsky
+ * Copyright (C) 2014-2016  Denis Pesotsky
  * 
  * This file is part of QFrost.
  * 
@@ -28,7 +28,9 @@ namespace qfgui {
 class Cross : public QGraphicsItem
 {
 public:
-    Cross(QGraphicsItem * parent = NULL, uint halfSize = 16);
+    Cross(const QColor &color,
+          QGraphicsItem *parent = NULL,
+          uint halfSize = 16);
 
     QRectF boundingRect() const;
 
@@ -37,6 +39,7 @@ protected:
                QWidget *widget = 0);
 
 private:
+    const QColor mColor;
     const int mHalfSize;
     QVector<QPointF> mCrossPointPairs;
 };

@@ -101,8 +101,8 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     mView(new ViewBase(new QGraphicsScene(pixmap.rect(), this), this)),
     mButtons(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel)),
     mPixmapItem(new QGraphicsPixmapItem(pixmap)),
-    mCross1(new Cross(mPixmapItem)),
-    mCross2(new Cross(mPixmapItem)),
+    mCross1(new Cross(Qt::red, mPixmapItem)),
+    mCross2(new Cross(Qt::blue, mPixmapItem)),
     mCross1PixmapX(new QSpinBox(this)),
     mCross1PixmapY(new QSpinBox(this)),
     mCross2PixmapX(new QSpinBox(this)),
@@ -202,13 +202,13 @@ BackgroundDialog::BackgroundDialog(const QString &imageFileName,
     connect(autoSetCross2SceneX, SIGNAL(clicked()), SLOT(autoSetCross2SceneX()));
     connect(autoSetCross2SceneY, SIGNAL(clicked()), SLOT(autoSetCross2SceneY()));
 
-    QGroupBox *imagePos1Box = new QGroupBox(tr("Image Position 1"));
+    QGroupBox *imagePos1Box = new QGroupBox(tr("Image Position 1 (Red Cross)"));
     //imagePos1Box->setFlat(true);
     QHBoxLayout *imagePos1Layout = new QHBoxLayout(imagePos1Box);
     imagePos1Layout->addLayout(xyLayout(mCross1PixmapX, mCross1PixmapY), 1);
     imagePos1Layout->addWidget(mPlaceCross1Button);
 
-    QGroupBox *imagePos2Box = new QGroupBox(tr("Image Position 2"));
+    QGroupBox *imagePos2Box = new QGroupBox(tr("Image Position 2 (Blue Cross)"));
     //imagePos2Box->setFlat(true);
     QHBoxLayout *imagePos2Layout = new QHBoxLayout(imagePos2Box);
     imagePos2Layout->addLayout(xyLayout(mCross2PixmapX, mCross2PixmapY), 1);
