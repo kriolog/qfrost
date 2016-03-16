@@ -28,6 +28,7 @@ namespace qfgui {
 
 class YearlyParamsTableDialog : public QDialog
 {
+    Q_OBJECT
 public:
     YearlyParamsTableDialog(const YearlyParams &params, QWidget* parent);
 };
