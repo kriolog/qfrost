@@ -570,7 +570,8 @@ static double getAxesScaleFactorRatio(int crossNum, Qt::Orientation axeOrientati
     QDialog *dialog = new QDialog(parent);
     QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dialog);
     QObject::connect(buttons, SIGNAL(accepted()), dialog, SLOT(accept()));
-
+    QObject::connect(buttons, SIGNAL(rejected()), dialog, SLOT(reject()));
+    
     QSpinBox *xVal = new QSpinBox(dialog);
     QSpinBox *yVal = new QSpinBox(dialog);
     xVal->setMinimum(1);
