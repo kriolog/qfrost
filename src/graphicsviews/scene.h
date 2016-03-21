@@ -284,6 +284,10 @@ public:
     void stopSoilFillApply(QPointF scenePoint = QFrost::noPoint);
     
     bool isFillingSoil() const { return mIsFillingSoil; }
+    
+    Tool *activeTool() const;
+    
+    bool acceptsEnter() const;
 
 public slots:
     void slotSetBlocksStyle(QFrost::BlockStyle);
@@ -319,8 +323,6 @@ public slots:
      * Меняет инструмент с удалением старого.
      */
     void setTool(QFrost::ToolType toolType);
-
-    Tool *activeTool() const;
 
     void setToolsSettingsMap(QMap< QFrost::ToolType, ToolSettings * > map) {
         mToolsSettings = map;

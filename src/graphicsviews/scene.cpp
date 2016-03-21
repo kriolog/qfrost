@@ -742,6 +742,11 @@ Tool *Scene::activeTool() const
     return mTool.data();
 }
 
+bool Scene::acceptsEnter() const
+{
+    return qobject_cast<BlockCreator*>(activeTool()) != nullptr;
+}
+
 void Scene::addItems(const QList<BoundaryPolygon *> &boundaryPolygons)
 {
     if (boundaryPolygons.isEmpty()) {
