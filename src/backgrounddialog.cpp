@@ -44,6 +44,7 @@
 #include <QCoreApplication>
 #include <qmath.h>
 #include <QLabel>
+#include <QScrollBar>
 
 using namespace qfgui;
 

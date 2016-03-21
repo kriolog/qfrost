@@ -2,6 +2,7 @@
 <qresource>
     <file>icons/128x128/actions/application-exit.png</file>
     <file>icons/128x128/actions/document-edit.png</file>
+    <file>icons/128x128/actions/document-preview.png</file>
     <file>icons/128x128/actions/list-remove.png</file>
     <file>icons/128x128/actions/transform-move.png</file>
     <file>icons/128x128/actions/transform-scale.png</file>
@@ -16,6 +17,7 @@
     <file>icons/16x16/actions/document-new.png</file>
     <file>icons/16x16/actions/document-open-recent.png</file>
     <file>icons/16x16/actions/document-open.png</file>
+    <file>icons/16x16/actions/document-preview.png</file>
     <file>icons/16x16/actions/document-save-as.png</file>
     <file>icons/16x16/actions/document-save.png</file>
     <file>icons/16x16/actions/edit-clear.png</file>
@@ -53,6 +55,7 @@
     <file>icons/22x22/actions/document-new.png</file>
     <file>icons/22x22/actions/document-open-recent.png</file>
     <file>icons/22x22/actions/document-open.png</file>
+    <file>icons/22x22/actions/document-preview.png</file>
     <file>icons/22x22/actions/document-save-as.png</file>
     <file>icons/22x22/actions/document-save.png</file>
     <file>icons/22x22/actions/edit-clear.png</file>
@@ -92,6 +95,7 @@
     <file>icons/32x32/actions/document-new.png</file>
     <file>icons/32x32/actions/document-open-recent.png</file>
     <file>icons/32x32/actions/document-open.png</file>
+    <file>icons/32x32/actions/document-preview.png</file>
     <file>icons/32x32/actions/document-save-as.png</file>
     <file>icons/32x32/actions/document-save.png</file>
     <file>icons/32x32/actions/edit-clear.png</file>
@@ -129,6 +133,7 @@
     <file>icons/48x48/actions/document-new.png</file>
     <file>icons/48x48/actions/document-open-recent.png</file>
     <file>icons/48x48/actions/document-open.png</file>
+    <file>icons/48x48/actions/document-preview.png</file>
     <file>icons/48x48/actions/document-save-as.png</file>
     <file>icons/48x48/actions/document-save.png</file>
     <file>icons/48x48/actions/edit-clear.png</file>
@@ -161,6 +166,7 @@
     <file>icons/48x48/mimetypes/image-x-generic.png</file>
     <file>icons/64x64/actions/application-exit.png</file>
     <file>icons/64x64/actions/document-edit.png</file>
+    <file>icons/64x64/actions/document-preview.png</file>
     <file>icons/64x64/actions/list-remove.png</file>
     <file>icons/64x64/actions/transform-move.png</file>
     <file>icons/64x64/actions/transform-scale.png</file>
