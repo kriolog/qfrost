@@ -1,4 +1,4 @@
-You need Qt, cmake and Boost.
+You need Qt, cmake, Boost and Eigen.
 
 Create some dir, cd there and do:
  cmake $PATH_TO_HERE
